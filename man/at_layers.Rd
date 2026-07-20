@@ -24,6 +24,7 @@ Layer summary table
 Other projects:
 \code{\link[=at_add_layer]{at_add_layer()}},
 \code{\link[=at_add_roi]{at_add_roi()}},
+\code{\link[=at_example_project]{at_example_project()}},
 \code{\link[=at_project]{at_project()}},
 \code{\link[=at_remove_layer]{at_remove_layer()}},
 \code{\link[=at_remove_roi]{at_remove_roi()}},

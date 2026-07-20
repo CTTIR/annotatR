@@ -20,6 +20,7 @@ image (and applying the session's layer template) if it has not been visited.
 }
 \seealso{
 Other sessions:
+\code{\link[=at_example_session]{at_example_session()}},
 \code{\link[=at_goto]{at_goto()}},
 \code{\link[=at_manifest]{at_manifest()}},
 \code{\link[=at_next]{at_next()}},

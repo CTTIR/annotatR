@@ -22,6 +22,7 @@ Jump to a specific image
 \seealso{
 Other sessions:
 \code{\link[=at_current]{at_current()}},
+\code{\link[=at_example_session]{at_example_session()}},
 \code{\link[=at_manifest]{at_manifest()}},
 \code{\link[=at_next]{at_next()}},
 \code{\link[=at_prev]{at_prev()}},

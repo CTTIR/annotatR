@@ -40,12 +40,15 @@ with a legend. Created by \code{at_mask()}.}
 Other images:
 \code{\link[=at_bands]{at_bands()}},
 \code{\link[=at_dims]{at_dims()}},
+\code{\link[=at_example_image]{at_example_image()}},
 \code{\link[=at_is_pyramidal]{at_is_pyramidal()}},
 \code{\link[=at_is_spectral]{at_is_spectral()}},
 \code{\link[=at_meta]{at_meta()}},
 \code{\link[=at_n_bands]{at_n_bands()}},
 \code{\link[=at_n_levels]{at_n_levels()}},
 \code{\link[=at_pixel_size]{at_pixel_size()}},
+\code{\link[=at_read_image]{at_read_image()}},
+\code{\link[=at_tile]{at_tile()}},
 \code{\link[=at_wavelengths]{at_wavelengths()}}
 }
 \concept{images}

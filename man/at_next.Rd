@@ -20,6 +20,7 @@ Advance to the next image
 \seealso{
 Other sessions:
 \code{\link[=at_current]{at_current()}},
+\code{\link[=at_example_session]{at_example_session()}},
 \code{\link[=at_goto]{at_goto()}},
 \code{\link[=at_manifest]{at_manifest()}},
 \code{\link[=at_prev]{at_prev()}},
