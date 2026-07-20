@@ -93,6 +93,25 @@
   sf::st_sfc(out, crs = sf::st_crs(geom))
 }
 
+# Transform an sfc from level 0 to `level`, using the real image pyramid ratio
+# when an annot_image is supplied (correct for non-power-of-two pyramids),
+# otherwise assuming a power-of-two pyramid. Inverse direction of .to_level0().
+.geom_to_level <- function(geom, level, image = NULL) {
+  if (level == 0L) {
+    return(geom)
+  }
+  if (inherits(image, "annot_image") && length(image$level_dims) > level) {
+    d0 <- image$level_dims[[1L]]
+    dl <- image$level_dims[[level + 1L]]
+    fx <- dl[1] / d0[1]
+    fy <- dl[2] / d0[2]
+    out <- lapply(geom, .apply_coords,
+                  fun = function(m) cbind(m[, 1] * fx, m[, 2] * fy))
+    return(sf::st_sfc(out, crs = sf::st_crs(geom)))
+  }
+  .rescale_geom(geom, 0L, level)
+}
+
 # Build the ROI query-contract tibble from a list of annot_roi and a matching
 # vector of layer names. Coordinates, area, and centroid are expressed at level
 # 0; the `level` column records each ROI's original reference level. Returns the
