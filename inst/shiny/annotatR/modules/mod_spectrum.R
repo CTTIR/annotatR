@@ -20,11 +20,9 @@ mod_spectrum_server <- function(id, rv) {
     })
     output$plot <- shiny::renderPlot({
       shiny::req(rv$project, is_spectral())
-      if (nrow(annotatR::at_rois(rv$project)) == 0L) {
-        return(annotatR::at_plot_spectrum(annotatR:::.empty_extract_tbl()))
-      }
-      sp <- annotatR::at_extract_spectrum(rv$project)
-      annotatR::at_plot_spectrum(sp)
+      # at_extract_spectrum returns a 0-row tibble when there are no ROIs, which
+      # at_plot_spectrum renders as an empty plot.
+      annotatR::at_plot_spectrum(annotatR::at_extract_spectrum(rv$project))
     })
     is_spectral
   })

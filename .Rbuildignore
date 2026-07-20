@@ -6,9 +6,6 @@
 ^cran-comments\.md$
 ^LICENSE\.md$
 ^STATE\.md$
-^CLAUDE\.md$
-^CLAUDE_CODE_.*\.md$
-^\.claude$
 ^data-raw$
 ^codecov\.yml$
 ^\.lintr$

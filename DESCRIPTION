@@ -29,10 +29,8 @@ Imports:
     stars (>= 0.6.0),
     stats,
     tibble,
-    tidyr,
     tools,
-    utils,
-    vctrs
+    utils
 Suggests:
     bslib,
     covr,

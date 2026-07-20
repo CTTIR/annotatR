@@ -29,6 +29,7 @@ Other rois:
 \code{\link[=at_roi_circle]{at_roi_circle()}},
 \code{\link[=at_roi_ellipse]{at_roi_ellipse()}},
 \code{\link[=at_roi_freehand]{at_roi_freehand()}},
+\code{\link[=at_roi_from_geojson]{at_roi_from_geojson()}},
 \code{\link[=at_roi_from_sf]{at_roi_from_sf()}},
 \code{\link[=at_roi_point]{at_roi_point()}},
 \code{\link[=at_roi_polygon]{at_roi_polygon()}},

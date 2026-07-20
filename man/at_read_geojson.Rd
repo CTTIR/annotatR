@@ -40,6 +40,7 @@ Other io:
 \code{\link[=at_load_session]{at_load_session()}},
 \code{\link[=at_read_qupath]{at_read_qupath()}},
 \code{\link[=at_read_rois_csv]{at_read_rois_csv()}},
+\code{\link[=at_roi_from_geojson]{at_roi_from_geojson()}},
 \code{\link[=at_save_project]{at_save_project()}},
 \code{\link[=at_save_session]{at_save_session()}},
 \code{\link[=at_write_geojson]{at_write_geojson()}},

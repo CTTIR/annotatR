@@ -16,9 +16,7 @@ mod_canvas_ui <- function(id) {
 
 # Turn a drawn GeoJSON feature (level-0 pixels) into an annot_roi.
 .feature_to_roi <- function(feature, label, level = 0L) {
-  g <- annotatR:::.geojson_to_sfg(feature$geometry)
-  annotatR::at_roi_from_sf(sf::st_sfc(g, crs = sf::NA_crs_), label = label,
-                          level = level, source = "manual")
+  annotatR::at_roi_from_geojson(feature, label = label, level = level)
 }
 
 # Copy every ROI of `from` into `to` as fresh, editable ROIs (new ids,
@@ -29,9 +27,10 @@ mod_canvas_ui <- function(id) {
       to <- annotatR::at_add_layer(to, annotatR::at_layer(nm, labels = from$layers[[nm]]$labels))
     }
     for (r in from$layers[[nm]]$rois) {
-      r$source <- "copied"
-      r$id <- annotatR:::.new_id("roi") # fresh, editable ROI
-      to <- annotatR::at_add_roi(to, nm, r)
+      # at_roi_from_sf mints a fresh id, giving an editable copy.
+      cp <- annotatR::at_roi_from_sf(r$geometry, label = r$label, level = r$level,
+                                     source = "copied")
+      to <- annotatR::at_add_roi(to, nm, cp)
     }
   }
   to

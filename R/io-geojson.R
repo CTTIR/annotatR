@@ -126,6 +126,43 @@ at_write_geojson <- function(project, path, layer = NULL, level = 0L,
   )
 }
 
+#' Convert a GeoJSON feature to an ROI
+#'
+#' Turn a single parsed GeoJSON feature (a list with `geometry` and optional
+#' `properties`) into an [annot_roi]. Useful for consuming interactive drawing
+#' output.
+#'
+#' @param feature A parsed GeoJSON feature: a list with a `geometry` element
+#'   (`type` and `coordinates`) and optional `properties`.
+#' @param label Single string class label; taken from `properties$label` when
+#'   `NULL`.
+#' @param level Integer pyramid level. Default `0`.
+#' @param source Provenance source string. Default `"manual"`.
+#' @param call The calling environment, for error reporting.
+#'
+#' @return An [annot_roi].
+#' @family io
+#' @family rois
+#' @export
+#' @examples
+#' feat <- list(geometry = list(type = "Polygon",
+#'   coordinates = list(list(c(0, 0), c(4, 0), c(4, 4), c(0, 4), c(0, 0)))))
+#' at_roi_from_geojson(feat, label = "region")
+at_roi_from_geojson <- function(feature, label = NULL, level = 0L,
+                                source = "manual", call = rlang::caller_env()) {
+  if (!is.list(feature) || is.null(feature$geometry)) {
+    cli::cli_abort(
+      c("{.arg feature} must be a parsed GeoJSON feature with a {.field geometry}.",
+        "x" = "You supplied {.cls {class(feature)[1]}}."),
+      call = call
+    )
+  }
+  lab <- label %||% (feature$properties$label %||% "unlabelled")
+  g <- .geojson_to_sfg(feature$geometry)
+  at_roi_from_sf(sf::st_sfc(g, crs = sf::NA_crs_), label = as.character(lab),
+                 level = as.integer(level), source = source, call = call)
+}
+
 # ---- Read -------------------------------------------------------------------
 
 #' Read ROIs from a GeoJSON file
