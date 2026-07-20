@@ -28,6 +28,12 @@
 # stars and terra paths remain bit-identical.
 .cover <- function(geom, dims, touches = FALSE, engine = "stars") {
   if (!touches) {
+    # Fast, exact path for axis-aligned rectangles and points (bit-identical to
+    # the general rasteriser); avoids stars/terra entirely.
+    sc <- .cover_shortcircuit(geom, dims)
+    if (!is.null(sc)) {
+      return(sc)
+    }
     eps <- 1e-7
     geom <- .apply_coords(geom, function(m) cbind(m[, 1] - eps, m[, 2] - eps))
   }
@@ -206,29 +212,43 @@ at_mask <- function(x,
     labels_all <- unique(vapply(entries, `[[`, character(1), "label"))
     val_of <- function(e) match(e$label, labels_all)
   } else {
-    val_of <- function(e) NA # per-ROI value assigned by index below
+    val_of <- function(e) NA
+  }
+  values <- vapply(seq_along(entries), function(k) {
+    switch(type, binary = 1L, labelled = k, multiclass = val_of(entries[[k]]))
+  }, integer(1))
+
+  if (length(entries) == 0L) {
+    out <- matrix(as.integer(background), nrow = height, ncol = width)
+  } else if (overlap %in% c("last", "first") && length(entries) >= 2L) {
+    # Fast path: burn every ROI in one rasterisation (painter's order gives the
+    # "last" policy; reversing the order gives "first"). Bit-identical to the
+    # per-ROI combine but far cheaper for many ROIs.
+    out <- .rasterize_batch(entries, values, c(width, height), background,
+                            touches, reverse = (overlap == "first"), engine = engine)
+  } else {
+    out <- .rasterize_per_roi(entries, values, c(width, height), background,
+                              touches, overlap, engine, call)
   }
 
+  legend <- .build_legend(type, entries, values, out, background)
+
+  if (type == "binary") {
+    out <- out != background
+  }
+  .new_annot_mask(out, legend, level, c(width, height), type,
+                  source = if (inherits(x, "annot_project")) x$meta$name %||% NA_character_ else NA_character_)
+}
+
+# Per-ROI rasterise-and-combine (short-circuits + all five overlap policies).
+.rasterize_per_roi <- function(entries, values, dims, background, touches,
+                               overlap, engine, call = rlang::caller_env()) {
+  width <- dims[1]
+  height <- dims[2]
   out <- matrix(as.integer(background), nrow = height, ncol = width)
-  legend_rows <- list()
-  covers_vals <- list()
-
   for (k in seq_along(entries)) {
-    e <- entries[[k]]
-    cover <- .cover(e$geom, c(width, height), touches = touches, engine = engine)
-    value <- switch(
-      type,
-      binary     = 1L,
-      labelled   = k,
-      multiclass = val_of(e)
-    )
-    covers_vals[[k]] <- list(cover = cover, value = value, entry = e)
-  }
-
-  # Combine covers according to the overlap policy.
-  for (cv in covers_vals) {
-    cover <- cv$cover
-    value <- cv$value
+    cover <- .cover(entries[[k]]$geom, c(width, height), touches = touches, engine = engine)
+    value <- values[k]
     if (overlap == "error") {
       if (any(cover & out != background)) {
         cli::cli_abort(
@@ -241,58 +261,80 @@ at_mask <- function(x,
     } else if (overlap == "last") {
       out[cover] <- value
     } else if (overlap == "first") {
-      m <- cover & (out == background)
-      out[m] <- value
+      out[cover & (out == background)] <- value
     } else if (overlap == "max") {
       out[cover] <- pmax(out[cover], value)
     } else if (overlap == "min") {
-      m1 <- cover & (out == background)
-      out[m1] <- value
+      out[cover & (out == background)] <- value
       m2 <- cover & (out != background)
       out[m2] <- pmin(out[m2], value)
     }
   }
-
-  legend <- .build_legend(type, covers_vals, out, background)
-
-  if (type == "binary") {
-    out <- out != background
-  }
-  .new_annot_mask(out, legend, level, c(width, height), type,
-                  source = if (inherits(x, "annot_project")) x$meta$name %||% NA_character_ else NA_character_)
+  out
 }
 
-# Build the legend tibble from the assembled covers and final mask.
-.build_legend <- function(type, covers_vals, out, background) {
-  cols <- c("value", "label", "layer", "roi_id", "n_px", "colour")
+# Batched rasterisation: burn all ROIs in one st_rasterize/terra call.
+.rasterize_batch <- function(entries, values, dims, background, touches, reverse,
+                             engine = "stars") {
+  width <- dims[1]
+  height <- dims[2]
+  geoms <- lapply(entries, `[[`, "geom")
+  if (!touches) {
+    eps <- 1e-7
+    geoms <- lapply(geoms, function(g) .apply_coords(g, function(m) cbind(m[, 1] - eps, m[, 2] - eps)))
+  }
+  ord <- if (reverse) rev(seq_along(geoms)) else seq_along(geoms)
+  sfc <- sf::st_sfc(geoms[ord], crs = sf::NA_crs_)
+  sfobj <- sf::st_sf(value = as.integer(values[ord]), geometry = sfc)
+  opt <- if (touches) "ALL_TOUCHED=TRUE" else "ALL_TOUCHED=FALSE"
+  if (engine == "terra" && requireNamespace("terra", quietly = TRUE)) {
+    v <- terra::vect(sfobj)
+    r <- terra::rast(xmin = 0, xmax = width, ymin = 0, ymax = height, resolution = 1)
+    rr <- terra::rasterize(v, r, field = "value", background = background, touches = touches)
+    m <- terra::as.matrix(rr, wide = TRUE)
+    m[is.na(m)] <- as.integer(background)
+    return(matrix(as.integer(m[height:1, , drop = FALSE]), nrow = height, ncol = width))
+  }
+  bb <- sf::st_bbox(c(xmin = 0, ymin = 0, xmax = width, ymax = height))
+  templ <- stars::st_as_stars(bb, nx = as.integer(width), ny = as.integer(height),
+                              values = as.integer(background))
+  r <- suppressWarnings(stars::st_rasterize(sfobj, template = templ, options = opt))
+  m <- r[[1]]
+  m[is.na(m)] <- as.integer(background)
+  matrix(as.integer(t(m)[height:1, , drop = FALSE]), nrow = height, ncol = width)
+}
+
+# Build the legend tibble from the entries, their values, and the final mask.
+.build_legend <- function(type, entries, values, out, background) {
   empty <- tibble::tibble(
     value = integer(0), label = character(0), layer = character(0),
     roi_id = character(0), n_px = integer(0), colour = character(0)
   )
-  if (length(covers_vals) == 0L) {
+  if (length(entries) == 0L) {
     return(empty)
   }
   if (type == "binary") {
-    npx <- sum(out != background)
     return(tibble::tibble(
       value = 1L, label = "foreground", layer = NA_character_,
-      roi_id = NA_character_, n_px = as.integer(npx), colour = "#5E2C8E"
+      roi_id = NA_character_, n_px = as.integer(sum(out != background)),
+      colour = "#5E2C8E"
     ))
   }
   if (type == "labelled") {
-    rows <- lapply(covers_vals, function(cv) {
+    rows <- lapply(seq_along(entries), function(k) {
+      e <- entries[[k]]
       tibble::tibble(
-        value = as.integer(cv$value), label = cv$entry$label,
-        layer = cv$entry$layer, roi_id = cv$entry$roi_id,
-        n_px = as.integer(sum(out == cv$value)), colour = cv$entry$colour
+        value = as.integer(values[k]), label = e$label, layer = e$layer,
+        roi_id = e$roi_id, n_px = as.integer(sum(out == values[k])),
+        colour = e$colour
       )
     })
     return(do.call(rbind, rows))
   }
   # multiclass: one row per distinct value.
-  vals <- sort(unique(vapply(covers_vals, `[[`, integer(1), "value")))
+  vals <- sort(unique(values))
   rows <- lapply(vals, function(v) {
-    e <- covers_vals[[which(vapply(covers_vals, `[[`, integer(1), "value") == v)[1]]]$entry
+    e <- entries[[which(values == v)[1]]]
     tibble::tibble(
       value = as.integer(v), label = e$label, layer = e$layer,
       roi_id = NA_character_, n_px = as.integer(sum(out == v)), colour = e$colour

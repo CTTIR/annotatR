@@ -230,11 +230,17 @@ at_tile <- function(img, level = 0L, xrange = NULL, yrange = NULL, bands = NULL,
     }
   }
   b <- at_backend_get(img$backend, call = call)
+  key <- .tile_key(img, level, xrange, yrange, bands)
+  cached <- .tile_cache_get(key)
+  if (!is.null(cached)) {
+    return(cached)
+  }
   arr <- b$tile_fn(img, level, xrange, yrange, bands)
   # Guarantee a 3D [y, x, band] array.
   if (length(dim(arr)) == 2L) {
     arr <- array(arr, dim = c(dim(arr), 1L))
   }
+  .tile_cache_put(key, arr)
   arr
 }
 
