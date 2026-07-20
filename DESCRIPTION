@@ -1,0 +1,55 @@
+Package: annotatR
+Type: Package
+Title: Multi-Layer Region-of-Interest Annotation for Images and Spectral Cubes
+Version: 0.0.1
+Authors@R: person("Raban", "Heller", email = "raban.heller@charite.de",
+    role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8006-9742"))
+Description: Annotate multiple layers of regions of interest across whole-slide
+    microscopy images, hyperspectral data cubes, and conventional rasters.
+    Annotations are stored as validated simple-feature geometries in image pixel
+    coordinates with explicit pyramid-level transforms, and can be rasterised to
+    binary, labelled, or multi-class integer masks for downstream segmentation and
+    classification workflows. A batch annotation application built on 'shiny' and
+    'OpenSeadragon' supports resumable sessions across image queues, live mask
+    preview, and export to 'GeoJSON', 'QuPath', and 'TIFF' formats.
+License: MIT + file LICENSE
+URL: https://github.com/CTTIR/annotatR, https://cttir.github.io/annotatR/
+BugReports: https://github.com/CTTIR/annotatR/issues
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Depends: R (>= 4.1.0)
+Imports:
+    cli,
+    dplyr,
+    ggplot2,
+    jsonlite,
+    rlang (>= 1.1.0),
+    sf (>= 1.0.0),
+    stars (>= 0.6.0),
+    tibble,
+    tidyr,
+    tools,
+    utils,
+    vctrs
+Suggests:
+    bslib,
+    covr,
+    cuvis.r,
+    EBImage,
+    htmltools,
+    htmlwidgets,
+    knitr,
+    magick,
+    RBioFormats,
+    rmarkdown,
+    scales,
+    shiny (>= 1.7.0),
+    shinyjs,
+    terra,
+    testthat (>= 3.0.0),
+    tiff,
+    withr,
+    xml2
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+Config/roxygen2/version: 8.0.0

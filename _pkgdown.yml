@@ -1,0 +1,12 @@
+url: https://cttir.github.io/annotatR/
+
+template:
+  bootstrap: 5
+  bslib:
+    primary: "#5E2C8E"
+    base_font: {google: false}
+    heading_font: {google: false}
+    code_font: {google: false}
+
+development:
+  mode: auto
