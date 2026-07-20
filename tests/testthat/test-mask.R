@@ -149,4 +149,38 @@ test_that("at_mask errors on unsupported input", {
 
 test_that("plot.annot_mask returns a ggplot", {
   expect_s3_class(plot(at_mask(demo_project(), "labelled")), "ggplot")
+  expect_s3_class(plot(at_mask(demo_project(), "labelled"), legend = FALSE), "ggplot")
+})
+
+test_that("at_mask derives dims from the geometry bbox when none are given", {
+  m <- at_mask(at_roi_rect(2, 2, 8, 8, label = "a"), "binary")
+  expect_identical(dim(m), c(8L, 8L))
+})
+
+test_that("annot_mask print, dim, as.matrix, and summary work", {
+  m <- at_mask(demo_project(), "labelled")
+  expect_output(print(m), "annot_mask")
+  expect_identical(dim(m), c(100L, 100L))
+  expect_true(is.matrix(as.matrix(m)))
+  expect_s3_class(summary(m), "tbl_df")
+})
+
+test_that("at_mask_boundary supports a thicker boundary", {
+  m <- at_mask(at_roi_rect(2, 2, 18, 18, label = "a"), "labelled", dims = c(20, 20))
+  expect_gt(sum(at_mask_boundary(m, width = 2L)), sum(at_mask_boundary(m, width = 1L)))
+})
+
+test_that("at_mask_stack is empty for a layerless project", {
+  stk <- at_mask_stack(at_project(small_image()))
+  expect_identical(dim(stk)[3], 0L)
+})
+
+test_that("at_mask_stats reports zero pixels for a fully occluded label", {
+  # ROI 'a' is completely covered by 'b' under overlap = "last".
+  a <- at_roi_rect(2, 2, 6, 6, label = "a")
+  b <- at_roi_rect(0, 0, 10, 10, label = "b")
+  lyr <- at_layer_add(at_layer_add(at_layer("l"), a), b)
+  m <- at_mask(lyr, "labelled", dims = c(10, 10), overlap = "last")
+  st <- at_mask_stats(m)
+  expect_true(0L %in% st$n_px)
 })

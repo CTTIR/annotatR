@@ -91,3 +91,35 @@ test_that("plot returns a ggplot without drawing", {
 test_that("print and format produce output", {
   expect_output(print(at_roi_rect(0, 0, 4, 4, label = "a")), "annot_roi")
 })
+
+test_that("at_roi_polygon accepts holes and rejects bad coords", {
+  outer <- matrix(c(0, 0, 10, 0, 10, 10, 0, 10), ncol = 2, byrow = TRUE)
+  inner <- matrix(c(3, 3, 3, 7, 7, 7, 7, 3), ncol = 2, byrow = TRUE)
+  r <- at_roi_polygon(outer, label = "a", hole = inner)
+  expect_equal(at_roi_area(r), 100 - 16)
+  expect_error(at_roi_polygon("nope", label = "a"), "numeric matrix")
+})
+
+test_that("at_roi_freehand rejects malformed input", {
+  expect_error(at_roi_freehand(matrix(1:4, ncol = 2), label = "a"), "at least 3 rows")
+})
+
+test_that("physical area uses the pixel_size attribute or errors", {
+  r <- at_roi_rect(0, 0, 10, 10, label = "a", pixel_size = c(2, 3))
+  expect_equal(at_roi_area(r, units = "physical"), 100 * 6)
+  r2 <- at_roi_rect(0, 0, 10, 10, label = "a")
+  expect_error(at_roi_area(r2, units = "physical"), "pixel_size")
+})
+
+test_that("at_roi_simplify with a tolerance reduces vertices", {
+  r <- at_roi_simplify(at_roi_circle(50, 50, 20, n_seg = 128, label = "a"), tolerance = 2)
+  expect_s3_class(r, "annot_roi")
+  expect_lt(nrow(sf::st_coordinates(r$geometry)), 129)
+})
+
+test_that("roi plot and sf coercions work", {
+  r <- at_roi_rect(0, 0, 4, 4, label = "a")
+  expect_s3_class(plot(r), "ggplot")
+  expect_s3_class(sf::st_as_sf(r), "sf")
+  expect_s3_class(sf::st_geometry(r), "sfc")
+})

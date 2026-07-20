@@ -88,3 +88,13 @@ test_that("at_write_masks emits a receipt and files per scope", {
   expect_identical(names(receipt), c("path", "type", "n_px", "bytes"))
   expect_true(all(file.exists(receipt$path)))
 })
+
+test_that("at_write_masks supports every split", {
+  proj <- demo_project()
+  for (per in c("roi", "class", "project")) {
+    dir <- withr::local_tempdir()
+    receipt <- at_write_masks(proj, dir, per = per)
+    expect_true(nrow(receipt) >= 1L)
+    expect_true(all(file.exists(receipt$path)))
+  }
+})

@@ -97,3 +97,23 @@ test_that("print methods produce output", {
   expect_output(print(demo_project()), "annot_project")
   expect_output(print(at_summary(demo_project())), "annot_summary")
 })
+
+test_that("at_project rejects a non-layer layers argument", {
+  expect_error(at_project(small_image(), layers = 42), "annot_layer")
+  expect_error(at_project(small_image(), layers = list(1, 2)), "Every element")
+})
+
+test_that("at_rois errors on an unknown layer filter", {
+  expect_error(at_rois(demo_project(), layer = "nope"), "No layer")
+  expect_error(at_add_roi(demo_project(), "nope", at_roi_point(1, 1, label = "x")), "No layer")
+  expect_error(at_remove_layer(demo_project(), "nope"), "No layer")
+})
+
+test_that("summary.annot_project dispatches to at_summary", {
+  expect_s3_class(summary(demo_project()), "annot_summary")
+})
+
+test_that("at_project detects duplicate layer names on construction", {
+  a <- at_layer("dup")
+  expect_error(.normalize_layers(list(a, a)), "unique")
+})

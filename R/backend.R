@@ -135,7 +135,7 @@ at_backend_detect <- function(path, call = rlang::caller_env()) {
     cli::cli_abort(
       c(
         "No available backend can read {.path {path}}.",
-        "x" = "Matching backend{?s} {.val {matched}} {?is/are} not installed.",
+        "x" = "{cli::qty(length(matched))}The matching backend{?s} {?is/are} not installed: {.val {matched}}.",
         "i" = "Install the required optional package(s); see {.fn at_backend_list}."
       ),
       call = call

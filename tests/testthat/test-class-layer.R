@@ -52,3 +52,13 @@ test_that("at_layer_rois honours the query contract when empty", {
   expect_equal(nrow(t), 0L)
   expect_identical(names(t), names(.empty_roi_tbl()))
 })
+
+test_that("at_style rejects a non-character colour", {
+  expect_error(at_style(colour = 42), "character vector")
+})
+
+test_that("layer print and format produce output", {
+  lyr <- at_layer_add(at_layer("l", labels = "a"), at_roi_rect(0, 0, 1, 1, label = "a"))
+  expect_output(print(lyr), "annot_layer")
+  expect_type(format(lyr), "character")
+})

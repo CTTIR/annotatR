@@ -63,4 +63,14 @@ test_that("at_session_save returns the session invisibly", {
 
 test_that("print produces output", {
   expect_output(print(demo_session(2)), "annot_session")
+  expect_type(format(demo_session(2)), "character")
+})
+
+test_that("at_session accepts a layer template", {
+  dir <- withr::local_tempdir()
+  p <- file.path(dir, "a.png")
+  writeLines("x", p)
+  sess <- at_session(p, layers = at_layer("template", labels = "x"))
+  expect_length(sess$layer_spec, 1L)
+  expect_error(at_session(p, layers = 42), "annot_layer")
 })

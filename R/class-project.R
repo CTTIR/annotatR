@@ -53,7 +53,7 @@ new_annot_project <- function(image,
     cli::cli_abort(
       c(
         "Every element of {.arg layers} must be an {.cls annot_layer}.",
-        "x" = "Element{?s} {.val {which(!ok)}} {?is/are} not."
+        "x" = "{cli::qty(sum(!ok))}Element{?s} at position{?s} not a layer: {.val {which(!ok)}}."
       ),
       call = call
     )
