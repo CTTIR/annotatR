@@ -1,0 +1,5 @@
+dependencies:
+  - name: atcanvas-css
+    version: 0.0.1
+    src: htmlwidgets/lib/atcanvas
+    stylesheet: atcanvas.css
