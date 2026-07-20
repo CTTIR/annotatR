@@ -263,7 +263,9 @@ at_mask <- function(x,
     } else if (overlap == "first") {
       out[cover & (out == background)] <- value
     } else if (overlap == "max") {
-      out[cover] <- pmax(out[cover], value)
+      out[cover & (out == background)] <- value
+      m2 <- cover & (out != background)
+      out[m2] <- pmax(out[m2], value)
     } else if (overlap == "min") {
       out[cover & (out == background)] <- value
       m2 <- cover & (out != background)

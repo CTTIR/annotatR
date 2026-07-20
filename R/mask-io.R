@@ -263,5 +263,11 @@ at_write_masks <- function(project, dir, per = c("layer", "roi", "class", "proje
       bytes = as.integer(file.info(p)$size)
     )
   })
-  invisible(do.call(rbind, rows))
+  receipt <- if (length(rows)) {
+    do.call(rbind, rows)
+  } else {
+    tibble::tibble(path = character(0), type = character(0),
+                   n_px = integer(0), bytes = integer(0))
+  }
+  invisible(receipt)
 }

@@ -64,7 +64,6 @@
 #' @param scope `"complete"` (default), `"all"`, `"current"`, or `"flagged"`.
 #' @param mask_type Mask type for `"mask_tiff"`.
 #' @param level Integer pyramid level. Default `0`.
-#' @param per Mask split for `"mask_tiff"`; passed to [at_write_masks()].
 #' @param overwrite Logical; overwrite existing files. Default `FALSE`.
 #' @param progress Logical; show a progress bar. Default `TRUE`.
 #' @param call The calling environment, for error reporting.
@@ -79,7 +78,7 @@ at_export_all <- function(session, dir,
                           formats = c("mask_tiff", "geojson", "qupath", "rds", "csv"),
                           scope = c("complete", "all", "current", "flagged"),
                           mask_type = c("labelled", "binary", "multiclass"),
-                          level = 0L, per = "layer", overwrite = FALSE,
+                          level = 0L, overwrite = FALSE,
                           progress = TRUE, call = rlang::caller_env()) {
   .check_session(session, call = call)
   .check_string(dir, call = call)

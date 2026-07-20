@@ -178,6 +178,9 @@ NULL
 #' @export
 at_roi_union <- function(..., call = rlang::caller_env()) {
   rois <- .collect_rois(list(...), call = call)
+  if (length(rois) == 0L) {
+    cli::cli_abort("{.fn at_roi_union} needs at least one ROI.", call = call)
+  }
   geoms <- do.call(c, lapply(rois, `[[`, "geometry"))
   .roi_from_geom(sf::st_union(geoms), rois[[1]])
 }
@@ -186,6 +189,9 @@ at_roi_union <- function(..., call = rlang::caller_env()) {
 #' @export
 at_roi_intersect <- function(..., call = rlang::caller_env()) {
   rois <- .collect_rois(list(...), call = call)
+  if (length(rois) == 0L) {
+    cli::cli_abort("{.fn at_roi_intersect} needs at least one ROI.", call = call)
+  }
   g <- rois[[1]]$geometry
   for (r in rois[-1]) {
     g <- suppressWarnings(sf::st_intersection(g, r$geometry))
@@ -254,7 +260,9 @@ at_roi_contains <- function(roi, x, y, call = rlang::caller_env()) {
 at_roi_overlaps <- function(roi1, roi2, call = rlang::caller_env()) {
   .check_roi(roi1, arg = "roi1", call = call)
   .check_roi(roi2, arg = "roi2", call = call)
-  length(suppressMessages(sf::st_intersects(roi1$geometry, roi2$geometry)[[1]])) > 0L
+  g1 <- .to_level0(roi1$geometry, roi1$level)
+  g2 <- .to_level0(roi2$geometry, roi2$level)
+  length(suppressMessages(sf::st_intersects(g1, g2)[[1]])) > 0L
 }
 
 #' Distance between two ROIs
@@ -426,8 +434,9 @@ at_check_geometry <- function(project, call = rlang::caller_env()) {
 
 #' Repair the geometry of a project
 #'
-#' Apply `sf::st_make_valid()` to invalid ROIs and drop duplicate consecutive
-#' vertices, reporting what changed.
+#' Apply `sf::st_make_valid()` to invalid ROIs (which also drops duplicate
+#' consecutive vertices) and clamp out-of-bounds vertices into the image bounds,
+#' reporting what changed.
 #'
 #' @param project An [annot_project].
 #' @param verbose Logical; whether to report repairs. Default `TRUE`.
@@ -447,7 +456,9 @@ at_fix_geometry <- function(project, verbose = TRUE, call = rlang::caller_env())
     rois <- project$layers[[nm]]$rois
     for (k in seq_along(rois)) {
       g <- rois[[k]]$geometry
-      res <- .geometry_issues(g)
+      dims <- tryCatch(project$image$level_dims[[rois[[k]]$level + 1L]],
+                       error = function(e) NULL)
+      res <- .geometry_issues(g, dims)
       if (length(res$issue) == 0L) {
         next
       }
@@ -455,7 +466,19 @@ at_fix_geometry <- function(project, verbose = TRUE, call = rlang::caller_env())
         n_unfixable <- n_unfixable + 1L
       }
       if (any(res$fixable)) {
-        fixed <- tryCatch(sf::st_make_valid(g), error = function(e) g)
+        fixed <- g
+        # Clamp out-of-bounds vertices into the image bounds (as at_clamp does);
+        # st_make_valid does not treat out-of-bounds as an invalidity.
+        if ("out_of_bounds" %in% res$issue && !is.null(dims)) {
+          fixed <- tryCatch(
+            sf::st_sfc(lapply(fixed, .apply_coords, fun = function(m) cbind(
+              pmin(pmax(m[, 1], 0), dims[1]),
+              pmin(pmax(m[, 2], 0), dims[2])
+            )), crs = sf::st_crs(fixed)),
+            error = function(e) fixed
+          )
+        }
+        fixed <- tryCatch(sf::st_make_valid(fixed), error = function(e) fixed)
         suppressWarnings(sf::st_crs(fixed) <- sf::NA_crs_)
         if (!isTRUE(all.equal(sf::st_coordinates(fixed), sf::st_coordinates(g)))) {
           n_fixed <- n_fixed + 1L

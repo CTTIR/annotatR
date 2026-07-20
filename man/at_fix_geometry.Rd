@@ -19,8 +19,9 @@ The \link{annot_project} with repaired geometry. Repairs are reported via
 (zero area, degenerate, \code{NA} coordinates) are left in place and reported.
 }
 \description{
-Apply \code{sf::st_make_valid()} to invalid ROIs and drop duplicate consecutive
-vertices, reporting what changed.
+Apply \code{sf::st_make_valid()} to invalid ROIs (which also drops duplicate
+consecutive vertices) and clamp out-of-bounds vertices into the image bounds,
+reporting what changed.
 }
 \seealso{
 \code{\link[=at_check_geometry]{at_check_geometry()}}

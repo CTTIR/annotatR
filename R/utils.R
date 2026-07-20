@@ -84,8 +84,12 @@
     return(geom)
   }
   if (inherits(image, "annot_image") && length(image$level_dims) > level) {
-    f <- image$level_dims[[1L]][1] / image$level_dims[[level + 1L]][1]
-    out <- lapply(geom, .apply_coords, fun = function(m) m * f)
+    d0 <- image$level_dims[[1L]]
+    dl <- image$level_dims[[level + 1L]]
+    fx <- d0[1] / dl[1]
+    fy <- d0[2] / dl[2]
+    out <- lapply(geom, .apply_coords,
+                  fun = function(m) cbind(m[, 1] * fx, m[, 2] * fy))
     return(sf::st_sfc(out, crs = sf::st_crs(geom)))
   }
   factor <- 2^(level - 0L)
@@ -189,7 +193,9 @@
     names(out) <- labels
     return(out)
   }
+  nms <- names(colour)
   colour <- as.character(colour)
+  names(colour) <- nms
   if (!is.null(names(colour))) {
     out <- rep(pal[1], n)
     names(out) <- labels

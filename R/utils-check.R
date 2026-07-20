@@ -166,6 +166,15 @@
   if (identical(x, choices)) {
     return(choices[[1]])
   }
+  if (length(x) == 0L) {
+    cli::cli_abort(
+      c(
+        "{.arg {arg}} must be one of {.or {.val {choices}}}.",
+        "x" = "You supplied a length-0 value."
+      ),
+      call = call
+    )
+  }
   if (length(x) != 1L) {
     x <- x[[1]]
   }

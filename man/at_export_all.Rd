@@ -11,7 +11,6 @@ at_export_all(
   scope = c("complete", "all", "current", "flagged"),
   mask_type = c("labelled", "binary", "multiclass"),
   level = 0L,
-  per = "layer",
   overwrite = FALSE,
   progress = TRUE,
   call = rlang::caller_env()
@@ -30,8 +29,6 @@ at_export_all(
 \item{mask_type}{Mask type for \code{"mask_tiff"}.}
 
 \item{level}{Integer pyramid level. Default \code{0}.}
-
-\item{per}{Mask split for \code{"mask_tiff"}; passed to \code{\link[=at_write_masks]{at_write_masks()}}.}
 
 \item{overwrite}{Logical; overwrite existing files. Default \code{FALSE}.}
 
