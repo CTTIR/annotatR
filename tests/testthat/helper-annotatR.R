@@ -49,10 +49,10 @@ tri_roi <- function(label = "tri") {
   at_roi_polygon(co, label = label)
 }
 
-# A polygon with a hole (a donut).
+# A polygon with a hole (a donut). The hole winds opposite the exterior ring.
 donut_roi <- function(label = "donut") {
   outer <- matrix(c(0, 0, 10, 0, 10, 10, 0, 10), ncol = 2, byrow = TRUE)
-  inner <- matrix(c(3, 3, 7, 3, 7, 7, 3, 7), ncol = 2, byrow = TRUE)
+  inner <- matrix(c(3, 3, 3, 7, 7, 7, 7, 3), ncol = 2, byrow = TRUE)
   at_roi_polygon(list(outer, inner), label = label)
 }
 
@@ -62,6 +62,45 @@ overlap_pair <- function() {
     a = at_roi_rect(0, 0, 6, 6, label = "a"),
     b = at_roi_rect(4, 4, 10, 10, label = "b")
   )
+}
+
+# Raw, deliberately broken geometries (bypassing the constructor's repair) for
+# testing at_check_geometry() / at_fix_geometry().
+broken_geoms <- function() {
+  sfc <- function(p) sf::st_sfc(p, crs = sf::NA_crs_)
+  na_p <- sf::st_polygon(list(rbind(c(0, 0), c(5, 0), c(5, 5), c(0, 5), c(0, 0))))
+  na_p[[1]][2, 1] <- NA_real_
+  list(
+    self_intersect = sfc(sf::st_polygon(list(rbind(
+      c(0, 0), c(10, 10), c(10, 0), c(0, 10), c(0, 0)
+    )))),
+    zero_area = sfc(sf::st_polygon(list(rbind(
+      c(0, 0), c(5, 0), c(10, 0), c(0, 0)
+    )))),
+    degenerate = sfc(sf::st_polygon(list(rbind(
+      c(0, 0), c(5, 5), c(0, 0)
+    )))),
+    out_of_bounds = sfc(sf::st_polygon(list(rbind(
+      c(0, 0), c(9999, 0), c(9999, 9999), c(0, 9999), c(0, 0)
+    )))),
+    na_coord = sfc(na_p),
+    dup_vertex = sfc(sf::st_polygon(list(rbind(
+      c(0, 0), c(0, 0), c(5, 0), c(5, 5), c(0, 0)
+    )))),
+    ring_orientation = sfc(sf::st_polygon(list(
+      rbind(c(0, 0), c(10, 0), c(10, 10), c(0, 10), c(0, 0)),
+      rbind(c(3, 3), c(7, 3), c(7, 7), c(3, 7), c(3, 3)) # same winding as exterior
+    )))
+  )
+}
+
+# Build a project holding a raw geometry under a given issue name.
+broken_project <- function(name) {
+  g <- broken_geoms()[[name]]
+  roi <- new_annot_roi(geometry = g, id = "broken_1", label = "broken", level = 0L)
+  lyr <- at_layer("broken")
+  lyr$rois <- list(roi)
+  at_project(tiny_image(), lyr)
 }
 
 # ---- Project and session fixtures ------------------------------------------
