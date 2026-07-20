@@ -532,21 +532,19 @@ at_mask_stats <- function(mask, pixel_size = NULL, call = rlang::caller_env()) {
 plot.annot_mask <- function(x, legend = TRUE, ...) {
   m <- as.matrix(x)
   lg <- attr(x, "legend")
+  # Only foreground pixels are drawn (background is left blank). geom_tile (not
+  # geom_raster) is used so sparse foreground data raises no warnings.
   df <- expand.grid(y = seq_len(nrow(m)), x = seq_len(ncol(m)))
   df$value <- as.vector(m)
   df <- df[df$value != 0, , drop = FALSE]
-  if (nrow(df) > 0L && nrow(lg) > 0L) {
-    df$label <- lg$label[match(df$value, lg$value)]
-  } else {
-    df$label <- character(0)
-  }
+  df$label <- if (nrow(df) > 0L && nrow(lg) > 0L) lg$label[match(df$value, lg$value)] else character(0)
   pal <- NULL
   if (nrow(lg) > 0L) {
     pal <- lg$colour
     names(pal) <- lg$label
   }
   p <- ggplot2::ggplot(df, ggplot2::aes(x = .data$x, y = .data$y, fill = .data$label)) +
-    ggplot2::geom_raster() +
+    ggplot2::geom_tile() +
     ggplot2::scale_y_reverse() +
     ggplot2::coord_fixed() +
     ggplot2::labs(title = "Mask", x = "x (px)", y = "y (px)", fill = "label") +

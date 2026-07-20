@@ -24,6 +24,7 @@ Overlay a mask on the canvas
 \seealso{
 Other shiny:
 \code{\link[=atCanvasOutput]{atCanvasOutput()}},
+\code{\link[=at_annotate]{at_annotate()}},
 \code{\link[=at_canvas]{at_canvas()}},
 \code{\link[=at_canvas_fit]{at_canvas_fit()}},
 \code{\link[=at_canvas_proxy]{at_canvas_proxy()}},

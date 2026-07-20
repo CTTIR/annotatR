@@ -23,6 +23,7 @@ Zoom the canvas to a bounding box
 \seealso{
 Other shiny:
 \code{\link[=atCanvasOutput]{atCanvasOutput()}},
+\code{\link[=at_annotate]{at_annotate()}},
 \code{\link[=at_canvas]{at_canvas()}},
 \code{\link[=at_canvas_proxy]{at_canvas_proxy()}},
 \code{\link[=at_canvas_set_annotations]{at_canvas_set_annotations()}},
