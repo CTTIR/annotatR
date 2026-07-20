@@ -33,6 +33,13 @@ Other masks:
 \code{\link[=at_write_masks]{at_write_masks()}}
 
 Other plots:
+\code{\link[=at_plot]{at_plot()}},
+\code{\link[=at_plot_image]{at_plot_image()}},
+\code{\link[=at_plot_mask]{at_plot_mask()}},
+\code{\link[=at_plot_overlay]{at_plot_overlay()}},
+\code{\link[=at_plot_project]{at_plot_project()}},
+\code{\link[=at_plot_spectrum]{at_plot_spectrum()}},
+\code{\link[=at_plot_summary]{at_plot_summary()}},
 \code{\link[=plot.annot_roi]{plot.annot_roi()}}
 }
 \concept{masks}

@@ -33,6 +33,13 @@ Other rois:
 \code{\link[=at_roi_simplify]{at_roi_simplify()}}
 
 Other plots:
+\code{\link[=at_plot]{at_plot()}},
+\code{\link[=at_plot_image]{at_plot_image()}},
+\code{\link[=at_plot_mask]{at_plot_mask()}},
+\code{\link[=at_plot_overlay]{at_plot_overlay()}},
+\code{\link[=at_plot_project]{at_plot_project()}},
+\code{\link[=at_plot_spectrum]{at_plot_spectrum()}},
+\code{\link[=at_plot_summary]{at_plot_summary()}},
 \code{\link[=plot.annot_mask]{plot.annot_mask()}}
 }
 \concept{plots}
