@@ -226,9 +226,9 @@ at_session_status <- function(session, call = rlang::caller_env()) {
 #' Session progress manifest with per-label counts
 #'
 #' @inheritParams at_next
-#' @return A [tibble::tibble] with `idx`, `name`, `status`, `n_rois`, and one
-#'   integer column per label in the session vocabulary giving its ROI count per
-#'   image.
+#' @return A [tibble::tibble] with `idx`, `name`, `path`, `status`, `n_layers`,
+#'   `n_rois`, and one integer column per label in the session vocabulary giving
+#'   its ROI count per image.
 #' @family sessions
 #' @export
 at_manifest <- function(session, call = rlang::caller_env()) {
@@ -246,11 +246,17 @@ at_manifest <- function(session, call = rlang::caller_env()) {
     names(out) <- labels
     out
   })
+  n_layers <- vapply(seq_len(nrow(m)), function(i) {
+    proj <- session$projects[[i]]
+    if (is.null(proj)) 0L else length(proj$layers)
+  }, integer(1))
   base <- tibble::tibble(
-    idx    = m$idx,
-    name   = m$name,
-    status = m$status,
-    n_rois = m$n_rois
+    idx      = m$idx,
+    name     = m$name,
+    path     = m$path,
+    status   = m$status,
+    n_layers = n_layers,
+    n_rois   = m$n_rois
   )
   if (length(labels) > 0L) {
     count_mat <- do.call(rbind, counts)
