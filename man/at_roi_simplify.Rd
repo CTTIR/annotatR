@@ -34,7 +34,6 @@ Other rois:
 \code{\link[=at_roi_from_sf]{at_roi_from_sf()}},
 \code{\link[=at_roi_point]{at_roi_point()}},
 \code{\link[=at_roi_polygon]{at_roi_polygon()}},
-\code{\link[=at_roi_rect]{at_roi_rect()}},
-\code{\link[=plot.annot_roi]{plot.annot_roi()}}
+\code{\link[=at_roi_rect]{at_roi_rect()}}
 }
 \concept{rois}

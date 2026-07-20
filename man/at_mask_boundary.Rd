@@ -29,7 +29,6 @@ Other masks:
 \code{\link[=at_mask_stats]{at_mask_stats()}},
 \code{\link[=at_read_mask]{at_read_mask()}},
 \code{\link[=at_write_mask]{at_write_mask()}},
-\code{\link[=at_write_masks]{at_write_masks()}},
-\code{\link[=plot.annot_mask]{plot.annot_mask()}}
+\code{\link[=at_write_masks]{at_write_masks()}}
 }
 \concept{masks}

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 231" width="200" height="231">
+  <!-- Regular pointy-top hexagon: vertices at 90/150/210/270/330/30 degrees,
+       width:height = sqrt(3)/2. Suite purple #5E2C8E. -->
+  <defs>
+    <clipPath id="roiClip">
+      <path d="M70,68 Q100,52 131,74 Q147,100 129,129 Q100,147 71,129 Q56,100 70,68 Z"/>
+    </clipPath>
+  </defs>
+
+  <path d="M100,3 L197,60 L197,171 L100,228 L3,171 L3,60 Z"
+        fill="#5E2C8E" stroke="#3c1c5c" stroke-width="6"/>
+
+  <!-- pixel grid (the raster) -->
+  <g stroke="#8a5cc0" stroke-width="1.4" opacity="0.65">
+    <line x1="56" y1="56" x2="56" y2="144"/>
+    <line x1="78" y1="56" x2="78" y2="144"/>
+    <line x1="100" y1="56" x2="100" y2="144"/>
+    <line x1="122" y1="56" x2="122" y2="144"/>
+    <line x1="144" y1="56" x2="144" y2="144"/>
+    <line x1="56" y1="56" x2="144" y2="56"/>
+    <line x1="56" y1="78" x2="144" y2="78"/>
+    <line x1="56" y1="100" x2="144" y2="100"/>
+    <line x1="56" y1="122" x2="144" y2="122"/>
+    <line x1="56" y1="144" x2="144" y2="144"/>
+  </g>
+
+  <!-- rasterised half of the ROI (the mask / "Schablone"), lower portion filled -->
+  <rect x="0" y="100" width="200" height="130" fill="#E69F00" opacity="0.9"
+        clip-path="url(#roiClip)"/>
+
+  <!-- ROI outline over the grid -->
+  <path d="M70,68 Q100,52 131,74 Q147,100 129,129 Q100,147 71,129 Q56,100 70,68 Z"
+        fill="none" stroke="#F0E442" stroke-width="4"/>
+
+  <text x="100" y="200" font-family="'JetBrains Mono', ui-monospace, monospace"
+        font-size="29" font-weight="700" fill="#ffffff" text-anchor="middle"
+        letter-spacing="-1">annotatR</text>
+</svg>

@@ -498,8 +498,7 @@ print.annot_roi <- function(x, ...) {
 #' @param x An [annot_roi].
 #' @param ... Ignored.
 #' @return A [ggplot2::ggplot] object. The plot is not drawn; print it to render.
-#' @family rois
-#' @family plots
+#' @keywords internal
 #' @export
 plot.annot_roi <- function(x, ...) {
   sfobj <- sf::st_sf(label = x$label, geometry = x$geometry)

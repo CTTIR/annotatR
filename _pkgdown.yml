@@ -10,3 +10,177 @@ template:
 
 development:
   mode: auto
+
+reference:
+  - title: Images and backends
+    desc: Read images and register formats.
+    contents:
+      - at_read_image
+      - at_tile
+      - at_dims
+      - at_n_levels
+      - at_n_bands
+      - at_bands
+      - at_wavelengths
+      - at_is_spectral
+      - at_is_pyramidal
+      - at_pixel_size
+      - at_meta
+      - at_backend_list
+      - at_backend_get
+      - at_backend_detect
+      - at_backend_register
+  - title: Regions of interest
+    desc: Construct and measure individual ROIs.
+    contents:
+      - at_roi_point
+      - at_roi_rect
+      - at_roi_circle
+      - at_roi_ellipse
+      - at_roi_polygon
+      - at_roi_freehand
+      - at_roi_from_sf
+      - at_roi_area
+      - at_roi_centroid
+      - at_roi_bbox
+      - at_roi_buffer
+      - at_roi_simplify
+  - title: Geometry
+    desc: Transforms, set operations, predicates, and validity.
+    contents:
+      - at_transform
+      - at_roi_rescale
+      - at_flip_y
+      - at_snap
+      - at_clamp
+      - at_roi_union
+      - at_roi_intersect
+      - at_roi_difference
+      - at_roi_symdiff
+      - at_roi_contains
+      - at_roi_overlaps
+      - at_roi_distance
+      - at_rois_overlap
+      - at_check_geometry
+      - at_fix_geometry
+  - title: Layers and projects
+    desc: Organise ROIs into layers and projects.
+    contents:
+      - at_style
+      - at_layer
+      - at_layer_add
+      - at_layer_remove
+      - at_layer_rois
+      - at_layer_n
+      - at_project
+      - at_add_layer
+      - at_remove_layer
+      - at_add_roi
+      - at_remove_roi
+      - at_layers
+      - at_rois
+      - at_validate
+      - at_summary
+  - title: Sessions and batch
+    desc: Resumable queues and whole-session operations.
+    contents:
+      - at_session
+      - at_next
+      - at_prev
+      - at_goto
+      - at_current
+      - at_set_status
+      - at_session_status
+      - at_manifest
+      - at_resume
+      - at_session_save
+      - at_session_load
+      - at_export_all
+      - at_summary_table
+      - at_batch_apply
+      - at_batch_validate
+  - title: Masks
+    desc: Rasterise annotations and round-trip masks.
+    contents:
+      - at_mask
+      - at_mask_legend
+      - at_mask_stats
+      - at_mask_boundary
+      - at_mask_preview
+      - at_mask_stack
+      - at_write_mask
+      - at_read_mask
+      - at_write_masks
+  - title: Extraction
+    desc: Summarise image and spectral values under ROIs.
+    contents:
+      - at_extract
+      - at_extract_spectrum
+      - at_extract_pixels
+  - title: Visualisation
+    desc: ggplot2 plots.
+    contents:
+      - at_plot
+      - at_plot_image
+      - at_plot_project
+      - at_plot_overlay
+      - at_plot_mask
+      - at_plot_spectrum
+      - at_plot_summary
+  - title: Import and export
+    desc: Interchange with GeoJSON, QuPath, CSV, and RDS.
+    contents:
+      - at_write_geojson
+      - at_read_geojson
+      - at_write_qupath
+      - at_read_qupath
+      - at_save_project
+      - at_load_project
+      - at_save_session
+      - at_load_session
+      - at_write_rois_csv
+      - at_read_rois_csv
+  - title: Shiny application
+    desc: The batch annotation app and canvas widget.
+    contents:
+      - at_annotate
+      - at_canvas
+      - atCanvasOutput
+      - renderAtCanvas
+      - at_canvas_proxy
+      - at_canvas_set_annotations
+      - at_canvas_set_tool
+      - at_canvas_set_band
+      - at_canvas_set_overlay
+      - at_canvas_fit
+      - at_tile_source
+  - title: Example data
+    desc: Bundled synthetic examples.
+    contents:
+      - at_example_image
+      - at_example_path
+      - at_example_project
+      - at_example_session
+  - title: Concepts
+    contents:
+      - annotatR-classes
+      - annotatR-package
+
+articles:
+  - title: Get started
+    contents:
+      - annotatR
+  - title: Concepts
+    contents:
+      - images-and-backends
+      - annotation-model
+      - masks
+  - title: Workflows
+    contents:
+      - shiny-workflow
+      - interop
+
+navbar:
+  structure:
+    left: [intro, reference, articles, news]
+    right: [search, github]

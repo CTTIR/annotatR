@@ -526,8 +526,7 @@ at_mask_stats <- function(mask, pixel_size = NULL, call = rlang::caller_env()) {
 #' @param ... Ignored.
 #' @return A [ggplot2::ggplot] object (discrete fill from the legend colours,
 #'   image orientation). Not drawn; print it to render.
-#' @family masks
-#' @family plots
+#' @keywords internal
 #' @export
 plot.annot_mask <- function(x, legend = TRUE, ...) {
   m <- as.matrix(x)

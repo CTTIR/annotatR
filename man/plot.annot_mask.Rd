@@ -20,27 +20,4 @@ image orientation). Not drawn; print it to render.
 \description{
 Plot a mask
 }
-\seealso{
-Other masks:
-\code{\link[=at_mask]{at_mask()}},
-\code{\link[=at_mask_boundary]{at_mask_boundary()}},
-\code{\link[=at_mask_legend]{at_mask_legend()}},
-\code{\link[=at_mask_preview]{at_mask_preview()}},
-\code{\link[=at_mask_stack]{at_mask_stack()}},
-\code{\link[=at_mask_stats]{at_mask_stats()}},
-\code{\link[=at_read_mask]{at_read_mask()}},
-\code{\link[=at_write_mask]{at_write_mask()}},
-\code{\link[=at_write_masks]{at_write_masks()}}
-
-Other plots:
-\code{\link[=at_plot]{at_plot()}},
-\code{\link[=at_plot_image]{at_plot_image()}},
-\code{\link[=at_plot_mask]{at_plot_mask()}},
-\code{\link[=at_plot_overlay]{at_plot_overlay()}},
-\code{\link[=at_plot_project]{at_plot_project()}},
-\code{\link[=at_plot_spectrum]{at_plot_spectrum()}},
-\code{\link[=at_plot_summary]{at_plot_summary()}},
-\code{\link[=plot.annot_roi]{plot.annot_roi()}}
-}
-\concept{masks}
-\concept{plots}
+\keyword{internal}

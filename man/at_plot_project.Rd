@@ -42,8 +42,6 @@ Other plots:
 \code{\link[=at_plot_mask]{at_plot_mask()}},
 \code{\link[=at_plot_overlay]{at_plot_overlay()}},
 \code{\link[=at_plot_spectrum]{at_plot_spectrum()}},
-\code{\link[=at_plot_summary]{at_plot_summary()}},
-\code{\link[=plot.annot_mask]{plot.annot_mask()}},
-\code{\link[=plot.annot_roi]{plot.annot_roi()}}
+\code{\link[=at_plot_summary]{at_plot_summary()}}
 }
 \concept{plots}

@@ -6,6 +6,8 @@
 \alias{annotatR-package}
 \title{annotatR: Multi-Layer Region-of-Interest Annotation for Images and Spectral Cubes}
 \description{
+\if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
+
 Annotate multiple layers of regions of interest across whole-slide microscopy images, hyperspectral data cubes, and conventional rasters. Annotations are stored as validated simple-feature geometries in image pixel coordinates with explicit pyramid-level transforms, and can be rasterised to binary, labelled, or multi-class integer masks for downstream segmentation and classification workflows. A batch annotation application built on 'shiny' and 'OpenSeadragon' supports resumable sessions across image queues, live mask preview, and export to 'GeoJSON', 'QuPath', and 'TIFF' formats.
 }
 \seealso{
