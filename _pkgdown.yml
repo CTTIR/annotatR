@@ -4,9 +4,8 @@ template:
   bootstrap: 5
   bslib:
     primary: "#5E2C8E"
-    base_font: {google: false}
-    heading_font: {google: false}
-    code_font: {google: false}
+    # No custom fonts: Bootstrap 5's defaults are the native system-font stack,
+    # which keeps the site free of any external (Google Fonts) requests.
 
 development:
   mode: auto
@@ -132,6 +131,7 @@ reference:
     contents:
       - at_write_geojson
       - at_read_geojson
+      - at_roi_from_geojson
       - at_write_qupath
       - at_read_qupath
       - at_save_project

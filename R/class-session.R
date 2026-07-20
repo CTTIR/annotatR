@@ -175,17 +175,11 @@ at_goto <- function(session, i, call = rlang::caller_env()) {
 #' @export
 at_current <- function(session, call = rlang::caller_env()) {
   .check_session(session, call = call)
-  i <- session$cursor
-  proj <- session$projects[[i]]
+  proj <- session$projects[[session$cursor]]
   if (!is.null(proj)) {
     return(proj)
   }
-  img <- at_read_image(session$manifest$path[i])
-  proj <- at_project(img)
-  for (L in session$layer_spec) {
-    proj <- at_add_layer(proj, L)
-  }
-  proj
+  .materialize_project(session, session$cursor)
 }
 
 # ---- Status and manifest ---------------------------------------------------
