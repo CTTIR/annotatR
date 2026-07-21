@@ -112,7 +112,11 @@
   levels <- lapply(seq_len(n_levels), read_level)
   level_dims <- lapply(levels, function(a) c(dim(a)[2], dim(a)[1]))
   nb <- dim(levels[[1]])[3]
-  ch <- tryCatch(RBioFormats::channelNames(meta), error = function(e) NULL)
+  # `channelNames` is not exported by every RBioFormats version; look it up
+  # dynamically so a missing export degrades to default channel names rather
+  # than failing `R CMD check`'s `::` validation when RBioFormats is installed.
+  ch <- tryCatch(getExportedValue("RBioFormats", "channelNames")(meta),
+                 error = function(e) NULL)
   bn <- if (length(ch) == nb) ch else paste0("Channel ", seq_len(nb))
   new_annot_image(
     source = path, backend = "ometiff",

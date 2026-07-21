@@ -44,7 +44,10 @@ jobs:
 
       - uses: codecov/codecov-action@v4
         with:
-          fail_ci_if_error: ${{ github.event_name != 'pull_request' && true || false }}
+          # Upload is best-effort: without a CODECOV_TOKEN secret the upload to a
+          # protected branch is rejected, and coverage reporting should not fail
+          # the job. Set the CODECOV_TOKEN repository secret to enable uploads.
+          fail_ci_if_error: false
           file: ./cobertura.xml
           plugins: noop
           disable_search: true
