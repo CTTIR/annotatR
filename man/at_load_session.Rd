@@ -18,6 +18,8 @@ The \link{annot_session}. Warns if written by a newer annotatR.
 Load a session
 }
 \seealso{
+\code{\link[=at_save_session]{at_save_session()}}, \code{\link[=at_resume]{at_resume()}}
+
 Other io:
 \code{\link[=at_load_project]{at_load_project()}},
 \code{\link[=at_read_geojson]{at_read_geojson()}},

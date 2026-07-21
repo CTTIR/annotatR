@@ -28,7 +28,7 @@ Session summary statistics
 \seealso{
 Other batch:
 \code{\link[=at_batch_apply]{at_batch_apply()}},
-\code{\link[=at_batch_validate]{at_batch_validate()}},
+\code{\link[=at_batch_check_geometry]{at_batch_check_geometry()}},
 \code{\link[=at_export_all]{at_export_all()}}
 }
 \concept{batch}

@@ -4,10 +4,10 @@
 \alias{at_mask_preview}
 \title{Downsampled preview of a mask}
 \usage{
-at_mask_preview(x, max_dim = 1024L, call = rlang::caller_env())
+at_mask_preview(mask, max_dim = 1024L, call = rlang::caller_env())
 }
 \arguments{
-\item{x}{An \code{annot_mask}.}
+\item{mask}{An \code{annot_mask}.}
 
 \item{max_dim}{Integer maximum dimension of the preview. Default \code{1024}.}
 

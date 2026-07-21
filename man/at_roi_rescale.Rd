@@ -39,10 +39,12 @@ Other geometry:
 \code{\link[=at_clamp]{at_clamp()}},
 \code{\link[=at_fix_geometry]{at_fix_geometry()}},
 \code{\link[=at_flip_y]{at_flip_y()}},
+\code{\link[=at_roi_buffer]{at_roi_buffer()}},
 \code{\link[=at_roi_contains]{at_roi_contains()}},
 \code{\link[=at_roi_distance]{at_roi_distance()}},
 \code{\link[=at_roi_overlaps]{at_roi_overlaps()}},
 \code{\link{at_roi_setops}},
+\code{\link[=at_roi_simplify]{at_roi_simplify()}},
 \code{\link[=at_rois_overlap]{at_rois_overlap()}},
 \code{\link[=at_snap]{at_snap()}},
 \code{\link[=at_transform]{at_transform()}}

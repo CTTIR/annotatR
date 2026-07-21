@@ -217,11 +217,13 @@ at_read_mask <- function(path, level = 0L, connectivity = c(8L, 4L),
 #' @family masks
 #' @export
 at_write_masks <- function(project, dir, per = c("layer", "roi", "class", "project"),
-                           type = "labelled", level = 0L, overwrite = FALSE,
+                           type = c("labelled", "binary", "multiclass"),
+                           level = 0L, overwrite = FALSE,
                            call = rlang::caller_env()) {
   .check_project(project, call = call)
   .check_string(dir, call = call)
   per <- .check_choice(per, c("layer", "roi", "class", "project"), call = call)
+  type <- .check_choice(type, c("labelled", "binary", "multiclass"), call = call)
   if (!dir.exists(dir)) {
     dir.create(dir, recursive = TRUE)
   }

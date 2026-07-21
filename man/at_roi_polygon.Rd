@@ -45,7 +45,6 @@ r <- at_roi_polygon(sq, label = "region")
 Other rois:
 \code{\link[=at_roi_area]{at_roi_area()}},
 \code{\link[=at_roi_bbox]{at_roi_bbox()}},
-\code{\link[=at_roi_buffer]{at_roi_buffer()}},
 \code{\link[=at_roi_centroid]{at_roi_centroid()}},
 \code{\link[=at_roi_circle]{at_roi_circle()}},
 \code{\link[=at_roi_ellipse]{at_roi_ellipse()}},
@@ -53,7 +52,6 @@ Other rois:
 \code{\link[=at_roi_from_geojson]{at_roi_from_geojson()}},
 \code{\link[=at_roi_from_sf]{at_roi_from_sf()}},
 \code{\link[=at_roi_point]{at_roi_point()}},
-\code{\link[=at_roi_rect]{at_roi_rect()}},
-\code{\link[=at_roi_simplify]{at_roi_simplify()}}
+\code{\link[=at_roi_rect]{at_roi_rect()}}
 }
 \concept{rois}

@@ -34,7 +34,7 @@ Apply a function to every project in a session
 }
 \seealso{
 Other batch:
-\code{\link[=at_batch_validate]{at_batch_validate()}},
+\code{\link[=at_batch_check_geometry]{at_batch_check_geometry()}},
 \code{\link[=at_export_all]{at_export_all()}},
 \code{\link[=at_summary_table]{at_summary_table()}}
 }

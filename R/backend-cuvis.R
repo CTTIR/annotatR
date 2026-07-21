@@ -27,7 +27,7 @@
 
 .cuvis_tile <- function(img, level, xrange, yrange, bands) {
   arr <- img$handle$data
-  bs <- if (is.null(bands)) seq_len(dim(arr)[3]) else bands
+  bs <- if (is.null(bands)) seq_len(img$n_bands) else bands
   arr[yrange[1]:yrange[2], xrange[1]:xrange[2], bs, drop = FALSE]
 }
 

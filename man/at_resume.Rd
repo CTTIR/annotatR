@@ -7,7 +7,7 @@
 at_resume(path, call = rlang::caller_env())
 }
 \arguments{
-\item{path}{Path to a saved \verb{_session.rds} file.}
+\item{path}{Path to a saved session \code{.rds} file.}
 
 \item{call}{The calling environment, for error reporting.}
 }
@@ -15,9 +15,11 @@ at_resume(path, call = rlang::caller_env())
 The restored \link{annot_session}.
 }
 \description{
-A more discoverable alias for \code{\link[=at_session_load]{at_session_load()}}.
+A more discoverable alias for \code{\link[=at_load_session]{at_load_session()}}.
 }
 \seealso{
+\code{\link[=at_save_session]{at_save_session()}}, \code{\link[=at_load_session]{at_load_session()}}
+
 Other sessions:
 \code{\link[=at_current]{at_current()}},
 \code{\link[=at_example_session]{at_example_session()}},
@@ -26,8 +28,6 @@ Other sessions:
 \code{\link[=at_next]{at_next()}},
 \code{\link[=at_prev]{at_prev()}},
 \code{\link[=at_session]{at_session()}},
-\code{\link[=at_session_load]{at_session_load()}},
-\code{\link[=at_session_save]{at_session_save()}},
 \code{\link[=at_session_status]{at_session_status()}},
 \code{\link[=at_set_status]{at_set_status()}}
 }

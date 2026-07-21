@@ -262,14 +262,10 @@ at_manifest <- function(session, call = rlang::caller_env()) {
 
 # ---- Persistence -----------------------------------------------------------
 
-#' Save a session
-#' @inheritParams at_next
-#' @param path Optional output path. Defaults to `_session.rds` in the session's
-#'   `out_dir`.
-#' @return The session, invisibly.
-#' @family sessions
-#' @export
-at_session_save <- function(session, path = NULL, call = rlang::caller_env()) {
+# Raw session serialisation. The public entry points are at_save_session() and
+# at_load_session() (R/io-project.R), which add version stamping and migration;
+# these internals do the bare saveRDS/readRDS with default-path handling.
+.session_save <- function(session, path = NULL, call = rlang::caller_env()) {
   .check_session(session, call = call)
   if (is.null(path)) {
     if (!dir.exists(session$out_dir)) {
@@ -282,13 +278,7 @@ at_session_save <- function(session, path = NULL, call = rlang::caller_env()) {
   invisible(session)
 }
 
-#' Load a session
-#' @param path Path to a saved `_session.rds` file.
-#' @param call The calling environment, for error reporting.
-#' @return The restored [annot_session].
-#' @family sessions
-#' @export
-at_session_load <- function(path, call = rlang::caller_env()) {
+.session_load <- function(path, call = rlang::caller_env()) {
   .check_file(path, call = call)
   obj <- readRDS(path)
   .check_session(obj, arg = "path", call = call)
@@ -297,14 +287,16 @@ at_session_load <- function(path, call = rlang::caller_env()) {
 
 #' Resume a saved session
 #'
-#' A more discoverable alias for [at_session_load()].
+#' A more discoverable alias for [at_load_session()].
 #'
-#' @inheritParams at_session_load
+#' @param path Path to a saved session `.rds` file.
+#' @param call The calling environment, for error reporting.
 #' @return The restored [annot_session].
 #' @family sessions
+#' @seealso [at_save_session()], [at_load_session()]
 #' @export
 at_resume <- function(path, call = rlang::caller_env()) {
-  at_session_load(path, call = call)
+  at_load_session(path, call = call)
 }
 
 # ---- S3 methods ------------------------------------------------------------

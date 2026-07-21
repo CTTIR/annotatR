@@ -8,7 +8,7 @@ at_write_masks(
   project,
   dir,
   per = c("layer", "roi", "class", "project"),
-  type = "labelled",
+  type = c("labelled", "binary", "multiclass"),
   level = 0L,
   overwrite = FALSE,
   call = rlang::caller_env()

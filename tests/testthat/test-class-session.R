@@ -51,14 +51,14 @@ test_that("at_manifest adds per-label count columns", {
 test_that("session save/load round-trips identically", {
   sess <- demo_session(3)
   sess <- at_set_status(sess, 1, "complete")
-  path <- at_session_save(sess)$out_dir
+  saved <- at_save_session(sess)   # returns the version-stamped session it wrote
   loaded <- at_resume(file.path(sess$out_dir, "_session.rds"))
-  expect_identical(loaded, sess)
+  expect_identical(loaded, saved)
 })
 
-test_that("at_session_save returns the session invisibly", {
+test_that("at_save_session returns the session invisibly", {
   sess <- demo_session(2)
-  expect_invisible(at_session_save(sess))
+  expect_invisible(at_save_session(sess))
 })
 
 test_that("print produces output", {

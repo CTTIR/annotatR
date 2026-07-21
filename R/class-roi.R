@@ -436,7 +436,7 @@ at_roi_bbox <- function(roi, call = rlang::caller_env()) {
 #' @param dist Numeric buffer distance in pixels (may be negative to erode).
 #' @param call The calling environment, for error reporting.
 #' @return An [annot_roi] with the buffered geometry.
-#' @family rois
+#' @family geometry
 #' @export
 #' @examples
 #' at_roi_buffer(at_roi_point(10, 10, label = "a"), dist = 5)
@@ -457,7 +457,7 @@ at_roi_buffer <- function(roi, dist, call = rlang::caller_env()) {
 #' @param tolerance Non-negative Douglas-Peucker tolerance (`dTolerance`).
 #' @param call The calling environment, for error reporting.
 #' @return An [annot_roi] with simplified geometry.
-#' @family rois
+#' @family geometry
 #' @export
 #' @examples
 #' at_roi_simplify(at_roi_circle(50, 50, 10, n_seg = 128, label = "a"), 1)

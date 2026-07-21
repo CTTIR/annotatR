@@ -42,13 +42,13 @@ reference:
       - at_roi_area
       - at_roi_centroid
       - at_roi_bbox
-      - at_roi_buffer
-      - at_roi_simplify
   - title: Geometry
     desc: Transforms, set operations, predicates, and validity.
     contents:
       - at_transform
       - at_roi_rescale
+      - at_roi_buffer
+      - at_roi_simplify
       - at_flip_y
       - at_snap
       - at_clamp
@@ -92,12 +92,10 @@ reference:
       - at_session_status
       - at_manifest
       - at_resume
-      - at_session_save
-      - at_session_load
       - at_export_all
       - at_summary_table
       - at_batch_apply
-      - at_batch_validate
+      - at_batch_check_geometry
   - title: Masks
     desc: Rasterise annotations and round-trip masks.
     contents:

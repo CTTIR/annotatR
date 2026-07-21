@@ -7,7 +7,7 @@
 at_save_session(
   session,
   path = NULL,
-  overwrite = TRUE,
+  overwrite = FALSE,
   call = rlang::caller_env()
 )
 }
@@ -16,7 +16,7 @@ at_save_session(
 
 \item{path}{Optional output path; defaults to \verb{_session.rds} in \code{out_dir}.}
 
-\item{overwrite}{Logical; overwrite an existing file. Default \code{TRUE}.}
+\item{overwrite}{Logical; overwrite an existing file. Default \code{FALSE}.}
 
 \item{call}{The calling environment, for error reporting.}
 }
@@ -27,7 +27,7 @@ The session, invisibly.
 Save a session
 }
 \seealso{
-\code{\link[=at_load_session]{at_load_session()}}, \code{\link[=at_session_save]{at_session_save()}}
+\code{\link[=at_load_session]{at_load_session()}}, \code{\link[=at_resume]{at_resume()}}
 
 Other io:
 \code{\link[=at_load_project]{at_load_project()}},

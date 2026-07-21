@@ -57,16 +57,16 @@ test_that("at_batch_apply modifies all projects and returns a session", {
   expect_true(all(!vapply(out$projects, is.null, logical(1))))
 })
 
-test_that("at_batch_validate flags broken geometry and is clean otherwise", {
+test_that("at_batch_check_geometry flags broken geometry and is clean otherwise", {
   sess <- at_example_session(2)
   sess$projects[[1]] <- broken_project("self_intersect")
-  bv <- at_batch_validate(sess)
+  bv <- at_batch_check_geometry(sess)
   expect_identical(names(bv), c("image", "roi_id", "issue", "severity"))
   expect_true("self_intersection" %in% bv$issue)
   # A clean session yields 0 rows.
   clean <- at_example_session(2)
   clean$projects[[1]] <- at_example_project()
-  expect_equal(nrow(at_batch_validate(clean)), 0L)
+  expect_equal(nrow(at_batch_check_geometry(clean)), 0L)
 })
 
 test_that("at_summary_table aggregates by the chosen key", {

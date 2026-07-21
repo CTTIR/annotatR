@@ -475,33 +475,33 @@ at_mask_boundary <- function(mask, width = 1L, call = rlang::caller_env()) {
 #' Nearest-neighbour downsample only (interpolating a label mask would invent
 #' labels that do not exist).
 #'
-#' @param x An `annot_mask`.
+#' @param mask An `annot_mask`.
 #' @param max_dim Integer maximum dimension of the preview. Default `1024`.
 #' @param call The calling environment, for error reporting.
 #' @return A downsampled `annot_mask` with the legend pixel counts recomputed.
 #' @family masks
 #' @export
-at_mask_preview <- function(x, max_dim = 1024L, call = rlang::caller_env()) {
-  .check_class(x, "annot_mask", call = call)
+at_mask_preview <- function(mask, max_dim = 1024L, call = rlang::caller_env()) {
+  .check_class(mask, "annot_mask", call = call)
   max_dim <- .check_count(max_dim, min = 1L, call = call)
-  m <- as.matrix(x)
+  m <- as.matrix(mask)
   nr <- nrow(m)
   nc <- ncol(m)
   fac <- max(1L, ceiling(max(nr, nc) / max_dim))
   if (fac == 1L) {
-    return(x)
+    return(mask)
   }
   ys <- seq(1L, nr, by = fac)
   xs <- seq(1L, nc, by = fac)
   small <- m[ys, xs, drop = FALSE]
-  lg <- attr(x, "legend")
+  lg <- attr(mask, "legend")
   if (nrow(lg) > 0L) {
     lg$n_px <- vapply(lg$value, function(v) as.integer(sum(small == v)), integer(1))
   }
   .new_annot_mask(
-    small, lg, attr(x, "level"),
-    c(ncol(small), nrow(small)), attr(x, "mask_type"),
-    source = attr(x, "source_project")
+    small, lg, attr(mask, "level"),
+    c(ncol(small), nrow(small)), attr(mask, "mask_type"),
+    source = attr(mask, "source_project")
   )
 }
 

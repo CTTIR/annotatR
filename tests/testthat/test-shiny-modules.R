@@ -81,7 +81,12 @@ test_that("spectrum module shows a panel only for spectral images", {
   shiny::testServer(mod_spectrum_server, args = list(id = "s", rv = rv_rgb), {
     expect_null(output$panel)
   })
-  rv_cube <- make_rv(project = at_project(cube_image(),
+  cube <- cube_image()
+  # Give the cube real pixel data so the spectrum actually extracts (a bare
+  # metadata fixture would push a data-less image through the tile path).
+  cube$handle <- list(data = array(as.numeric(seq_len(32L * 32L * 10L)),
+                                   dim = c(32L, 32L, 10L)))
+  rv_cube <- make_rv(project = at_project(cube,
                                           at_layer_add(at_layer("l", labels = "a"),
                                                        at_roi_circle(16, 16, 4, label = "a"))))
   shiny::testServer(mod_spectrum_server, args = list(id = "s", rv = rv_cube), {

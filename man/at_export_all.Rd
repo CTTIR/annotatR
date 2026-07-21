@@ -50,7 +50,7 @@ per-image failures so one bad image never aborts the run.
 
 Other batch:
 \code{\link[=at_batch_apply]{at_batch_apply()}},
-\code{\link[=at_batch_validate]{at_batch_validate()}},
+\code{\link[=at_batch_check_geometry]{at_batch_check_geometry()}},
 \code{\link[=at_summary_table]{at_summary_table()}}
 }
 \concept{batch}

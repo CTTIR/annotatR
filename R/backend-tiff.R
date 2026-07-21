@@ -81,7 +81,7 @@
   arr <- img$handle$levels[[level + 1L]]
   ys <- yrange[1]:yrange[2]
   xs <- xrange[1]:xrange[2]
-  bs <- if (is.null(bands)) seq_len(dim(arr)[3]) else bands
+  bs <- if (is.null(bands)) seq_len(img$n_bands) else bands
   arr[ys, xs, bs, drop = FALSE]
 }
 
@@ -127,7 +127,7 @@
   arr <- img$handle$levels[[level + 1L]]
   ys <- yrange[1]:yrange[2]
   xs <- xrange[1]:xrange[2]
-  bs <- if (is.null(bands)) seq_len(dim(arr)[3]) else bands
+  bs <- if (is.null(bands)) seq_len(img$n_bands) else bands
   arr[ys, xs, bs, drop = FALSE]
 }
 

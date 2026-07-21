@@ -62,13 +62,13 @@ at_load_project <- function(path, call = rlang::caller_env()) {
 #'
 #' @param session An [annot_session].
 #' @param path Optional output path; defaults to `_session.rds` in `out_dir`.
-#' @param overwrite Logical; overwrite an existing file. Default `TRUE`.
+#' @param overwrite Logical; overwrite an existing file. Default `FALSE`.
 #' @param call The calling environment, for error reporting.
 #' @return The session, invisibly.
 #' @family io
-#' @seealso [at_load_session()], [at_session_save()]
+#' @seealso [at_load_session()], [at_resume()]
 #' @export
-at_save_session <- function(session, path = NULL, overwrite = TRUE,
+at_save_session <- function(session, path = NULL, overwrite = FALSE,
                             call = rlang::caller_env()) {
   .check_session(session, call = call)
   session$meta$annotatR_version <- .pkg_version()
@@ -76,7 +76,7 @@ at_save_session <- function(session, path = NULL, overwrite = TRUE,
     cli::cli_abort(c("{.path {path}} already exists.",
                     "i" = "Pass {.code overwrite = TRUE} to replace it."), call = call)
   }
-  at_session_save(session, path = path, call = call)
+  .session_save(session, path = path, call = call)
 }
 
 #' Load a session
@@ -85,8 +85,9 @@ at_save_session <- function(session, path = NULL, overwrite = TRUE,
 #' @param call The calling environment, for error reporting.
 #' @return The [annot_session]. Warns if written by a newer annotatR.
 #' @family io
+#' @seealso [at_save_session()], [at_resume()]
 #' @export
 at_load_session <- function(path, call = rlang::caller_env()) {
-  obj <- at_session_load(path, call = call)
+  obj <- .session_load(path, call = call)
   .migrate_object(obj, obj$meta$annotatR_version, call = call)
 }

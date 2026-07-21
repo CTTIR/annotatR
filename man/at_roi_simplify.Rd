@@ -23,18 +23,19 @@ Simplify an ROI
 at_roi_simplify(at_roi_circle(50, 50, 10, n_seg = 128, label = "a"), 1)
 }
 \seealso{
-Other rois:
-\code{\link[=at_roi_area]{at_roi_area()}},
-\code{\link[=at_roi_bbox]{at_roi_bbox()}},
+Other geometry:
+\code{\link[=at_check_geometry]{at_check_geometry()}},
+\code{\link[=at_clamp]{at_clamp()}},
+\code{\link[=at_fix_geometry]{at_fix_geometry()}},
+\code{\link[=at_flip_y]{at_flip_y()}},
 \code{\link[=at_roi_buffer]{at_roi_buffer()}},
-\code{\link[=at_roi_centroid]{at_roi_centroid()}},
-\code{\link[=at_roi_circle]{at_roi_circle()}},
-\code{\link[=at_roi_ellipse]{at_roi_ellipse()}},
-\code{\link[=at_roi_freehand]{at_roi_freehand()}},
-\code{\link[=at_roi_from_geojson]{at_roi_from_geojson()}},
-\code{\link[=at_roi_from_sf]{at_roi_from_sf()}},
-\code{\link[=at_roi_point]{at_roi_point()}},
-\code{\link[=at_roi_polygon]{at_roi_polygon()}},
-\code{\link[=at_roi_rect]{at_roi_rect()}}
+\code{\link[=at_roi_contains]{at_roi_contains()}},
+\code{\link[=at_roi_distance]{at_roi_distance()}},
+\code{\link[=at_roi_overlaps]{at_roi_overlaps()}},
+\code{\link[=at_roi_rescale]{at_roi_rescale()}},
+\code{\link{at_roi_setops}},
+\code{\link[=at_rois_overlap]{at_rois_overlap()}},
+\code{\link[=at_snap]{at_snap()}},
+\code{\link[=at_transform]{at_transform()}}
 }
-\concept{rois}
+\concept{geometry}

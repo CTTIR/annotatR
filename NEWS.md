@@ -52,7 +52,7 @@ Initial development release.
   `at_write_qupath()`/`at_read_qupath()`, `at_write_rois_csv()`/
   `at_read_rois_csv()`, project/session RDS.
 * Whole-session `at_export_all()`, `at_summary_table()`, `at_batch_apply()`,
-  `at_batch_validate()`.
+  `at_batch_check_geometry()`.
 
 ## Application
 

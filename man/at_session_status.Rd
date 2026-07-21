@@ -28,8 +28,6 @@ Other sessions:
 \code{\link[=at_prev]{at_prev()}},
 \code{\link[=at_resume]{at_resume()}},
 \code{\link[=at_session]{at_session()}},
-\code{\link[=at_session_load]{at_session_load()}},
-\code{\link[=at_session_save]{at_session_save()}},
 \code{\link[=at_set_status]{at_set_status()}}
 }
 \concept{sessions}

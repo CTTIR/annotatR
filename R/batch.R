@@ -224,7 +224,11 @@ at_batch_apply <- function(session, fn, ..., scope = "all", progress = TRUE,
   session
 }
 
-#' Validate geometry across a whole session
+#' Check geometry across a whole session
+#'
+#' Run [at_check_geometry()] on every materialised project in the session and
+#' stack the reports. Like `at_check_geometry()` (and unlike the assertion
+#' [at_validate()]), this returns a report rather than throwing.
 #'
 #' @param session An [annot_session].
 #' @param call The calling environment, for error reporting.
@@ -233,7 +237,7 @@ at_batch_apply <- function(session, fn, ..., scope = "all", progress = TRUE,
 #' @family batch
 #' @seealso [at_check_geometry()]
 #' @export
-at_batch_validate <- function(session, call = rlang::caller_env()) {
+at_batch_check_geometry <- function(session, call = rlang::caller_env()) {
   .check_session(session, call = call)
   empty <- tibble::tibble(image = character(0), roi_id = character(0),
                           issue = character(0), severity = character(0))
