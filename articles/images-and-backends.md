@@ -223,7 +223,7 @@ saveRDS(list(width = 64L, height = 48L, bands = 2L, value = 0.5), path)
 
 cimg <- at_read_image(path)
 cimg
-#> <annot_image> file2fc2550351e4.const
+#> <annot_image> file2ce468606dda.const
 #> backend: "const"  |  dtype: "double"
 #> size: 64 x 48 px  |  levels: 1  |  bands: 2
 #> pixel size: 1 x 1 px

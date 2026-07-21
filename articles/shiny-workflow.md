@@ -25,7 +25,7 @@ sess <- at_example_session(3)
 sess
 #> <annot_session>
 #> images: 3  |  complete: 0  |  cursor: 1
-#> out_dir: /tmp/RtmphxSHQf/annotatR-example-session-3086a99028a  |  autosave: TRUE
+#> out_dir: /tmp/RtmpKmTuPi/annotatR-example-session-2da665668f6f  |  autosave: TRUE
 ```
 
 Every image starts with status `"pending"`, the cursor sits on the first
@@ -133,7 +133,7 @@ recovered <- at_resume(file.path(sess$out_dir, "_session.rds"))
 recovered
 #> <annot_session>
 #> images: 3  |  complete: 1  |  cursor: 2
-#> out_dir: /tmp/RtmphxSHQf/annotatR-example-session-3086a99028a  |  autosave: TRUE
+#> out_dir: /tmp/RtmpKmTuPi/annotatR-example-session-2da665668f6f  |  autosave: TRUE
 ```
 
 The cursor, statuses, materialised projects, and templates all come back
@@ -158,17 +158,17 @@ at_session_status(sess)
 #> # A tibble: 3 × 7
 #>     idx path                name  status project_path n_rois modified
 #>   <int> <chr>               <chr> <chr>  <chr>         <int> <dttm>  
-#> 1     1 /tmp/RtmphxSHQf/an… imag… compl… NA                0 NA      
-#> 2     2 /tmp/RtmphxSHQf/an… imag… pendi… NA                0 NA      
-#> 3     3 /tmp/RtmphxSHQf/an… imag… pendi… NA                0 NA
+#> 1     1 /tmp/RtmpKmTuPi/an… imag… compl… NA                0 NA      
+#> 2     2 /tmp/RtmpKmTuPi/an… imag… pendi… NA                0 NA      
+#> 3     3 /tmp/RtmpKmTuPi/an… imag… pendi… NA                0 NA
 
 at_manifest(sess)
 #> # A tibble: 3 × 9
 #>     idx name     path              status n_layers n_rois tumour necrosis stroma
 #>   <int> <chr>    <chr>             <chr>     <int>  <int>  <int>    <int>  <int>
-#> 1     1 image_01 /tmp/RtmphxSHQf/… compl…        0      0      0        0      0
-#> 2     2 image_02 /tmp/RtmphxSHQf/… pendi…        0      0      0        0      0
-#> 3     3 image_03 /tmp/RtmphxSHQf/… pendi…        0      0      0        0      0
+#> 1     1 image_01 /tmp/RtmpKmTuPi/… compl…        0      0      0        0      0
+#> 2     2 image_02 /tmp/RtmpKmTuPi/… pendi…        0      0      0        0      0
+#> 3     3 image_03 /tmp/RtmpKmTuPi/… pendi…        0      0      0        0      0
 ```
 
 Use these to seed a session programmatically, pre-fill statuses, or
