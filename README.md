@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/CTTIR/annotatR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/annotatR/actions/workflows/R-CMD-check.yaml)
-[![pkgdown](https://github.com/CTTIR/annotatR/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/CTTIR/annotatR/actions/workflows/pkgdown.yaml)
+[![pkgdown](https://github.com/CTTIR/annotatR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/annotatR/)
 [![Codecov test
 coverage](https://codecov.io/gh/CTTIR/annotatR/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/annotatR)
 [![License:
@@ -108,3 +108,14 @@ annotatR builds on [OpenSeadragon](https://openseadragon.github.io/),
 [Annotorious](https://annotorious.github.io/), and the
 [`sf`](https://r-spatial.github.io/sf/) and
 [`stars`](https://r-spatial.github.io/stars/) packages.
+
+## Use of LLM tools
+
+Portions of this package were prepared with assistance from large
+language model tooling for narrowly defined, non-authorial tasks:
+copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of
+boilerplate files (CI configs, build scripts), code refactoring. The
+tools used were Chat AI, the LLM service of KISSKI (GWDG), and a
+self-hosted Mistral Small (24B, Apache-2.0) run locally via Ollama and
+the ollamar R package — local inference only, with no data sent to third
+parties for the self-hosted model.

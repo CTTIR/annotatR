@@ -1,35 +1,227 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 231" width="200" height="231">
-  <!-- Regular pointy-top hexagon: vertices at 90/150/210/270/330/30 degrees,
-       width:height = sqrt(3)/2. Suite purple #5E2C8E. -->
+<svg width="500" height="580" viewBox="0 0 500 580" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <clipPath id="roiClip">
-      <path d="M70,68 Q100,52 131,74 Q147,100 129,129 Q100,147 71,129 Q56,100 70,68 Z"/>
+    <linearGradient id="bgannot" x1="0" y1="0" x2="0.15" y2="1">
+      <stop offset="0%"  stop-color="#0c1420"/>
+      <stop offset="100%" stop-color="#060a12"/>
+    </linearGradient>
+
+    <!-- Tissue-like texture fill for the raw half -->
+    <linearGradient id="tissueFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"  stop-color="#1e2c3f"/>
+      <stop offset="100%" stop-color="#121b28"/>
+    </linearGradient>
+
+    <!-- Clip: left half of the tile (raw pixels) -->
+    <clipPath id="tileLeft">
+      <rect x="140" y="170" width="110" height="220"/>
+    </clipPath>
+    <!-- Clip: right half of the tile (annotated) -->
+    <clipPath id="tileRight">
+      <rect x="250" y="170" width="110" height="220"/>
+    </clipPath>
+    <!-- Clip: whole tile -->
+    <clipPath id="tileAll">
+      <rect x="140" y="170" width="220" height="220"/>
+    </clipPath>
+
+    <clipPath id="hexannot">
+      <polygon points="250,30 455,145 455,375 250,490 45,375 45,145"/>
     </clipPath>
   </defs>
 
-  <path d="M100,3 L197,60 L197,171 L100,228 L3,171 L3,60 Z"
-        fill="#5E2C8E" stroke="#3c1c5c" stroke-width="6"/>
+  <polygon points="250,30 455,145 455,375 250,490 45,375 45,145" fill="url(#bgannot)"/>
 
-  <g stroke="#8a5cc0" stroke-width="1.4" opacity="0.65">
-    <line x1="56" y1="56" x2="56" y2="144"/>
-    <line x1="78" y1="56" x2="78" y2="144"/>
-    <line x1="100" y1="56" x2="100" y2="144"/>
-    <line x1="122" y1="56" x2="122" y2="144"/>
-    <line x1="144" y1="56" x2="144" y2="144"/>
-    <line x1="56" y1="56" x2="144" y2="56"/>
-    <line x1="56" y1="78" x2="144" y2="78"/>
-    <line x1="56" y1="100" x2="144" y2="100"/>
-    <line x1="56" y1="122" x2="144" y2="122"/>
-    <line x1="56" y1="144" x2="144" y2="144"/>
+  <g clip-path="url(#hexannot)">
+
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- FAINT BACKGROUND GRID — the pixel field                 -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <line x1="45"  y1="200" x2="455" y2="200" stroke="#16283f" stroke-width="0.4" opacity="0.5"/>
+    <line x1="45"  y1="250" x2="455" y2="250" stroke="#16283f" stroke-width="0.4" opacity="0.5"/>
+    <line x1="45"  y1="300" x2="455" y2="300" stroke="#16283f" stroke-width="0.4" opacity="0.5"/>
+    <line x1="45"  y1="350" x2="455" y2="350" stroke="#16283f" stroke-width="0.4" opacity="0.5"/>
+    <line x1="45"  y1="400" x2="455" y2="400" stroke="#16283f" stroke-width="0.4" opacity="0.5"/>
+    <line x1="120" y1="145" x2="120" y2="490" stroke="#16283f" stroke-width="0.4" opacity="0.5"/>
+    <line x1="180" y1="145" x2="180" y2="490" stroke="#16283f" stroke-width="0.4" opacity="0.5"/>
+    <line x1="240" y1="145" x2="240" y2="490" stroke="#16283f" stroke-width="0.4" opacity="0.5"/>
+    <line x1="300" y1="145" x2="300" y2="490" stroke="#16283f" stroke-width="0.4" opacity="0.5"/>
+    <line x1="360" y1="145" x2="360" y2="490" stroke="#16283f" stroke-width="0.4" opacity="0.5"/>
+    <line x1="420" y1="145" x2="420" y2="490" stroke="#16283f" stroke-width="0.4" opacity="0.5"/>
+
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- THE IMAGE TILE — square, centred                        -->
+    <!-- Left half = raw pixels, right half = annotated layers   -->
+    <!-- ════════════════════════════════════════════════════════ -->
+
+    <!-- Tile base -->
+    <rect x="140" y="170" width="220" height="220" fill="url(#tissueFill)"/>
+
+    <!-- ── LEFT HALF: raw pixel texture ───────────────────────── -->
+    <g clip-path="url(#tileLeft)">
+      <!-- Coarse pixel blocks — tissue-like mottling -->
+      <rect x="140" y="170" width="22" height="22" fill="#243449" opacity="0.7"/>
+      <rect x="184" y="170" width="22" height="22" fill="#1a2739" opacity="0.7"/>
+      <rect x="228" y="170" width="22" height="22" fill="#2b3d54" opacity="0.65"/>
+      <rect x="162" y="192" width="22" height="22" fill="#2b3d54" opacity="0.6"/>
+      <rect x="206" y="192" width="22" height="22" fill="#1a2739" opacity="0.7"/>
+      <rect x="140" y="214" width="22" height="22" fill="#1e2c3f" opacity="0.75"/>
+      <rect x="184" y="214" width="22" height="22" fill="#2b3d54" opacity="0.6"/>
+      <rect x="228" y="214" width="22" height="22" fill="#243449" opacity="0.7"/>
+      <rect x="162" y="236" width="22" height="22" fill="#324a66" opacity="0.55"/>
+      <rect x="206" y="236" width="22" height="22" fill="#1a2739" opacity="0.75"/>
+      <rect x="140" y="258" width="22" height="22" fill="#2b3d54" opacity="0.6"/>
+      <rect x="184" y="258" width="22" height="22" fill="#243449" opacity="0.7"/>
+      <rect x="228" y="258" width="22" height="22" fill="#324a66" opacity="0.5"/>
+      <rect x="162" y="280" width="22" height="22" fill="#1e2c3f" opacity="0.7"/>
+      <rect x="206" y="280" width="22" height="22" fill="#2b3d54" opacity="0.6"/>
+      <rect x="140" y="302" width="22" height="22" fill="#243449" opacity="0.65"/>
+      <rect x="184" y="302" width="22" height="22" fill="#324a66" opacity="0.5"/>
+      <rect x="228" y="302" width="22" height="22" fill="#1a2739" opacity="0.75"/>
+      <rect x="162" y="324" width="22" height="22" fill="#2b3d54" opacity="0.6"/>
+      <rect x="206" y="324" width="22" height="22" fill="#243449" opacity="0.65"/>
+      <rect x="140" y="346" width="22" height="22" fill="#1e2c3f" opacity="0.7"/>
+      <rect x="184" y="346" width="22" height="22" fill="#2b3d54" opacity="0.55"/>
+      <rect x="228" y="346" width="22" height="22" fill="#243449" opacity="0.7"/>
+      <rect x="162" y="368" width="22" height="22" fill="#324a66" opacity="0.5"/>
+      <rect x="206" y="368" width="22" height="22" fill="#1a2739" opacity="0.7"/>
+
+      <!-- Finer speckle — cell-nucleus suggestion -->
+      <circle cx="158" cy="205" r="3"   fill="#4a6a8f" opacity="0.5"/>
+      <circle cx="196" cy="228" r="2.5" fill="#4a6a8f" opacity="0.45"/>
+      <circle cx="172" cy="262" r="3.2" fill="#4a6a8f" opacity="0.5"/>
+      <circle cx="220" cy="248" r="2.2" fill="#4a6a8f" opacity="0.4"/>
+      <circle cx="152" cy="290" r="2.8" fill="#4a6a8f" opacity="0.45"/>
+      <circle cx="205" cy="305" r="3"   fill="#4a6a8f" opacity="0.48"/>
+      <circle cx="178" cy="332" r="2.4" fill="#4a6a8f" opacity="0.42"/>
+      <circle cx="228" cy="318" r="2.6" fill="#4a6a8f" opacity="0.44"/>
+      <circle cx="160" cy="360" r="2.8" fill="#4a6a8f" opacity="0.45"/>
+      <circle cx="215" cy="375" r="2.2" fill="#4a6a8f" opacity="0.4"/>
+      <circle cx="190" cy="188" r="2.4" fill="#4a6a8f" opacity="0.42"/>
+      <circle cx="235" cy="285" r="2.6" fill="#4a6a8f" opacity="0.44"/>
+    </g>
+
+    <!-- ── RIGHT HALF: stacked annotation layers ──────────────── -->
+    <g clip-path="url(#tileRight)">
+      <!-- Faint pixel ghost still visible under the masks -->
+      <rect x="250" y="170" width="110" height="220" fill="#121b28" opacity="0.9"/>
+
+      <!-- Layer 3 (deepest) — large region, dark blue -->
+      <polygon points="256,196 330,182 352,236 338,300 288,318 258,286"
+        fill="#185FA5" fill-opacity="0.3"
+        stroke="#185FA5" stroke-width="1.6" stroke-linejoin="round"/>
+
+      <!-- Layer 2 (middle) — mid blue, offset -->
+      <polygon points="268,222 334,212 348,262 322,308 278,300 264,266"
+        fill="#3B82F6" fill-opacity="0.28"
+        stroke="#3B82F6" stroke-width="1.6" stroke-linejoin="round"/>
+
+      <!-- Layer 1 (top, inactive) — light blue -->
+      <polygon points="272,306 326,300 340,340 310,372 276,362"
+        fill="#93C5FD" fill-opacity="0.22"
+        stroke="#93C5FD" stroke-width="1.5" stroke-linejoin="round"/>
+
+      <!-- ACTIVE polygon — Okabe-Ito orange, in progress -->
+      <!-- One edge deliberately left open -->
+      <path d="M 282,238 L 320,230 L 336,258 L 326,284 L 292,290"
+        fill="#E69F00" fill-opacity="0.2"
+        stroke="#E69F00" stroke-width="2.2"
+        stroke-linejoin="round" stroke-linecap="round"/>
+      <!-- Open edge hint — dashed back to start -->
+      <line x1="292" y1="290" x2="282" y2="238"
+        stroke="#E69F00" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.55"/>
+
+      <!-- Vertex handles on the active polygon -->
+      <rect x="278" y="234" width="7" height="7" fill="#E69F00" stroke="#212121" stroke-width="1"/>
+      <rect x="316" y="226" width="7" height="7" fill="#E69F00" stroke="#212121" stroke-width="1"/>
+      <rect x="332" y="254" width="7" height="7" fill="#E69F00" stroke="#212121" stroke-width="1"/>
+      <rect x="322" y="280" width="7" height="7" fill="#E69F00" stroke="#212121" stroke-width="1"/>
+      <rect x="288" y="286" width="7" height="7" fill="#E69F00" stroke="#212121" stroke-width="1"/>
+
+      <!-- Vertex handles on layer 2 (smaller, dimmer) -->
+      <rect x="265" y="219" width="5" height="5" fill="#3B82F6" stroke="#0c1420" stroke-width="0.8" opacity="0.8"/>
+      <rect x="331" y="209" width="5" height="5" fill="#3B82F6" stroke="#0c1420" stroke-width="0.8" opacity="0.8"/>
+      <rect x="345" y="259" width="5" height="5" fill="#3B82F6" stroke="#0c1420" stroke-width="0.8" opacity="0.8"/>
+      <rect x="319" y="305" width="5" height="5" fill="#3B82F6" stroke="#0c1420" stroke-width="0.8" opacity="0.8"/>
+      <rect x="275" y="297" width="5" height="5" fill="#3B82F6" stroke="#0c1420" stroke-width="0.8" opacity="0.8"/>
+      <rect x="261" y="263" width="5" height="5" fill="#3B82F6" stroke="#0c1420" stroke-width="0.8" opacity="0.8"/>
+    </g>
+
+    <!-- ── The transform seam — sharp vertical divider ────────── -->
+    <line x1="250" y1="170" x2="250" y2="390"
+      stroke="#5E2C8E" stroke-width="2.4" opacity="0.95"/>
+    <!-- Seam glow -->
+    <line x1="250" y1="170" x2="250" y2="390"
+      stroke="#5E2C8E" stroke-width="7" opacity="0.15"/>
+
+    <!-- Tile outline -->
+    <rect x="140" y="170" width="220" height="220"
+      fill="none" stroke="#212121" stroke-width="2.5"/>
+    <rect x="140" y="170" width="220" height="220"
+      fill="none" stroke="#3B82F6" stroke-width="1" opacity="0.5"/>
+
+    <!-- Corner registration marks -->
+    <path d="M 140,184 L 140,170 L 154,170" fill="none" stroke="#93C5FD" stroke-width="1.8" opacity="0.7"/>
+    <path d="M 346,170 L 360,170 L 360,184" fill="none" stroke="#93C5FD" stroke-width="1.8" opacity="0.7"/>
+    <path d="M 360,376 L 360,390 L 346,390" fill="none" stroke="#93C5FD" stroke-width="1.8" opacity="0.7"/>
+    <path d="M 154,390 L 140,390 L 140,376" fill="none" stroke="#93C5FD" stroke-width="1.8" opacity="0.7"/>
+
+    <!-- Half labels -->
+    <text font-family="monospace" font-size="7.5" fill="#4a6a8f" opacity="0.75"
+      text-anchor="middle" x="195" y="162">image</text>
+    <text font-family="monospace" font-size="7.5" fill="#93C5FD" opacity="0.8"
+      text-anchor="middle" x="305" y="162">layers</text>
+
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- MASK THUMBNAIL — the rasterised Schablone output        -->
+    <!-- Small black-and-white result, bottom-right              -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- Arrow from tile to mask -->
+    <line x1="330" y1="392" x2="322" y2="400"
+      stroke="#5E2C8E" stroke-width="1.8" stroke-linecap="round" opacity="0.8"/>
+    <polygon points="327,395 318,403 329,403" fill="#5E2C8E" opacity="0.8"/>
+
+    <rect x="278" y="398" width="38" height="34" fill="#000000" stroke="#fafafa" stroke-width="1.4"/>
+    <!-- White knocked-out regions = the mask -->
+    <polygon points="283,404 305,401 311,416 306,427 289,428 281,419"
+      fill="#fafafa"/>
+    <polygon points="288,412 302,410 306,420 297,425 289,421"
+      fill="#000000"/>
+    <text font-family="monospace" font-size="6.5" fill="#fafafa" opacity="0.6"
+      text-anchor="middle" x="297" y="441">mask</text>
+
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- FORMAT BADGES — supported inputs, left column           -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <rect x="152" y="400" width="40" height="13" rx="3"
+      fill="#0c1420" stroke="#185FA5" stroke-width="1" opacity="0.92"/>
+    <text font-family="monospace" font-size="7" fill="#93C5FD" opacity="0.9"
+      text-anchor="middle" x="172" y="409">qptiff</text>
+
+    <rect x="196" y="400" width="40" height="13" rx="3"
+      fill="#0c1420" stroke="#185FA5" stroke-width="1" opacity="0.92"/>
+    <text font-family="monospace" font-size="7" fill="#93C5FD" opacity="0.9"
+      text-anchor="middle" x="216" y="409">ENVI</text>
+
+    <rect x="174" y="418" width="40" height="13" rx="3"
+      fill="#0c1420" stroke="#185FA5" stroke-width="1" opacity="0.92"/>
+    <text font-family="monospace" font-size="7" fill="#93C5FD" opacity="0.9"
+      text-anchor="middle" x="194" y="427">raster</text>
+
+    <!-- Layer-count annotation -->
+    <text font-family="monospace" font-size="7" fill="#5E2C8E" opacity="0.75"
+      text-anchor="start" x="372" y="212">n layers</text>
+    <line x1="372" y1="218" x2="410" y2="218" stroke="#5E2C8E" stroke-width="0.7" opacity="0.5"/>
+    <!-- Layer stack indicator -->
+    <rect x="372" y="224" width="26" height="4" rx="1" fill="#185FA5" opacity="0.85"/>
+    <rect x="375" y="231" width="26" height="4" rx="1" fill="#3B82F6" opacity="0.8"/>
+    <rect x="378" y="238" width="26" height="4" rx="1" fill="#93C5FD" opacity="0.75"/>
+    <rect x="381" y="245" width="26" height="4" rx="1" fill="#E69F00" opacity="0.9"/>
+
   </g>
 
-  <rect x="0" y="100" width="200" height="130" fill="#E69F00" opacity="0.9"
-        clip-path="url(#roiClip)"/>
-
-  <path d="M70,68 Q100,52 131,74 Q147,100 129,129 Q100,147 71,129 Q56,100 70,68 Z"
-        fill="none" stroke="#F0E442" stroke-width="4"/>
-
-  <text x="100" y="200" font-family="'JetBrains Mono', ui-monospace, monospace"
-        font-size="29" font-weight="700" fill="#ffffff" text-anchor="middle"
-        letter-spacing="-1">annotatR</text>
+  <!-- Hex border — imaging group blue -->
+  <polygon points="250,30 455,145 455,375 250,490 45,375 45,145"
+    fill="none" stroke="#185FA5" stroke-width="11" stroke-linejoin="round"/>
+  <polygon points="250,44 441,153 441,367 250,476 59,367 59,153"
+    fill="none" stroke="#3B82F6" stroke-width="1.5" stroke-linejoin="round" opacity="0.55"/>
 </svg>

@@ -1,11 +1,10 @@
 url: https://cttir.github.io/annotatR/
 
+# Inherit the shared CTTIR house style (Hugo Coder palette, light/dark switch,
+# Inter/JetBrains Mono, navbar/footer/sidebar) from the themakR template. The
+# default blue accent matches the annotatR hex, so no per-package override is set.
 template:
-  bootstrap: 5
-  bslib:
-    primary: "#5E2C8E"
-    # No custom fonts: Bootstrap 5's defaults are the native system-font stack,
-    # which keeps the site free of any external (Google Fonts) requests.
+  package: themakR
 
 development:
   mode: auto
@@ -177,8 +176,3 @@ articles:
     contents:
       - shiny-workflow
       - interop
-
-navbar:
-  structure:
-    left: [intro, reference, articles, news]
-    right: [search, github]

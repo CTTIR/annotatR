@@ -7,6 +7,10 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r hexlogo, echo=FALSE, fig.align="right", out.width="110px", fig.alt="annotatR logo"}
+knitr::include_graphics("../man/figures/logo.png")
+```
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.width = 6, fig.height = 4)
 library(annotatR)
@@ -116,3 +120,8 @@ Use these to seed a session programmatically, pre-fill statuses, or audit progre
 Exports (`Ctrl`+`E`) are scoped deliberately. You choose the **layers** to include, the **format** (GeoJSON, QuPath, or a rasterised TIFF mask), and the **breadth** — the current image only, every completed image, or the whole queue. Flagged and skipped images are excluded from batch exports unless you opt them back in, so a "export all complete" pass yields exactly the reviewed annotations and nothing half-finished.
 
 Those export formats — and how annotatR round-trips with QuPath, GeoJSON, and mask TIFFs — are the subject of the next vignette, "Interoperability".
+
+
+## Use of LLM tools
+
+Portions of this package were prepared with assistance from large language model tooling for narrowly defined, non-authorial tasks: copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of boilerplate files (CI configs, build scripts), code refactoring. The tools used were Chat AI, the LLM service of KISSKI (GWDG), and a self-hosted Mistral Small (24B, Apache-2.0) run locally via Ollama and the ollamar R package — local inference only, with no data sent to third parties for the self-hosted model.
