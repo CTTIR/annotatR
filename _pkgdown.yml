@@ -55,12 +55,14 @@ reference:
       - at_roi_intersect
       - at_roi_difference
       - at_roi_symdiff
+      - at_roi_ring
       - at_roi_contains
       - at_roi_overlaps
       - at_roi_distance
       - at_rois_overlap
       - at_check_geometry
       - at_fix_geometry
+      - at_check_containment
   - title: Layers and projects
     desc: Organise ROIs into layers and projects.
     contents:
@@ -104,9 +106,13 @@ reference:
       - at_mask_boundary
       - at_mask_preview
       - at_mask_stack
+      - at_mask_derive
+      - at_mask_agreement
       - at_write_mask
       - at_read_mask
       - at_write_masks
+      - at_write_npy
+      - at_read_npy
   - title: Extraction
     desc: Summarise image and spectral values under ROIs.
     contents:
