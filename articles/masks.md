@@ -1,5 +1,7 @@
 # Masks
 
+![annotatR logo](../reference/figures/logo.png)
+
 A *mask* is the artefact that turns hand-drawn regions into something a
 segmentation or classification pipeline can consume: an integer raster
 on the same pixel grid as the image, where each pixel carries the
@@ -213,7 +215,7 @@ list.files(dir)
 cat(readLines(paste0(path, ".legend.json")), sep = "\n")
 #> {
 #>   "annotatR_version": "0.0.1",
-#>   "created": "2026-07-21T05:53:11+0000",
+#>   "created": "2026-07-21T06:45:52+0000",
 #>   "mask_type": "multiclass",
 #>   "level": 0,
 #>   "dims": [512, 512],
@@ -298,3 +300,14 @@ at_plot_mask(mc)
 
 Next, see the **Interoperability** vignette for GeoJSON, QuPath, and CSV
 exchange with other tools.
+
+## Use of LLM tools
+
+Portions of this package were prepared with assistance from large
+language model tooling for narrowly defined, non-authorial tasks:
+copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of
+boilerplate files (CI configs, build scripts), code refactoring. The
+tools used were Chat AI, the LLM service of KISSKI (GWDG), and a
+self-hosted Mistral Small (24B, Apache-2.0) run locally via Ollama and
+the ollamar R package — local inference only, with no data sent to third
+parties for the self-hosted model.

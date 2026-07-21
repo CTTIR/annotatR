@@ -1,5 +1,7 @@
 # Get started with annotatR
 
+![annotatR hex sticker](../reference/figures/annotatR-hex.png)
+
 annotatR helps you draw, organise and export regions of interest (ROIs)
 across ordinary images, whole-slide microscopy and hyperspectral data
 cubes. Every annotation is stored as a validated simple-feature geometry
@@ -230,3 +232,14 @@ of your pipeline (or to reload with
 That is the whole loop: read, annotate, inspect, rasterise, export. From
 here, the **Images and backends** vignette explains how annotatR reads
 pyramids and spectral cubes, and how to register a backend of your own.
+
+## Use of LLM tools
+
+Portions of this package were prepared with assistance from large
+language model tooling for narrowly defined, non-authorial tasks:
+copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of
+boilerplate files (CI configs, build scripts), code refactoring. The
+tools used were Chat AI, the LLM service of KISSKI (GWDG), and a
+self-hosted Mistral Small (24B, Apache-2.0) run locally via Ollama and
+the ollamar R package — local inference only, with no data sent to third
+parties for the self-hosted model.
