@@ -200,11 +200,15 @@ HTMLWidgets.widget({
         state.imgW = x.tileSource.width;
         state.imgH = x.tileSource.height;
         state.features = (x.annotations && x.annotations.features) || [];
-        var finish = function () { resize(); fitBounds(null); };
-        if (x.tileSource.dataUri) {
-          loadImage(x.tileSource.dataUri, function (im) { state.baseImg = im; finish(); });
+        var uri = x.tileSource.dataUri;
+        if (uri && uri !== state._lastUri) {
+          // New image: load it once and fit the view.
+          state._lastUri = uri;
+          loadImage(uri, function (im) { state.baseImg = im; resize(); fitBounds(null); });
         } else {
-          finish();
+          // Same image (e.g. an ROI was just added): keep the current zoom/pan,
+          // do not reload the base image — only redraw the overlay.
+          resize();
         }
       },
       resize: function (w, h) { resize(); }
