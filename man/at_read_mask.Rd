@@ -38,6 +38,12 @@ Polygonise an existing mask file (e.g. Cellpose, StarDist, or QuPath output,
 or a prior annotatR export) into an editable \link{annot_layer}. A sidecar
 \verb{<path>.legend.json} is used to recover labels when present.
 }
+\examples{
+m <- at_mask(at_example_project(), "labelled")
+f <- tempfile(fileext = ".tif")
+at_write_mask(m, f)
+at_read_mask(f)
+}
 \seealso{
 \code{\link[=at_write_mask]{at_write_mask()}}, \code{\link[=at_mask]{at_mask()}}
 

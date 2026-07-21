@@ -18,6 +18,9 @@ The mask's legend \link[tibble:tibble]{tibble::tibble} (\code{value}, \code{labe
 \description{
 Legend of a mask
 }
+\examples{
+at_mask_legend(at_mask(at_example_project(), "labelled"))
+}
 \seealso{
 Other masks:
 \code{\link[=at_mask]{at_mask()}},

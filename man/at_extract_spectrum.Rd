@@ -34,6 +34,12 @@ sorted by wavelength.
 \description{
 Extract mean/median spectra for a spectral cube
 }
+\examples{
+cube <- at_example_image("cube")
+proj <- at_project(cube, at_layer_add(at_layer("roi"),
+                                      at_roi_circle(16, 16, 5, label = "roi")))
+at_extract_spectrum(proj)
+}
 \seealso{
 Other extraction:
 \code{\link[=at_extract]{at_extract()}},

@@ -158,6 +158,8 @@ at_plot_project <- function(project, layer = NULL, label = NULL,
 #' @return A [ggplot2::ggplot] object.
 #' @family plots
 #' @export
+#' @examples
+#' at_plot_mask(at_mask(at_example_project(), "labelled"))
 at_plot_mask <- function(mask, legend = TRUE, call = rlang::caller_env()) {
   .check_class(mask, "annot_mask", call = call)
   plot(mask, legend = legend)
@@ -256,6 +258,8 @@ at_plot_summary <- function(project, call = rlang::caller_env()) {
 #' @return A [ggplot2::ggplot] object.
 #' @family plots
 #' @export
+#' @examples
+#' at_plot(at_example_project())
 at_plot <- function(x, ...) {
   if (inherits(x, "annot_image")) return(at_plot_image(x, ...))
   if (inherits(x, "annot_project")) return(at_plot_project(x, ...))

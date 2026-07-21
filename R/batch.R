@@ -74,6 +74,10 @@
 #' @family batch
 #' @seealso [at_write_masks()], [at_manifest()]
 #' @export
+#' @examples
+#' sess <- at_example_session(2)
+#' dir <- file.path(tempdir(), "annotatR-export")
+#' at_export_all(sess, dir, formats = "geojson", scope = "all", progress = FALSE)
 at_export_all <- function(session, dir,
                           formats = c("mask_tiff", "geojson", "qupath", "rds", "csv"),
                           scope = c("complete", "all", "current", "flagged"),

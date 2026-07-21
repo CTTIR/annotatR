@@ -19,6 +19,10 @@
 #' @family masks
 #' @seealso [at_read_mask()]
 #' @export
+#' @examples
+#' m <- at_mask(at_example_project(), "labelled")
+#' f <- tempfile(fileext = ".tif")
+#' at_write_mask(m, f)
 at_write_mask <- function(mask, path, format = c("tiff", "png", "rds"),
                           bits = c(16L, 8L), legend = TRUE, overwrite = FALSE,
                           call = rlang::caller_env()) {
@@ -144,6 +148,11 @@ at_write_mask <- function(mask, path, format = c("tiff", "png", "rds"),
 #' @family masks
 #' @seealso [at_write_mask()], [at_mask()]
 #' @export
+#' @examples
+#' m <- at_mask(at_example_project(), "labelled")
+#' f <- tempfile(fileext = ".tif")
+#' at_write_mask(m, f)
+#' at_read_mask(f)
 at_read_mask <- function(path, level = 0L, connectivity = c(8L, 4L),
                          simplify = 0, min_area = 0, legend = NULL,
                          call = rlang::caller_env()) {

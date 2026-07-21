@@ -398,6 +398,8 @@ summary.annot_mask <- function(object, ...) {
 #'   `roi_id`, `n_px`, `colour`).
 #' @family masks
 #' @export
+#' @examples
+#' at_mask_legend(at_mask(at_example_project(), "labelled"))
 at_mask_legend <- function(mask, call = rlang::caller_env()) {
   .check_class(mask, "annot_mask", call = call)
   attr(mask, "legend")
@@ -517,6 +519,8 @@ at_mask_preview <- function(mask, max_dim = 1024L, call = rlang::caller_env()) {
 #'   (`centroid_x`, `centroid_y`). A 0-row tibble when the mask is empty.
 #' @family masks
 #' @export
+#' @examples
+#' at_mask_stats(at_mask(at_example_project(), "labelled"))
 at_mask_stats <- function(mask, pixel_size = NULL, call = rlang::caller_env()) {
   .check_class(mask, "annot_mask", call = call)
   m <- as.matrix(mask)

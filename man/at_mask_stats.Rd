@@ -23,6 +23,9 @@ A \link[tibble:tibble]{tibble::tibble} with one row per mask value: \code{value}
 \description{
 Per-value statistics of a mask
 }
+\examples{
+at_mask_stats(at_mask(at_example_project(), "labelled"))
+}
 \seealso{
 Other masks:
 \code{\link[=at_mask]{at_mask()}},

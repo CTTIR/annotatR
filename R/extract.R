@@ -122,6 +122,11 @@ at_extract <- function(project, img = NULL, stat = "mean", layer = NULL,
 #'   sorted by wavelength.
 #' @family extraction
 #' @export
+#' @examples
+#' cube <- at_example_image("cube")
+#' proj <- at_project(cube, at_layer_add(at_layer("roi"),
+#'                                       at_roi_circle(16, 16, 5, label = "roi")))
+#' at_extract_spectrum(proj)
 at_extract_spectrum <- function(project, img = NULL, stat = "mean", layer = NULL,
                                 label = NULL, level = 0L,
                                 call = rlang::caller_env()) {

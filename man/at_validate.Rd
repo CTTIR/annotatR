@@ -19,6 +19,9 @@ violated invariant.
 Check that layer names are unique, ROI identifiers are unique across the
 project, and all geometries are valid.
 }
+\examples{
+proj <- at_validate(at_example_project())
+}
 \seealso{
 \code{at_check_geometry()}
 

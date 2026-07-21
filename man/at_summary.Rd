@@ -18,6 +18,9 @@ per-label ROI counts, and total area per label.
 \description{
 Summarise a project
 }
+\examples{
+at_summary(at_example_project())
+}
 \seealso{
 Other projects:
 \code{\link[=at_add_layer]{at_add_layer()}},

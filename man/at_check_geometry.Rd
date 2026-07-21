@@ -22,6 +22,9 @@ valid.
 \description{
 Check the geometry of every ROI in a project
 }
+\examples{
+at_check_geometry(at_example_project())
+}
 \seealso{
 \code{\link[=at_fix_geometry]{at_fix_geometry()}}, \code{\link[=at_validate]{at_validate()}}
 

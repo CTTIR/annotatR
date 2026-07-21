@@ -17,6 +17,9 @@ A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
 \description{
 Plot generic for annotatR objects
 }
+\examples{
+at_plot(at_example_project())
+}
 \seealso{
 Other plots:
 \code{\link[=at_plot_image]{at_plot_image()}},

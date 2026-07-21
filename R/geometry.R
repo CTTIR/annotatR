@@ -407,6 +407,8 @@ at_rois_overlap <- function(layer, call = rlang::caller_env()) {
 #' @family geometry
 #' @seealso [at_fix_geometry()], [at_validate()]
 #' @export
+#' @examples
+#' at_check_geometry(at_example_project())
 at_check_geometry <- function(project, call = rlang::caller_env()) {
   .check_project(project, call = call)
   empty <- tibble::tibble(

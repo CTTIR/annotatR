@@ -19,6 +19,9 @@ A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
 \description{
 Plot a mask
 }
+\examples{
+at_plot_mask(at_mask(at_example_project(), "labelled"))
+}
 \seealso{
 Other plots:
 \code{\link[=at_plot]{at_plot()}},

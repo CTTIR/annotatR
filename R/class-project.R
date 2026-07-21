@@ -340,6 +340,8 @@ at_rois <- function(project, layer = NULL, label = NULL,
 #' @family projects
 #' @seealso `at_check_geometry()`
 #' @export
+#' @examples
+#' proj <- at_validate(at_example_project())
 at_validate <- function(project, call = rlang::caller_env()) {
   .check_project(project, call = call)
   nms <- names(project$layers)
@@ -380,6 +382,8 @@ at_validate <- function(project, call = rlang::caller_env()) {
 #'   per-label ROI counts, and total area per label.
 #' @family projects
 #' @export
+#' @examples
+#' at_summary(at_example_project())
 at_summary <- function(project, call = rlang::caller_env()) {
   .check_project(project, call = call)
   roi_tbl <- at_rois(project)

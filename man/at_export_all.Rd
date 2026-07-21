@@ -45,6 +45,11 @@ to \verb{_export_manifest.csv} alongside the exports.
 Export every selected image's annotations in the requested formats, isolating
 per-image failures so one bad image never aborts the run.
 }
+\examples{
+sess <- at_example_session(2)
+dir <- file.path(tempdir(), "annotatR-export")
+at_export_all(sess, dir, formats = "geojson", scope = "all", progress = FALSE)
+}
 \seealso{
 \code{\link[=at_write_masks]{at_write_masks()}}, \code{\link[=at_manifest]{at_manifest()}}
 

@@ -37,6 +37,11 @@ The output path, invisibly.
 \description{
 Write a mask to disk
 }
+\examples{
+m <- at_mask(at_example_project(), "labelled")
+f <- tempfile(fileext = ".tif")
+at_write_mask(m, f)
+}
 \seealso{
 \code{\link[=at_read_mask]{at_read_mask()}}
 
