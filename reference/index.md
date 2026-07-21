@@ -1,0 +1,300 @@
+# Package index
+
+## Images and backends
+
+Read images and register formats.
+
+- [`at_read_image()`](https://cttir.github.io/annotatR/reference/at_read_image.md)
+  : Read an image
+- [`at_tile()`](https://cttir.github.io/annotatR/reference/at_tile.md) :
+  Read a tile from an image
+- [`at_dims()`](https://cttir.github.io/annotatR/reference/at_dims.md) :
+  Image dimensions at a pyramid level
+- [`at_n_levels()`](https://cttir.github.io/annotatR/reference/at_n_levels.md)
+  : Number of pyramid levels
+- [`at_n_bands()`](https://cttir.github.io/annotatR/reference/at_n_bands.md)
+  : Number of bands (channels)
+- [`at_bands()`](https://cttir.github.io/annotatR/reference/at_bands.md)
+  : Band (channel) table
+- [`at_wavelengths()`](https://cttir.github.io/annotatR/reference/at_wavelengths.md)
+  : Band centre wavelengths
+- [`at_is_spectral()`](https://cttir.github.io/annotatR/reference/at_is_spectral.md)
+  : Is the image a spectral cube?
+- [`at_is_pyramidal()`](https://cttir.github.io/annotatR/reference/at_is_pyramidal.md)
+  : Is the image pyramidal?
+- [`at_pixel_size()`](https://cttir.github.io/annotatR/reference/at_pixel_size.md)
+  : Physical pixel size
+- [`at_meta()`](https://cttir.github.io/annotatR/reference/at_meta.md) :
+  Image metadata
+- [`at_backend_list()`](https://cttir.github.io/annotatR/reference/at_backend_list.md)
+  : List registered image backends
+- [`at_backend_get()`](https://cttir.github.io/annotatR/reference/at_backend_get.md)
+  : Get a registered backend
+- [`at_backend_detect()`](https://cttir.github.io/annotatR/reference/at_backend_detect.md)
+  : Detect the backend for a file
+- [`at_backend_register()`](https://cttir.github.io/annotatR/reference/at_backend_register.md)
+  : Register an image backend
+
+## Regions of interest
+
+Construct and measure individual ROIs.
+
+- [`at_roi_point()`](https://cttir.github.io/annotatR/reference/at_roi_point.md)
+  : Create a point ROI
+- [`at_roi_rect()`](https://cttir.github.io/annotatR/reference/at_roi_rect.md)
+  : Create a rectangular ROI
+- [`at_roi_circle()`](https://cttir.github.io/annotatR/reference/at_roi_circle.md)
+  : Create a circular ROI
+- [`at_roi_ellipse()`](https://cttir.github.io/annotatR/reference/at_roi_ellipse.md)
+  : Create an elliptical ROI
+- [`at_roi_polygon()`](https://cttir.github.io/annotatR/reference/at_roi_polygon.md)
+  : Create a polygon ROI
+- [`at_roi_freehand()`](https://cttir.github.io/annotatR/reference/at_roi_freehand.md)
+  : Create a freehand ROI
+- [`at_roi_from_sf()`](https://cttir.github.io/annotatR/reference/at_roi_from_sf.md)
+  : Create an ROI from an existing sf geometry
+- [`at_roi_area()`](https://cttir.github.io/annotatR/reference/at_roi_area.md)
+  : ROI area
+- [`at_roi_centroid()`](https://cttir.github.io/annotatR/reference/at_roi_centroid.md)
+  : ROI centroid
+- [`at_roi_bbox()`](https://cttir.github.io/annotatR/reference/at_roi_bbox.md)
+  : ROI bounding box
+
+## Geometry
+
+Transforms, set operations, predicates, and validity.
+
+- [`at_transform()`](https://cttir.github.io/annotatR/reference/at_transform.md)
+  : Transform an ROI between pyramid levels using real image dimensions
+- [`at_roi_rescale()`](https://cttir.github.io/annotatR/reference/at_roi_rescale.md)
+  : Rescale an ROI between pyramid levels
+- [`at_roi_buffer()`](https://cttir.github.io/annotatR/reference/at_roi_buffer.md)
+  : Buffer an ROI
+- [`at_roi_simplify()`](https://cttir.github.io/annotatR/reference/at_roi_simplify.md)
+  : Simplify an ROI
+- [`at_flip_y()`](https://cttir.github.io/annotatR/reference/at_flip_y.md)
+  : Flip an ROI's y-axis
+- [`at_snap()`](https://cttir.github.io/annotatR/reference/at_snap.md) :
+  Snap ROI vertices to a grid
+- [`at_clamp()`](https://cttir.github.io/annotatR/reference/at_clamp.md)
+  : Clip an ROI to image bounds
+- [`at_roi_union()`](https://cttir.github.io/annotatR/reference/at_roi_setops.md)
+  [`at_roi_intersect()`](https://cttir.github.io/annotatR/reference/at_roi_setops.md)
+  [`at_roi_difference()`](https://cttir.github.io/annotatR/reference/at_roi_setops.md)
+  [`at_roi_symdiff()`](https://cttir.github.io/annotatR/reference/at_roi_setops.md)
+  : Set operations on ROIs
+- [`at_roi_contains()`](https://cttir.github.io/annotatR/reference/at_roi_contains.md)
+  : Test whether points fall inside an ROI
+- [`at_roi_overlaps()`](https://cttir.github.io/annotatR/reference/at_roi_overlaps.md)
+  : Test whether two ROIs intersect
+- [`at_roi_distance()`](https://cttir.github.io/annotatR/reference/at_roi_distance.md)
+  : Distance between two ROIs
+- [`at_rois_overlap()`](https://cttir.github.io/annotatR/reference/at_rois_overlap.md)
+  : Pairwise ROI overlaps within a layer
+- [`at_check_geometry()`](https://cttir.github.io/annotatR/reference/at_check_geometry.md)
+  : Check the geometry of every ROI in a project
+- [`at_fix_geometry()`](https://cttir.github.io/annotatR/reference/at_fix_geometry.md)
+  : Repair the geometry of a project
+
+## Layers and projects
+
+Organise ROIs into layers and projects.
+
+- [`at_style()`](https://cttir.github.io/annotatR/reference/at_style.md)
+  : Layer style
+- [`at_layer()`](https://cttir.github.io/annotatR/reference/at_layer.md)
+  : Create a layer
+- [`at_layer_add()`](https://cttir.github.io/annotatR/reference/at_layer_add.md)
+  : Add an ROI to a layer
+- [`at_layer_remove()`](https://cttir.github.io/annotatR/reference/at_layer_remove.md)
+  : Remove an ROI from a layer
+- [`at_layer_rois()`](https://cttir.github.io/annotatR/reference/at_layer_rois.md)
+  : Layer ROI table
+- [`at_layer_n()`](https://cttir.github.io/annotatR/reference/at_layer_n.md)
+  : Number of ROIs in a layer
+- [`at_project()`](https://cttir.github.io/annotatR/reference/at_project.md)
+  : Create an annotation project
+- [`at_add_layer()`](https://cttir.github.io/annotatR/reference/at_add_layer.md)
+  : Add a layer to a project
+- [`at_remove_layer()`](https://cttir.github.io/annotatR/reference/at_remove_layer.md)
+  : Remove a layer from a project
+- [`at_add_roi()`](https://cttir.github.io/annotatR/reference/at_add_roi.md)
+  : Add an ROI to a project layer
+- [`at_remove_roi()`](https://cttir.github.io/annotatR/reference/at_remove_roi.md)
+  : Remove an ROI from a project
+- [`at_layers()`](https://cttir.github.io/annotatR/reference/at_layers.md)
+  : Layer summary table
+- [`at_rois()`](https://cttir.github.io/annotatR/reference/at_rois.md) :
+  Query the ROIs of a project
+- [`at_validate()`](https://cttir.github.io/annotatR/reference/at_validate.md)
+  : Validate a project's invariants
+- [`at_summary()`](https://cttir.github.io/annotatR/reference/at_summary.md)
+  : Summarise a project
+
+## Sessions and batch
+
+Resumable queues and whole-session operations.
+
+- [`at_session()`](https://cttir.github.io/annotatR/reference/at_session.md)
+  : Create a batch annotation session
+- [`at_next()`](https://cttir.github.io/annotatR/reference/at_next.md) :
+  Advance to the next image
+- [`at_prev()`](https://cttir.github.io/annotatR/reference/at_prev.md) :
+  Step back to the previous image
+- [`at_goto()`](https://cttir.github.io/annotatR/reference/at_goto.md) :
+  Jump to a specific image
+- [`at_current()`](https://cttir.github.io/annotatR/reference/at_current.md)
+  : The current project
+- [`at_set_status()`](https://cttir.github.io/annotatR/reference/at_set_status.md)
+  : Set the status of a queued image
+- [`at_session_status()`](https://cttir.github.io/annotatR/reference/at_session_status.md)
+  : The session manifest
+- [`at_manifest()`](https://cttir.github.io/annotatR/reference/at_manifest.md)
+  : Session progress manifest with per-label counts
+- [`at_resume()`](https://cttir.github.io/annotatR/reference/at_resume.md)
+  : Resume a saved session
+- [`at_export_all()`](https://cttir.github.io/annotatR/reference/at_export_all.md)
+  : Export a whole session
+- [`at_summary_table()`](https://cttir.github.io/annotatR/reference/at_summary_table.md)
+  : Session summary statistics
+- [`at_batch_apply()`](https://cttir.github.io/annotatR/reference/at_batch_apply.md)
+  : Apply a function to every project in a session
+- [`at_batch_check_geometry()`](https://cttir.github.io/annotatR/reference/at_batch_check_geometry.md)
+  : Check geometry across a whole session
+
+## Masks
+
+Rasterise annotations and round-trip masks.
+
+- [`at_mask()`](https://cttir.github.io/annotatR/reference/at_mask.md) :
+  Rasterise ROIs to a mask ("Schablone")
+- [`at_mask_legend()`](https://cttir.github.io/annotatR/reference/at_mask_legend.md)
+  : Legend of a mask
+- [`at_mask_stats()`](https://cttir.github.io/annotatR/reference/at_mask_stats.md)
+  : Per-value statistics of a mask
+- [`at_mask_boundary()`](https://cttir.github.io/annotatR/reference/at_mask_boundary.md)
+  : Object boundaries of a mask
+- [`at_mask_preview()`](https://cttir.github.io/annotatR/reference/at_mask_preview.md)
+  : Downsampled preview of a mask
+- [`at_mask_stack()`](https://cttir.github.io/annotatR/reference/at_mask_stack.md)
+  : Stack per-layer masks into a 3D array
+- [`at_write_mask()`](https://cttir.github.io/annotatR/reference/at_write_mask.md)
+  : Write a mask to disk
+- [`at_read_mask()`](https://cttir.github.io/annotatR/reference/at_read_mask.md)
+  : Read a mask into editable ROIs
+- [`at_write_masks()`](https://cttir.github.io/annotatR/reference/at_write_masks.md)
+  : Batch-write the masks of a project
+
+## Extraction
+
+Summarise image and spectral values under ROIs.
+
+- [`at_extract()`](https://cttir.github.io/annotatR/reference/at_extract.md)
+  : Extract summary statistics under ROIs
+- [`at_extract_spectrum()`](https://cttir.github.io/annotatR/reference/at_extract_spectrum.md)
+  : Extract mean/median spectra for a spectral cube
+- [`at_extract_pixels()`](https://cttir.github.io/annotatR/reference/at_extract_pixels.md)
+  : Extract per-pixel values under ROIs
+
+## Visualisation
+
+ggplot2 plots.
+
+- [`at_plot()`](https://cttir.github.io/annotatR/reference/at_plot.md) :
+  Plot generic for annotatR objects
+- [`at_plot_image()`](https://cttir.github.io/annotatR/reference/at_plot_image.md)
+  : Plot an image
+- [`at_plot_project()`](https://cttir.github.io/annotatR/reference/at_plot_project.md)
+  : Plot a project's ROIs
+- [`at_plot_overlay()`](https://cttir.github.io/annotatR/reference/at_plot_overlay.md)
+  : Plot ROIs overlaid on the image
+- [`at_plot_mask()`](https://cttir.github.io/annotatR/reference/at_plot_mask.md)
+  : Plot a mask
+- [`at_plot_spectrum()`](https://cttir.github.io/annotatR/reference/at_plot_spectrum.md)
+  : Plot spectra
+- [`at_plot_summary()`](https://cttir.github.io/annotatR/reference/at_plot_summary.md)
+  : Plot a project summary
+
+## Import and export
+
+Interchange with GeoJSON, QuPath, CSV, and RDS.
+
+- [`at_write_geojson()`](https://cttir.github.io/annotatR/reference/at_write_geojson.md)
+  : Write a project's ROIs to GeoJSON
+- [`at_read_geojson()`](https://cttir.github.io/annotatR/reference/at_read_geojson.md)
+  : Read ROIs from a GeoJSON file
+- [`at_roi_from_geojson()`](https://cttir.github.io/annotatR/reference/at_roi_from_geojson.md)
+  : Convert a GeoJSON feature to an ROI
+- [`at_write_qupath()`](https://cttir.github.io/annotatR/reference/at_write_qupath.md)
+  : Write a project's ROIs as QuPath GeoJSON
+- [`at_read_qupath()`](https://cttir.github.io/annotatR/reference/at_read_qupath.md)
+  : Read ROIs from a QuPath GeoJSON file
+- [`at_save_project()`](https://cttir.github.io/annotatR/reference/at_save_project.md)
+  : Save a project
+- [`at_load_project()`](https://cttir.github.io/annotatR/reference/at_load_project.md)
+  : Load a project
+- [`at_save_session()`](https://cttir.github.io/annotatR/reference/at_save_session.md)
+  : Save a session
+- [`at_load_session()`](https://cttir.github.io/annotatR/reference/at_load_session.md)
+  : Load a session
+- [`at_write_rois_csv()`](https://cttir.github.io/annotatR/reference/at_write_rois_csv.md)
+  : Write a project's ROIs to CSV
+- [`at_read_rois_csv()`](https://cttir.github.io/annotatR/reference/at_read_rois_csv.md)
+  : Read ROIs from a CSV with WKT geometry
+
+## Shiny application
+
+The batch annotation app and canvas widget.
+
+- [`at_annotate()`](https://cttir.github.io/annotatR/reference/at_annotate.md)
+  : Launch the batch annotation application
+- [`at_canvas()`](https://cttir.github.io/annotatR/reference/at_canvas.md)
+  : An annotation canvas widget
+- [`atCanvasOutput()`](https://cttir.github.io/annotatR/reference/atCanvasOutput.md)
+  : Shiny output for the annotation canvas
+- [`renderAtCanvas()`](https://cttir.github.io/annotatR/reference/renderAtCanvas.md)
+  : Render an annotation canvas in Shiny
+- [`at_canvas_proxy()`](https://cttir.github.io/annotatR/reference/at_canvas_proxy.md)
+  : A proxy for an existing annotation canvas
+- [`at_canvas_set_annotations()`](https://cttir.github.io/annotatR/reference/at_canvas_set_annotations.md)
+  : Replace the annotations on a canvas
+- [`at_canvas_set_tool()`](https://cttir.github.io/annotatR/reference/at_canvas_set_tool.md)
+  : Set the active drawing tool
+- [`at_canvas_set_band()`](https://cttir.github.io/annotatR/reference/at_canvas_set_band.md)
+  : Set the displayed band or RGB triple
+- [`at_canvas_set_overlay()`](https://cttir.github.io/annotatR/reference/at_canvas_set_overlay.md)
+  : Overlay a mask on the canvas
+- [`at_canvas_fit()`](https://cttir.github.io/annotatR/reference/at_canvas_fit.md)
+  : Zoom the canvas to a bounding box
+- [`at_tile_source()`](https://cttir.github.io/annotatR/reference/at_tile_source.md)
+  : Build a tile-source descriptor for the canvas
+
+## Example data
+
+Bundled synthetic examples.
+
+- [`at_example_image()`](https://cttir.github.io/annotatR/reference/at_example_image.md)
+  : Read a bundled example image
+- [`at_example_path()`](https://cttir.github.io/annotatR/reference/at_example_path.md)
+  : Path to a bundled example file
+- [`at_example_project()`](https://cttir.github.io/annotatR/reference/at_example_project.md)
+  : A populated example project
+- [`at_example_session()`](https://cttir.github.io/annotatR/reference/at_example_session.md)
+  : An example batch session
+
+## Concepts
+
+- [`annotatR-classes`](https://cttir.github.io/annotatR/reference/annotatR-classes.md)
+  [`annot_image`](https://cttir.github.io/annotatR/reference/annotatR-classes.md)
+  [`annot_roi`](https://cttir.github.io/annotatR/reference/annotatR-classes.md)
+  [`annot_layer`](https://cttir.github.io/annotatR/reference/annotatR-classes.md)
+  [`annot_project`](https://cttir.github.io/annotatR/reference/annotatR-classes.md)
+  [`annot_session`](https://cttir.github.io/annotatR/reference/annotatR-classes.md)
+  [`annot_mask`](https://cttir.github.io/annotatR/reference/annotatR-classes.md)
+  [`annot_style`](https://cttir.github.io/annotatR/reference/annotatR-classes.md)
+  [`annot_summary`](https://cttir.github.io/annotatR/reference/annotatR-classes.md)
+  : annotatR S3 classes
+- [`annotatR`](https://cttir.github.io/annotatR/reference/annotatR-package.md)
+  [`annotatR-package`](https://cttir.github.io/annotatR/reference/annotatR-package.md)
+  : annotatR: Multi-Layer Region-of-Interest Annotation for Images and
+  Spectral Cubes

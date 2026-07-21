@@ -1,0 +1,14 @@
+pandoc: 3.8.3
+pkgdown: 2.2.1
+pkgdown_sha: ~
+articles:
+  annotation-model: annotation-model.html
+  annotatR: annotatR.html
+  images-and-backends: images-and-backends.html
+  interop: interop.html
+  masks: masks.html
+  shiny-workflow: shiny-workflow.html
+last_built: 2026-07-21T05:22Z
+urls:
+  reference: https://cttir.github.io/annotatR/reference
+  article: https://cttir.github.io/annotatR/articles
