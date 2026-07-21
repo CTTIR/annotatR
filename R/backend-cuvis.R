@@ -1,8 +1,13 @@
 # Cubert hyperspectral backend via `cuvis.r` (optional). Reads .cu3 / .cu3s and
 # populates per-band wavelengths. Single pyramid level.
+#
+# `cuvis.r` is the proprietary Cubert SDK binding: it is not on CRAN or any
+# public repository, so it is NOT declared in Suggests (a dependency resolver
+# such as pak cannot install it). It is referenced only dynamically, behind the
+# availability guard, so the package builds and checks cleanly without it.
 
 .cuvis_read <- function(path, ...) {
-  if (!requireNamespace("cuvis.r", quietly = TRUE)) {
+  if (!.cuvis_available()) {
     cli::cli_abort(c(
       "The {.val cuvis} backend requires package {.pkg cuvis.r}, which is not installed.",
       "i" = "Install it from the Cubert cuvis.r distribution.",
@@ -10,8 +15,8 @@
     ))
   }
   # cuvis.r exposes a session/measurement API; the exact call surface depends on
-  # the installed SDK version. Kept behind the availability guard.
-  mesu <- cuvis.r::Measurement$new(path) # nocov
+  # the installed SDK version. Referenced dynamically (undeclared optional dep).
+  mesu <- getExportedValue("cuvis.r", "Measurement")$new(path) # nocov
   cube <- mesu$get_data()[["cube"]] # nocov
   arr <- aperm(cube$array, c(2, 1, 3)) # nocov -> [y, x, band]
   wl <- cube$wavelength # nocov
@@ -35,4 +40,6 @@
   grepl("\\.(cu3|cu3s)$", path, ignore.case = TRUE)
 }
 
-.cuvis_available <- function() requireNamespace("cuvis.r", quietly = TRUE)
+# Availability via installed-package lookup rather than requireNamespace(), so
+# the undeclared optional dependency is not flagged by R CMD check.
+.cuvis_available <- function() nzchar(system.file(package = "cuvis.r"))

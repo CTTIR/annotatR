@@ -11,7 +11,7 @@ test_that("core backends are available; Bioc/vendor backends reflect installatio
   avail <- setNames(bl$available, bl$name)
   expect_true(avail[["raster"]])
   expect_true(avail[["envi"]])
-  expect_identical(avail[["cuvis"]], requireNamespace("cuvis.r", quietly = TRUE))
+  expect_identical(avail[["cuvis"]], nzchar(system.file(package = "cuvis.r")))
   expect_identical(avail[["ometiff"]], requireNamespace("RBioFormats", quietly = TRUE))
 })
 

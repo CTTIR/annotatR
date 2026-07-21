@@ -3,7 +3,7 @@
 # than a crash.
 
 test_that("reading a .cu3 without cuvis.r errors informatively", {
-  skip_if(requireNamespace("cuvis.r", quietly = TRUE))
+  skip_if(nzchar(system.file(package = "cuvis.r")))
   f <- withr::local_tempfile(fileext = ".cu3")
   writeLines("x", f)
   expect_error(at_read_image(f), "not installed|cuvis|not available")
@@ -38,7 +38,7 @@ test_that("the tivita backend reads ENVI-conformant cubes and rejects proprietar
 test_that("cuvis and ometiff report availability matching installation", {
   expect_identical(
     at_backend_get("cuvis")$available_fn(),
-    requireNamespace("cuvis.r", quietly = TRUE)
+    nzchar(system.file(package = "cuvis.r"))
   )
   expect_identical(
     at_backend_get("ometiff")$available_fn(),

@@ -34,8 +34,6 @@ Imports:
 Suggests:
     bslib,
     covr,
-    cuvis.r,
-    EBImage,
     htmltools,
     htmlwidgets,
     knitr,
