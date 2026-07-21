@@ -77,13 +77,13 @@ at_extract(proj, stat = "mean")
 #> # A tibble: 9 × 9
 #>   roi_id        layer   label     band band_name wavelength stat  value  n_px
 #>   <chr>         <chr>   <chr>    <int> <chr>          <dbl> <chr> <dbl> <int>
-#> 1 roi_000000008 regions tumour       1 R                 NA mean   109. 19600
-#> 2 roi_000000008 regions tumour       2 G                 NA mean   109. 19600
-#> 3 roi_000000008 regions tumour       3 B                 NA mean   109. 19600
-#> 4 roi_000000009 regions necrosis     1 R                 NA mean   138. 72704
-#> 5 roi_000000009 regions necrosis     2 G                 NA mean   138. 72704
-#> 6 roi_000000009 regions necrosis     3 B                 NA mean   138. 72704
-#> 7 roi_000000010 regions stroma       1 R                 NA mean   139. 34200
-#> 8 roi_000000010 regions stroma       2 G                 NA mean   139. 34200
-#> 9 roi_000000010 regions stroma       3 B                 NA mean   139. 34200
+#> 1 roi_000000010 regions tumour       1 R                 NA mean   109. 19600
+#> 2 roi_000000010 regions tumour       2 G                 NA mean   109. 19600
+#> 3 roi_000000010 regions tumour       3 B                 NA mean   109. 19600
+#> 4 roi_000000011 regions necrosis     1 R                 NA mean   138. 72704
+#> 5 roi_000000011 regions necrosis     2 G                 NA mean   138. 72704
+#> 6 roi_000000011 regions necrosis     3 B                 NA mean   138. 72704
+#> 7 roi_000000012 regions stroma       1 R                 NA mean   139. 34200
+#> 8 roi_000000012 regions stroma       2 G                 NA mean   139. 34200
+#> 9 roi_000000012 regions stroma       3 B                 NA mean   139. 34200
 ```

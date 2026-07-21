@@ -14,6 +14,10 @@ Initial development release.
   (`raster`, `tiff`, `ometiff`, `cuvis`, `tivita`, `envi`); register
   more with
   [`at_backend_register()`](https://cttir.github.io/annotatR/reference/at_backend_register.md).
+- The `tivita` backend reads bare Diaspective Vision TIVITA
+  `*_SpecCube.dat` cubes directly (big-endian float32, 640x480x100,
+  500-995 nm), in addition to ENVI-conformant exports; such cubes also
+  auto-detect.
 - Accessors:
   [`at_dims()`](https://cttir.github.io/annotatR/reference/at_dims.md),
   [`at_n_levels()`](https://cttir.github.io/annotatR/reference/at_n_levels.md),
@@ -49,12 +53,18 @@ Initial development release.
   [`at_clamp()`](https://cttir.github.io/annotatR/reference/at_clamp.md).
 - Set operations
   [`at_roi_union()`](https://cttir.github.io/annotatR/reference/at_roi_setops.md)/[`intersect()`](https://rdrr.io/r/base/sets.html)/`difference()`/`symdiff()`,
+  [`at_roi_ring()`](https://cttir.github.io/annotatR/reference/at_roi_ring.md)
+  (an annulus straddling an ROI margin, e.g. a penumbra band),
   predicates
   [`at_roi_contains()`](https://cttir.github.io/annotatR/reference/at_roi_contains.md)/`overlaps()`/`distance()`/[`at_rois_overlap()`](https://cttir.github.io/annotatR/reference/at_rois_overlap.md),
   and validation
   [`at_check_geometry()`](https://cttir.github.io/annotatR/reference/at_check_geometry.md)
   /
   [`at_fix_geometry()`](https://cttir.github.io/annotatR/reference/at_fix_geometry.md).
+- [`at_check_containment()`](https://cttir.github.io/annotatR/reference/at_check_containment.md)
+  reports ROIs that fall outside a container region declared by a
+  layer’s `within` metadata (e.g. state painted only inside the anatomy
+  `wound`), enforcing the annotation guideline’s containment rule.
 
 ### Layers, projects, and sessions
 
@@ -85,16 +95,30 @@ Initial development release.
 
 - [`at_mask()`](https://cttir.github.io/annotatR/reference/at_mask.md)
   produces binary, labelled, or multi-class integer masks with a
-  documented pixel-coverage contract, five overlap policies, and a
-  self-describing legend. Helpers:
+  documented pixel-coverage contract, six overlap policies, and a
+  self-describing legend. A `values` argument pins labels to explicit
+  integer codes, and the `"bitor"` overlap policy bitwise-ORs
+  overlapping values to build bitfield masks (e.g. an artefact layer
+  where a pixel is `specular | blood`). Helpers:
   [`at_mask_stats()`](https://cttir.github.io/annotatR/reference/at_mask_stats.md),
   [`at_mask_boundary()`](https://cttir.github.io/annotatR/reference/at_mask_boundary.md),
   [`at_mask_preview()`](https://cttir.github.io/annotatR/reference/at_mask_preview.md),
   [`at_mask_stack()`](https://cttir.github.io/annotatR/reference/at_mask_stack.md).
+- [`at_mask_derive()`](https://cttir.github.io/annotatR/reference/at_mask_derive.md)
+  combines layer masks into a derived training mask
+  (`state WHERE anatomy == keep AND artefact == 0 AND state != background`).
+- [`at_mask_agreement()`](https://cttir.github.io/annotatR/reference/at_mask_agreement.md)
+  scores two masks with per-class Dice / IoU and an overall accuracy and
+  Cohen’s kappa (e.g. against a `.npy` ground truth).
 - [`at_write_mask()`](https://cttir.github.io/annotatR/reference/at_write_mask.md)
   writes TIFF/PNG/RDS with a sidecar JSON legend;
   [`at_read_mask()`](https://cttir.github.io/annotatR/reference/at_read_mask.md)
   polygonises a mask back into editable ROIs.
+  [`at_write_npy()`](https://cttir.github.io/annotatR/reference/at_write_npy.md)
+  /
+  [`at_read_npy()`](https://cttir.github.io/annotatR/reference/at_read_npy.md)
+  losslessly interchange integer masks (incl. bitfields) with NumPy
+  `.npy`, the format used by external HSI annotation tools.
 
 ### Extraction, plots, interchange, and batch
 

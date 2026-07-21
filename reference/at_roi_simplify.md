@@ -32,6 +32,7 @@ with simplified geometry.
 ## See also
 
 Other geometry:
+[`at_check_containment()`](https://cttir.github.io/annotatR/reference/at_check_containment.md),
 [`at_check_geometry()`](https://cttir.github.io/annotatR/reference/at_check_geometry.md),
 [`at_clamp()`](https://cttir.github.io/annotatR/reference/at_clamp.md),
 [`at_fix_geometry()`](https://cttir.github.io/annotatR/reference/at_fix_geometry.md),
@@ -41,6 +42,7 @@ Other geometry:
 [`at_roi_distance()`](https://cttir.github.io/annotatR/reference/at_roi_distance.md),
 [`at_roi_overlaps()`](https://cttir.github.io/annotatR/reference/at_roi_overlaps.md),
 [`at_roi_rescale()`](https://cttir.github.io/annotatR/reference/at_roi_rescale.md),
+[`at_roi_ring()`](https://cttir.github.io/annotatR/reference/at_roi_ring.md),
 [`at_roi_setops`](https://cttir.github.io/annotatR/reference/at_roi_setops.md),
 [`at_rois_overlap()`](https://cttir.github.io/annotatR/reference/at_rois_overlap.md),
 [`at_snap()`](https://cttir.github.io/annotatR/reference/at_snap.md),
@@ -51,6 +53,6 @@ Other geometry:
 ``` r
 at_roi_simplify(at_roi_circle(50, 50, 10, n_seg = 128, label = "a"), 1)
 #> <annot_roi> a (POLYGON)
-#> id: "roi_000000058"  |  level: 0  |  source: manual
+#> id: "roi_000000071"  |  level: 0  |  source: manual
 #> bbox: [40, 40] - [60, 60]
 ```

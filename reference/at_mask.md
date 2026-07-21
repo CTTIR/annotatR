@@ -15,7 +15,8 @@ at_mask(
   background = 0L,
   touches = FALSE,
   dims = NULL,
-  overlap = c("last", "first", "max", "min", "error"),
+  values = NULL,
+  overlap = c("last", "first", "max", "min", "error", "bitor"),
   engine = c("stars", "terra"),
   call = rlang::caller_env()
 )
@@ -61,11 +62,20 @@ at_mask(
   Optional `c(width, height)`; taken from the image (projects) or the
   geometry bounding box otherwise.
 
+- values:
+
+  Optional named integer vector mapping labels to explicit class codes
+  (e.g. `c(specular = 1L, blood = 2L, shadow = 4L)`), used only for
+  `type = "multiclass"`. When `NULL` (default) codes follow first-seen
+  label order. Supply power-of-two codes together with
+  `overlap = "bitor"` to build a bitfield mask.
+
 - overlap:
 
   How overlapping ROIs resolve: `"last"` (later z-order wins, the
-  default), `"first"`, `"max"`, `"min"`, or `"error"` (abort on any
-  overlap).
+  default), `"first"`, `"max"`, `"min"`, `"error"` (abort on any
+  overlap), or `"bitor"` (bitwise-OR the overlapping values, for
+  bitfield masks; use with power-of-two `values` and `background = 0`).
 
 - engine:
 
@@ -101,14 +111,18 @@ polygon touches it at all. ROI coordinates use the image convention
 [`at_mask_stats()`](https://cttir.github.io/annotatR/reference/at_mask_stats.md)
 
 Other masks:
+[`at_mask_agreement()`](https://cttir.github.io/annotatR/reference/at_mask_agreement.md),
 [`at_mask_boundary()`](https://cttir.github.io/annotatR/reference/at_mask_boundary.md),
+[`at_mask_derive()`](https://cttir.github.io/annotatR/reference/at_mask_derive.md),
 [`at_mask_legend()`](https://cttir.github.io/annotatR/reference/at_mask_legend.md),
 [`at_mask_preview()`](https://cttir.github.io/annotatR/reference/at_mask_preview.md),
 [`at_mask_stack()`](https://cttir.github.io/annotatR/reference/at_mask_stack.md),
 [`at_mask_stats()`](https://cttir.github.io/annotatR/reference/at_mask_stats.md),
 [`at_read_mask()`](https://cttir.github.io/annotatR/reference/at_read_mask.md),
+[`at_read_npy()`](https://cttir.github.io/annotatR/reference/at_read_npy.md),
 [`at_write_mask()`](https://cttir.github.io/annotatR/reference/at_write_mask.md),
-[`at_write_masks()`](https://cttir.github.io/annotatR/reference/at_write_masks.md)
+[`at_write_masks()`](https://cttir.github.io/annotatR/reference/at_write_masks.md),
+[`at_write_npy()`](https://cttir.github.io/annotatR/reference/at_write_npy.md)
 
 ## Examples
 

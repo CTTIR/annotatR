@@ -1,11 +1,20 @@
-# Buffer an ROI
+# Ring (annulus) along an ROI margin
 
-Buffer an ROI
+Build a band straddling an ROI's boundary – the natural shape for a
+"penumbra" region along an injury or wound margin. The ring extends
+`outer` units outside the boundary and `inner` units inside it, formed
+as the set difference of the outward and inward buffers.
 
 ## Usage
 
 ``` r
-at_roi_buffer(roi, dist, call = rlang::caller_env())
+at_roi_ring(
+  roi,
+  outer,
+  inner = 0,
+  label = roi$label,
+  call = rlang::caller_env()
+)
 ```
 
 ## Arguments
@@ -15,9 +24,18 @@ at_roi_buffer(roi, dist, call = rlang::caller_env())
   An
   [annot_roi](https://cttir.github.io/annotatR/reference/annotatR-classes.md).
 
-- dist:
+- outer:
 
-  Numeric buffer distance in pixels (may be negative to erode).
+  Non-negative outward width (dilation) of the ring.
+
+- inner:
+
+  Non-negative inward width (erosion) of the ring. Default `0`, a purely
+  external band.
+
+- label:
+
+  Label for the derived ring ROI. Default the source ROI's label.
 
 - call:
 
@@ -25,11 +43,14 @@ at_roi_buffer(roi, dist, call = rlang::caller_env())
 
 ## Value
 
-An
+A derived
 [annot_roi](https://cttir.github.io/annotatR/reference/annotatR-classes.md)
-with the buffered geometry.
+(an annulus) with `source = "derived"`.
 
 ## See also
+
+[`at_roi_buffer()`](https://cttir.github.io/annotatR/reference/at_roi_buffer.md),
+[`at_roi_difference()`](https://cttir.github.io/annotatR/reference/at_roi_setops.md)
 
 Other geometry:
 [`at_check_containment()`](https://cttir.github.io/annotatR/reference/at_check_containment.md),
@@ -37,11 +58,11 @@ Other geometry:
 [`at_clamp()`](https://cttir.github.io/annotatR/reference/at_clamp.md),
 [`at_fix_geometry()`](https://cttir.github.io/annotatR/reference/at_fix_geometry.md),
 [`at_flip_y()`](https://cttir.github.io/annotatR/reference/at_flip_y.md),
+[`at_roi_buffer()`](https://cttir.github.io/annotatR/reference/at_roi_buffer.md),
 [`at_roi_contains()`](https://cttir.github.io/annotatR/reference/at_roi_contains.md),
 [`at_roi_distance()`](https://cttir.github.io/annotatR/reference/at_roi_distance.md),
 [`at_roi_overlaps()`](https://cttir.github.io/annotatR/reference/at_roi_overlaps.md),
 [`at_roi_rescale()`](https://cttir.github.io/annotatR/reference/at_roi_rescale.md),
-[`at_roi_ring()`](https://cttir.github.io/annotatR/reference/at_roi_ring.md),
 [`at_roi_setops`](https://cttir.github.io/annotatR/reference/at_roi_setops.md),
 [`at_roi_simplify()`](https://cttir.github.io/annotatR/reference/at_roi_simplify.md),
 [`at_rois_overlap()`](https://cttir.github.io/annotatR/reference/at_rois_overlap.md),
@@ -51,8 +72,9 @@ Other geometry:
 ## Examples
 
 ``` r
-at_roi_buffer(at_roi_point(10, 10, label = "a"), dist = 5)
-#> <annot_roi> a (POLYGON)
-#> id: "roi_000000054"  |  level: 0  |  source: manual
-#> bbox: [5, 5] - [15, 15]
+inj <- at_roi_rect(10, 10, 20, 20, label = "injury")
+at_roi_ring(inj, outer = 3, label = "penumbra")
+#> <annot_roi> penumbra (POLYGON)
+#> id: "roi_000000067"  |  level: 0  |  source: derived
+#> bbox: [7, 7] - [23, 23]
 ```

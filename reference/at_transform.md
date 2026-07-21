@@ -45,6 +45,7 @@ with coordinates at `to_level`. Exactly invertible.
 [`at_roi_rescale()`](https://cttir.github.io/annotatR/reference/at_roi_rescale.md)
 
 Other geometry:
+[`at_check_containment()`](https://cttir.github.io/annotatR/reference/at_check_containment.md),
 [`at_check_geometry()`](https://cttir.github.io/annotatR/reference/at_check_geometry.md),
 [`at_clamp()`](https://cttir.github.io/annotatR/reference/at_clamp.md),
 [`at_fix_geometry()`](https://cttir.github.io/annotatR/reference/at_fix_geometry.md),
@@ -54,6 +55,7 @@ Other geometry:
 [`at_roi_distance()`](https://cttir.github.io/annotatR/reference/at_roi_distance.md),
 [`at_roi_overlaps()`](https://cttir.github.io/annotatR/reference/at_roi_overlaps.md),
 [`at_roi_rescale()`](https://cttir.github.io/annotatR/reference/at_roi_rescale.md),
+[`at_roi_ring()`](https://cttir.github.io/annotatR/reference/at_roi_ring.md),
 [`at_roi_setops`](https://cttir.github.io/annotatR/reference/at_roi_setops.md),
 [`at_roi_simplify()`](https://cttir.github.io/annotatR/reference/at_roi_simplify.md),
 [`at_rois_overlap()`](https://cttir.github.io/annotatR/reference/at_rois_overlap.md),
@@ -66,6 +68,6 @@ img <- at_example_image("multiplex")
 r <- at_roi_rect(0, 0, 100, 100, label = "a")
 at_transform(r, from_level = 0, to_level = 2, img = img)
 #> <annot_roi> a (POLYGON)
-#> id: "roi_000000066"  |  level: 2  |  source: manual
+#> id: "roi_000000079"  |  level: 2  |  source: manual
 #> bbox: [0, 0] - [25, 25]
 ```

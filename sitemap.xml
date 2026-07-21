@@ -32,6 +32,7 @@
 <url><loc>https://cttir.github.io/annotatR/reference/at_canvas_set_band.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_canvas_set_overlay.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_canvas_set_tool.html</loc></url>
+<url><loc>https://cttir.github.io/annotatR/reference/at_check_containment.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_check_geometry.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_clamp.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_current.html</loc></url>
@@ -59,7 +60,9 @@
 <url><loc>https://cttir.github.io/annotatR/reference/at_load_session.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_manifest.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_mask.html</loc></url>
+<url><loc>https://cttir.github.io/annotatR/reference/at_mask_agreement.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_mask_boundary.html</loc></url>
+<url><loc>https://cttir.github.io/annotatR/reference/at_mask_derive.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_mask_legend.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_mask_preview.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_mask_stack.html</loc></url>
@@ -81,6 +84,7 @@
 <url><loc>https://cttir.github.io/annotatR/reference/at_read_geojson.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_read_image.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_read_mask.html</loc></url>
+<url><loc>https://cttir.github.io/annotatR/reference/at_read_npy.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_read_qupath.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_read_rois_csv.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_remove_layer.html</loc></url>
@@ -102,6 +106,7 @@
 <url><loc>https://cttir.github.io/annotatR/reference/at_roi_polygon.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_roi_rect.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_roi_rescale.html</loc></url>
+<url><loc>https://cttir.github.io/annotatR/reference/at_roi_ring.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_roi_setops.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_roi_simplify.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_rois.html</loc></url>
@@ -123,6 +128,7 @@
 <url><loc>https://cttir.github.io/annotatR/reference/at_write_geojson.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_write_mask.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_write_masks.html</loc></url>
+<url><loc>https://cttir.github.io/annotatR/reference/at_write_npy.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_write_qupath.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/at_write_rois_csv.html</loc></url>
 <url><loc>https://cttir.github.io/annotatR/reference/index.html</loc></url>

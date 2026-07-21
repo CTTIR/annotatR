@@ -195,6 +195,8 @@ Transforms, set operations, predicates, and validity.
   [`at_roi_difference()`](https://cttir.github.io/annotatR/reference/at_roi_setops.md)
   [`at_roi_symdiff()`](https://cttir.github.io/annotatR/reference/at_roi_setops.md)
   : Set operations on ROIs
+- [`at_roi_ring()`](https://cttir.github.io/annotatR/reference/at_roi_ring.md)
+  : Ring (annulus) along an ROI margin
 - [`at_roi_contains()`](https://cttir.github.io/annotatR/reference/at_roi_contains.md)
   : Test whether points fall inside an ROI
 - [`at_roi_overlaps()`](https://cttir.github.io/annotatR/reference/at_roi_overlaps.md)
@@ -207,6 +209,8 @@ Transforms, set operations, predicates, and validity.
   : Check the geometry of every ROI in a project
 - [`at_fix_geometry()`](https://cttir.github.io/annotatR/reference/at_fix_geometry.md)
   : Repair the geometry of a project
+- [`at_check_containment()`](https://cttir.github.io/annotatR/reference/at_check_containment.md)
+  : Check cross-layer containment
 
 ## Layers and projects
 
@@ -280,22 +284,46 @@ Rasterise annotations and round-trip masks.
 
 - [`at_mask()`](https://cttir.github.io/annotatR/reference/at_mask.md) :
   Rasterise ROIs to a mask ("Schablone")
+
 - [`at_mask_legend()`](https://cttir.github.io/annotatR/reference/at_mask_legend.md)
   : Legend of a mask
+
 - [`at_mask_stats()`](https://cttir.github.io/annotatR/reference/at_mask_stats.md)
   : Per-value statistics of a mask
+
 - [`at_mask_boundary()`](https://cttir.github.io/annotatR/reference/at_mask_boundary.md)
   : Object boundaries of a mask
+
 - [`at_mask_preview()`](https://cttir.github.io/annotatR/reference/at_mask_preview.md)
   : Downsampled preview of a mask
+
 - [`at_mask_stack()`](https://cttir.github.io/annotatR/reference/at_mask_stack.md)
   : Stack per-layer masks into a 3D array
+
+- [`at_mask_derive()`](https://cttir.github.io/annotatR/reference/at_mask_derive.md)
+  : Derive a training mask from layer masks
+
+- [`at_mask_agreement()`](https://cttir.github.io/annotatR/reference/at_mask_agreement.md)
+  : Agreement between two masks
+
 - [`at_write_mask()`](https://cttir.github.io/annotatR/reference/at_write_mask.md)
   : Write a mask to disk
+
 - [`at_read_mask()`](https://cttir.github.io/annotatR/reference/at_read_mask.md)
   : Read a mask into editable ROIs
+
 - [`at_write_masks()`](https://cttir.github.io/annotatR/reference/at_write_masks.md)
   : Batch-write the masks of a project
+
+- [`at_write_npy()`](https://cttir.github.io/annotatR/reference/at_write_npy.md)
+  :
+
+  Write a mask to a NumPy `.npy` file
+
+- [`at_read_npy()`](https://cttir.github.io/annotatR/reference/at_read_npy.md)
+  :
+
+  Read a NumPy `.npy` integer mask
 
 ## Extraction
 
