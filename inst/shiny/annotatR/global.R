@@ -29,5 +29,22 @@
   s
 }
 
-# Suite accent colour.
-.app_accent <- "#5E2C8E"
+# Suite accent colour (Hugo Coder blue; the gold is used for ROI handles).
+.app_accent <- "#1f6feb"
+
+# The app theme: Hugo Coder colour language. Bootstrap 5 with a blue primary and
+# JetBrains Mono display type; the navy dark palette is finished in custom.css,
+# keyed on data-bs-theme so the light/dark/auto toggle switches it. Fonts are
+# system/local only (no CDN) so the app works fully offline.
+.app_theme <- function() {
+  bslib::bs_theme(
+    version = 5,
+    primary = .app_accent,
+    base_font = bslib::font_collection(
+      "Inter", "system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"),
+    code_font = bslib::font_collection(
+      "JetBrains Mono", "ui-monospace", "SFMono-Regular", "Menlo", "monospace"),
+    heading_font = bslib::font_collection(
+      "JetBrains Mono", "Inter", "system-ui")
+  )
+}

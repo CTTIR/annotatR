@@ -42,9 +42,14 @@ mod_queue_server <- function(id, rv) {
     })
     output$list <- shiny::renderTable({
       m <- annotatR::at_session_status(rv$session)
-      if (input$filter != "all") m <- m[m$status == input$filter, , drop = FALSE]
-      data.frame(idx = m$idx, name = m$name,
-                 status = .status_glyph(m$status), n = m$n_rois)
+      n <- m$n_rois
+      # Live count for the image being edited (manifest counts only update on save).
+      if (!is.null(rv$project) && rv$cursor >= 1L && rv$cursor <= length(n)) {
+        n[rv$cursor] <- nrow(annotatR::at_rois(rv$project))
+      }
+      keep <- if (input$filter != "all") m$status == input$filter else rep(TRUE, nrow(m))
+      data.frame(idx = m$idx[keep], name = m$name[keep],
+                 status = .status_glyph(m$status[keep]), n = n[keep])
     })
     output$progress <- shiny::renderText({
       m <- annotatR::at_session_status(rv$session)

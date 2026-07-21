@@ -2,9 +2,9 @@
 # Launched via annotatR::at_annotate(); every call is namespace-qualified, with
 # no package attaching.
 
-# Load shared setup (.app_session(), .app_accent) and the module files. Sourced
-# explicitly so the app builds identically however it is launched, rather than
-# relying on the host auto-sourcing global.R.
+# Load shared setup (.app_session(), .app_accent, .app_theme) and the module
+# files. Sourced explicitly so the app builds identically however it is
+# launched, rather than relying on the host auto-sourcing global.R.
 source("global.R", local = FALSE)
 for (f in list.files("modules", pattern = "\\.R$", full.names = TRUE)) {
   source(f, local = FALSE)
@@ -17,7 +17,7 @@ for (f in list.files("modules", pattern = "\\.R$", full.names = TRUE)) {
     return(p)
   }
   img <- annotatR::at_read_image(session$manifest$path[i])
-  proj <- annotatR::at_project(img, meta = list(name = session$manifest$name[i]))
+  proj <- annotatR::at_project(img, name = session$manifest$name[i])
   for (L in session$layer_spec) proj <- annotatR::at_add_layer(proj, L)
   if (length(proj$layers) == 0L) {
     proj <- annotatR::at_add_layer(proj, annotatR::at_layer("annotations",
@@ -26,33 +26,58 @@ for (f in list.files("modules", pattern = "\\.R$", full.names = TRUE)) {
   proj
 }
 
+# ---- The annotation page: a clean three-column workspace ------------------
+# Queue (left) | canvas + tools (middle) | layers & labels (right). Everything
+# analytical lives on the other pages so this view stays uncluttered.
+.annotate_page <- bslib::layout_columns(
+  col_widths = c(3, 6, 3),
+  bslib::card(
+    class = "at-queue",
+    bslib::card_header("Queue"),
+    mod_queue_ui("queue")
+  ),
+  bslib::card(
+    bslib::card_header(class = "at-canvas-header", mod_session_ui("session")),
+    mod_canvas_ui("canvas")
+  ),
+  bslib::card(
+    bslib::card_header("Layers & labels"),
+    mod_layers_ui("layers"),
+    shiny::hr(),
+    mod_help_ui("help")
+  )
+)
+
+.summary_page <- bslib::layout_columns(
+  col_widths = c(6, 6),
+  bslib::card(bslib::card_header("Mask"), mod_mask_ui("mask")),
+  bslib::card(bslib::card_header("Spectra & ROIs"),
+              mod_spectrum_ui("spectrum"), shiny::hr(), mod_roitable_ui("roitable"))
+)
+
 ui <- bslib::page_navbar(
-  title = "annotatR",
-  theme = bslib::bs_theme(version = 5, primary = .app_accent),
+  id = "nav",
+  window_title = "annotatR",
+  theme = .app_theme(),
+  fillable = FALSE,
+  selected = "Annotate",
+  title = shiny::span(
+    class = "at-brand",
+    shiny::img(src = "logo.svg", class = "at-logo", alt = "annotatR"),
+    shiny::span("annotatR", class = "at-brandname")
+  ),
   header = shiny::tagList(
     shinyjs::useShinyjs(),
-    shiny::includeCSS("www/custom.css"),
+    shiny::tags$link(rel = "stylesheet", type = "text/css", href = "custom.css"),
     shiny::tags$script(src = "keys.js")
   ),
-  bslib::nav_panel(
-    "Annotate",
-    bslib::layout_columns(
-      col_widths = c(3, 6, 3),
-      bslib::card(bslib::card_header("Queue"), mod_queue_ui("queue")),
-      bslib::card(
-        bslib::card_header(mod_session_ui("session")),
-        mod_canvas_ui("canvas")
-      ),
-      bslib::card(
-        mod_layers_ui("layers"),
-        mod_mask_ui("mask"),
-        mod_spectrum_ui("spectrum"),
-        mod_roitable_ui("roitable"),
-        mod_export_ui("export"),
-        mod_help_ui("help")
-      )
-    )
-  )
+  bslib::nav_panel("Data", mod_data_ui("data")),
+  bslib::nav_panel("Dashboard", mod_dashboard_ui("dashboard")),
+  bslib::nav_panel("Annotate", .annotate_page),
+  bslib::nav_panel("Summary", .summary_page),
+  bslib::nav_panel("Export", bslib::card(bslib::card_header("Export"), mod_export_ui("export"))),
+  bslib::nav_spacer(),
+  bslib::nav_item(bslib::input_dark_mode(id = "dark_mode"))
 )
 
 server <- function(input, output, session) {
@@ -111,6 +136,8 @@ server <- function(input, output, session) {
     rv$saved <- "saved"
   }, ignoreNULL = FALSE)
 
+  mod_data_server("data", rv)
+  mod_dashboard_server("dashboard", rv)
   mod_queue_server("queue", rv)
   mod_canvas_server("canvas", rv)
   mod_layers_server("layers", rv)

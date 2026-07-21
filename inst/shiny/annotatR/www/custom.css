@@ -1,19 +1,91 @@
-/* annotatR app chrome. System font stacks only — no external/CDN fonts. */
+/* annotatR app chrome — Hugo Coder colour language (dark navy + blue accent,
+   JetBrains Mono display type). System/local fonts only, no CDN. */
+
 :root {
-  --at-accent: #5E2C8E;
   --at-ui-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --at-mono-font: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --at-blue: #1f6feb;
+  --at-blue-2: #388bfd;
+  --at-gold: #e3a008;
 }
 
-body { font-family: var(--at-ui-font); }
+/* ---- Palette: light (default) and dark, toggled via data-bs-theme -------- */
+:root, [data-bs-theme="light"] {
+  --bs-body-bg: #f6f8fb;
+  --bs-body-color: #14202e;
+  --bs-emphasis-color: #0c1420;
+  --bs-primary: var(--at-blue);
+  --at-surface: #ffffff;
+  --at-surface-2: #eef2f7;
+  --at-border: #d7e0ea;
+  --at-muted: #5b7085;
+}
+[data-bs-theme="dark"] {
+  --bs-body-bg: #0c1420;
+  --bs-body-color: #c9d6e4;
+  --bs-emphasis-color: #ffffff;
+  --at-surface: #121b28;
+  --at-surface-2: #1e2c3f;
+  --at-border: #24344a;
+  --at-muted: #7f93a8;
+  color-scheme: dark;
+}
 
-.at-toolbar { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
-.at-toolbar .btn { padding: 2px 8px; font-size: 0.85rem; }
+body { font-family: var(--at-ui-font); background: var(--bs-body-bg); }
 
-.at-queue-controls { display: flex; gap: 4px; align-items: center; margin-bottom: 6px; }
+/* ---- Navbar / brand ------------------------------------------------------ */
+.navbar { border-bottom: 1px solid var(--at-border); }
+.at-brand { display: inline-flex; align-items: center; gap: 10px; }
+.at-brand .at-logo { height: 30px; width: auto; display: block; }
+.at-brand .at-brandname {
+  font-family: var(--at-mono-font); font-weight: 700; letter-spacing: .5px;
+  font-size: 1.15rem;
+}
+.navbar .nav-link { font-family: var(--at-mono-font); font-size: .92rem; }
 
-.at-progress, .at-saved { font-family: var(--at-mono-font); font-size: 0.85rem; }
+/* ---- Cards / headers ----------------------------------------------------- */
+.card { background: var(--at-surface); border-color: var(--at-border); }
+.card-header {
+  background: transparent; border-bottom: 1px solid var(--at-border);
+  color: var(--bs-emphasis-color); font-family: var(--at-mono-font);
+  font-size: .8rem; text-transform: uppercase; letter-spacing: .6px;
+}
+h5 { font-family: var(--at-mono-font); font-size: .78rem; text-transform: uppercase;
+     letter-spacing: .6px; color: var(--at-muted); margin: 14px 0 6px; }
 
-.at-warn { color: #D55E00; font-weight: 600; }
+/* ---- Toolbar / queue ----------------------------------------------------- */
+.at-toolbar { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+.at-toolbar .btn {
+  padding: 3px 9px; font-size: .82rem; font-family: var(--at-mono-font);
+  background: var(--at-surface-2); border: 1px solid var(--at-border);
+  color: var(--bs-body-color);
+}
+.at-toolbar .btn:hover, .at-toolbar .btn.active { background: var(--at-blue); color: #fff; border-color: var(--at-blue); }
 
-.card-header { background: var(--at-accent); color: #fff; }
+.at-queue-controls { display: flex; gap: 4px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+.at-progress, .at-saved { font-family: var(--at-mono-font); font-size: .82rem; color: var(--at-muted); }
+.at-warn { color: var(--at-gold); font-weight: 600; }
+
+/* Data/queue tables read as compact monospace records. */
+table { font-size: .85rem; }
+.table td, .table th { border-color: var(--at-border); }
+.at-queue table, .at-metrics { font-family: var(--at-mono-font); }
+
+/* ---- Canvas -------------------------------------------------------------- */
+/* Force a tall working canvas; the widget's browser.fill sizing otherwise
+   collapses inside a non-fillable card. */
+.atcanvas, .atcanvas.html-widget {
+  height: 62vh !important; max-height: 660px; min-height: 440px;
+  border: 1px solid var(--at-border); border-radius: 6px; overflow: hidden;
+  background: #060a12;
+}
+.at-canvas-header { padding-top: 6px; padding-bottom: 6px; }
+
+/* ---- Dashboard metric tiles --------------------------------------------- */
+.at-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.at-tile { background: var(--at-surface); border: 1px solid var(--at-border); border-radius: 8px; padding: 14px 16px; }
+.at-tile .at-tile-val { font-family: var(--at-mono-font); font-size: 1.7rem; font-weight: 700; color: var(--at-blue-2); line-height: 1; }
+.at-tile .at-tile-lab { font-size: .72rem; text-transform: uppercase; letter-spacing: .6px; color: var(--at-muted); margin-top: 6px; }
+
+.btn-primary { --bs-btn-bg: var(--at-blue); --bs-btn-border-color: var(--at-blue); --bs-btn-hover-bg: var(--at-blue-2); --bs-btn-hover-border-color: var(--at-blue-2); }
+a, .nav-link.active { color: var(--at-blue-2); }
