@@ -34,6 +34,7 @@ at_transform(r, from_level = 0, to_level = 2, img = img)
 \code{\link[=at_roi_rescale]{at_roi_rescale()}}
 
 Other geometry:
+\code{\link[=at_check_containment]{at_check_containment()}},
 \code{\link[=at_check_geometry]{at_check_geometry()}},
 \code{\link[=at_clamp]{at_clamp()}},
 \code{\link[=at_fix_geometry]{at_fix_geometry()}},

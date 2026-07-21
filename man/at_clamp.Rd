@@ -25,6 +25,7 @@ at_clamp(at_roi_rect(-5, -5, 20, 20, label = "a"), dims = c(10, 10))
 }
 \seealso{
 Other geometry:
+\code{\link[=at_check_containment]{at_check_containment()}},
 \code{\link[=at_check_geometry]{at_check_geometry()}},
 \code{\link[=at_fix_geometry]{at_fix_geometry()}},
 \code{\link[=at_flip_y]{at_flip_y()}},

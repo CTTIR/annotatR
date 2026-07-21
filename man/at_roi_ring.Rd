@@ -41,6 +41,7 @@ at_roi_ring(inj, outer = 3, label = "penumbra")
 \code{\link[=at_roi_buffer]{at_roi_buffer()}}, \code{\link[=at_roi_difference]{at_roi_difference()}}
 
 Other geometry:
+\code{\link[=at_check_containment]{at_check_containment()}},
 \code{\link[=at_check_geometry]{at_check_geometry()}},
 \code{\link[=at_clamp]{at_clamp()}},
 \code{\link[=at_fix_geometry]{at_fix_geometry()}},

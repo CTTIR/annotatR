@@ -28,6 +28,9 @@ Initial development release.
   `at_roi_ring()` (an annulus straddling an ROI margin, e.g. a penumbra band),
   predicates `at_roi_contains()`/`overlaps()`/`distance()`/`at_rois_overlap()`,
   and validation `at_check_geometry()` / `at_fix_geometry()`.
+* `at_check_containment()` reports ROIs that fall outside a container region
+  declared by a layer's `within` metadata (e.g. state painted only inside the
+  anatomy `wound`), enforcing the annotation guideline's containment rule.
 
 ## Layers, projects, and sessions
 

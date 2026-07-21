@@ -24,6 +24,7 @@ at_roi_simplify(at_roi_circle(50, 50, 10, n_seg = 128, label = "a"), 1)
 }
 \seealso{
 Other geometry:
+\code{\link[=at_check_containment]{at_check_containment()}},
 \code{\link[=at_check_geometry]{at_check_geometry()}},
 \code{\link[=at_clamp]{at_clamp()}},
 \code{\link[=at_fix_geometry]{at_fix_geometry()}},

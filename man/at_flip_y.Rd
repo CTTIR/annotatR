@@ -25,6 +25,7 @@ at_flip_y(at_roi_rect(0, 0, 10, 5, label = "a"), height = 100)
 }
 \seealso{
 Other geometry:
+\code{\link[=at_check_containment]{at_check_containment()}},
 \code{\link[=at_check_geometry]{at_check_geometry()}},
 \code{\link[=at_clamp]{at_clamp()}},
 \code{\link[=at_fix_geometry]{at_fix_geometry()}},

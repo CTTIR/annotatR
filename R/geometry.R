@@ -467,6 +467,99 @@ at_check_geometry <- function(project, call = rlang::caller_env()) {
   do.call(rbind, rows)
 }
 
+#' Check cross-layer containment
+#'
+#' Report ROIs in a constrained layer that fall outside their container region.
+#' A layer declares the constraint through its metadata, e.g.
+#' `at_layer("state", within = list(layer = "anatomy", label = "wound"))`; then
+#' every ROI in `state` must be spatially covered by the union of the `anatomy`
+#' layer's `wound` ROIs. This enforces the annotation rule that a class is
+#' painted only inside its region of interest. The report mirrors the shape of
+#' [at_check_geometry()].
+#'
+#' @param project An [annot_project].
+#' @param tol Non-negative slack, in level-0 pixels, by which the container is
+#'   grown before testing, to tolerate sub-pixel tracing overhang. Default `0`.
+#' @param call The calling environment, for error reporting.
+#'
+#' @return A [tibble::tibble] with columns `roi_id`, `layer`, `issue`,
+#'   `severity` (`"warning"` for an ROI outside its container, `"error"` for a
+#'   missing/empty container), and `fixable` (always `FALSE`). A 0-row tibble
+#'   when every constrained ROI is contained, or when no layer declares a
+#'   `within` constraint.
+#' @family geometry
+#' @seealso [at_check_geometry()], [at_validate()]
+#' @export
+#' @examples
+#' anatomy <- at_layer_add(at_layer("anatomy", labels = "wound"),
+#'                         at_roi_rect(2, 2, 8, 8, label = "wound"))
+#' state <- at_layer("state", labels = "injury",
+#'                   within = list(layer = "anatomy", label = "wound"))
+#' state <- at_layer_add(state, at_roi_rect(0, 0, 4, 4, label = "injury"))
+#' at_check_containment(at_project(at_example_image("cube"), list(anatomy, state)))
+at_check_containment <- function(project, tol = 0, call = rlang::caller_env()) {
+  .check_project(project, call = call)
+  .check_number(tol, min = 0, call = call)
+  image <- project$image
+  empty <- tibble::tibble(
+    roi_id = character(0), layer = character(0), issue = character(0),
+    severity = character(0), fixable = logical(0)
+  )
+  issue_row <- function(roi_id, layer, issue, severity) {
+    tibble::tibble(roi_id = roi_id, layer = layer, issue = issue,
+                   severity = severity, fixable = FALSE)
+  }
+  rows <- list()
+  for (nm in names(project$layers)) {
+    lyr <- project$layers[[nm]]
+    within <- lyr$meta$within
+    if (is.null(within) || is.null(within$layer)) {
+      next
+    }
+    container <- project$layers[[within$layer]]
+    if (is.null(container)) {
+      rows[[length(rows) + 1L]] <- issue_row(
+        NA_character_, nm,
+        sprintf("container layer '%s' does not exist", within$layer), "error")
+      next
+    }
+    cgeoms <- list()
+    for (cr in container$rois) {
+      if (!is.null(within$label) && !(cr$label %in% within$label)) next
+      cgeoms[[length(cgeoms) + 1L]] <- .to_level0(cr$geometry, cr$level, image)
+    }
+    if (length(cgeoms) == 0L) {
+      rows[[length(rows) + 1L]] <- issue_row(
+        NA_character_, nm,
+        sprintf("container region in '%s' is empty", within$layer), "error")
+      next
+    }
+    cunion <- sf::st_union(do.call(c, cgeoms))
+    if (tol > 0) {
+      cunion <- suppressWarnings(sf::st_buffer(cunion, dist = tol))
+    }
+    for (r in lyr$rois) {
+      g0 <- .to_level0(r$geometry, r$level, image)
+      inside <- suppressMessages(sf::st_covered_by(g0, cunion, sparse = FALSE))
+      if (!isTRUE(inside[1, 1])) {
+        lab <- if (!is.null(within$label)) {
+          sprintf(" (label %s)", paste(within$label, collapse = "/"))
+        } else {
+          ""
+        }
+        rows[[length(rows) + 1L]] <- issue_row(
+          r$id, nm,
+          sprintf("ROI is not contained in layer '%s'%s", within$layer, lab),
+          "warning")
+      }
+    }
+  }
+  if (length(rows) == 0L) {
+    return(empty)
+  }
+  do.call(rbind, rows)
+}
+
 #' Repair the geometry of a project
 #'
 #' Apply `sf::st_make_valid()` to invalid ROIs (which also drops duplicate

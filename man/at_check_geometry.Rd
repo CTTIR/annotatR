@@ -29,6 +29,7 @@ at_check_geometry(at_example_project())
 \code{\link[=at_fix_geometry]{at_fix_geometry()}}, \code{\link[=at_validate]{at_validate()}}
 
 Other geometry:
+\code{\link[=at_check_containment]{at_check_containment()}},
 \code{\link[=at_clamp]{at_clamp()}},
 \code{\link[=at_fix_geometry]{at_fix_geometry()}},
 \code{\link[=at_flip_y]{at_flip_y()}},
