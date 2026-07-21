@@ -29,10 +29,10 @@ test_that("the tivita backend reads ENVI-conformant cubes and rejects proprietar
   img <- at_read_image(hdr, backend = "tivita")
   expect_identical(img$backend, "tivita")
   expect_equal(at_tile(img), arr, tolerance = 0)
-  # Proprietary path (no ENVI header) aborts with a clear message.
+  # Neither an ENVI export nor a SpecCube: aborts with a clear message.
   prop <- withr::local_tempfile(fileext = ".tvcube")
   writeLines("binary", prop)
-  expect_error(at_read_image(prop, backend = "tivita"), "proprietary")
+  expect_error(at_read_image(prop, backend = "tivita"), "ENVI|SpecCube|Tivita cube")
 })
 
 test_that("cuvis and ometiff report availability matching installation", {

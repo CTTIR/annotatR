@@ -14,3 +14,4 @@
 ^.*\.svg$
 ^\.vscode$
 ^annotatR_.*\.tar\.gz$
+^hsi-workbench$

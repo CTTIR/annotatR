@@ -225,6 +225,39 @@ at_roi_symdiff <- function(..., call = rlang::caller_env()) {
   .roi_from_geom(g, rois[[1]])
 }
 
+#' Ring (annulus) along an ROI margin
+#'
+#' Build a band straddling an ROI's boundary -- the natural shape for a
+#' "penumbra" region along an injury or wound margin. The ring extends `outer`
+#' units outside the boundary and `inner` units inside it, formed as the set
+#' difference of the outward and inward buffers.
+#'
+#' @param roi An [annot_roi].
+#' @param outer Non-negative outward width (dilation) of the ring.
+#' @param inner Non-negative inward width (erosion) of the ring. Default `0`, a
+#'   purely external band.
+#' @param label Label for the derived ring ROI. Default the source ROI's label.
+#' @param call The calling environment, for error reporting.
+#' @return A derived [annot_roi] (an annulus) with `source = "derived"`.
+#' @family geometry
+#' @seealso [at_roi_buffer()], [at_roi_difference()]
+#' @export
+#' @examples
+#' inj <- at_roi_rect(10, 10, 20, 20, label = "injury")
+#' at_roi_ring(inj, outer = 3, label = "penumbra")
+at_roi_ring <- function(roi, outer, inner = 0, label = roi$label,
+                        call = rlang::caller_env()) {
+  .check_roi(roi, call = call)
+  .check_number(outer, min = 0, call = call)
+  .check_number(inner, min = 0, call = call)
+  outer_roi <- at_roi_buffer(roi, outer)
+  inner_roi <- at_roi_buffer(roi, -inner)
+  ring <- at_roi_difference(outer_roi, inner_roi, call = call)
+  ring$label <- as.character(label)
+  ring$source <- "derived"
+  ring
+}
+
 # ---- Predicates ------------------------------------------------------------
 
 #' Test whether points fall inside an ROI

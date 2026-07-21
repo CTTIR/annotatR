@@ -23,12 +23,16 @@ Object boundaries of a mask
 \seealso{
 Other masks:
 \code{\link[=at_mask]{at_mask()}},
+\code{\link[=at_mask_agreement]{at_mask_agreement()}},
+\code{\link[=at_mask_derive]{at_mask_derive()}},
 \code{\link[=at_mask_legend]{at_mask_legend()}},
 \code{\link[=at_mask_preview]{at_mask_preview()}},
 \code{\link[=at_mask_stack]{at_mask_stack()}},
 \code{\link[=at_mask_stats]{at_mask_stats()}},
 \code{\link[=at_read_mask]{at_read_mask()}},
+\code{\link[=at_read_npy]{at_read_npy()}},
 \code{\link[=at_write_mask]{at_write_mask()}},
-\code{\link[=at_write_masks]{at_write_masks()}}
+\code{\link[=at_write_masks]{at_write_masks()}},
+\code{\link[=at_write_npy]{at_write_npy()}}
 }
 \concept{masks}

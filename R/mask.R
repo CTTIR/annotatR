@@ -169,9 +169,15 @@
 #' @param touches Logical; see the coverage contract. Default `FALSE`.
 #' @param dims Optional `c(width, height)`; taken from the image (projects) or
 #'   the geometry bounding box otherwise.
+#' @param values Optional named integer vector mapping labels to explicit class
+#'   codes (e.g. `c(specular = 1L, blood = 2L, shadow = 4L)`), used only for
+#'   `type = "multiclass"`. When `NULL` (default) codes follow first-seen label
+#'   order. Supply power-of-two codes together with `overlap = "bitor"` to build
+#'   a bitfield mask.
 #' @param overlap How overlapping ROIs resolve: `"last"` (later z-order wins,
-#'   the default), `"first"`, `"max"`, `"min"`, or `"error"` (abort on any
-#'   overlap).
+#'   the default), `"first"`, `"max"`, `"min"`, `"error"` (abort on any overlap),
+#'   or `"bitor"` (bitwise-OR the overlapping values, for bitfield masks; use
+#'   with power-of-two `values` and `background = 0`).
 #' @param engine `"stars"` (reference) or `"terra"` (accelerated, if installed);
 #'   the two produce identical masks.
 #' @param call The calling environment, for error reporting.
@@ -191,16 +197,17 @@
 at_mask <- function(x,
                     type = c("binary", "labelled", "multiclass"),
                     layer = NULL, label = NULL, level = 0L, background = 0L,
-                    touches = FALSE, dims = NULL,
-                    overlap = c("last", "first", "max", "min", "error"),
+                    touches = FALSE, dims = NULL, values = NULL,
+                    overlap = c("last", "first", "max", "min", "error", "bitor"),
                     engine = c("stars", "terra"),
                     call = rlang::caller_env()) {
   type <- .check_choice(type, c("binary", "labelled", "multiclass"), call = call)
-  overlap <- .check_choice(overlap, c("last", "first", "max", "min", "error"), call = call)
+  overlap <- .check_choice(overlap, c("last", "first", "max", "min", "error", "bitor"), call = call)
   engine <- .check_choice(engine, c("stars", "terra"), call = call)
   level <- .check_count(level, call = call)
   background <- .check_count(background, min = 0L, call = call)
   .check_flag(touches, call = call)
+  values <- .check_values_map(values, type, call = call)
 
   entries <- .collect_mask_rois(x, layer = layer, label = label, level = level, call = call)
   d <- .resolve_mask_dims(x, level, dims, entries, call = call)
@@ -209,8 +216,21 @@ at_mask <- function(x,
 
   # Assign each ROI a value according to the mask type.
   if (type == "multiclass") {
-    labels_all <- unique(vapply(entries, `[[`, character(1), "label"))
-    val_of <- function(e) match(e$label, labels_all)
+    if (!is.null(values)) {
+      present <- unique(vapply(entries, `[[`, character(1), "label"))
+      unmapped <- setdiff(present, names(values))
+      if (length(unmapped) > 0L) {
+        cli::cli_abort(
+          c("{.arg values} does not map every label present.",
+            "x" = "Unmapped label{?s}: {.val {unmapped}}."),
+          call = call
+        )
+      }
+      val_of <- function(e) values[[e$label]]
+    } else {
+      labels_all <- unique(vapply(entries, `[[`, character(1), "label"))
+      val_of <- function(e) match(e$label, labels_all)
+    }
   } else {
     val_of <- function(e) NA
   }
@@ -231,7 +251,7 @@ at_mask <- function(x,
                               touches, overlap, engine, call)
   }
 
-  legend <- .build_legend(type, entries, values, out, background)
+  legend <- .build_legend(type, entries, values, out, background, overlap)
 
   if (type == "binary") {
     out <- out != background
@@ -270,9 +290,37 @@ at_mask <- function(x,
       out[cover & (out == background)] <- value
       m2 <- cover & (out != background)
       out[m2] <- pmin(out[m2], value)
+    } else if (overlap == "bitor") {
+      out[cover] <- bitwOr(out[cover], value)
     }
   }
   out
+}
+
+# Validate an optional label -> integer-code map (multiclass only).
+.check_values_map <- function(values, type, call = rlang::caller_env()) {
+  if (is.null(values)) {
+    return(NULL)
+  }
+  if (type != "multiclass") {
+    cli::cli_abort(
+      c("{.arg values} is only supported for {.code type = \"multiclass\"}.",
+        "x" = "You supplied {.arg values} with {.code type = \"{type}\"}."),
+      call = call
+    )
+  }
+  nm <- names(values)
+  if (is.null(nm) || any(!nzchar(nm)) || anyDuplicated(nm)) {
+    cli::cli_abort(
+      c("{.arg values} must be a named integer vector with unique, non-empty names.",
+        "i" = "Names are labels; values are the integer codes to assign."),
+      call = call
+    )
+  }
+  if (any(is.na(values)) || any(values != as.integer(values))) {
+    cli::cli_abort("{.arg values} must contain whole numbers.", call = call)
+  }
+  stats::setNames(as.integer(values), nm)
 }
 
 # Batched rasterisation: burn all ROIs in one st_rasterize/terra call.
@@ -307,7 +355,10 @@ at_mask <- function(x,
 }
 
 # Build the legend tibble from the entries, their values, and the final mask.
-.build_legend <- function(type, entries, values, out, background) {
+# For the bitor policy, legend rows are the base (power-of-two) codes and pixel
+# counts include every pixel with that bit set (composite pixels count for each
+# of their bits).
+.build_legend <- function(type, entries, values, out, background, overlap = "last") {
   empty <- tibble::tibble(
     value = integer(0), label = character(0), layer = character(0),
     roi_id = character(0), n_px = integer(0), colour = character(0)
@@ -333,13 +384,15 @@ at_mask <- function(x,
     })
     return(do.call(rbind, rows))
   }
-  # multiclass: one row per distinct value.
+  # multiclass: one row per distinct base value. Under "bitor", a pixel counts
+  # for every bit it carries, so counts use bitwAnd rather than equality.
   vals <- sort(unique(values))
   rows <- lapply(vals, function(v) {
     e <- entries[[which(values == v)[1]]]
+    n <- if (overlap == "bitor") sum(bitwAnd(out, v) != 0L) else sum(out == v)
     tibble::tibble(
       value = as.integer(v), label = e$label, layer = e$layer,
-      roi_id = NA_character_, n_px = as.integer(sum(out == v)), colour = e$colour
+      roi_id = NA_character_, n_px = as.integer(n), colour = e$colour
     )
   })
   do.call(rbind, rows)
@@ -398,7 +451,7 @@ summary.annot_mask <- function(object, ...) {
 #'   `roi_id`, `n_px`, `colour`).
 #' @family masks
 #' @export
-#' @examples
+#' @examplesIf requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)
 #' at_mask_legend(at_mask(at_example_project(), "labelled"))
 at_mask_legend <- function(mask, call = rlang::caller_env()) {
   .check_class(mask, "annot_mask", call = call)
@@ -435,6 +488,82 @@ at_mask_stack <- function(project, layers = NULL, level = 0L,
                dimnames = list(NULL, NULL, nms))
   for (k in seq_along(planes)) arr[, , k] <- planes[[k]]
   arr
+}
+
+#' Derive a training mask from layer masks
+#'
+#' Combine rasterised layer masks into the derived training mask
+#' `state WHERE anatomy == keep_label AND artefact == 0 AND state != background`.
+#' This is the cross-layer operation the four-layer HSI scheme relies on: it
+#' keeps a state (class) label only where the anatomy layer marks the region of
+#' interest, no artefact bit is set, and the state is actually labelled.
+#'
+#' @param state An `annot_mask` of state (class) codes.
+#' @param anatomy An `annot_mask` of anatomy codes, sharing `state`'s dimensions
+#'   and level.
+#' @param artefact Optional `annot_mask` (bitfield); pixels with any artefact bit
+#'   set are dropped. `NULL` (default) applies no artefact exclusion.
+#' @param keep_label The anatomy label whose region is kept (e.g. `"wound"`).
+#' @param background Integer background/unlabeled value. Default `0`.
+#' @param call The calling environment, for error reporting.
+#'
+#' @return An `annot_mask` (multiclass) of the surviving state codes, with the
+#'   state legend restricted to those classes and pixel counts recomputed.
+#' @family masks
+#' @seealso [at_mask()], [at_mask_stack()]
+#' @export
+#' @examplesIf requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)
+#' proj <- at_example_project()
+#' # A single-layer project derives trivially; the four-layer HSI workflow passes
+#' # separate anatomy/state/artefact masks. See the masks vignette.
+#' m <- at_mask(proj, "multiclass")
+#' at_mask_derive(m, m, keep_label = at_mask_legend(m)$label[1])
+at_mask_derive <- function(state, anatomy, artefact = NULL, keep_label = "wound",
+                           background = 0L, call = rlang::caller_env()) {
+  .check_class(state, "annot_mask", call = call)
+  .check_class(anatomy, "annot_mask", call = call)
+  if (!is.null(artefact)) .check_class(artefact, "annot_mask", call = call)
+  background <- .check_count(background, min = 0L, call = call)
+  sm <- as.matrix(state)
+  am <- as.matrix(anatomy)
+  if (!identical(dim(sm), dim(am))) {
+    cli::cli_abort(
+      c("{.arg state} and {.arg anatomy} must have the same dimensions.",
+        "x" = "state is {nrow(sm)}x{ncol(sm)}; anatomy is {nrow(am)}x{ncol(am)}."),
+      call = call
+    )
+  }
+  lg_a <- attr(anatomy, "legend")
+  wound_val <- lg_a$value[match(keep_label, lg_a$label)]
+  if (length(wound_val) != 1L || is.na(wound_val)) {
+    cli::cli_abort(
+      c("{.arg keep_label} {.val {keep_label}} is not a label of the anatomy mask.",
+        "i" = "Anatomy labels: {.val {lg_a$label}}."),
+      call = call
+    )
+  }
+  keep <- (am == wound_val) & (sm != background)
+  if (!is.null(artefact)) {
+    fm <- as.matrix(artefact)
+    if (!identical(dim(fm), dim(sm))) {
+      cli::cli_abort(
+        c("{.arg artefact} must share the {.arg state} dimensions.",
+          "x" = "state is {nrow(sm)}x{ncol(sm)}; artefact is {nrow(fm)}x{ncol(fm)}."),
+        call = call
+      )
+    }
+    keep <- keep & (fm == 0L)
+  }
+  out <- sm
+  out[!keep] <- as.integer(background)
+  lg_s <- attr(state, "legend")
+  surv <- sort(unique(as.integer(out[out != background])))
+  lg <- lg_s[lg_s$value %in% surv, , drop = FALSE]
+  if (nrow(lg) > 0L) {
+    lg$n_px <- vapply(lg$value, function(v) as.integer(sum(out == v)), integer(1))
+  }
+  .new_annot_mask(out, lg, attr(state, "level"), attr(state, "dims"),
+                  "multiclass", source = attr(state, "source_project"))
 }
 
 #' Object boundaries of a mask
@@ -519,7 +648,7 @@ at_mask_preview <- function(mask, max_dim = 1024L, call = rlang::caller_env()) {
 #'   (`centroid_x`, `centroid_y`). A 0-row tibble when the mask is empty.
 #' @family masks
 #' @export
-#' @examples
+#' @examplesIf requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)
 #' at_mask_stats(at_mask(at_example_project(), "labelled"))
 at_mask_stats <- function(mask, pixel_size = NULL, call = rlang::caller_env()) {
   .check_class(mask, "annot_mask", call = call)

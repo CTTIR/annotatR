@@ -8,3 +8,6 @@ inst/doc/
 STATE.md
 *.tar.gz
 *.Rcheck/
+
+# Local HSI data workbench (not distributed)
+hsi-workbench/

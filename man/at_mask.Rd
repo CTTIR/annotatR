@@ -13,7 +13,8 @@ at_mask(
   background = 0L,
   touches = FALSE,
   dims = NULL,
-  overlap = c("last", "first", "max", "min", "error"),
+  values = NULL,
+  overlap = c("last", "first", "max", "min", "error", "bitor"),
   engine = c("stars", "terra"),
   call = rlang::caller_env()
 )
@@ -37,9 +38,16 @@ ROI), or \code{"multiclass"} (one id per label class).}
 \item{dims}{Optional \code{c(width, height)}; taken from the image (projects) or
 the geometry bounding box otherwise.}
 
+\item{values}{Optional named integer vector mapping labels to explicit class
+codes (e.g. \code{c(specular = 1L, blood = 2L, shadow = 4L)}), used only for
+\code{type = "multiclass"}. When \code{NULL} (default) codes follow first-seen label
+order. Supply power-of-two codes together with \code{overlap = "bitor"} to build
+a bitfield mask.}
+
 \item{overlap}{How overlapping ROIs resolve: \code{"last"} (later z-order wins,
-the default), \code{"first"}, \code{"max"}, \code{"min"}, or \code{"error"} (abort on any
-overlap).}
+the default), \code{"first"}, \code{"max"}, \code{"min"}, \code{"error"} (abort on any overlap),
+or \code{"bitor"} (bitwise-OR the overlapping values, for bitfield masks; use
+with power-of-two \code{values} and \code{background = 0}).}
 
 \item{engine}{\code{"stars"} (reference) or \code{"terra"} (accelerated, if installed);
 the two produce identical masks.}
@@ -76,13 +84,17 @@ table(as.integer(m))
 \code{\link[=at_write_mask]{at_write_mask()}}, \code{\link[=at_read_mask]{at_read_mask()}}, \code{\link[=at_mask_stats]{at_mask_stats()}}
 
 Other masks:
+\code{\link[=at_mask_agreement]{at_mask_agreement()}},
 \code{\link[=at_mask_boundary]{at_mask_boundary()}},
+\code{\link[=at_mask_derive]{at_mask_derive()}},
 \code{\link[=at_mask_legend]{at_mask_legend()}},
 \code{\link[=at_mask_preview]{at_mask_preview()}},
 \code{\link[=at_mask_stack]{at_mask_stack()}},
 \code{\link[=at_mask_stats]{at_mask_stats()}},
 \code{\link[=at_read_mask]{at_read_mask()}},
+\code{\link[=at_read_npy]{at_read_npy()}},
 \code{\link[=at_write_mask]{at_write_mask()}},
-\code{\link[=at_write_masks]{at_write_masks()}}
+\code{\link[=at_write_masks]{at_write_masks()}},
+\code{\link[=at_write_npy]{at_write_npy()}}
 }
 \concept{masks}

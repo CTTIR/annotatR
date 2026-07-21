@@ -19,7 +19,7 @@
 #' @family masks
 #' @seealso [at_read_mask()]
 #' @export
-#' @examples
+#' @examplesIf requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)
 #' m <- at_mask(at_example_project(), "labelled")
 #' f <- tempfile(fileext = ".tif")
 #' at_write_mask(m, f)
@@ -114,6 +114,9 @@ at_write_mask <- function(mask, path, format = c("tiff", "png", "rds"),
     obj <- readRDS(path)
     return(list(m = as.matrix(obj), mask = obj))
   }
+  if (ext == "npy") {
+    return(list(m = .npy_read_matrix(path, call = call), mask = NULL))
+  }
   if (requireNamespace("tiff", quietly = TRUE) && ext %in% c("tif", "tiff")) {
     raw <- suppressWarnings(tiff::readTIFF(path, as.is = TRUE))
     if (length(dim(raw)) == 3L) raw <- raw[, , 1]
@@ -148,7 +151,7 @@ at_write_mask <- function(mask, path, format = c("tiff", "png", "rds"),
 #' @family masks
 #' @seealso [at_write_mask()], [at_mask()]
 #' @export
-#' @examples
+#' @examplesIf requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)
 #' m <- at_mask(at_example_project(), "labelled")
 #' f <- tempfile(fileext = ".tif")
 #' at_write_mask(m, f)

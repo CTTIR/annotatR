@@ -24,17 +24,23 @@ A \link[tibble:tibble]{tibble::tibble} with one row per mask value: \code{value}
 Per-value statistics of a mask
 }
 \examples{
+\dontshow{if (requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 at_mask_stats(at_mask(at_example_project(), "labelled"))
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other masks:
 \code{\link[=at_mask]{at_mask()}},
+\code{\link[=at_mask_agreement]{at_mask_agreement()}},
 \code{\link[=at_mask_boundary]{at_mask_boundary()}},
+\code{\link[=at_mask_derive]{at_mask_derive()}},
 \code{\link[=at_mask_legend]{at_mask_legend()}},
 \code{\link[=at_mask_preview]{at_mask_preview()}},
 \code{\link[=at_mask_stack]{at_mask_stack()}},
 \code{\link[=at_read_mask]{at_read_mask()}},
+\code{\link[=at_read_npy]{at_read_npy()}},
 \code{\link[=at_write_mask]{at_write_mask()}},
-\code{\link[=at_write_masks]{at_write_masks()}}
+\code{\link[=at_write_masks]{at_write_masks()}},
+\code{\link[=at_write_npy]{at_write_npy()}}
 }
 \concept{masks}

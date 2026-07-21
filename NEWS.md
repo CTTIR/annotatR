@@ -8,6 +8,9 @@ Initial development release.
   auto-detecting the backend. `at_tile()` is the universal `[y, x, band]` tile
   accessor. Six backends ship (`raster`, `tiff`, `ometiff`, `cuvis`, `tivita`,
   `envi`); register more with `at_backend_register()`.
+* The `tivita` backend reads bare Diaspective Vision TIVITA `*_SpecCube.dat`
+  cubes directly (big-endian float32, 640x480x100, 500-995 nm), in addition to
+  ENVI-conformant exports; such cubes also auto-detect.
 * Accessors: `at_dims()`, `at_n_levels()`, `at_n_bands()`, `at_bands()`,
   `at_wavelengths()`, `at_is_spectral()`, `at_is_pyramidal()`,
   `at_pixel_size()`, `at_meta()`.
@@ -22,6 +25,7 @@ Initial development release.
   `at_roi_bbox()`, `at_roi_buffer()`, `at_roi_simplify()`, `at_roi_rescale()`,
   `at_transform()`, `at_flip_y()`, `at_snap()`, `at_clamp()`.
 * Set operations `at_roi_union()`/`intersect()`/`difference()`/`symdiff()`,
+  `at_roi_ring()` (an annulus straddling an ROI margin, e.g. a penumbra band),
   predicates `at_roi_contains()`/`overlaps()`/`distance()`/`at_rois_overlap()`,
   and validation `at_check_geometry()` / `at_fix_geometry()`.
 
@@ -37,11 +41,20 @@ Initial development release.
 ## Masks
 
 * `at_mask()` produces binary, labelled, or multi-class integer masks with a
-  documented pixel-coverage contract, five overlap policies, and a
-  self-describing legend. Helpers: `at_mask_stats()`, `at_mask_boundary()`,
+  documented pixel-coverage contract, six overlap policies, and a
+  self-describing legend. A `values` argument pins labels to explicit integer
+  codes, and the `"bitor"` overlap policy bitwise-ORs overlapping values to
+  build bitfield masks (e.g. an artefact layer where a pixel is
+  `specular | blood`). Helpers: `at_mask_stats()`, `at_mask_boundary()`,
   `at_mask_preview()`, `at_mask_stack()`.
+* `at_mask_derive()` combines layer masks into a derived training mask
+  (`state WHERE anatomy == keep AND artefact == 0 AND state != background`).
+* `at_mask_agreement()` scores two masks with per-class Dice / IoU and an
+  overall accuracy and Cohen's kappa (e.g. against a `.npy` ground truth).
 * `at_write_mask()` writes TIFF/PNG/RDS with a sidecar JSON legend;
-  `at_read_mask()` polygonises a mask back into editable ROIs.
+  `at_read_mask()` polygonises a mask back into editable ROIs. `at_write_npy()`
+  / `at_read_npy()` losslessly interchange integer masks (incl. bitfields) with
+  NumPy `.npy`, the format used by external HSI annotation tools.
 
 ## Extraction, plots, interchange, and batch
 

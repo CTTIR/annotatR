@@ -32,6 +32,7 @@ Other geometry:
 \code{\link[=at_roi_distance]{at_roi_distance()}},
 \code{\link[=at_roi_overlaps]{at_roi_overlaps()}},
 \code{\link[=at_roi_rescale]{at_roi_rescale()}},
+\code{\link[=at_roi_ring]{at_roi_ring()}},
 \code{\link{at_roi_setops}},
 \code{\link[=at_roi_simplify]{at_roi_simplify()}},
 \code{\link[=at_rois_overlap]{at_rois_overlap()}},
