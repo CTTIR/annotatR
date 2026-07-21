@@ -55,5 +55,9 @@ mod_queue_server <- function(id, rv) {
       m <- annotatR::at_session_status(rv$session)
       sprintf("%d / %d complete", sum(m$status == "complete"), nrow(m))
     })
+    # Keep the queue status current even while another page is in front, so ROI
+    # counts and statuses are up to date the moment you return to Annotate.
+    shiny::outputOptions(output, "list", suspendWhenHidden = FALSE)
+    shiny::outputOptions(output, "progress", suspendWhenHidden = FALSE)
   })
 }
