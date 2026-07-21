@@ -96,6 +96,10 @@ at_session <- function(paths, labels = character(), layers = NULL,
       call = call
     )
   }
+  # Store absolute paths: the session reads images lazily, and launchers such as
+  # at_annotate() change the working directory (shiny::runApp), so a relative
+  # path would no longer resolve at read time.
+  paths <- normalizePath(paths, mustWork = FALSE)
   .check_flag(autosave, call = call)
   n <- length(paths)
   manifest <- tibble::tibble(
