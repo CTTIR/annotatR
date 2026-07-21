@@ -2,6 +2,10 @@
 # Launched via annotatR::at_annotate(); every call is namespace-qualified, with
 # no package attaching.
 
+# Load shared setup (.app_session(), .app_accent) and the module files. Sourced
+# explicitly so the app builds identically however it is launched, rather than
+# relying on the host auto-sourcing global.R.
+source("global.R", local = FALSE)
 for (f in list.files("modules", pattern = "\\.R$", full.names = TRUE)) {
   source(f, local = FALSE)
 }
