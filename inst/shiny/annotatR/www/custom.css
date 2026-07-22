@@ -94,3 +94,12 @@ table { font-size: .85rem; }
 
 .btn-primary { --bs-btn-bg: var(--at-blue); --bs-btn-border-color: var(--at-blue); --bs-btn-hover-bg: var(--at-blue-2); --bs-btn-hover-border-color: var(--at-blue-2); }
 a, .nav-link.active { color: var(--at-blue-2); }
+
+/* ---- Static prose pages (About / Workflow / References / Impressum) ------- */
+.at-prose { max-width: 820px; line-height: 1.6; }
+.at-prose h3 { font-family: var(--at-mono-font); font-size: .95rem; text-transform: uppercase;
+               letter-spacing: .5px; color: var(--bs-emphasis-color); margin: 20px 0 8px; }
+.at-prose blockquote { border-left: 3px solid var(--at-border); margin: 8px 0; padding: 2px 0 2px 14px;
+                       color: var(--at-muted); font-family: var(--at-mono-font); font-size: .9rem; }
+.at-prose ul { padding-left: 20px; }
+.at-prose code { color: var(--at-blue-2); }

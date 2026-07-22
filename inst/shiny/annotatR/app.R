@@ -71,11 +71,15 @@ ui <- bslib::page_navbar(
     shiny::tags$link(rel = "stylesheet", type = "text/css", href = "custom.css"),
     shiny::tags$script(src = "keys.js")
   ),
+  bslib::nav_panel("About", .page_about()),
+  bslib::nav_panel("Workflow", .page_workflow()),
   bslib::nav_panel("Data", mod_data_ui("data")),
   bslib::nav_panel("Dashboard", mod_dashboard_ui("dashboard")),
   bslib::nav_panel("Annotate", .annotate_page),
   bslib::nav_panel("Summary", .summary_page),
   bslib::nav_panel("Export", bslib::card(bslib::card_header("Export"), mod_export_ui("export"))),
+  bslib::nav_panel("References", .page_references()),
+  bslib::nav_panel("Impressum", .page_impressum()),
   bslib::nav_spacer(),
   bslib::nav_item(bslib::input_dark_mode(id = "dark_mode"))
 )
