@@ -172,7 +172,7 @@ at_write_mask(m, mp)
 cat(readLines(paste0(mp, ".legend.json"))[1:14], sep = "\n")
 #> {
 #>   "annotatR_version": "0.0.1",
-#>   "created": "2026-07-22T07:41:11+0000",
+#>   "created": "2026-07-22T07:51:30+0000",
 #>   "mask_type": "labelled",
 #>   "level": 0,
 #>   "dims": [512, 512],
