@@ -105,14 +105,32 @@ test_that("session module saves and reports status", {
   })
 })
 
-test_that("export module writes the selected formats", {
+test_that("export writes the selected formats for the scope", {
   rv <- make_rv()
-  shiny::testServer(mod_export_server, args = list(id = "e", rv = rv), {
-    session$setInputs(formats = c("geojson", "csv"), scope = "current", run = 1)
-    dir <- file.path(rv$session$out_dir, "export")
-    expect_true(any(grepl("\\.geojson$", list.files(dir))))
-    expect_true(any(grepl("\\.csv$", list.files(dir))))
-  })
+  dir <- tempfile("atexport"); dir.create(dir)
+  rc <- shiny::isolate(.write_exports(rv, c("geojson", "csv"), "current", dir))
+  expect_true(any(grepl("\\.geojson$", list.files(dir))))
+  expect_true(any(grepl("\\.csv$", list.files(dir))))
+  expect_setequal(rc$format, c("geojson", "csv"))
+})
+
+test_that("export scope 'all' covers every annotated image, skipping empties", {
+  rv <- make_rv()  # 3-image session, only the current image has a project/ROIs
+  dir <- tempfile("atexport"); dir.create(dir)
+  rc <- shiny::isolate(.write_exports(rv, "geojson", "all", dir))
+  expect_true(nrow(rc) >= 1L)
+  expect_length(attr(rc, "skipped"), 2L)  # the two unvisited images
+})
+
+test_that("export zips selected files flat, by basename", {
+  skip_if_not_installed("zip")
+  dir <- tempfile("atzip"); dir.create(dir)
+  writeLines("x", file.path(dir, "a.geojson"))
+  writeLines("y", file.path(dir, "b.tif"))
+  zf <- tempfile(fileext = ".zip")
+  .zip_into(zf, file.path(dir, c("a.geojson", "b.tif")), dir)
+  expect_true(file.exists(zf))
+  expect_setequal(zip::zip_list(zf)$filename, c("a.geojson", "b.tif"))
 })
 
 test_that("help module renders the shortcut table", {

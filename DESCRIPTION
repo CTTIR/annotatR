@@ -47,7 +47,8 @@ Suggests:
     testthat (>= 3.0.0),
     tiff,
     withr,
-    xml2
+    xml2,
+    zip
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 Config/roxygen2/version: 8.0.0
