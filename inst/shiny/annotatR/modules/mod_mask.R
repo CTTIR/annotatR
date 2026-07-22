@@ -8,7 +8,7 @@ mod_mask_ui <- function(id) {
                         choices = c("binary", "labelled", "multiclass"),
                         selected = "labelled", inline = TRUE),
     shiny::selectInput(ns("overlap"), "Overlap",
-                       choices = c("last", "first", "max", "min", "error")),
+                       choices = c("last", "first", "max", "min")),
     shiny::plotOutput(ns("preview"), height = "200px"),
     shiny::uiOutput(ns("overlap_warn")),
     shiny::tableOutput(ns("stats")),
@@ -28,11 +28,18 @@ mod_mask_server <- function(id, rv) {
     shiny::observeEvent(input$type, rv$mask_type <- input$type)
     shiny::observeEvent(input$overlap, rv$overlap <- input$overlap)
     output$preview <- shiny::renderPlot({
-      m <- .current_mask(rv)
+      m <- tryCatch(.current_mask(rv), error = function(e) e)
+      if (inherits(m, "error")) {
+        graphics::plot.new()
+        graphics::text(0.5, 0.5, paste("Mask unavailable:", conditionMessage(m)),
+                       cex = 0.9)
+        return(invisible())
+      }
       annotatR::at_plot_mask(annotatR::at_mask_preview(m, max_dim = 400L))
     })
     output$stats <- shiny::renderTable({
-      m <- .current_mask(rv)
+      m <- tryCatch(.current_mask(rv), error = function(e) NULL)
+      if (is.null(m)) return(NULL)
       st <- annotatR::at_mask_stats(m)
       st[, c("label", "n_px", "frac_total")]
     })
