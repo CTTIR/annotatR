@@ -85,6 +85,35 @@ mod_canvas_server <- function(id, rv) {
       rv$saved <- "unsaved"
     })
 
+    # Erase tool: click an ROI to remove it.
+    shiny::observeEvent(input$canvas_erased, {
+      shiny::req(rv$project, input$canvas_erased)
+      rv$undo <- c(rv$undo, list(rv$project))
+      rv$redo <- list()
+      rv$project <- annotatR::at_remove_roi(rv$project, input$canvas_erased)
+      rv$saved <- "unsaved"
+    })
+
+    # Edit tool: drag an ROI to move it; commit the new geometry in place.
+    shiny::observeEvent(input$canvas_edited, {
+      ed <- input$canvas_edited
+      shiny::req(rv$project, ed$roi_id, ed$geometry)
+      roi <- tryCatch(.feature_to_roi(list(type = "Feature", geometry = ed$geometry,
+                                           properties = list()),
+                                      ed$label %||% "unlabelled"),
+                      error = function(e) e)
+      if (inherits(roi, "error")) {
+        shiny::showNotification(paste("Edit failed:", conditionMessage(roi)), type = "warning")
+        return()
+      }
+      rv$undo <- c(rv$undo, list(rv$project))
+      rv$redo <- list()
+      proj <- annotatR::at_remove_roi(rv$project, ed$roi_id)
+      proj <- annotatR::at_add_roi(proj, ed$layer %||% names(proj$layers)[1], roi)
+      rv$project <- proj
+      rv$saved <- "unsaved"
+    })
+
     # Shift+V: paste the previous image's ROIs as editable geometry.
     shiny::observeEvent(rv$paste_forward, {
       shiny::req(rv$project, rv$cursor > 1L)

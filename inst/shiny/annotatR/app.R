@@ -86,7 +86,7 @@ server <- function(input, output, session) {
     session = sess0, cursor = sess0$cursor, project = NULL, tool = "pan",
     active_layer = NULL, active_label = NULL, mask_type = "labelled",
     overlap = "last", undo = list(), redo = list(), saved = "saved",
-    paste_forward = NULL
+    paste_forward = NULL, trigger_save = NULL, trigger_help = NULL
   )
 
   # Route global keyboard shortcuts (from www/keys.js) to state and actions.
@@ -120,6 +120,39 @@ server <- function(input, output, session) {
     }
   })
   shiny::observeEvent(input$key_paste_forward, rv$paste_forward <- input$key_paste_forward)
+  # N: jump to the next pending image (mirrors the queue's Next-pending button).
+  shiny::observeEvent(input$key_next_pending, {
+    m <- annotatR::at_session_status(rv$session)
+    pending <- which(m$status == "pending")
+    nxt <- pending[pending > rv$cursor]
+    target <- if (length(nxt)) nxt[1] else if (length(pending)) pending[1] else rv$cursor
+    rv$session <- annotatR::at_goto(rv$session, target)
+    rv$cursor <- target
+  })
+  # Ctrl+E: jump to the Export page.
+  shiny::observeEvent(input$key_export,
+                      bslib::nav_select("nav", "Export", session = session))
+  # Shift+Enter: mark the current image complete, persist, and advance.
+  shiny::observeEvent(input$key_commit_advance, {
+    rv$session <- annotatR::at_set_status(rv$session, rv$cursor, "complete")
+    rv$trigger_save <- input$key_commit_advance
+    rv$session <- annotatR::at_next(rv$session)
+    rv$cursor <- rv$session$cursor
+  })
+  # d: delete the most recently added ROI on the current image (undoable).
+  shiny::observeEvent(input$key_delete, {
+    shiny::req(rv$project)
+    rt <- annotatR::at_rois(rv$project)
+    if (nrow(rt) > 0L) {
+      rv$undo <- c(rv$undo, list(rv$project))
+      rv$redo <- list()
+      rv$project <- annotatR::at_remove_roi(rv$project, rt$roi_id[nrow(rt)])
+      rv$saved <- "unsaved"
+    }
+  })
+  # s / ? : hand off to the modules that own saving and the help modal.
+  shiny::observeEvent(input$key_save, rv$trigger_save <- input$key_save)
+  shiny::observeEvent(input$key_help, rv$trigger_help <- input$key_help)
 
   shiny::observeEvent(rv$cursor, {
     proj <- tryCatch(.materialise(rv$session, rv$cursor), error = function(e) e)

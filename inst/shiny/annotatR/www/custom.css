@@ -87,5 +87,10 @@ table { font-size: .85rem; }
 .at-tile .at-tile-val { font-family: var(--at-mono-font); font-size: 1.7rem; font-weight: 700; color: var(--at-blue-2); line-height: 1; }
 .at-tile .at-tile-lab { font-size: .72rem; text-transform: uppercase; letter-spacing: .6px; color: var(--at-muted); margin-top: 6px; }
 
+/* label/layer add rows: input + button side by side */
+.at-add-row { display: flex; gap: 6px; align-items: center; margin: 4px 0 12px; }
+.at-add-row .form-group, .at-add-row .shiny-input-container { flex: 1; margin: 0; }
+.at-add-row .btn { white-space: nowrap; font-family: var(--at-mono-font); font-size: .82rem; }
+
 .btn-primary { --bs-btn-bg: var(--at-blue); --bs-btn-border-color: var(--at-blue); --bs-btn-hover-bg: var(--at-blue-2); --bs-btn-hover-border-color: var(--at-blue-2); }
 a, .nav-link.active { color: var(--at-blue-2); }

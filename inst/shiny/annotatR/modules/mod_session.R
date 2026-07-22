@@ -39,6 +39,8 @@ mod_session_server <- function(id, rv) {
       rv$saved <- "saved"
     }
     shiny::observeEvent(input$save, save_now())
+    # 's' key / commit-advance route through here (they own no save of their own).
+    shiny::observeEvent(rv$trigger_save, save_now(), ignoreInit = TRUE)
     shiny::observeEvent(input$complete, {
       rv$session <- annotatR::at_set_status(rv$session, rv$cursor, "complete")
       save_now()
