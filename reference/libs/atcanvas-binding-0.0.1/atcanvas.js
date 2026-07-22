@@ -105,6 +105,43 @@ HTMLWidgets.widget({
       im.src = uri;
     }
 
+    // ---- Hit-testing and geometry helpers (for erase / edit) ----
+    function pointInRing(pt, ring) {
+      var x = pt[0], y = pt[1], inside = false;
+      for (var i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        var xi = ring[i][0], yi = ring[i][1], xj = ring[j][0], yj = ring[j][1];
+        if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) {
+          inside = !inside;
+        }
+      }
+      return inside;
+    }
+    // Topmost (last-drawn) feature containing the image-space point, or null.
+    function featureAt(ic) {
+      for (var k = state.features.length - 1; k >= 0; k--) {
+        var g = state.features[k].geometry;
+        if (g.type === "Polygon" && pointInRing(ic, g.coordinates[0])) return state.features[k];
+        if (g.type === "Point") {
+          var d = Math.hypot(ic[0] - g.coordinates[0], ic[1] - g.coordinates[1]);
+          if (d < 6 / state.zoom) return state.features[k];
+        }
+      }
+      return null;
+    }
+    function circlePoly(c, r) {
+      var pts = [];
+      for (var a = 0; a < 40; a++) { var t = a / 40 * 2 * Math.PI; pts.push([c[0] + r * Math.cos(t), c[1] + r * Math.sin(t)]); }
+      pts.push(pts[0].slice()); // close the ring EXACTLY: sf/GeoJSON require last coord identical to first
+      return pts;
+    }
+    function translateFeature(f, dx, dy) {
+      var g = f.geometry;
+      var shift = function (ring) { return ring.map(function (p) { return [p[0] + dx, p[1] + dy]; }); };
+      if (g.type === "Polygon") g.coordinates = g.coordinates.map(shift);
+      else if (g.type === "LineString") g.coordinates = shift(g.coordinates);
+      else if (g.type === "Point") g.coordinates = [g.coordinates[0] + dx, g.coordinates[1] + dy];
+    }
+
     // ---- Pointer interaction ----
     var dragging = false, last = null, polyPts = null;
 
@@ -123,6 +160,17 @@ HTMLWidgets.widget({
         polyPts.push([ic[0], ic[1]]);
         state.drawing = { type: "Feature", geometry: { type: "Polygon", coordinates: [polyPts.concat([polyPts[0]])] } };
         render();
+      } else if (state.tool === "circle") {
+        state.drawing = { type: "Feature", geometry: { type: "Polygon", coordinates: [[[ic[0], ic[1]]]] }, _center: ic };
+      } else if (state.tool === "erase") {
+        var eh = featureAt(ic);
+        if (eh && eh.properties && eh.properties.roi_id) shinyInput("erased", eh.properties.roi_id);
+      } else if (state.tool === "edit") {
+        var mh = featureAt(ic);
+        if (mh) state.editing = { feature: mh, start: ic,
+          id: mh.properties && mh.properties.roi_id,
+          layer: mh.properties && mh.properties.layer,
+          label: mh.properties && mh.properties.label };
       }
     });
 
@@ -141,6 +189,15 @@ HTMLWidgets.widget({
         polyPts.push([ic2[0], ic2[1]]);
         state.drawing.geometry.coordinates = [polyPts.concat([polyPts[0]])];
         render();
+      } else if (state.drawing && state.tool === "circle") {
+        var icc = toImageCoords(sx, sy), cc = state.drawing._center;
+        state.drawing.geometry.coordinates = [circlePoly(cc, Math.hypot(icc[0] - cc[0], icc[1] - cc[1]))];
+        render();
+      } else if (state.editing && state.tool === "edit") {
+        var ice = toImageCoords(sx, sy);
+        translateFeature(state.editing.feature, ice[0] - state.editing.start[0], ice[1] - state.editing.start[1]);
+        state.editing.start = ice;
+        render();
       }
     });
 
@@ -150,6 +207,11 @@ HTMLWidgets.widget({
         emitCreated(state.drawing.geometry); state.drawing = null;
       } else if (state.drawing && state.tool === "freehand") {
         emitCreated(state.drawing.geometry); state.drawing = null; polyPts = null;
+      } else if (state.drawing && state.tool === "circle") {
+        emitCreated(state.drawing.geometry); state.drawing = null;
+      } else if (state.editing && state.tool === "edit") {
+        var ed = state.editing; state.editing = null;
+        if (ed.id) shinyInput("edited", { roi_id: ed.id, layer: ed.layer, label: ed.label, geometry: ed.feature.geometry });
       }
     });
 
