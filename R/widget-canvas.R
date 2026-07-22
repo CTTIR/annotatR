@@ -27,6 +27,20 @@
   invisible(TRUE)
 }
 
+# Natural-colour RGB band triple: nearest bands to ~640/550/460 nm when the
+# image has a visible-range spectral axis, else the first three bands. Turns a
+# hyperspectral cube into a recognisable photo to annotate on -- pixel-aligned
+# to the cube grid, so ROIs and spectra map exactly.
+.default_rgb_bands <- function(img, nb) {
+  if (nb < 3L) return(rep(1L, 3L))
+  wl <- img$wavelengths
+  if (!is.null(wl) && length(wl) == nb && min(wl, na.rm = TRUE) <= 700) {
+    nearest <- function(target) which.min(abs(wl - target))
+    return(c(nearest(640), nearest(550), nearest(460)))
+  }
+  1:3
+}
+
 # Downsampled base image as a PNG data URI, or NULL if it cannot be encoded.
 .image_data_uri <- function(img, max_dim = 2048L) {
   if (!requireNamespace("magick", quietly = TRUE)) {
@@ -36,13 +50,16 @@
     level <- .display_level(img, max_dim)
     tile <- at_tile(img, level = level)
     nb <- dim(tile)[3]
-    bands <- if (nb >= 3L) 1:3 else rep(1L, 3L)
-    norm <- function(m) {
-      rng <- range(m, na.rm = TRUE)
-      if (diff(rng) == 0) matrix(0, nrow(m), ncol(m)) else (m - rng[1]) / diff(rng)
+    bands <- .default_rgb_bands(img, nb)
+    # Per-channel 2-98% contrast stretch. A flat min-max leaves cube channels
+    # dark and washed out; the percentile stretch yields a natural-looking photo.
+    stretch <- function(m) {
+      q <- stats::quantile(m, c(0.02, 0.98), na.rm = TRUE)
+      if (diff(q) == 0) return(matrix(0, nrow(m), ncol(m)))
+      pmin(pmax((m - q[1]) / diff(q), 0), 1)
     }
     arr <- array(0, dim = c(dim(tile)[1], dim(tile)[2], 3L))
-    for (k in 1:3) arr[, , k] <- norm(tile[, , bands[k]])
+    for (k in 1:3) arr[, , k] <- stretch(tile[, , bands[k]])
     im <- magick::image_read(arr)
     raw <- magick::image_write(im, format = "png")
     paste0("data:image/png;base64,", jsonlite::base64_enc(raw))
