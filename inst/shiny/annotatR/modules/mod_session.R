@@ -10,9 +10,17 @@ mod_session_ui <- function(id) {
   )
 }
 
+# Drop the bulky in-memory pixel cache before serialising: the image is
+# re-materialised from its source path on resume, so persisting the (up to
+# hundreds of MB) cube array on every autosave would freeze the UI for nothing.
+.lite_project <- function(p) {
+  if (!is.null(p) && !is.null(p$image)) p$image$handle <- NULL
+  p
+}
+
 mod_session_server <- function(id, rv) {
   shiny::moduleServer(id, function(input, output, session) {
-    # Persist the current project and session.
+    # Persist the current project and session (annotations only; no pixel data).
     save_now <- function() {
       rv$saved <- "saving"
       pdir <- file.path(rv$session$out_dir, "projects")
@@ -21,10 +29,13 @@ mod_session_server <- function(id, rv) {
         rv$session$projects[[rv$cursor]] <- rv$project
         name <- annotatR::at_session_status(rv$session)$name[rv$cursor]
         rv$session$manifest$n_rois[rv$cursor] <- nrow(annotatR::at_rois(rv$project))
-        annotatR::at_save_project(rv$project, file.path(pdir, paste0(name, ".rds")),
+        annotatR::at_save_project(.lite_project(rv$project),
+                                  file.path(pdir, paste0(name, ".rds")),
                                   overwrite = TRUE)
       }
-      annotatR::at_save_session(rv$session)
+      sess <- rv$session
+      sess$projects <- lapply(sess$projects, .lite_project)
+      annotatR::at_save_session(sess)
       rv$saved <- "saved"
     }
     shiny::observeEvent(input$save, save_now())
