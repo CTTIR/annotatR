@@ -146,7 +146,14 @@ test_that("the app contains no library()/require() calls", {
 test_that("app www assets make no external requests", {
   www <- list.files(system.file("shiny", "annotatR", "www", package = "annotatR"),
                     full.names = TRUE)
-  hits <- unlist(lapply(www, function(f) grep("https?://", readLines(f), value = TRUE)))
+  hits <- unlist(lapply(www, function(f) {
+    lines <- readLines(f)
+    # XML/SVG namespace URIs (xmlns=...) are identifiers, not network fetches;
+    # an <img>-embedded SVG needs its xmlns to render. Only real resource
+    # references (a fetched script, stylesheet, font, or image) count.
+    lines <- gsub("xmlns(:[[:alnum:]]+)?=\"https?://[^\"]*\"", "", lines)
+    grep("https?://", lines, value = TRUE)
+  }))
   expect_length(hits, 0L)
 })
 
