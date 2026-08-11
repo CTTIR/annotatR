@@ -3,6 +3,8 @@
 
 # annotatR <img src="man/figures/logo.png" align="right" height="139" alt="annotatR logo" />
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21889921.svg)](https://doi.org/10.5281/zenodo.21889921)
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/CTTIR/annotatR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/annotatR/actions/workflows/R-CMD-check.yaml)
@@ -119,3 +121,11 @@ tools used were Chat AI, the LLM service of KISSKI (GWDG), and a
 self-hosted Mistral Small (24B, Apache-2.0) run locally via Ollama and
 the ollamar R package — local inference only, with no data sent to third
 parties for the self-hosted model.
+
+## Citation
+
+If you use this software, please cite it as:
+
+> Heller, R. (2026). *annotatR: Multi-layer region-of-interest annotation for images and spectral cubes* (Version 0.1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21889921
+
+DOI: [10.5281/zenodo.21889921](https://doi.org/10.5281/zenodo.21889921)
