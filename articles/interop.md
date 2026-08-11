@@ -171,8 +171,8 @@ mp <- tempfile(fileext = ".tiff")
 at_write_mask(m, mp)
 cat(readLines(paste0(mp, ".legend.json"))[1:14], sep = "\n")
 #> {
-#>   "annotatR_version": "0.0.1",
-#>   "created": "2026-07-22T08:59:19+0000",
+#>   "annotatR_version": "0.1.0",
+#>   "created": "2026-08-11T14:26:02+0000",
 #>   "mask_type": "labelled",
 #>   "level": 0,
 #>   "dims": [512, 512],

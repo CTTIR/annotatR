@@ -214,8 +214,8 @@ list.files(dir)
 #> [1] "regions.tif"             "regions.tif.legend.json"
 cat(readLines(paste0(path, ".legend.json")), sep = "\n")
 #> {
-#>   "annotatR_version": "0.0.1",
-#>   "created": "2026-07-22T08:59:22+0000",
+#>   "annotatR_version": "0.1.0",
+#>   "created": "2026-08-11T14:26:05+0000",
 #>   "mask_type": "multiclass",
 #>   "level": 0,
 #>   "dims": [512, 512],
