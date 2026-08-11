@@ -1,0 +1,35 @@
+{
+  "upload_type": "software",
+  "title": "annotatR: Multi-layer region-of-interest annotation for images and spectral cubes",
+  "version": "0.1.0",
+  "publication_date": "2026-08-11",
+  "description": "<p>annotatR provides tools for annotating regions of interest across whole-slide microscopy images, hyperspectral data cubes and conventional raster images. Annotations are held as validated simple-feature geometries in image pixel coordinates with explicit pyramid-level transforms, so that a region drawn at one zoom level remains correct at every other. Regions can be rasterised into binary, labelled or multi-class integer masks for use in downstream segmentation and classification work. A batch annotation application supports resumable sessions across queues of images, live mask preview, and export to GeoJSON, QuPath and TIFF. It is aimed at researchers preparing ground-truth labels for biomedical image analysis.</p>",
+  "creators": [
+    {
+      "name": "Heller, Raban",
+      "orcid": "0000-0001-8006-9742"
+    }
+  ],
+  "contributors": [],
+  "license": "mit",
+  "access_right": "open",
+  "language": "eng",
+  "keywords": [
+    "annotation",
+    "region-of-interest",
+    "whole-slide-imaging",
+    "hyperspectral",
+    "image-segmentation",
+    "r-package",
+    "rstats"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/CTTIR/annotatR",
+      "relation": "isSupplementTo",
+      "scheme": "url",
+      "resource_type": "software"
+    }
+  ],
+  "notes": "Prepared draft. Not yet published."
+}

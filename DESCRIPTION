@@ -1,7 +1,7 @@
 Package: annotatR
 Type: Package
 Title: Multi-Layer Region-of-Interest Annotation for Images and Spectral Cubes
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: person("Raban", "Heller", email = "raban.heller@charite.de",
     role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8006-9742"))
 Description: Annotate multiple layers of regions of interest across whole-slide
