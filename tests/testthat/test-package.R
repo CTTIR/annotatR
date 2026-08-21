@@ -1,7 +1,7 @@
 test_that("annotatR is installed with the expected version", {
   expect_identical(
     as.character(utils::packageVersion("annotatR")),
-    "0.0.1"
+    "0.1.0"
   )
 })
 
