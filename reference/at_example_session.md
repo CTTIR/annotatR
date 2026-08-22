@@ -50,7 +50,7 @@ at_session_status(sess)
 #> # A tibble: 3 × 7
 #>     idx path                name  status project_path n_rois modified
 #>   <int> <chr>               <chr> <chr>  <chr>         <int> <dttm>  
-#> 1     1 /tmp/Rtmpf5uN6Q/an… imag… pendi… NA                0 NA      
-#> 2     2 /tmp/Rtmpf5uN6Q/an… imag… pendi… NA                0 NA      
-#> 3     3 /tmp/Rtmpf5uN6Q/an… imag… pendi… NA                0 NA      
+#> 1     1 /tmp/RtmpjJRYt5/an… imag… pendi… NA                0 NA      
+#> 2     2 /tmp/RtmpjJRYt5/an… imag… pendi… NA                0 NA      
+#> 3     3 /tmp/RtmpjJRYt5/an… imag… pendi… NA                0 NA      
 ```

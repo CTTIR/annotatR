@@ -96,7 +96,7 @@ into a temporary directory so the queue has real files to iterate.</p>
 <span><span class="va">sess</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">&lt;annot_session&gt;</span></span></span>
 <span><span class="co">#&gt; images: 3  |  complete: 0  |  cursor: 1</span></span>
-<span><span class="co">#&gt; out_dir: <span style="color: #0000BB;">/tmp/Rtmp76ZOfo/annotatR-example-session-2fbe77979ec9</span>  |  autosave: TRUE</span></span></code></pre></div>
+<span><span class="co">#&gt; out_dir: <span style="color: #0000BB;">/tmp/RtmpouBoYi/annotatR-example-session-2d5c7b6d3191</span>  |  autosave: TRUE</span></span></code></pre></div>
 <p>Every image starts with status <code>"pending"</code>, the cursor
 sits on the first image, and per-image projects are materialised lazily
 — nothing is read from disk until you visit it.</p>
@@ -271,7 +271,7 @@ exactly where you left off with <code><a href="../reference/at_resume.html">at_r
 <span><span class="va">recovered</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">&lt;annot_session&gt;</span></span></span>
 <span><span class="co">#&gt; images: 3  |  complete: 1  |  cursor: 2</span></span>
-<span><span class="co">#&gt; out_dir: <span style="color: #0000BB;">/tmp/Rtmp76ZOfo/annotatR-example-session-2fbe77979ec9</span>  |  autosave: TRUE</span></span></code></pre></div>
+<span><span class="co">#&gt; out_dir: <span style="color: #0000BB;">/tmp/RtmpouBoYi/annotatR-example-session-2d5c7b6d3191</span>  |  autosave: TRUE</span></span></code></pre></div>
 <p>The cursor, statuses, materialised projects, and templates all come
 back intact.</p>
 </div>
@@ -289,17 +289,17 @@ per label — with <code><a href="../reference/at_manifest.html">at_manifest()</
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 7</span></span></span>
 <span><span class="co">#&gt;     idx path                name  status project_path n_rois modified</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 /tmp/Rtmp76ZOfo/an… imag… compl… <span style="color: #BB0000;">NA</span>                0 <span style="color: #BB0000;">NA</span>      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 /tmp/Rtmp76ZOfo/an… imag… pendi… <span style="color: #BB0000;">NA</span>                0 <span style="color: #BB0000;">NA</span>      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 /tmp/Rtmp76ZOfo/an… imag… pendi… <span style="color: #BB0000;">NA</span>                0 <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 /tmp/RtmpouBoYi/an… imag… compl… <span style="color: #BB0000;">NA</span>                0 <span style="color: #BB0000;">NA</span>      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 /tmp/RtmpouBoYi/an… imag… pendi… <span style="color: #BB0000;">NA</span>                0 <span style="color: #BB0000;">NA</span>      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 /tmp/RtmpouBoYi/an… imag… pendi… <span style="color: #BB0000;">NA</span>                0 <span style="color: #BB0000;">NA</span></span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/at_manifest.html">at_manifest</a></span><span class="op">(</span><span class="va">sess</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 9</span></span></span>
 <span><span class="co">#&gt;     idx name     path              status n_layers n_rois tumour necrosis stroma</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 image_01 /tmp/Rtmp76ZOfo/… compl…        0      0      0        0      0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 image_02 /tmp/Rtmp76ZOfo/… pendi…        0      0      0        0      0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 image_03 /tmp/Rtmp76ZOfo/… pendi…        0      0      0        0      0</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 image_01 /tmp/RtmpouBoYi/… compl…        0      0      0        0      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 image_02 /tmp/RtmpouBoYi/… pendi…        0      0      0        0      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 image_03 /tmp/RtmpouBoYi/… pendi…        0      0      0        0      0</span></span></code></pre></div>
 <p>Use these to seed a session programmatically, pre-fill statuses, or
 audit progress in a report — no Shiny required.</p>
 </div>
