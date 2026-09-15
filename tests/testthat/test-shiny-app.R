@@ -1,8 +1,5 @@
-# Guard the full-app boot. The module servers are tested elsewhere, but the
-# top-level app.R (which wires the UI theme and sources global.R) had no
-# coverage, so a break there -- e.g. a symbol defined in global.R but not loaded
-# before app.R uses it -- would only surface at launch. This builds the real
-# app object exactly as the launcher does.
+# Guard the full-app boot through the compatibility app directory, which now
+# delegates to at_app(); test-app-builder.R covers the builder itself.
 
 skip_if_not_installed("shiny")
 skip_if_not_installed("bslib")

@@ -1,7 +1,7 @@
 Package: annotatR
 Type: Package
 Title: Multi-Layer Region-of-Interest Annotation for Images and Spectral Cubes
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: person("Raban", "Heller", email = "raban.heller@charite.de",
     role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8006-9742"))
 Description: Annotate multiple layers of regions of interest across whole-slide
@@ -9,9 +9,12 @@ Description: Annotate multiple layers of regions of interest across whole-slide
     Annotations are stored as validated simple-feature geometries in image pixel
     coordinates with explicit pyramid-level transforms, and can be rasterised to
     binary, labelled, or multi-class integer masks for downstream segmentation and
-    classification workflows. A batch annotation application built on 'shiny' and
-    'OpenSeadragon' supports resumable sessions across image queues, live mask
-    preview, and export to 'GeoJSON', 'QuPath', and 'TIFF' formats.
+    classification workflows. A batch annotation application built on 'shiny'
+    supports resumable sessions across image queues, live mask preview, and
+    export to 'GeoJSON', 'QuPath', and 'TIFF' formats. A versioned partner
+    contract exchanges hash-inventoried handoff directories, deep-learning
+    training datasets and typed commands over an optional local control
+    service.
 License: MIT + file LICENSE
 URL: https://github.com/CTTIR/annotatR, https://cttir.github.io/annotatR/
 BugReports: https://github.com/CTTIR/annotatR/issues
@@ -33,16 +36,24 @@ Imports:
     utils
 Suggests:
     bslib,
+    callr,
+    chromote,
     covr,
+    curl,
+    digest,
     htmltools,
     htmlwidgets,
+    httpuv,
     knitr,
+    later,
     magick,
+    pkgload,
     RBioFormats,
     rmarkdown,
     scales,
     shiny (>= 1.7.0),
     shinyjs,
+    shinytest2,
     terra,
     testthat (>= 3.0.0),
     tiff,

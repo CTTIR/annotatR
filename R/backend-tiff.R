@@ -47,7 +47,23 @@
   if (length(nm) == n) nm else default
 }
 
-.tiff_read <- function(path, ...) {
+# Validate explicitly declared band-centre wavelengths for a TIFF. A TIFF is
+# only treated as spectral when wavelengths are supplied; otherwise it stays a
+# multichannel raster.
+.tiff_wavelengths <- function(wavelengths, nb, call) {
+  if (is.null(wavelengths)) {
+    return(NULL)
+  }
+  wl <- suppressWarnings(as.numeric(wavelengths))
+  if (length(wl) != nb || anyNA(wl)) {
+    .at_abort("{.arg wavelengths} must give one numeric wavelength per band ({nb}).",
+              code = "VALIDATION_FAILED", call = call)
+  }
+  wl
+}
+
+.tiff_read <- function(path, wavelengths = NULL, value_unit = NULL, ...,
+                       call = rlang::caller_env()) {
   if (!requireNamespace("tiff", quietly = TRUE)) {
     cli::cli_abort(c(
       "The {.val tiff} backend requires package {.pkg tiff}.",
@@ -68,12 +84,16 @@
     levels <- levels[1]
     level_dims <- level_dims[1]
   }
+  wl <- .tiff_wavelengths(wavelengths, nb, call)
   new_annot_image(
     source = path, backend = "tiff",
     dims = level_dims[[1]], n_levels = length(levels), level_dims = level_dims,
     n_bands = nb, band_names = .tiff_channel_names(desc, nb),
+    wavelengths = wl, wavelength_unit = if (is.null(wl)) NULL else "nm",
     pixel_size = c(1, 1), pixel_unit = "px", dtype = "uint16",
-    handle = list(levels = levels), meta = list()
+    handle = list(levels = levels),
+    meta = list(format = "TIFF", value_unit = value_unit %||% "unknown", window_read = FALSE,
+                wavelength_source = if (is.null(wl)) "none" else "declared")
   )
 }
 

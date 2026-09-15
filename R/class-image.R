@@ -100,10 +100,17 @@ at_n_bands <- function(x, call = rlang::caller_env()) {
 #'   \describe{
 #'     \item{`index`}{Band index, 1-based (integer).}
 #'     \item{`name`}{Band name (character); a default `"Band k"` when unnamed.}
-#'     \item{`wavelength`}{Centre wavelength (double); `NA` when not spectral.}
+#'     \item{`wavelength`}{Centre wavelength (double); `NA` when not spectral
+#'       or unknown for that band. Never interpolated.}
 #'     \item{`unit`}{Wavelength unit (character); `NA` when not spectral.}
+#'     \item{`fwhm`}{Full width at half maximum in the wavelength unit
+#'       (double); `NA` when the source does not declare it.}
+#'     \item{`order`}{Position of the band in file/manifest order (integer).}
+#'     \item{`wavelength_status`}{`"ok"`, `"missing"`, `"duplicate"` or
+#'       `"non_numeric"` (character).}
 #'   }
-#'   Always has `at_n_bands(x)` rows.
+#'   Always has `at_n_bands(x)` rows. The first four columns are unchanged
+#'   from annotatR 0.1; the remaining columns were added in 0.2.0.
 #' @family images
 #' @export
 at_bands <- function(x, call = rlang::caller_env()) {
@@ -117,13 +124,20 @@ at_bands <- function(x, call = rlang::caller_env()) {
     nm[is.na(nm)] <- paste0("Band ", which(is.na(nm)))
   }
   spectral <- at_is_spectral(x)
-  wl <- if (spectral) as.numeric(x$wavelengths)[seq_len(n)] else rep(NA_real_, n)
+  status <- .wavelength_status(x$wavelengths, n)
+  wl <- if (spectral) suppressWarnings(as.numeric(rep_len(as.character(x$wavelengths), n))) else rep(NA_real_, n)
+  if (spectral && length(x$wavelengths) < n) wl[seq_len(n) > length(x$wavelengths)] <- NA_real_
   unit <- if (spectral) rep(x$wavelength_unit %||% NA_character_, n) else rep(NA_character_, n)
+  fwhm <- suppressWarnings(as.numeric(x$meta$fwhm))
+  fwhm <- if (length(fwhm) == n) fwhm else rep(NA_real_, n)
   tibble::tibble(
     index      = seq_len(n),
     name       = nm,
     wavelength = wl,
-    unit       = unit
+    unit       = unit,
+    fwhm       = fwhm,
+    order      = seq_len(n),
+    wavelength_status = status
   )
 }
 
@@ -141,7 +155,7 @@ at_wavelengths <- function(x, call = rlang::caller_env()) {
   if (!at_is_spectral(x)) {
     return(numeric(0))
   }
-  as.numeric(x$wavelengths)[seq_len(x$n_bands)]
+  suppressWarnings(as.numeric(x$wavelengths))[seq_len(x$n_bands)]
 }
 
 #' Is the image a spectral cube?
@@ -153,7 +167,8 @@ at_wavelengths <- function(x, call = rlang::caller_env()) {
 #' @export
 at_is_spectral <- function(x, call = rlang::caller_env()) {
   .check_image(x, call = call)
-  !is.null(x$wavelengths) && length(x$wavelengths) > 0L && any(!is.na(x$wavelengths))
+  !is.null(x$wavelengths) && length(x$wavelengths) > 0L &&
+    any(!is.na(suppressWarnings(as.numeric(x$wavelengths))))
 }
 
 #' Is the image pyramidal?

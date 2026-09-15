@@ -38,7 +38,7 @@ user attributes.}
 \item{call}{The calling environment, for error reporting.}
 }
 \value{
-An \link{annot_roi} with \code{POLYGON} geometry.
+An \link{annot_roi} with \code{POLYGON} geometry and \code{attributes$shape = "ellipse"}, so exports can flag the polygon as an approximation.
 }
 \description{
 Create an elliptical ROI

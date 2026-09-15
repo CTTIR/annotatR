@@ -33,7 +33,7 @@ user attributes.}
 \item{call}{The calling environment, for error reporting.}
 }
 \value{
-An \link{annot_roi} with \code{POLYGON} geometry.
+An \link{annot_roi} with \code{POLYGON} geometry and \code{attributes$shape = "circle"}, so exports can flag the polygon as an approximation.
 }
 \description{
 The circle is approximated by a regular polygon of \code{n_seg} segments.

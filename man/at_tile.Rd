@@ -44,6 +44,7 @@ Other images:
 \code{\link[=at_bands]{at_bands()}},
 \code{\link[=at_dims]{at_dims()}},
 \code{\link[=at_example_image]{at_example_image()}},
+\code{\link[=at_hsi_meta]{at_hsi_meta()}},
 \code{\link[=at_is_pyramidal]{at_is_pyramidal()}},
 \code{\link[=at_is_spectral]{at_is_spectral()}},
 \code{\link[=at_meta]{at_meta()}},
@@ -58,7 +59,9 @@ Other backends:
 \code{\link[=at_backend_get]{at_backend_get()}},
 \code{\link[=at_backend_list]{at_backend_list()}},
 \code{\link[=at_backend_register]{at_backend_register()}},
-\code{\link[=at_read_image]{at_read_image()}}
+\code{\link[=at_cubert_export_envi]{at_cubert_export_envi()}},
+\code{\link[=at_read_image]{at_read_image()}},
+\code{\link[=at_tivita_profile]{at_tivita_profile()}}
 }
 \concept{backends}
 \concept{images}

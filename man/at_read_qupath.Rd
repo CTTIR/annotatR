@@ -24,9 +24,17 @@ at_read_qupath(
 An \link{annot_layer}.
 }
 \description{
-Maps \code{classification.name} to the ROI label, \code{colorRGB} to the layer style
-colour, and \code{object_type} to the ROI source. Features with a \code{null}
-classification are imported as \code{"unclassified"}.
+Reads QuPath 0.4+ exports (a FeatureCollection or a bare feature array) and
+the legacy annotatR 0.1 dialect. \code{classification.name} (or the joined
+\code{names} of a derived class, e.g. \code{"Tumor: Positive"}) becomes the ROI label,
+the classification colour the layer style colour, and features without a
+classification are labelled \code{"unclassified"}. Everything else QuPath carries
+is kept, never invented, under each ROI's \code{attributes$qupath}: the object
+id and type, name, measurements (with explicit \code{value_state}), the image
+plane (zero-based \code{c}, \code{z}, \code{t}; \code{c = NA} for all channels), metadata, a
+nucleus geometry, and \code{roi_native = "ellipse"} with
+\code{geometry_fidelity = "approximated"} for polygonised ellipses. An annotatR id
+stored in \code{metadata.annotatr_roi_id} is restored as the ROI id.
 }
 \seealso{
 Other io:

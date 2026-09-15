@@ -15,3 +15,7 @@
 ^\.vscode$
 ^annotatR_.*\.tar\.gz$
 ^hsi-workbench$
+^planning$
+^inst/shiny/annotatR/hsi-workbench$
+^\.zenodo\.json$
+^CITATION\.cff$

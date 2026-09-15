@@ -1,0 +1,484 @@
+{
+  "description": "Independent description of the objects created by qupath_write_test.groovy, built from the script's input values (not by re-reading the exported GeoJSON).",
+  "qupath_version": "0.7.0",
+  "java_version": "25.0.4",
+  "image_space": {
+    "width_px": 200,
+    "height_px": 150,
+    "origin": "top-left",
+    "y_axis": "down",
+    "note": "no ImageData/ImageServer used; coordinates are plain image pixel coordinates"
+  },
+  "export_order": [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h"
+  ],
+  "objects": [
+    {
+      "key": "a",
+      "object_type": "annotation",
+      "classification": {
+        "name": "Tumor",
+        "colour": {
+          "r": 200,
+          "g": 0,
+          "b": 0,
+          "packed_signed_int": -3670016
+        }
+      },
+      "name": "rect-a",
+      "locked": true,
+      "roi": {
+        "roi_constructor": "ROIs.createRectangleROI(10, 20, 50, 50, ImagePlane.getDefaultPlane())",
+        "roi_name_in_memory": "Rectangle",
+        "area_px_in_memory": 2500.0,
+        "length_px_in_memory": 200.0,
+        "x": 10.0,
+        "y": 20.0,
+        "w": 50.0,
+        "h": 50.0,
+        "vertices_rect_corners_clockwise_from_top_left": [
+          [
+            10.0,
+            20.0
+          ],
+          [
+            60.0,
+            20.0
+          ],
+          [
+            60.0,
+            70.0
+          ],
+          [
+            10.0,
+            70.0
+          ],
+          [
+            10.0,
+            20.0
+          ]
+        ]
+      },
+      "plane": {
+        "c": -1,
+        "z": 0,
+        "t": 0
+      },
+      "measurements": {},
+      "id": "11111111-1111-4111-8111-111111111111",
+      "id_source": "fixed UUID set with PathObject.setID()"
+    },
+    {
+      "key": "b",
+      "object_type": "annotation",
+      "classification": {
+        "name": "Stroma",
+        "colour": {
+          "r": 0,
+          "g": 160,
+          "b": 0,
+          "packed_signed_int": -16736256
+        }
+      },
+      "name": null,
+      "locked": false,
+      "roi": {
+        "roi_constructor": "GeometryTools.geometryToROI(JTS Polygon(shell, [hole]), ImagePlane.getDefaultPlane())",
+        "roi_name_in_memory": "Geometry",
+        "area_px_in_memory": 5500.0,
+        "length_px_in_memory": 440.0,
+        "shell_as_passed": [
+          [
+            100.0,
+            10.0
+          ],
+          [
+            180.0,
+            10.0
+          ],
+          [
+            180.0,
+            90.0
+          ],
+          [
+            100.0,
+            90.0
+          ],
+          [
+            100.0,
+            10.0
+          ]
+        ],
+        "holes_as_passed": [
+          [
+            [
+              120.0,
+              30.0
+            ],
+            [
+              150.0,
+              30.0
+            ],
+            [
+              150.0,
+              60.0
+            ],
+            [
+              120.0,
+              60.0
+            ],
+            [
+              120.0,
+              30.0
+            ]
+          ]
+        ],
+        "area_px_expected": 5500.0
+      },
+      "plane": {
+        "c": -1,
+        "z": 0,
+        "t": 0
+      },
+      "measurements": {},
+      "id": "454eb924-955d-46f5-b9ce-ac6da6f75b7f",
+      "id_source": "random UUID assigned by QuPath at creation (read from the in-memory object before export)"
+    },
+    {
+      "key": "c",
+      "object_type": "annotation",
+      "classification": null,
+      "name": null,
+      "locked": false,
+      "roi": {
+        "roi_constructor": "ROIs.createEllipseROI(20, 80, 40, 30, ImagePlane.getDefaultPlane())",
+        "roi_name_in_memory": "Ellipse",
+        "area_px_in_memory": 942.4777960769379,
+        "length_px_in_memory": 110.5174608035383,
+        "bounding_box": {
+          "x": 20.0,
+          "y": 80.0,
+          "w": 40.0,
+          "h": 30.0
+        },
+        "centre": {
+          "x": 40.0,
+          "y": 95.0
+        },
+        "semi_axes": {
+          "a": 20.0,
+          "b": 15.0
+        },
+        "area_px_exact_ellipse": 942.4777960769379
+      },
+      "plane": {
+        "c": -1,
+        "z": 0,
+        "t": 0
+      },
+      "measurements": {},
+      "id": "c186c339-3481-476a-a47f-16d845fa67a5",
+      "id_source": "random UUID assigned by QuPath at creation (read from the in-memory object before export)"
+    },
+    {
+      "key": "d",
+      "object_type": "detection",
+      "classification": {
+        "name": "Tumor",
+        "colour": {
+          "r": 200,
+          "g": 0,
+          "b": 0,
+          "packed_signed_int": -3670016
+        }
+      },
+      "name": null,
+      "locked": false,
+      "roi": {
+        "roi_constructor": "ROIs.createRectangleROI(70, 100, 10, 10, ImagePlane.getDefaultPlane())",
+        "roi_name_in_memory": "Rectangle",
+        "area_px_in_memory": 100.0,
+        "length_px_in_memory": 40.0,
+        "x": 70.0,
+        "y": 100.0,
+        "w": 10.0,
+        "h": 10.0,
+        "vertices_rect_corners_clockwise_from_top_left": [
+          [
+            70.0,
+            100.0
+          ],
+          [
+            80.0,
+            100.0
+          ],
+          [
+            80.0,
+            110.0
+          ],
+          [
+            70.0,
+            110.0
+          ],
+          [
+            70.0,
+            100.0
+          ]
+        ]
+      },
+      "plane": {
+        "c": -1,
+        "z": 0,
+        "t": 0
+      },
+      "measurements": {
+        "Area px^2": 100.0,
+        "Mean": "NaN"
+      },
+      "measurements_note": "NaN is encoded as the string \"NaN\" in THIS expected file only (strict JSON has no NaN)",
+      "id": "ee05cf92-76bf-416b-a37f-da98740a0ece",
+      "id_source": "random UUID assigned by QuPath at creation (read from the in-memory object before export)"
+    },
+    {
+      "key": "e",
+      "object_type": "cell",
+      "classification": {
+        "name": "Tumor: Positive",
+        "is_derived": true,
+        "parent": "Tumor",
+        "set_as_set": [
+          "Tumor",
+          "Positive"
+        ],
+        "colour": {
+          "r": 200,
+          "g": 50,
+          "b": 50,
+          "packed_signed_int": -3657166
+        },
+        "colour_source": "not specified by script; QuPath-assigned default for derived class, read via PathClass.getColor() before export"
+      },
+      "name": null,
+      "locked": false,
+      "roi": {
+        "roi_constructor": "ROIs.createPolygonROI(xs, ys, ImagePlane.getDefaultPlane())",
+        "roi_name_in_memory": "Polygon",
+        "area_px_in_memory": 600.0,
+        "length_px_in_memory": 94.04918347287665,
+        "vertices_as_passed_unclosed": [
+          [
+            120.0,
+            100.0
+          ],
+          [
+            140.0,
+            100.0
+          ],
+          [
+            145.0,
+            115.0
+          ],
+          [
+            130.0,
+            130.0
+          ],
+          [
+            115.0,
+            115.0
+          ]
+        ]
+      },
+      "nucleus_roi": {
+        "roi_constructor": "ROIs.createPolygonROI(xs, ys, ImagePlane.getDefaultPlane())",
+        "roi_name_in_memory": "Polygon",
+        "area_px_in_memory": 138.0,
+        "length_px_in_memory": 44.93151141705641,
+        "vertices_as_passed_unclosed": [
+          [
+            125.0,
+            108.0
+          ],
+          [
+            135.0,
+            108.0
+          ],
+          [
+            137.0,
+            116.0
+          ],
+          [
+            130.0,
+            122.0
+          ],
+          [
+            123.0,
+            116.0
+          ]
+        ]
+      },
+      "plane": {
+        "c": -1,
+        "z": 0,
+        "t": 0
+      },
+      "measurements": {},
+      "id": "1693c35c-256c-4756-aad5-f17d68df3dd7",
+      "id_source": "random UUID assigned by QuPath at creation (read from the in-memory object before export)"
+    },
+    {
+      "key": "f",
+      "object_type": "annotation",
+      "classification": null,
+      "name": null,
+      "locked": false,
+      "roi": {
+        "roi_constructor": "ROIs.createLineROI(10, 140, 90, 130, ImagePlane.getDefaultPlane())",
+        "roi_name_in_memory": "Line",
+        "area_px_in_memory": 0.0,
+        "length_px_in_memory": 80.62257748298549,
+        "vertices_as_passed": [
+          [
+            10.0,
+            140.0
+          ],
+          [
+            90.0,
+            130.0
+          ]
+        ],
+        "length_px_expected": 80.62257748298549
+      },
+      "plane": {
+        "c": -1,
+        "z": 0,
+        "t": 0
+      },
+      "measurements": {},
+      "id": "0b5a5e53-466e-4f5a-a3fe-5da46fdf5e5a",
+      "id_source": "random UUID assigned by QuPath at creation (read from the in-memory object before export)"
+    },
+    {
+      "key": "g",
+      "object_type": "annotation",
+      "classification": null,
+      "name": null,
+      "locked": false,
+      "roi": {
+        "roi_constructor": "ROIs.createRectangleROI(150, 110, 30, 20, ImagePlane.getPlane(2, 1))",
+        "roi_name_in_memory": "Rectangle",
+        "area_px_in_memory": 600.0,
+        "length_px_in_memory": 100.0,
+        "x": 150.0,
+        "y": 110.0,
+        "w": 30.0,
+        "h": 20.0,
+        "vertices_rect_corners_clockwise_from_top_left": [
+          [
+            150.0,
+            110.0
+          ],
+          [
+            180.0,
+            110.0
+          ],
+          [
+            180.0,
+            130.0
+          ],
+          [
+            150.0,
+            130.0
+          ],
+          [
+            150.0,
+            110.0
+          ]
+        ]
+      },
+      "plane": {
+        "c": -1,
+        "z": 2,
+        "t": 1
+      },
+      "plane_constructor": "ImagePlane.getPlane(2, 1)",
+      "measurements": {},
+      "id": "edc38f36-a48d-41ff-99c9-4a8c5ecd6343",
+      "id_source": "random UUID assigned by QuPath at creation (read from the in-memory object before export)"
+    },
+    {
+      "key": "h",
+      "object_type": "annotation",
+      "classification": {
+        "name": "Tumor",
+        "colour": {
+          "r": 200,
+          "g": 0,
+          "b": 0,
+          "packed_signed_int": -3670016
+        }
+      },
+      "name": null,
+      "locked": false,
+      "roi": {
+        "roi_constructor": "ROIs.createPointsROI(xs, ys, ImagePlane.getDefaultPlane())",
+        "roi_name_in_memory": "Points",
+        "area_px_in_memory": 0.0,
+        "length_px_in_memory": 0.0,
+        "points_as_passed": [
+          [
+            15.5,
+            130.25
+          ],
+          [
+            25.0,
+            135.0
+          ],
+          [
+            35.75,
+            140.5
+          ]
+        ]
+      },
+      "plane": {
+        "c": -1,
+        "z": 0,
+        "t": 0
+      },
+      "measurements": {},
+      "id": "d4eb6613-f807-4b1e-90d4-307b77b331d9",
+      "id_source": "random UUID assigned by QuPath at creation (read from the in-memory object before export)"
+    }
+  ],
+  "skipped": [],
+  "exports": [
+    {
+      "file": "qupath_written_objects.geojson",
+      "options": [
+        "FEATURE_COLLECTION"
+      ],
+      "bytes": 3680
+    },
+    {
+      "file": "qupath_written_objects_array.geojson",
+      "options": [],
+      "bytes": 3640
+    },
+    {
+      "file": "qupath_written_objects_pretty.geojson",
+      "options": [
+        "FEATURE_COLLECTION",
+        "PRETTY_JSON"
+      ],
+      "bytes": 6901
+    }
+  ],
+  "notes": [],
+  "log_events": []
+}

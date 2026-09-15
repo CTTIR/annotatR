@@ -1,0 +1,799 @@
+{
+  "qupath_version": "0.7.0",
+  "java_version": "25.0.4",
+  "input_file": "annotatr_020_qupath_dialect.geojson",
+  "reader": "qupath.lib.io.PathIO.readObjects(java.io.File)",
+  "input_features_parsed_with_gson": [
+    {
+      "id": "c667a1d3-a629-8da6-803e-36fb40a3bd1d",
+      "metadata": {
+        "annotatr_roi_id": "roi-rect-1",
+        "annotatr_layer": "regions",
+        "annotatr_source": "manual",
+        "annotatr_level": "0"
+      },
+      "property_keys": [
+        "objectType",
+        "classification",
+        "isLocked",
+        "metadata"
+      ],
+      "geometry_keys": [
+        "type",
+        "coordinates"
+      ],
+      "classification": {
+        "name": "Tumor",
+        "color": [
+          200.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "id": "f5df6c97-0ba5-87d9-be1a-b42b816784c5",
+      "metadata": {
+        "annotatr_roi_id": "roi-hole-2",
+        "annotatr_layer": "regions",
+        "annotatr_source": "manual",
+        "annotatr_level": "0"
+      },
+      "property_keys": [
+        "objectType",
+        "classification",
+        "metadata"
+      ],
+      "geometry_keys": [
+        "type",
+        "coordinates"
+      ],
+      "classification": {
+        "name": "Stroma",
+        "color": [
+          0.0,
+          160.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "id": "ce977c4d-9f91-80b7-93c9-3053cd351c3c",
+      "metadata": {
+        "annotatr_roi_id": "roi-point-3",
+        "annotatr_layer": "regions",
+        "annotatr_source": "manual",
+        "annotatr_level": "0"
+      },
+      "property_keys": [
+        "objectType",
+        "classification",
+        "metadata"
+      ],
+      "geometry_keys": [
+        "type",
+        "coordinates"
+      ],
+      "classification": {
+        "name": "Tumor",
+        "color": [
+          200.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "id": "a2433cce-6da9-8363-829b-f43c52710fc8",
+      "metadata": {
+        "annotatr_roi_id": "roi-plane-5",
+        "annotatr_layer": "regions",
+        "annotatr_source": "manual",
+        "annotatr_level": "0"
+      },
+      "property_keys": [
+        "objectType",
+        "classification",
+        "metadata"
+      ],
+      "geometry_keys": [
+        "type",
+        "coordinates",
+        "plane"
+      ],
+      "classification": {
+        "names": [
+          "Tumor",
+          "Positive"
+        ],
+        "color": [
+          200.0,
+          50.0,
+          50.0
+        ]
+      }
+    },
+    {
+      "id": "75900933-aea0-8c8c-8ee6-4f246048cd0c",
+      "metadata": {
+        "annotatr_roi_id": "roi-det-4",
+        "annotatr_layer": "cells",
+        "annotatr_source": "mask",
+        "annotatr_level": "0"
+      },
+      "property_keys": [
+        "objectType",
+        "classification",
+        "metadata"
+      ],
+      "geometry_keys": [
+        "type",
+        "coordinates"
+      ],
+      "classification": {
+        "name": "Tumor",
+        "color": [
+          153.0,
+          153.0,
+          153.0
+        ]
+      }
+    }
+  ],
+  "n_objects_read": 5,
+  "objects": [
+    {
+      "index": 0,
+      "object_class": "qupath.lib.objects.PathAnnotationObject",
+      "object_type": "annotation",
+      "classification": {
+        "to_string": "Tumor",
+        "name": "Tumor",
+        "is_derived": false,
+        "parent": null,
+        "base": "Tumor",
+        "components": [
+          "Tumor"
+        ],
+        "colour": {
+          "r": 200,
+          "g": 0,
+          "b": 0,
+          "packed_signed_int": -3670016
+        }
+      },
+      "object_colour": null,
+      "name": null,
+      "is_locked": true,
+      "roi_name": "Rectangle",
+      "roi_type": "AREA",
+      "area_px": 2500.0,
+      "length_px": 200.0,
+      "bounds": {
+        "x": 10.0,
+        "y": 20.0,
+        "w": 50.0,
+        "h": 50.0
+      },
+      "geometry_type": "Polygon",
+      "n_interior_rings": 0,
+      "plane": {
+        "c": -1,
+        "z": 0,
+        "t": 0
+      },
+      "id": "c667a1d3-a629-8da6-803e-36fb40a3bd1d",
+      "input_feature_id": "c667a1d3-a629-8da6-803e-36fb40a3bd1d",
+      "id_equals_input": true,
+      "has_metadata": true,
+      "metadata": {
+        "annotatr_roi_id": "roi-rect-1",
+        "annotatr_layer": "regions",
+        "annotatr_source": "manual",
+        "annotatr_level": "0"
+      },
+      "input_metadata": {
+        "annotatr_roi_id": "roi-rect-1",
+        "annotatr_layer": "regions",
+        "annotatr_source": "manual",
+        "annotatr_level": "0"
+      },
+      "metadata_equals_input": true,
+      "measurements": {}
+    },
+    {
+      "index": 1,
+      "object_class": "qupath.lib.objects.PathAnnotationObject",
+      "object_type": "annotation",
+      "classification": {
+        "to_string": "Stroma",
+        "name": "Stroma",
+        "is_derived": false,
+        "parent": null,
+        "base": "Stroma",
+        "components": [
+          "Stroma"
+        ],
+        "colour": {
+          "r": 0,
+          "g": 160,
+          "b": 0,
+          "packed_signed_int": -16736256
+        }
+      },
+      "object_colour": null,
+      "name": null,
+      "is_locked": false,
+      "roi_name": "Geometry",
+      "roi_type": "AREA",
+      "area_px": 5500.0,
+      "length_px": 440.0,
+      "bounds": {
+        "x": 100.0,
+        "y": 10.0,
+        "w": 80.0,
+        "h": 80.0
+      },
+      "geometry_type": "Polygon",
+      "n_interior_rings": 1,
+      "plane": {
+        "c": -1,
+        "z": 0,
+        "t": 0
+      },
+      "id": "f5df6c97-0ba5-87d9-be1a-b42b816784c5",
+      "input_feature_id": "f5df6c97-0ba5-87d9-be1a-b42b816784c5",
+      "id_equals_input": true,
+      "has_metadata": true,
+      "metadata": {
+        "annotatr_roi_id": "roi-hole-2",
+        "annotatr_layer": "regions",
+        "annotatr_source": "manual",
+        "annotatr_level": "0"
+      },
+      "input_metadata": {
+        "annotatr_roi_id": "roi-hole-2",
+        "annotatr_layer": "regions",
+        "annotatr_source": "manual",
+        "annotatr_level": "0"
+      },
+      "metadata_equals_input": true,
+      "measurements": {}
+    },
+    {
+      "index": 2,
+      "object_class": "qupath.lib.objects.PathAnnotationObject",
+      "object_type": "annotation",
+      "classification": {
+        "to_string": "Tumor",
+        "name": "Tumor",
+        "is_derived": false,
+        "parent": null,
+        "base": "Tumor",
+        "components": [
+          "Tumor"
+        ],
+        "colour": {
+          "r": 200,
+          "g": 0,
+          "b": 0,
+          "packed_signed_int": -3670016
+        }
+      },
+      "object_colour": null,
+      "name": null,
+      "is_locked": false,
+      "roi_name": "Points",
+      "roi_type": "POINT",
+      "area_px": 0.0,
+      "length_px": 0.0,
+      "bounds": {
+        "x": 30.5,
+        "y": 120.25,
+        "w": 0.0,
+        "h": 0.0
+      },
+      "geometry_type": "Point",
+      "n_interior_rings": 0,
+      "plane": {
+        "c": -1,
+        "z": 0,
+        "t": 0
+      },
+      "id": "ce977c4d-9f91-80b7-93c9-3053cd351c3c",
+      "input_feature_id": "ce977c4d-9f91-80b7-93c9-3053cd351c3c",
+      "id_equals_input": true,
+      "has_metadata": true,
+      "metadata": {
+        "annotatr_roi_id": "roi-point-3",
+        "annotatr_layer": "regions",
+        "annotatr_source": "manual",
+        "annotatr_level": "0"
+      },
+      "input_metadata": {
+        "annotatr_roi_id": "roi-point-3",
+        "annotatr_layer": "regions",
+        "annotatr_source": "manual",
+        "annotatr_level": "0"
+      },
+      "metadata_equals_input": true,
+      "measurements": {}
+    },
+    {
+      "index": 3,
+      "object_class": "qupath.lib.objects.PathAnnotationObject",
+      "object_type": "annotation",
+      "classification": {
+        "to_string": "Tumor: Positive",
+        "name": "Positive",
+        "is_derived": true,
+        "parent": "Tumor",
+        "base": "Tumor",
+        "components": [
+          "Tumor",
+          "Positive"
+        ],
+        "colour": {
+          "r": 200,
+          "g": 50,
+          "b": 50,
+          "packed_signed_int": -3657166
+        }
+      },
+      "object_colour": null,
+      "name": null,
+      "is_locked": false,
+      "roi_name": "Rectangle",
+      "roi_type": "AREA",
+      "area_px": 600.0,
+      "length_px": 100.0,
+      "bounds": {
+        "x": 150.0,
+        "y": 110.0,
+        "w": 30.0,
+        "h": 20.0
+      },
+      "geometry_type": "Polygon",
+      "n_interior_rings": 0,
+      "plane": {
+        "c": -1,
+        "z": 2,
+        "t": 1
+      },
+      "id": "a2433cce-6da9-8363-829b-f43c52710fc8",
+      "input_feature_id": "a2433cce-6da9-8363-829b-f43c52710fc8",
+      "id_equals_input": true,
+      "has_metadata": true,
+      "metadata": {
+        "annotatr_roi_id": "roi-plane-5",
+        "annotatr_layer": "regions",
+        "annotatr_source": "manual",
+        "annotatr_level": "0"
+      },
+      "input_metadata": {
+        "annotatr_roi_id": "roi-plane-5",
+        "annotatr_layer": "regions",
+        "annotatr_source": "manual",
+        "annotatr_level": "0"
+      },
+      "metadata_equals_input": true,
+      "measurements": {}
+    },
+    {
+      "index": 4,
+      "object_class": "qupath.lib.objects.PathDetectionObject",
+      "object_type": "detection",
+      "classification": {
+        "to_string": "Tumor",
+        "name": "Tumor",
+        "is_derived": false,
+        "parent": null,
+        "base": "Tumor",
+        "components": [
+          "Tumor"
+        ],
+        "colour": {
+          "r": 200,
+          "g": 0,
+          "b": 0,
+          "packed_signed_int": -3670016
+        }
+      },
+      "object_colour": null,
+      "name": null,
+      "is_locked": false,
+      "roi_name": "Rectangle",
+      "roi_type": "AREA",
+      "area_px": 100.0,
+      "length_px": 40.0,
+      "bounds": {
+        "x": 70.0,
+        "y": 100.0,
+        "w": 10.0,
+        "h": 10.0
+      },
+      "geometry_type": "Polygon",
+      "n_interior_rings": 0,
+      "plane": {
+        "c": -1,
+        "z": 0,
+        "t": 0
+      },
+      "id": "75900933-aea0-8c8c-8ee6-4f246048cd0c",
+      "input_feature_id": "75900933-aea0-8c8c-8ee6-4f246048cd0c",
+      "id_equals_input": true,
+      "has_metadata": true,
+      "metadata": {
+        "annotatr_roi_id": "roi-det-4",
+        "annotatr_layer": "cells",
+        "annotatr_source": "mask",
+        "annotatr_level": "0"
+      },
+      "input_metadata": {
+        "annotatr_roi_id": "roi-det-4",
+        "annotatr_layer": "cells",
+        "annotatr_source": "mask",
+        "annotatr_level": "0"
+      },
+      "metadata_equals_input": true,
+      "measurements": {}
+    }
+  ],
+  "export": {
+    "file": "qupath_roundtrip_annotatr020.geojson",
+    "call": "PathIO.exportObjectsAsGeoJSON(File, objects, FEATURE_COLLECTION)",
+    "bytes": 2577,
+    "duplicate_member_names_in_export": [
+      {
+        "path": "$.features[0].properties",
+        "name": "metadata",
+        "count": 2
+      },
+      {
+        "path": "$.features[1].properties",
+        "name": "metadata",
+        "count": 2
+      },
+      {
+        "path": "$.features[2].properties",
+        "name": "metadata",
+        "count": 2
+      },
+      {
+        "path": "$.features[3].properties",
+        "name": "metadata",
+        "count": 2
+      },
+      {
+        "path": "$.features[4].properties",
+        "name": "metadata",
+        "count": 2
+      }
+    ],
+    "duplicate_member_names_in_input": [],
+    "note_on_parsing": "features_parsed_with_gson/comparison use Gson's tree parser, which keeps a single value per member name; see duplicate_member_names_in_export for repeated keys",
+    "features_parsed_with_gson": [
+      {
+        "id": "c667a1d3-a629-8da6-803e-36fb40a3bd1d",
+        "metadata": {
+          "annotatr_roi_id": "roi-rect-1",
+          "annotatr_layer": "regions",
+          "annotatr_source": "manual",
+          "annotatr_level": "0"
+        },
+        "property_keys": [
+          "objectType",
+          "classification",
+          "isLocked",
+          "metadata"
+        ],
+        "geometry_keys": [
+          "type",
+          "coordinates"
+        ],
+        "classification": {
+          "name": "Tumor",
+          "color": [
+            200.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "id": "f5df6c97-0ba5-87d9-be1a-b42b816784c5",
+        "metadata": {
+          "annotatr_roi_id": "roi-hole-2",
+          "annotatr_layer": "regions",
+          "annotatr_source": "manual",
+          "annotatr_level": "0"
+        },
+        "property_keys": [
+          "objectType",
+          "classification",
+          "metadata"
+        ],
+        "geometry_keys": [
+          "type",
+          "coordinates"
+        ],
+        "classification": {
+          "name": "Stroma",
+          "color": [
+            0.0,
+            160.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "id": "ce977c4d-9f91-80b7-93c9-3053cd351c3c",
+        "metadata": {
+          "annotatr_roi_id": "roi-point-3",
+          "annotatr_layer": "regions",
+          "annotatr_source": "manual",
+          "annotatr_level": "0"
+        },
+        "property_keys": [
+          "objectType",
+          "classification",
+          "metadata"
+        ],
+        "geometry_keys": [
+          "type",
+          "coordinates"
+        ],
+        "classification": {
+          "name": "Tumor",
+          "color": [
+            200.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "id": "a2433cce-6da9-8363-829b-f43c52710fc8",
+        "metadata": {
+          "annotatr_roi_id": "roi-plane-5",
+          "annotatr_layer": "regions",
+          "annotatr_source": "manual",
+          "annotatr_level": "0"
+        },
+        "property_keys": [
+          "objectType",
+          "classification",
+          "metadata"
+        ],
+        "geometry_keys": [
+          "type",
+          "coordinates",
+          "plane"
+        ],
+        "classification": {
+          "names": [
+            "Tumor",
+            "Positive"
+          ],
+          "color": [
+            200.0,
+            50.0,
+            50.0
+          ]
+        }
+      },
+      {
+        "id": "75900933-aea0-8c8c-8ee6-4f246048cd0c",
+        "metadata": {
+          "annotatr_roi_id": "roi-det-4",
+          "annotatr_layer": "cells",
+          "annotatr_source": "mask",
+          "annotatr_level": "0"
+        },
+        "property_keys": [
+          "objectType",
+          "classification",
+          "metadata"
+        ],
+        "geometry_keys": [
+          "type",
+          "coordinates"
+        ],
+        "classification": {
+          "name": "Tumor",
+          "color": [
+            200.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    ],
+    "comparison": [
+      {
+        "index": 0,
+        "input_id": "c667a1d3-a629-8da6-803e-36fb40a3bd1d",
+        "exported_id": "c667a1d3-a629-8da6-803e-36fb40a3bd1d",
+        "id_survived": true,
+        "input_metadata": {
+          "annotatr_roi_id": "roi-rect-1",
+          "annotatr_layer": "regions",
+          "annotatr_source": "manual",
+          "annotatr_level": "0"
+        },
+        "exported_metadata": {
+          "annotatr_roi_id": "roi-rect-1",
+          "annotatr_layer": "regions",
+          "annotatr_source": "manual",
+          "annotatr_level": "0"
+        },
+        "metadata_survived": true,
+        "input_classification": {
+          "name": "Tumor",
+          "color": [
+            200.0,
+            0.0,
+            0.0
+          ]
+        },
+        "exported_classification": {
+          "name": "Tumor",
+          "color": [
+            200.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "input_id": "f5df6c97-0ba5-87d9-be1a-b42b816784c5",
+        "exported_id": "f5df6c97-0ba5-87d9-be1a-b42b816784c5",
+        "id_survived": true,
+        "input_metadata": {
+          "annotatr_roi_id": "roi-hole-2",
+          "annotatr_layer": "regions",
+          "annotatr_source": "manual",
+          "annotatr_level": "0"
+        },
+        "exported_metadata": {
+          "annotatr_roi_id": "roi-hole-2",
+          "annotatr_layer": "regions",
+          "annotatr_source": "manual",
+          "annotatr_level": "0"
+        },
+        "metadata_survived": true,
+        "input_classification": {
+          "name": "Stroma",
+          "color": [
+            0.0,
+            160.0,
+            0.0
+          ]
+        },
+        "exported_classification": {
+          "name": "Stroma",
+          "color": [
+            0.0,
+            160.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "index": 2,
+        "input_id": "ce977c4d-9f91-80b7-93c9-3053cd351c3c",
+        "exported_id": "ce977c4d-9f91-80b7-93c9-3053cd351c3c",
+        "id_survived": true,
+        "input_metadata": {
+          "annotatr_roi_id": "roi-point-3",
+          "annotatr_layer": "regions",
+          "annotatr_source": "manual",
+          "annotatr_level": "0"
+        },
+        "exported_metadata": {
+          "annotatr_roi_id": "roi-point-3",
+          "annotatr_layer": "regions",
+          "annotatr_source": "manual",
+          "annotatr_level": "0"
+        },
+        "metadata_survived": true,
+        "input_classification": {
+          "name": "Tumor",
+          "color": [
+            200.0,
+            0.0,
+            0.0
+          ]
+        },
+        "exported_classification": {
+          "name": "Tumor",
+          "color": [
+            200.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "index": 3,
+        "input_id": "a2433cce-6da9-8363-829b-f43c52710fc8",
+        "exported_id": "a2433cce-6da9-8363-829b-f43c52710fc8",
+        "id_survived": true,
+        "input_metadata": {
+          "annotatr_roi_id": "roi-plane-5",
+          "annotatr_layer": "regions",
+          "annotatr_source": "manual",
+          "annotatr_level": "0"
+        },
+        "exported_metadata": {
+          "annotatr_roi_id": "roi-plane-5",
+          "annotatr_layer": "regions",
+          "annotatr_source": "manual",
+          "annotatr_level": "0"
+        },
+        "metadata_survived": true,
+        "input_classification": {
+          "names": [
+            "Tumor",
+            "Positive"
+          ],
+          "color": [
+            200.0,
+            50.0,
+            50.0
+          ]
+        },
+        "exported_classification": {
+          "names": [
+            "Tumor",
+            "Positive"
+          ],
+          "color": [
+            200.0,
+            50.0,
+            50.0
+          ]
+        }
+      },
+      {
+        "index": 4,
+        "input_id": "75900933-aea0-8c8c-8ee6-4f246048cd0c",
+        "exported_id": "75900933-aea0-8c8c-8ee6-4f246048cd0c",
+        "id_survived": true,
+        "input_metadata": {
+          "annotatr_roi_id": "roi-det-4",
+          "annotatr_layer": "cells",
+          "annotatr_source": "mask",
+          "annotatr_level": "0"
+        },
+        "exported_metadata": {
+          "annotatr_roi_id": "roi-det-4",
+          "annotatr_layer": "cells",
+          "annotatr_source": "mask",
+          "annotatr_level": "0"
+        },
+        "metadata_survived": true,
+        "input_classification": {
+          "name": "Tumor",
+          "color": [
+            153.0,
+            153.0,
+            153.0
+          ]
+        },
+        "exported_classification": {
+          "name": "Tumor",
+          "color": [
+            200.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    ]
+  },
+  "exceptions": [],
+  "log_events": [],
+  "warnings_or_errors": []
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "annotatr-hsi-v1/tivita-profile.schema.json",
+  "title": "TIVITA SpecCube layout sidecar",
+  "description": "Declares how a bare *_SpecCube.dat file is laid out. annotatR never infers these values.",
+  "type": "object",
+  "required": ["profile_version", "name", "width", "height", "bands", "header_values",
+               "value_bytes", "endian", "axis_order", "value_unit"],
+  "additionalProperties": false,
+  "properties": {
+    "profile_version": {"type": "string", "pattern": "^1\\.[0-9]+$"},
+    "name": {"type": "string", "minLength": 1, "maxLength": 128},
+    "width": {"type": "integer", "minimum": 1},
+    "height": {"type": "integer", "minimum": 1},
+    "bands": {"type": "integer", "minimum": 1},
+    "header_values": {"type": "integer", "minimum": 0},
+    "value_bytes": {"type": "integer", "enum": [4, 8]},
+    "endian": {"type": "string", "enum": ["big", "little"]},
+    "axis_order": {"type": "string", "enum": ["x,y,band"]},
+    "wavelengths": {"type": ["array", "null"], "items": {"type": "number"}},
+    "wavelength_unit": {"type": "string"},
+    "value_unit": {"type": "string",
+                   "enum": ["raw", "reflectance", "radiance", "intensity", "absorbance", "unknown"]},
+    "extensions": {"type": "object"}
+  }
+}

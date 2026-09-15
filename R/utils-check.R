@@ -1,9 +1,17 @@
+# Abort for an invalid argument: a classified validation error attributed to the
+# user-facing caller. `.envir` is the validator's frame so its variables
+# interpolate into the message.
+.check_abort <- function(message, call, .envir = parent.frame()) {
+  cli::cli_abort(message, class = c("at_validation_error", "at_error"),
+                 code = "VALIDATION_FAILED", call = call, .envir = .envir)
+}
+
 # Internal input validators. Each accepts `arg` (the caller's argument name)
 # and `call` (the caller's environment) so that errors are attributed to the
 # user-facing function, not to the validator. None are exported.
 #
 # Every validator returns its (coerced) input invisibly on success and aborts
-# via `cli::cli_abort()` on failure.
+# via `.check_abort()` on failure.
 
 # A single non-missing string.
 .check_string <- function(x,
@@ -14,7 +22,7 @@
     return(invisible(x))
   }
   if (!is.character(x) || length(x) != 1L || is.na(x)) {
-    cli::cli_abort(
+    .check_abort(
       c(
         "{.arg {arg}} must be a single string.",
         "x" = "You supplied {.cls {class(x)[1]}} of length {length(x)}."
@@ -30,7 +38,7 @@
                         arg = rlang::caller_arg(x),
                         call = rlang::caller_env()) {
   if (!is.logical(x) || length(x) != 1L || is.na(x)) {
-    cli::cli_abort(
+    .check_abort(
       c(
         "{.arg {arg}} must be a single {.code TRUE} or {.code FALSE}.",
         "x" = "You supplied {.cls {class(x)[1]}} of length {length(x)}."
@@ -52,7 +60,7 @@
     return(invisible(x))
   }
   if (!is.numeric(x) || length(x) != 1L || is.na(x) || !is.finite(x)) {
-    cli::cli_abort(
+    .check_abort(
       c(
         "{.arg {arg}} must be a single finite number.",
         "x" = "You supplied {.cls {class(x)[1]}} of length {length(x)}."
@@ -61,7 +69,7 @@
     )
   }
   if (x < min || x > max) {
-    cli::cli_abort(
+    .check_abort(
       c(
         "{.arg {arg}} must be in the range [{min}, {max}].",
         "x" = "You supplied {.val {x}}."
@@ -79,7 +87,7 @@
                          call = rlang::caller_env()) {
   if (!is.numeric(x) || length(x) != 1L || is.na(x) || !is.finite(x) ||
       x != round(x)) {
-    cli::cli_abort(
+    .check_abort(
       c(
         "{.arg {arg}} must be a single whole number.",
         "x" = "You supplied {.cls {class(x)[1]}} of length {length(x)}."
@@ -89,7 +97,7 @@
   }
   xi <- as.integer(round(x))
   if (xi < min) {
-    cli::cli_abort(
+    .check_abort(
       c(
         "{.arg {arg}} must be at least {min}.",
         "x" = "You supplied {.val {xi}}."
@@ -106,7 +114,7 @@
                         call = rlang::caller_env()) {
   .check_string(x, arg = arg, call = call)
   if (!file.exists(x) || dir.exists(x)) {
-    cli::cli_abort(
+    .check_abort(
       c(
         "{.arg {arg}} must be an existing file.",
         "x" = "{.path {x}} does not exist.",
@@ -124,7 +132,7 @@
                        call = rlang::caller_env()) {
   .check_string(x, arg = arg, call = call)
   if (!dir.exists(x)) {
-    cli::cli_abort(
+    .check_abort(
       c(
         "{.arg {arg}} must be an existing directory.",
         "x" = "{.path {x}} does not exist or is not a directory."
@@ -145,7 +153,7 @@
     return(invisible(x))
   }
   if (!inherits(x, cls)) {
-    cli::cli_abort(
+    .check_abort(
       c(
         "{.arg {arg}} must be a {.cls {cls}} object.",
         "x" = "You supplied {.cls {class(x)[1]}}."
@@ -167,7 +175,7 @@
     return(choices[[1]])
   }
   if (length(x) == 0L) {
-    cli::cli_abort(
+    .check_abort(
       c(
         "{.arg {arg}} must be one of {.or {.val {choices}}}.",
         "x" = "You supplied a length-0 value."
@@ -178,8 +186,20 @@
   if (length(x) != 1L) {
     x <- x[[1]]
   }
+  if (is.numeric(choices)) {
+    if (!is.numeric(x) || is.na(x) || !x %in% choices) {
+      .check_abort(
+        c(
+          "{.arg {arg}} must be one of {.or {.val {choices}}}.",
+          "x" = "You supplied {.val {x}}."
+        ),
+        call = call
+      )
+    }
+    return(choices[match(x, choices)])
+  }
   if (!is.character(x) || is.na(x) || !x %in% choices) {
-    cli::cli_abort(
+    .check_abort(
       c(
         "{.arg {arg}} must be one of {.or {.val {choices}}}.",
         "x" = "You supplied {.val {x}}."

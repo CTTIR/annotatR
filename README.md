@@ -3,8 +3,6 @@
 
 # annotatR <img src="man/figures/logo.png" align="right" height="139" alt="annotatR logo" />
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21889921.svg)](https://doi.org/10.5281/zenodo.21889921)
-
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/CTTIR/annotatR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/annotatR/actions/workflows/R-CMD-check.yaml)
@@ -68,14 +66,19 @@ at_plot_overlay(proj)
 
 ## Supported formats
 
-| Format                    | Backend   | Package required | Pyramid | Spectral  |
-|---------------------------|-----------|------------------|---------|-----------|
-| PNG / JPEG / TIFF         | `raster`  | magick or tiff   | no      | no        |
-| Pyramidal / OME-TIFF      | `tiff`    | tiff             | yes     | multiplex |
-| qptiff, OME-TIFF          | `ometiff` | RBioFormats      | yes     | multiplex |
-| Cubert `.cu3`             | `cuvis`   | cuvis.r          | no      | yes       |
-| ENVI cube                 | `envi`    | base R           | no      | yes       |
-| Diaspective Vision Tivita | `tivita`  | base R (ENVI)    | no      | yes       |
+| Format | Backend | Package required | Pyramid | Spectral |
+|----|----|----|----|----|
+| PNG / JPEG / TIFF | `raster` | magick or tiff | no | no |
+| Pyramidal / OME-TIFF | `tiff` | tiff | yes | multiplex |
+| qptiff, OME-TIFF | `ometiff` | RBioFormats | yes | multiplex |
+| Cubert `.cu3s` | `cuvis` | cuvis.r + CUVIS SDK | no | yes |
+| ENVI cube (BSQ/BIL/BIP) | `envi` | base R, windowed reads | no | yes |
+| Diaspective Vision TIVITA | `tivita` | base R, declared profile or sidecar | no | yes |
+
+A TIFF is treated as spectral only when wavelengths are declared.
+`at_bands()`, `at_hsi_meta()` and `at_read_stats()` report band
+wavelengths and gaps, value units, calibration and transform digests,
+and the bytes actually read.
 
 ## The mask workflow
 
@@ -95,7 +98,32 @@ at_annotate(at_example_session(5))
 
 Iterate through an image queue, draw multi-layer ROIs, watch the mask
 render live, and export everything in one pass — with resumable sessions
-and keyboard-first throughput.
+and keyboard-first throughput. `at_app()` returns the same app as a
+`shiny.appobj` for embedding and testing.
+
+## Working with qupflowR
+
+annotatR exchanges annotations with the qupflowR package through a
+versioned, hash-inventoried contract. `at_interop_capabilities()`
+reports which profiles this installation supports; the file (I0) and R
+API (I1) profiles are supported, while direct app control (I2) and
+embedding (I3) stay *planned* until they are qualified against a real
+qupflowR client.
+
+``` r
+dest <- file.path(tempdir(), "handoff")
+receipt <- at_export_qupflowr(proj, dest)            # QuPath GeoJSON, masks, manifest, integrity
+report <- at_import_qupflowr(dest)                    # verified, namespaced, never runs analysis
+patch <- at_stage_qupflowr(proj, report)              # diff; reviewed ROIs become conflicts
+committed <- at_commit_qupflowr(patch, idempotency_key = "review-42")
+```
+
+`at_training_export()` writes leakage-free, grouped deep-learning
+datasets with integer masks and full provenance, and
+`at_training_import()` stages model predictions for review. An optional
+loopback control service (`at_control_start()`, protocol
+`annotatr-control-v1`) lets a partner process read state and events and
+send typed commands to a running app. See `vignette("partner-interop")`.
 
 ## Related work
 
@@ -106,8 +134,7 @@ reproducible artifact.
 
 ## Acknowledgements
 
-annotatR builds on [OpenSeadragon](https://openseadragon.github.io/),
-[Annotorious](https://annotorious.github.io/), and the
+annotatR builds on [Shiny](https://shiny.posit.co/), the
 [`sf`](https://r-spatial.github.io/sf/) and
 [`stars`](https://r-spatial.github.io/stars/) packages.
 
@@ -121,11 +148,3 @@ tools used were Chat AI, the LLM service of KISSKI (GWDG), and a
 self-hosted Mistral Small (24B, Apache-2.0) run locally via Ollama and
 the ollamar R package — local inference only, with no data sent to third
 parties for the self-hosted model.
-
-## Citation
-
-If you use this software, please cite it as:
-
-> Heller, R. (2026). *annotatR: Multi-layer region-of-interest annotation for images and spectral cubes* (Version 0.1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21889921
-
-DOI: [10.5281/zenodo.21889921](https://doi.org/10.5281/zenodo.21889921)

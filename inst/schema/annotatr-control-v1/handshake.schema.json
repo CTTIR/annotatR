@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "annotatr-control-v1/handshake.schema.json",
+  "title": "GET /v1/handshake data",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "annotatr_version", "session_id", "instance_id",
+               "state_revision", "capability_digest", "capabilities", "status", "coordinate_convention",
+               "geometry_formats", "mask_formats", "event_cursor", "expires_at"],
+  "properties": {
+    "protocol": {"const": "annotatr-control-v1"},
+    "protocol_version": {"type": "string", "pattern": "^1\\.[0-9]+$"},
+    "annotatr_version": {"type": "string"},
+    "r_version": {"type": "string"},
+    "shiny_version": {"type": ["string", "null"]},
+    "session_id": {"type": "string"},
+    "instance_id": {"type": "string"},
+    "state_revision": {"type": "string", "pattern": "^[0-9]+$"},
+    "capability_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "capabilities": {
+      "type": "object",
+      "required": ["view", "selection", "annotation_stage", "annotation_commit", "training_export"],
+      "properties": {
+        "view": {"type": "boolean"}, "selection": {"type": "boolean"},
+        "annotation_stage": {"type": "boolean"}, "annotation_commit": {"type": "boolean"},
+        "training_export": {"type": "boolean"}
+      }
+    },
+    "status": {"type": "string", "enum": ["supported", "planned", "unavailable"]},
+    "coordinate_convention": {"type": "object"},
+    "geometry_formats": {"type": "array", "items": {"type": "string"}},
+    "mask_formats": {"type": "array", "items": {"type": "string"}},
+    "event_cursor": {"type": "string"},
+    "expires_at": {"type": "string"}
+  }
+}

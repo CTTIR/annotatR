@@ -50,7 +50,9 @@ Other backends:
 \code{\link[=at_backend_detect]{at_backend_detect()}},
 \code{\link[=at_backend_get]{at_backend_get()}},
 \code{\link[=at_backend_list]{at_backend_list()}},
+\code{\link[=at_cubert_export_envi]{at_cubert_export_envi()}},
 \code{\link[=at_read_image]{at_read_image()}},
-\code{\link[=at_tile]{at_tile()}}
+\code{\link[=at_tile]{at_tile()}},
+\code{\link[=at_tivita_profile]{at_tivita_profile()}}
 }
 \concept{backends}

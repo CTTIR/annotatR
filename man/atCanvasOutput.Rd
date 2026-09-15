@@ -20,12 +20,14 @@ Shiny output for the annotation canvas
 \seealso{
 Other shiny:
 \code{\link[=at_annotate]{at_annotate()}},
+\code{\link[=at_app]{at_app()}},
 \code{\link[=at_canvas]{at_canvas()}},
 \code{\link[=at_canvas_fit]{at_canvas_fit()}},
 \code{\link[=at_canvas_proxy]{at_canvas_proxy()}},
 \code{\link[=at_canvas_set_annotations]{at_canvas_set_annotations()}},
 \code{\link[=at_canvas_set_band]{at_canvas_set_band()}},
 \code{\link[=at_canvas_set_overlay]{at_canvas_set_overlay()}},
+\code{\link[=at_canvas_set_selection]{at_canvas_set_selection()}},
 \code{\link[=at_canvas_set_tool]{at_canvas_set_tool()}},
 \code{\link[=at_tile_source]{at_tile_source()}},
 \code{\link[=renderAtCanvas]{renderAtCanvas()}}

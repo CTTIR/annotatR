@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "annotatr-control-v1/command.schema.json",
+  "title": "annotatr-control-v1 command envelope",
+  "description": "Every POST body. Unknown optional data belongs under 'extensions'; any other top-level property is rejected. content_sha256 is the SHA-256 of the canonical JSON of 'payload' (sorted keys, no whitespace).",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "request_id", "idempotency_key", "operation",
+               "content_sha256", "payload"],
+  "additionalProperties": false,
+  "properties": {
+    "protocol": {"const": "annotatr-control-v1"},
+    "protocol_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+$"},
+    "request_id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]{1,128}$"},
+    "expected_revision": {"type": ["string", "null"], "pattern": "^[0-9]{1,18}$"},
+    "idempotency_key": {"type": "string", "pattern": "^[A-Za-z0-9._:-]{1,128}$"},
+    "operation": {"type": "string", "enum": ["session.load", "session.save", "context.goto", "context.view",
+      "context.selection", "annotations.stage", "annotations.commit", "mask.preview", "export",
+      "training.export", "close"]},
+    "content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "payload": {"type": "object"},
+    "payload_ref": {"type": "string"},
+    "extensions": {"type": "object"}
+  }
+}

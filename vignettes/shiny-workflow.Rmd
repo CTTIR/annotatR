@@ -16,7 +16,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.width = 6, fig.height
 library(annotatR)
 ```
 
-Annotating one image is a job for `at_project()` and the ROI constructors. Annotating a *queue* of images — a plate of serial sections, a batch of slides, a folder of cubes — is what `at_annotate()` is for. It wraps a Shiny and OpenSeadragon canvas around a resumable **session**, so you can work through many images without losing your place, your labels, or your unsaved edits.
+Annotating one image is a job for `at_project()` and the ROI constructors. Annotating a *queue* of images — a plate of serial sections, a batch of slides, a folder of cubes — is what the annotation app is for. It wraps a Shiny canvas around a resumable **session**, so you can work through many images without losing your place, your labels, or your unsaved edits. `at_app()` builds the app as an ordinary `shiny.appobj` from explicit arguments (for embedding or testing), and `at_annotate()` launches it.
 
 ## Building a session
 
@@ -57,6 +57,21 @@ at_annotate(templated)
 ```
 
 `at_annotate()` is forgiving about its first argument: pass a session, a project, an image, a vector of paths, a directory, or `NULL` to open the bundled example.
+
+To embed the app, or to exercise it in tests without a browser, build the app object instead. Nothing is passed through global options:
+
+```{r app-object, eval = requireNamespace("shiny", quietly = TRUE) && requireNamespace("bslib", quietly = TRUE) && requireNamespace("shinyjs", quietly = TRUE)}
+app <- at_app(session = templated, read_only = FALSE)
+class(app)
+```
+
+## Hyperspectral cubes in the app
+
+For spectral cubes the **Display** panel switches the canvas between natural colour, a single band, a pseudo-RGB / false-colour triple and the registered band operations listed by `at_band_operations()` (ratio, normalised difference, band means). These are display products: masks, spectra and exports always use the original cube values. The **Cube** table shows the image kind, wavelength range and gaps, value unit, calibration state, plane and how many bytes have been read. The **probe** tool picks a pixel whose spectrum appears on the Summary page next to ROI and layer spectra, and **Download region** exports the raw values of a selected ROI, the current view or custom bounds as an ENVI cube with provenance.
+
+## Staged changes and status
+
+Annotations proposed by a partner package, such as a qupflowR handoff imported on the Data page or a control command, arrive as a **staged** patch. The Annotate page lists its creates, updates and conflicts; reviewed or locked ROIs are never changed automatically. Commit or discard it explicitly. The badge next to the save controls always shows the state: *read-only*, *unsaved*, *staged*, *committed* or *saved*. See `vignette("partner-interop")` for the contract behind this.
 
 ## Keyboard shortcuts
 

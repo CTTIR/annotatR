@@ -221,7 +221,9 @@
 # pixels. Self-inverse. Internal; used at the boundaries with GIS-oriented
 # tooling. `height` is the extent along y at the geometry's reference level.
 .flip_y <- function(geom, height) {
-  stopifnot(inherits(geom, "sfc"))
+  if (!inherits(geom, "sfc")) {
+    .at_abort("{.arg geom} must be an {.cls sfc}.")
+  }
   flip <- function(m) {
     m[, 2] <- height - m[, 2]
     m

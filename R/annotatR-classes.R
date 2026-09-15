@@ -24,8 +24,7 @@
 #' }
 #'
 #' @name annotatR-classes
-#' @aliases annot_image annot_roi annot_layer annot_project annot_session
-#'   annot_mask annot_style annot_summary
+#' @aliases annot_image annot_roi annot_layer annot_project annot_session annot_mask annot_style annot_summary
 #' @family images
 #' @seealso [at_project()], [at_layer()]
 NULL

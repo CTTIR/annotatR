@@ -24,7 +24,7 @@ HTMLWidgets.widget({
     var state = {
       imgW: 1, imgH: 1, baseImg: null, overlayImg: null, overlayAlpha: 0.5,
       zoom: 1, panX: 0, panY: 0, tool: "pan",
-      features: [], drawing: null, selected: null
+      features: [], drawing: null, selected: null, selection: []
     };
 
     function resize() {
@@ -53,24 +53,41 @@ HTMLWidgets.widget({
       render();
     }
 
+    function tracePath(ring, close) {
+      ring.forEach(function (c, i) {
+        var p = toScreen(c[0], c[1]);
+        if (i === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]);
+      });
+      if (close) ctx.closePath();
+    }
+
+    // Draw every ring of (multi)polygons so holes render as holes (even-odd
+    // fill), and every part of multi-point / line geometries.
     function drawFeature(f, isDraw) {
       var g = f.geometry;
+      var polys = g.type === "Polygon" ? [g.coordinates] :
+        (g.type === "MultiPolygon" ? g.coordinates : null);
       ctx.beginPath();
-      if (g.type === "Point") {
-        var p = toScreen(g.coordinates[0], g.coordinates[1]);
-        ctx.arc(p[0], p[1], 4, 0, 2 * Math.PI);
-      } else if (g.type === "Polygon" || g.type === "LineString") {
-        var ring = g.type === "Polygon" ? g.coordinates[0] : g.coordinates;
-        ring.forEach(function (c, i) {
+      if (g.type === "Point" || g.type === "MultiPoint") {
+        var pts = g.type === "Point" ? [g.coordinates] : g.coordinates;
+        pts.forEach(function (c) {
           var p = toScreen(c[0], c[1]);
-          if (i === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]);
+          ctx.moveTo(p[0] + 4, p[1]);
+          ctx.arc(p[0], p[1], 4, 0, 2 * Math.PI);
         });
-        if (g.type === "Polygon") ctx.closePath();
+      } else if (polys) {
+        polys.forEach(function (poly) { poly.forEach(function (ring) { tracePath(ring, true); }); });
+      } else if (g.type === "LineString") {
+        tracePath(g.coordinates, false);
+      } else if (g.type === "MultiLineString") {
+        g.coordinates.forEach(function (line) { tracePath(line, false); });
       }
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = isDraw ? "#5E2C8E" : (f.properties && f.properties.colour) || "#E69F00";
+      var selected = !isDraw && f.properties && state.selection.indexOf(f.properties.roi_id) >= 0;
+      ctx.lineWidth = selected ? 4 : 2;
+      ctx.strokeStyle = selected ? "#e3a008" :
+        (isDraw ? "#5E2C8E" : (f.properties && f.properties.colour) || "#E69F00");
       ctx.fillStyle = "rgba(94,44,142,0.15)";
-      ctx.fill();
+      if (polys) ctx.fill("evenodd");
       ctx.stroke();
     }
 
@@ -116,13 +133,23 @@ HTMLWidgets.widget({
       }
       return inside;
     }
+    // Inside a polygon's exterior ring and outside all of its holes.
+    function pointInPolygon(pt, poly) {
+      if (!pointInRing(pt, poly[0])) return false;
+      for (var h = 1; h < poly.length; h++) if (pointInRing(pt, poly[h])) return false;
+      return true;
+    }
     // Topmost (last-drawn) feature containing the image-space point, or null.
     function featureAt(ic) {
       for (var k = state.features.length - 1; k >= 0; k--) {
         var g = state.features[k].geometry;
-        if (g.type === "Polygon" && pointInRing(ic, g.coordinates[0])) return state.features[k];
-        if (g.type === "Point") {
-          var d = Math.hypot(ic[0] - g.coordinates[0], ic[1] - g.coordinates[1]);
+        if (g.type === "Polygon" && pointInPolygon(ic, g.coordinates)) return state.features[k];
+        if (g.type === "MultiPolygon" && g.coordinates.some(function (p) { return pointInPolygon(ic, p); })) {
+          return state.features[k];
+        }
+        var pts = g.type === "Point" ? [g.coordinates] : (g.type === "MultiPoint" ? g.coordinates : []);
+        for (var q = 0; q < pts.length; q++) {
+          var d = Math.hypot(ic[0] - pts[q][0], ic[1] - pts[q][1]);
           if (d < 6 / state.zoom) return state.features[k];
         }
       }
@@ -155,6 +182,13 @@ HTMLWidgets.widget({
         state.drawing = { type: "Feature", geometry: { type: "Polygon", coordinates: [[[ic[0], ic[1]]]] }, _start: ic };
       } else if (state.tool === "point") {
         emitCreated({ type: "Point", coordinates: [ic[0], ic[1]] });
+      } else if (state.tool === "probe") {
+        shinyInput("probed", { x: ic[0], y: ic[1] });
+      } else if (state.tool === "select") {
+        var sh = featureAt(ic);
+        state.selection = sh && sh.properties && sh.properties.roi_id ? [sh.properties.roi_id] : [];
+        render();
+        shinyInput("selected", state.selection);
       } else if (state.tool === "polygon" || state.tool === "freehand") {
         if (!polyPts) polyPts = [];
         polyPts.push([ic[0], ic[1]]);
@@ -240,18 +274,22 @@ HTMLWidgets.widget({
       shinyInput("created", f);
     }
     function emitViewport() {
+      var tl = toImageCoords(0, 0), br = toImageCoords(canvas.width, canvas.height);
       shinyInput("viewport", { zoom: state.zoom, center_x: (canvas.width / 2 - state.panX) / state.zoom,
-        center_y: (canvas.height / 2 - state.panY) / state.zoom });
+        center_y: (canvas.height / 2 - state.panY) / state.zoom,
+        bounds: [tl[0], tl[1], br[0], br[1]] });
     }
 
     // ---- R -> JS message handlers ----
     if (window.Shiny) {
       var on = function (name, fn) { Shiny.addCustomMessageHandler("atcanvas-" + name, function (m) { if (m.id === el.id) fn(m); }); };
       on("set_annotations", function (m) { state.features = (m.annotations && m.annotations.features) || []; render(); });
-      on("set_tool", function (m) { state.tool = m.tool; });
+      on("set_tool", function (m) { state.tool = m.tool; canvas.dataset.tool = m.tool; });
       on("set_band", function (m) { /* band switching requires the tile server; no-op for the embedded base image */ });
       on("set_overlay", function (m) { state.overlayAlpha = m.alpha; loadImage(m.overlay, function (im) { state.overlayImg = im; render(); }); });
       on("fit_bounds", function (m) { fitBounds(m.bbox); });
+      on("set_selection", function (m) { state.selection = m.roi_ids || []; render(); });
+      on("clear_overlay", function (m) { state.overlayImg = null; render(); });
     }
 
     window.addEventListener("resize", resize);
@@ -259,6 +297,8 @@ HTMLWidgets.widget({
     return {
       renderValue: function (x) {
         state.tool = x.tool || "pan";
+        canvas.dataset.tool = state.tool;
+        if (x.options && x.options.selection) state.selection = x.options.selection;
         state.imgW = x.tileSource.width;
         state.imgH = x.tileSource.height;
         state.features = (x.annotations && x.annotations.features) || [];

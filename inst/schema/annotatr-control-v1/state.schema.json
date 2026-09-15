@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "annotatr-control-v1/state.schema.json",
+  "title": "GET /v1/state data",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "instance_id", "session_id", "state_revision", "event_cursor",
+               "status", "mode", "annotation_status", "queue", "view", "selection", "apps"],
+  "properties": {
+    "state_revision": {"type": "string", "pattern": "^[0-9]+$"},
+    "status": {"type": "string", "enum": ["running", "closing", "expired", "stopped"]},
+    "mode": {"type": "string", "enum": ["annotate", "read_only"]},
+    "annotation_status": {"type": "string", "enum": ["clean", "unsaved", "staged", "committed", "read_only"]},
+    "queue": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["entry_id", "queue_index", "name", "status", "n_rois", "image_id"],
+        "properties": {
+          "entry_id": {"type": "string", "pattern": "^entry-[0-9]{4,}$"},
+          "queue_index": {"type": "integer", "minimum": 1},
+          "image_id": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "current": {
+      "type": ["object", "null"],
+      "properties": {
+        "annotation_revision": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "rois": {"type": "array", "items": {"type": "object", "required": ["roi_id", "layer", "label"],
+                 "properties": {"roi_id": {"type": "string"}}}}
+      }
+    },
+    "view": {"type": "object"},
+    "selection": {"type": "array", "items": {"type": "string"}},
+    "staged": {"type": ["object", "null"]},
+    "last_commit": {"type": ["object", "null"]},
+    "apps": {"type": "object"}
+  }
+}

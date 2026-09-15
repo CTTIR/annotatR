@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "annotatr-control-v1/response.schema.json",
+  "title": "annotatr-control-v1 response envelope",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "request_id", "instance_id", "state_revision",
+               "event_cursor", "warnings"],
+  "properties": {
+    "protocol": {"const": "annotatr-control-v1"},
+    "protocol_version": {"type": "string", "pattern": "^1\\.[0-9]+$"},
+    "request_id": {"type": "string"},
+    "instance_id": {"type": "string", "pattern": "^instance-[0-9a-f-]{36}$"},
+    "state_revision": {"type": "string", "pattern": "^[0-9]+$"},
+    "event_cursor": {"type": "string"},
+    "data": {"type": ["object", "array"]},
+    "error": {"$ref": "#/definitions/error"},
+    "replayed": {"type": "boolean"},
+    "warnings": {"type": "array"}
+  },
+  "oneOf": [
+    {"required": ["data"]},
+    {"required": ["error"]}
+  ],
+  "definitions": {
+    "error": {
+      "type": "object",
+      "required": ["code", "message_key", "message", "details", "retryable"],
+      "properties": {
+        "code": {"type": "string", "pattern": "^[A-Z_]+$"},
+        "message_key": {"type": "string"},
+        "message": {"type": "string"},
+        "details": {"type": "object"},
+        "retryable": {"type": "boolean"}
+      }
+    }
+  }
+}

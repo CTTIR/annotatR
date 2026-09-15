@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "annotatr-handoff-v1/training-manifest.schema.json",
+  "title": "annotatR DNN training dataset manifest",
+  "description": "Grouped, leakage-free tile dataset with integer masks and provenance. Schema family annotatr-training-v1.",
+  "type": "object",
+  "required": ["schema", "schema_version", "document", "consumer", "annotatr_version", "capability_digest",
+               "created", "seed", "split_policy", "groups", "tile_policy", "mask_encoding", "bands",
+               "value_unit", "normalization", "include_images", "images", "tiles", "counts", "model",
+               "extensions"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "annotatr-training-v1"},
+    "schema_version": {"type": "string", "pattern": "^1\\.[0-9]+$"},
+    "document": {"const": "training_manifest"},
+    "consumer": {"type": "string"},
+    "annotatr_version": {"type": "string"},
+    "qupflowr_version": {"type": ["string", "null"]},
+    "source_revision": {"type": ["string", "null"]},
+    "capability_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "created": {"type": "string"},
+    "seed": {"type": "integer", "minimum": 0},
+    "split_policy": {
+      "type": "object",
+      "required": ["group_by", "fractions", "explicit", "algorithm"],
+      "properties": {
+        "group_by": {"type": "string", "enum": ["image_id", "sample_id", "subject_id"]},
+        "fractions": {"type": "object"},
+        "explicit": {"type": "boolean"},
+        "algorithm": {"type": "string"}
+      }
+    },
+    "groups": {
+      "type": "array",
+      "items": {"type": "object", "required": ["group_id", "split", "entry_ids"],
+                "properties": {"group_id": {"type": "string"}, "split": {"type": "string"},
+                               "entry_ids": {"type": "array", "items": {"type": "string"}}}}
+    },
+    "tile_policy": {
+      "type": "object",
+      "required": ["tile_size", "overlap", "stride", "level", "partial_tiles", "empty_tiles", "pixel_origin",
+                   "coverage_rule"],
+      "properties": {
+        "tile_size": {"type": "integer", "minimum": 8},
+        "overlap": {"type": "integer", "minimum": 0},
+        "stride": {"type": "integer", "minimum": 1},
+        "level": {"type": "integer", "minimum": 0},
+        "pixel_origin": {"const": "top_left"}
+      }
+    },
+    "mask_encoding": {
+      "type": "object",
+      "required": ["mask_type", "annotatr_mask_type", "dtype", "background", "mask_format", "class_legend"],
+      "properties": {
+        "mask_type": {"type": "string", "enum": ["labelled", "instance", "binary"]},
+        "dtype": {"type": "string", "enum": ["uint8", "uint16", "int32"]},
+        "background": {"type": "integer"},
+        "mask_format": {"type": "string", "enum": ["tiff", "npy"]},
+        "class_legend": {"type": "array", "items": {"type": "object", "required": ["code", "label"],
+                         "properties": {"code": {"type": "integer", "minimum": 1}, "label": {"type": "string"}}}}
+      }
+    },
+    "bands": {"type": "array"},
+    "value_unit": {"type": "string"},
+    "normalization": {"type": "object"},
+    "include_images": {"type": "boolean"},
+    "images": {
+      "type": "array",
+      "items": {"type": "object",
+                "required": ["entry_id", "image_id", "group_id", "split", "width", "height", "level",
+                             "annotation_revision", "transform_digest"],
+                "properties": {"image_id": {"type": "string"}, "split": {"type": "string"},
+                               "annotation_revision": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}}
+    },
+    "tiles": {
+      "type": "array",
+      "items": {"type": "object",
+                "required": ["tile_id", "entry_id", "split", "x", "y", "width", "height", "level", "status"],
+                "properties": {"status": {"type": "string", "enum": ["included", "excluded"]},
+                               "x": {"type": "integer", "minimum": 0}, "y": {"type": "integer", "minimum": 0}}}
+    },
+    "counts": {"type": "object", "required": ["tiles", "tiles_by_split", "images_by_split", "excluded", "flagged", "class_balance"]},
+    "model": {"type": "object", "required": ["model_digest", "prediction_digest", "confidence_policy"]},
+    "extensions": {"type": "object"}
+  }
+}

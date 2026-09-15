@@ -10,6 +10,7 @@ at_write_qupath(
   layer = NULL,
   level = 0L,
   overwrite = FALSE,
+  dialect = c("qupath", "legacy"),
   call = rlang::caller_env()
 )
 }
@@ -24,13 +25,25 @@ at_write_qupath(
 
 \item{overwrite}{Logical; overwrite an existing file. Default \code{FALSE}.}
 
+\item{dialect}{\code{"qupath"} (default) or \code{"legacy"}.}
+
 \item{call}{The calling environment, for error reporting.}
 }
 \value{
 The output path, invisibly.
 }
 \description{
-Write a project's ROIs as QuPath GeoJSON
+The default \code{dialect = "qupath"} writes what QuPath 0.4 and later read
+natively (verified with QuPath 0.7.0): \code{objectType}, \code{classification} with
+an \verb{[r, g, b]} colour, \code{isLocked} for locked ROIs, a deterministic UUID per
+ROI as the feature id (QuPath replaces non-UUID ids), and annotatR's own ROI
+id, layer, source and level in \code{properties.metadata}. \code{dialect = "legacy"}
+writes the annotatR 0.1 form (\code{object_type}, signed \code{colorRGB}), which QuPath
+still reads with a deprecation warning.
+}
+\details{
+QuPath keeps one colour per classification name, so identical labels with
+different layer colours collapse to the first colour QuPath sees.
 }
 \examples{
 \dontshow{if (requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)) withAutoprint(\{ # examplesIf}

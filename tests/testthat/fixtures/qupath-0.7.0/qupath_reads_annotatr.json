@@ -1,0 +1,324 @@
+{
+  "qupath_version": "0.7.0",
+  "java_version": "25.0.4",
+  "input_file": "annotatr_written_qupath.geojson",
+  "input_feature_ids": [
+    "roi-rect-1",
+    "roi-hole-2",
+    "roi-point-3",
+    "roi-det-4"
+  ],
+  "reader": "qupath.lib.io.PathIO.readObjects(java.io.File)",
+  "n_objects_read": 4,
+  "objects": [
+    {
+      "index": 0,
+      "object_class": "qupath.lib.objects.PathAnnotationObject",
+      "object_type": "annotation",
+      "is_annotation": true,
+      "is_detection": false,
+      "is_cell": false,
+      "classification_name": "Tumor",
+      "classification_colour": {
+        "r": 200,
+        "g": 0,
+        "b": 0,
+        "packed": -3670016
+      },
+      "object_colour": null,
+      "name": null,
+      "is_locked": false,
+      "roi_name": "Rectangle",
+      "roi_type": "AREA",
+      "roi_class": "qupath.lib.roi.RectangleROI",
+      "area_px": 2500.0,
+      "length_px": 200.0,
+      "bounds": {
+        "x": 10.0,
+        "y": 20.0,
+        "w": 50.0,
+        "h": 50.0
+      },
+      "geometry": {
+        "geometry_type": "Polygon",
+        "n_geometries": 1,
+        "n_polygons": 1,
+        "n_interior_rings": 0,
+        "n_coordinates": 5
+      },
+      "coordinates": [
+        [
+          [
+            [
+              10.0,
+              20.0
+            ],
+            [
+              10.0,
+              70.0
+            ],
+            [
+              60.0,
+              70.0
+            ],
+            [
+              60.0,
+              20.0
+            ],
+            [
+              10.0,
+              20.0
+            ]
+          ]
+        ]
+      ],
+      "plane": {
+        "c": -1,
+        "z": 0,
+        "t": 0
+      },
+      "id": "aafbf13b-cb83-40eb-bad4-562996c14059",
+      "input_feature_id": "roi-rect-1",
+      "id_equals_input": false,
+      "measurements": {},
+      "metadata": {}
+    },
+    {
+      "index": 1,
+      "object_class": "qupath.lib.objects.PathAnnotationObject",
+      "object_type": "annotation",
+      "is_annotation": true,
+      "is_detection": false,
+      "is_cell": false,
+      "classification_name": "Stroma",
+      "classification_colour": {
+        "r": 0,
+        "g": 160,
+        "b": 0,
+        "packed": -16736256
+      },
+      "object_colour": null,
+      "name": null,
+      "is_locked": false,
+      "roi_name": "Geometry",
+      "roi_type": "AREA",
+      "roi_class": "qupath.lib.roi.GeometryROI",
+      "area_px": 5500.0,
+      "length_px": 440.0,
+      "bounds": {
+        "x": 100.0,
+        "y": 10.0,
+        "w": 80.0,
+        "h": 80.0
+      },
+      "geometry": {
+        "geometry_type": "Polygon",
+        "n_geometries": 1,
+        "n_polygons": 1,
+        "n_interior_rings": 1,
+        "n_coordinates": 10
+      },
+      "coordinates": [
+        [
+          [
+            [
+              100.0,
+              90.0
+            ],
+            [
+              180.0,
+              90.0
+            ],
+            [
+              180.0,
+              10.0
+            ],
+            [
+              100.0,
+              10.0
+            ],
+            [
+              100.0,
+              90.0
+            ]
+          ],
+          [
+            [
+              150.0,
+              30.0
+            ],
+            [
+              150.0,
+              60.0
+            ],
+            [
+              120.0,
+              60.0
+            ],
+            [
+              120.0,
+              30.0
+            ],
+            [
+              150.0,
+              30.0
+            ]
+          ]
+        ]
+      ],
+      "plane": {
+        "c": -1,
+        "z": 0,
+        "t": 0
+      },
+      "id": "f5a6bb6a-23eb-4653-8b56-3a1510958fd2",
+      "input_feature_id": "roi-hole-2",
+      "id_equals_input": false,
+      "measurements": {},
+      "metadata": {}
+    },
+    {
+      "index": 2,
+      "object_class": "qupath.lib.objects.PathAnnotationObject",
+      "object_type": "annotation",
+      "is_annotation": true,
+      "is_detection": false,
+      "is_cell": false,
+      "classification_name": "Tumor",
+      "classification_colour": {
+        "r": 200,
+        "g": 0,
+        "b": 0,
+        "packed": -3670016
+      },
+      "object_colour": null,
+      "name": null,
+      "is_locked": false,
+      "roi_name": "Points",
+      "roi_type": "POINT",
+      "roi_class": "qupath.lib.roi.PointsROI",
+      "area_px": 0.0,
+      "length_px": 0.0,
+      "bounds": {
+        "x": 30.5,
+        "y": 120.25,
+        "w": 0.0,
+        "h": 0.0
+      },
+      "geometry": {
+        "geometry_type": "Point",
+        "n_geometries": 1,
+        "n_polygons": 0,
+        "n_interior_rings": 0,
+        "n_coordinates": 1
+      },
+      "coordinates": [
+        [
+          [
+            30.5,
+            120.25
+          ]
+        ]
+      ],
+      "plane": {
+        "c": -1,
+        "z": 0,
+        "t": 0
+      },
+      "id": "ac1669d5-114c-480b-9069-9a86e2760953",
+      "input_feature_id": "roi-point-3",
+      "id_equals_input": false,
+      "measurements": {},
+      "metadata": {}
+    },
+    {
+      "index": 3,
+      "object_class": "qupath.lib.objects.PathDetectionObject",
+      "object_type": "detection",
+      "is_annotation": false,
+      "is_detection": true,
+      "is_cell": false,
+      "classification_name": "Tumor",
+      "classification_colour": {
+        "r": 200,
+        "g": 0,
+        "b": 0,
+        "packed": -3670016
+      },
+      "object_colour": null,
+      "name": null,
+      "is_locked": false,
+      "roi_name": "Rectangle",
+      "roi_type": "AREA",
+      "roi_class": "qupath.lib.roi.RectangleROI",
+      "area_px": 100.0,
+      "length_px": 40.0,
+      "bounds": {
+        "x": 70.0,
+        "y": 100.0,
+        "w": 10.0,
+        "h": 10.0
+      },
+      "geometry": {
+        "geometry_type": "Polygon",
+        "n_geometries": 1,
+        "n_polygons": 1,
+        "n_interior_rings": 0,
+        "n_coordinates": 5
+      },
+      "coordinates": [
+        [
+          [
+            [
+              70.0,
+              100.0
+            ],
+            [
+              70.0,
+              110.0
+            ],
+            [
+              80.0,
+              110.0
+            ],
+            [
+              80.0,
+              100.0
+            ],
+            [
+              70.0,
+              100.0
+            ]
+          ]
+        ]
+      ],
+      "plane": {
+        "c": -1,
+        "z": 0,
+        "t": 0
+      },
+      "id": "517993bc-6975-488b-80d4-b24a0d0034ae",
+      "input_feature_id": "roi-det-4",
+      "id_equals_input": false,
+      "measurements": {},
+      "metadata": {}
+    }
+  ],
+  "exceptions": [],
+  "log_events": [
+    {
+      "level": "WARN",
+      "logger": "qupath.lib.io.QuPathTypeAdapters$PathObjectTypeAdapter",
+      "message": "PathObject using 'object_type' property - this should be updated to 'objectType'",
+      "throwable": null
+    }
+  ],
+  "warnings_or_errors": [
+    {
+      "level": "WARN",
+      "logger": "qupath.lib.io.QuPathTypeAdapters$PathObjectTypeAdapter",
+      "message": "PathObject using 'object_type' property - this should be updated to 'objectType'",
+      "throwable": null
+    }
+  ]
+}

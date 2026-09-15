@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "annotatr-control-v1/events-page.schema.json",
+  "title": "GET /v1/events data",
+  "type": "object",
+  "required": ["events", "next_cursor", "resync_required", "has_more", "state_revision"],
+  "properties": {
+    "events": {"type": "array", "maxItems": 500},
+    "next_cursor": {"type": "string"},
+    "resync_required": {"type": "boolean"},
+    "has_more": {"type": "boolean"},
+    "state_revision": {"type": "string", "pattern": "^[0-9]+$"}
+  }
+}

@@ -163,7 +163,8 @@ at_roi_rect <- function(xmin, ymin, xmax, ymax, label, level = 0L, ...,
 #' @param n_seg Integer number of polygon segments approximating the circle.
 #' @inheritParams at_roi_point
 #'
-#' @return An [annot_roi] with `POLYGON` geometry.
+#' @return An [annot_roi] with `POLYGON` geometry and `attributes$shape =
+#'   "circle"`, so exports can flag the polygon as an approximation.
 #' @family rois
 #' @export
 #' @examples
@@ -178,7 +179,9 @@ at_roi_circle <- function(x, y, r, label, level = 0L, n_seg = 64L, ...,
   ring <- cbind(x + r * cos(ang), y + r * sin(ang))
   ring[nrow(ring), ] <- ring[1, ]
   g <- sf::st_sfc(sf::st_polygon(list(ring)), crs = sf::NA_crs_)
-  .build_roi(g, label, level, list(...), call = call)
+  roi <- .build_roi(g, label, level, list(...), call = call)
+  roi$attributes$shape <- roi$attributes$shape %||% "circle"
+  roi
 }
 
 #' Create an elliptical ROI
@@ -190,7 +193,8 @@ at_roi_circle <- function(x, y, r, label, level = 0L, n_seg = 64L, ...,
 #' @param n_seg Integer number of polygon segments approximating the ellipse.
 #' @inheritParams at_roi_point
 #'
-#' @return An [annot_roi] with `POLYGON` geometry.
+#' @return An [annot_roi] with `POLYGON` geometry and `attributes$shape =
+#'   "ellipse"`, so exports can flag the polygon as an approximation.
 #' @family rois
 #' @export
 #' @examples
@@ -212,7 +216,9 @@ at_roi_ellipse <- function(x, y, rx, ry, rotation = 0, label, level = 0L,
   ring <- cbind(rxs, rys)
   ring[nrow(ring), ] <- ring[1, ]
   g <- sf::st_sfc(sf::st_polygon(list(ring)), crs = sf::NA_crs_)
-  .build_roi(g, label, level, list(...), call = call)
+  roi <- .build_roi(g, label, level, list(...), call = call)
+  roi$attributes$shape <- roi$attributes$shape %||% "ellipse"
+  roi
 }
 
 #' Create a polygon ROI

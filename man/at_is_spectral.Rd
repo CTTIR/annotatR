@@ -23,6 +23,7 @@ Other images:
 \code{\link[=at_bands]{at_bands()}},
 \code{\link[=at_dims]{at_dims()}},
 \code{\link[=at_example_image]{at_example_image()}},
+\code{\link[=at_hsi_meta]{at_hsi_meta()}},
 \code{\link[=at_is_pyramidal]{at_is_pyramidal()}},
 \code{\link[=at_meta]{at_meta()}},
 \code{\link[=at_n_bands]{at_n_bands()}},

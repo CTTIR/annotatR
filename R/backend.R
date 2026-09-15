@@ -53,8 +53,12 @@ at_backend_register <- function(name, read_fn, tile_fn, detect_fn, available_fn,
                                 description = "", extensions = character(),
                                 call = rlang::caller_env()) {
   .check_string(name, call = call)
-  stopifnot(is.function(read_fn), is.function(tile_fn), is.function(detect_fn),
-            is.function(available_fn))
+  fns <- list(read_fn = read_fn, tile_fn = tile_fn, detect_fn = detect_fn,
+              available_fn = available_fn)
+  not_fn <- names(fns)[!vapply(fns, is.function, logical(1))]
+  if (length(not_fn) > 0L) {
+    .at_abort("{.arg {not_fn}} must be function{?s}.", call = call)
+  }
   b <- new_annot_backend(name, read_fn, tile_fn, detect_fn, available_fn,
                          description, as.character(extensions))
   assign(name, b, envir = .backend_registry)
@@ -229,6 +233,17 @@ at_tile <- function(img, level = 0L, xrange = NULL, yrange = NULL, bands = NULL,
       )
     }
   }
+  n_out <- if (is.null(bands)) img$n_bands else length(bands)
+  req_bytes <- 8 * (xrange[2] - xrange[1] + 1) * (yrange[2] - yrange[1] + 1) * n_out
+  if (req_bytes > .max_tile_bytes()) {
+    .at_abort(
+      c("The requested tile needs {format(req_bytes, big.mark = ',')} bytes, over the limit.",
+        "i" = "Request a smaller window or raise {.code options(annotatR.max_tile_bytes = )}."),
+      class = "limit", code = "TILE_TOO_LARGE",
+      details = list(requested_bytes = req_bytes, limit_bytes = .max_tile_bytes()),
+      call = call
+    )
+  }
   b <- at_backend_get(img$backend, call = call)
   key <- .tile_key(img, level, xrange, yrange, bands)
   cached <- .tile_cache_get(key)
@@ -236,10 +251,13 @@ at_tile <- function(img, level = 0L, xrange = NULL, yrange = NULL, bands = NULL,
     return(cached)
   }
   arr <- b$tile_fn(img, level, xrange, yrange, bands)
+  file_bytes <- attr(arr, "file_bytes") %||% 0
+  attr(arr, "file_bytes") <- NULL
   # Guarantee a 3D [y, x, band] array.
   if (length(dim(arr)) == 2L) {
     arr <- array(arr, dim = c(dim(arr), 1L))
   }
+  .read_stats_add(img, file_bytes = file_bytes, decoded_bytes = 8 * length(arr))
   .tile_cache_put(key, arr)
   arr
 }

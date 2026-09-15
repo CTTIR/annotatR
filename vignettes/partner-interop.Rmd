@@ -1,0 +1,235 @@
+---
+title: "Working with qupflowR: handoffs, control and training data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Working with qupflowR: handoffs, control and training data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r hexlogo, echo=FALSE, fig.align="right", out.width="110px", fig.alt="annotatR logo"}
+knitr::include_graphics("../man/figures/logo.png")
+```
+
+```{r setup, include=FALSE}
+has_raster <- requireNamespace("tiff", quietly = TRUE) &&
+  (requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE))
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = has_raster)
+library(annotatR)
+```
+
+annotatR and the qupflowR package (a QuPath bridge, analysis and workflow
+package) exchange annotations, masks, hyperspectral metadata and deep-learning
+datasets through a small, versioned contract. qupflowR never reaches into
+annotatR internals, Shiny state, `inst/` files or the browser DOM; it uses the
+public functions below, the files they write, or the optional local control
+service. This vignette describes that contract from the annotatR side.
+
+## What this installation supports
+
+```{r capabilities}
+caps <- at_interop_capabilities()
+caps
+caps$profiles$I2[c("status", "implemented", "available", "reason")]
+```
+
+The profiles are:
+
+| Profile | What it covers | Status rule |
+|---|---|---|
+| I0 | file interchange: handoff directories, QuPath GeoJSON, masks with legends | supported |
+| I1 | public R API (`at_*` functions) | supported |
+| I2 | loopback control service `annotatr-control-v1` | `planned` until qualified with a real qupflowR client; `unavailable` without httpuv/later |
+| I3 | embeddable app object from `at_app()` | `planned` until qualified; `unavailable` without shiny/bslib/shinyjs/htmlwidgets |
+
+A capability is never advertised as supported because it merely exists. The
+report carries a `digest` (SHA-256 of its canonical JSON) that manifests and
+handshakes repeat, so a partner can bind its expectations to exactly this set.
+
+## Handoff directories
+
+`at_export_qupflowr()` writes a new, self-contained directory of neutral files:
+
+```{r export}
+proj <- at_example_project()
+dest <- file.path(tempdir(), "qupflowr-handoff")
+receipt <- at_export_qupflowr(proj, dest, formats = c("qupath_geojson", "mask_tiff", "manifest"),
+                              overwrite = TRUE)
+receipt$files[, c("path", "size_bytes", "format")]
+receipt$handoff_digest
+```
+
+- `annotations_qupath.geojson` uses the QuPath 0.4+ dialect with a stable UUID
+  per ROI and annotatR's ROI id, layer, source and level in
+  `properties.metadata`.
+- `masks/<layer>_labelled.tif` holds one integer value per ROI; its
+  `.legend.json` joins values to ROI ids, labels and colours.
+- `image.json` and `manifest.json` identify images by content hash and file
+  basename only. No absolute path is used as identity.
+- `integrity.json` inventories every other file (`path`, `size_bytes`,
+  `sha256`, sorted by path). The **handoff digest** is the SHA-256 of its
+  canonical JSON (keys sorted, no whitespace, integer sizes, no trailing
+  newline) — the same rule qupflowR uses for its bundle digest.
+
+Files are written to a hidden staging directory and moved into place only when
+complete. An existing destination is replaced only with `overwrite = TRUE`, and
+only if it is itself a handoff directory.
+
+### The manifest
+
+```{r manifest}
+man <- receipt$manifest
+man[c("schema", "schema_version", "consumer", "object_kind")]
+str(man$coordinate_convention)
+man$images[[1]][c("image_id", "source_name", "width", "height", "n_bands", "transform_digest")]
+man$annotations$annotation_revision
+```
+
+The coordinate convention is explicit: pixel units, origin at the top-left
+corner, `y` increasing downward, planes indexed from zero, and the pixel
+coverage rule for masks. QuPath object hierarchy and native ROI shapes, which
+annotatR does not model, are reported as `"unknown"` or `"approximated"`
+(circles and ellipses are polygons) instead of being invented.
+
+## Importing, staging and committing
+
+`at_import_qupflowr()` reads only the neutral contract. It verifies the
+inventory (missing, extra, duplicate, resized, altered and symlinked files), the
+manifest schema and its major version, the id join between manifest and
+GeoJSON, labels, mask dimensions, integer values and legend completeness. Any
+failure is a classified error; nothing is written and no analysis runs.
+
+```{r import}
+report <- at_import_qupflowr(dest, expected_revision = at_annotation_revision(proj))
+report$checks
+```
+
+Changes are applied in two explicit steps. Staging joins ROIs by id and
+classifies each change; reviewed or locked ROIs and locked layers are never
+changed automatically but reported as conflicts:
+
+```{r stage}
+partner <- report$objects$layers$regions
+partner <- at_layer_add(partner, at_roi_rect(10, 10, 60, 60, label = "stroma", id = "from-partner"))
+patch <- at_stage_qupflowr(proj, partner, expected_revision = at_annotation_revision(proj))
+patch$operations
+```
+
+Committing is idempotent: the same key replays the original receipt, a reused
+key for a different patch is refused. When the patch targets a project file,
+the file's revision is checked again immediately before it is replaced, and
+replacing an existing file requires `overwrite = TRUE`.
+
+```{r commit}
+receipt <- at_commit_qupflowr(patch, idempotency_key = "vignette-commit")
+receipt$new_revision
+at_commit_qupflowr(patch, idempotency_key = "vignette-commit")$replayed
+```
+
+## Hyperspectral metadata
+
+Spectral images keep the format-independent tile contract `[y, x, band]`.
+Metadata travels with them explicitly:
+
+```{r hsi, eval = TRUE}
+cube <- at_example_image("cube")
+head(at_bands(cube), 3)
+at_hsi_meta(cube)[c("image_kind", "value_unit", "interleave", "byte_order", "header_bytes",
+                    "calibration_digest", "window_read")]
+```
+
+Raw values, reflectance, radiance, intensity and absorbance are never mixed:
+`at_convert_values()` implements the named conversions and refuses to guess a
+missing calibration. ENVI and TIVITA cubes are read window by window, so
+opening, printing or displaying a cube does not load it; `at_read_stats()`
+reports the bytes read. A TIVITA `*_SpecCube.dat` is decoded only through a
+declared `at_tivita_profile()` or a `<cube>.tivita.json` sidecar. Cubert
+`.cu3s` files need `cuvis.r` and the CUVIS SDK; without them the backend reports
+itself unavailable and an SDK-written ENVI export is the portable fallback.
+Display products from `at_band_view()` (ratios, normalised differences, band
+means) carry their parent digest and band list and are never used as analysis
+input.
+
+## Deep-learning training datasets
+
+```{r training}
+sess <- at_example_session(3)
+for (i in seq_len(3)) sess$projects[[i]] <- at_example_project()
+ds <- at_training_export(sess, file.path(tempdir(), "training-dataset"), tile_size = 128,
+                         mask_type = "labelled", seed = 11, overwrite = TRUE)
+ds$manifest$split_policy$algorithm
+ds$manifest$counts[c("tiles", "tiles_by_split", "excluded")]
+ds$checks
+```
+
+Splits are assigned per group — per image by default, or per `sample_id` or
+`subject_id` supplied in `groups` — so tiles of one source never occur in two
+splits. The manifest records tile size, overlap, level, pixel origin, coverage
+rule, class legend (background `0`), band list with wavelengths and FWHM,
+value unit, calibration and transform digests, annotation revisions and review
+status counts. `at_training_check()` re-verifies the inventory, split leakage,
+mask dimensions, label range and a mask-to-ROI round trip.
+
+Model predictions come back as staged annotations. They must match the image
+dimensions and use only codes from the label map; reviewed annotations are
+never overwritten:
+
+```{r predictions}
+pred <- matrix(0L, 512, 512)
+pred[20:80, 30:120] <- 1L
+staged <- at_training_import(proj, pred, label_map = c(tumour = 1L),
+                             model = list(name = "example-unet", version = "0.1",
+                                          sha256 = strrep("0", 64)))
+staged$summary
+```
+
+Training itself remains an external, optional workflow.
+
+## The control service
+
+A partner process can drive a running app through the loopback service. It is
+off unless started, binds only to `127.0.0.1`, authenticates with a random
+bearer token that expires, rejects browser-origin requests and oversized
+bodies, resolves file references only below its root, and offers no endpoint
+that evaluates R, shell or Python code.
+
+```{r control, eval = has_raster && requireNamespace("httpuv", quietly = TRUE)}
+handle <- at_control_start(at_example_session(2), serve = FALSE)
+state <- at_control_state(handle)
+state$state_revision
+at_control_command(handle, list(operation = "context.goto", payload = list(queue_index = 2),
+                                expected_revision = state$state_revision))$entry_id
+vapply(at_control_events(handle)$events, `[[`, character(1), "type")
+at_control_stop(handle)
+```
+
+In a real integration the app runs in its own process:
+
+```{r control-process, eval = FALSE}
+handle <- at_control_start(session, token_file = "/run/user/1000/annotatr.token")
+shiny::runApp(at_app(control = handle))
+# ... in the partner process:
+remote <- at_control_connect(manifest_path, "/run/user/1000/annotatr.token")
+```
+
+Every mutation carries a `request_id`, the `expected_revision` it is based on,
+an `idempotency_key` and the SHA-256 of its canonical payload. A stale revision
+is a conflict; a lost response is resolved with
+`at_control_request_status()`, and re-sending with the same key never applies
+a command twice. Events are read with a cursor; a cursor from another instance
+or older than the retained buffer yields `resync_required = TRUE`.
+
+The JSON Schemas for all documents ship with the package:
+
+```{r schemas, eval = TRUE}
+basename(list.files(system.file("schema", package = "annotatR"), recursive = TRUE))
+```
+
+## Versions and migration
+
+Schema versions are independent of the package version. Readers reject an
+unknown major version and keep unknown optional data only under `extensions`.
+annotatR 0.2.0 introduces `annotatr-handoff-v1`, `annotatr-control-v1`,
+`annotatr-training-v1` and `annotatr-hsi-v1` (all `1.0`). Existing 0.1 files
+remain readable: legacy QuPath GeoJSON (`object_type`, `colorRGB`) is imported,
+and `at_write_qupath(dialect = "legacy")` still writes it.

@@ -28,6 +28,16 @@ reference:
       - at_backend_get
       - at_backend_detect
       - at_backend_register
+      - at_tivita_profile
+      - at_cubert_export_envi
+  - title: Hyperspectral metadata
+    desc: Band tables, value semantics, display band operations and read accounting.
+    contents:
+      - at_hsi_meta
+      - at_convert_values
+      - at_band_operations
+      - at_band_view
+      - at_read_stats
   - title: Regions of interest
     desc: Construct and measure individual ROIs.
     contents:
@@ -143,9 +153,38 @@ reference:
       - at_load_session
       - at_write_rois_csv
       - at_read_rois_csv
+  - title: Partner interoperability
+    desc: The versioned qupflowR contract - capabilities, manifests, handoffs, staging and commits.
+    contents:
+      - at_interop_capabilities
+      - at_interop_manifest
+      - at_annotation_revision
+      - at_export_qupflowr
+      - at_import_qupflowr
+      - at_stage_qupflowr
+      - at_commit_qupflowr
+  - title: Training datasets
+    desc: Leakage-free deep-learning datasets and staged prediction import.
+    contents:
+      - at_training_export
+      - at_training_check
+      - at_training_import
+  - title: Control service
+    desc: The optional loopback annotatr-control-v1 service.
+    contents:
+      - at_control_capabilities
+      - at_control_start
+      - at_control_stop
+      - at_control_close
+      - at_control_connect
+      - at_control_state
+      - at_control_events
+      - at_control_command
+      - at_control_request_status
   - title: Shiny application
     desc: The batch annotation app and canvas widget.
     contents:
+      - at_app
       - at_annotate
       - at_canvas
       - atCanvasOutput
@@ -156,6 +195,7 @@ reference:
       - at_canvas_set_band
       - at_canvas_set_overlay
       - at_canvas_fit
+      - at_canvas_set_selection
       - at_tile_source
   - title: Example data
     desc: Bundled synthetic examples.
@@ -182,3 +222,4 @@ articles:
     contents:
       - shiny-workflow
       - interop
+      - partner-interop

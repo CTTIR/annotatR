@@ -14,7 +14,10 @@ test_that("at_bands always has n_bands rows with correct columns", {
   b <- at_bands(img)
   expect_s3_class(b, "tbl_df")
   expect_equal(nrow(b), 3L)
-  expect_identical(names(b), c("index", "name", "wavelength", "unit"))
+  expect_identical(names(b)[1:4], c("index", "name", "wavelength", "unit"))
+  expect_identical(names(b), c("index", "name", "wavelength", "unit", "fwhm", "order",
+                               "wavelength_status"))
+  expect_identical(b$wavelength_status, rep("missing", 3L))
   expect_identical(b$name, c("R", "G", "B"))
   expect_true(all(is.na(b$wavelength)))
 })

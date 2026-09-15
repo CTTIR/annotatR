@@ -103,3 +103,14 @@ a, .nav-link.active { color: var(--at-blue-2); }
                        color: var(--at-muted); font-family: var(--at-mono-font); font-size: .9rem; }
 .at-prose ul { padding-left: 20px; }
 .at-prose code { color: var(--at-blue-2); }
+
+/* ---- Annotation state badge and control status --------------------------- */
+.at-badge { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 10px;
+            font-family: var(--at-mono-font); font-size: .74rem; border: 1px solid var(--at-border);
+            color: var(--bs-body-color); background: var(--at-surface-2); }
+.at-badge-read_only { border-color: var(--at-muted); color: var(--at-muted); }
+.at-badge-unsaved { border-color: var(--at-gold); color: var(--at-gold); }
+.at-badge-staged { border-color: var(--at-blue-2); color: var(--at-blue-2); }
+.at-badge-committed { border-color: #2da44e; color: #2da44e; }
+.at-staged { border-color: var(--at-blue-2); margin-bottom: 8px; }
+.at-control { margin: 6px 0; }

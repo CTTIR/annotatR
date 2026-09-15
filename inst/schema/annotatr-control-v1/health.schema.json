@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "annotatr-control-v1/health.schema.json",
+  "title": "GET /v1/health data",
+  "description": "Version, capability digest and process state; carries no session data.",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "annotatr_version", "instance_id", "status", "capability_digest",
+               "uptime_seconds", "expires_at"],
+  "additionalProperties": false,
+  "properties": {
+    "protocol": {"const": "annotatr-control-v1"},
+    "protocol_version": {"type": "string"},
+    "annotatr_version": {"type": "string"},
+    "instance_id": {"type": "string"},
+    "status": {"type": "string"},
+    "capability_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "uptime_seconds": {"type": "number", "minimum": 0},
+    "expires_at": {"type": "string"}
+  }
+}

@@ -12,6 +12,7 @@ at_canvas(
   height = NULL,
   elementId = NULL,
   options = list(),
+  view = NULL,
   call = rlang::caller_env()
 )
 }
@@ -21,13 +22,16 @@ at_canvas(
 \item{project}{Optional \link{annot_project} whose ROIs are shown initially.}
 
 \item{tool}{Initial tool: one of \code{"pan"}, \code{"rect"}, \code{"polygon"}, \code{"freehand"},
-\code{"circle"}, \code{"point"}, \code{"edit"}, \code{"erase"}.}
+\code{"circle"}, \code{"point"}, \code{"edit"}, \code{"erase"}, \code{"probe"} (emit a pixel
+position for spectra) or \code{"select"} (emit the clicked ROI id).}
 
 \item{width, height}{Widget dimensions.}
 
 \item{elementId}{Optional element id.}
 
 \item{options}{A list of extra options passed to the widget.}
+
+\item{view}{Optional band view passed to \code{\link[=at_tile_source]{at_tile_source()}}.}
 
 \item{call}{The calling environment, for error reporting.}
 }
@@ -48,11 +52,13 @@ at_canvas(at_example_image("tissue"))
 Other shiny:
 \code{\link[=atCanvasOutput]{atCanvasOutput()}},
 \code{\link[=at_annotate]{at_annotate()}},
+\code{\link[=at_app]{at_app()}},
 \code{\link[=at_canvas_fit]{at_canvas_fit()}},
 \code{\link[=at_canvas_proxy]{at_canvas_proxy()}},
 \code{\link[=at_canvas_set_annotations]{at_canvas_set_annotations()}},
 \code{\link[=at_canvas_set_band]{at_canvas_set_band()}},
 \code{\link[=at_canvas_set_overlay]{at_canvas_set_overlay()}},
+\code{\link[=at_canvas_set_selection]{at_canvas_set_selection()}},
 \code{\link[=at_canvas_set_tool]{at_canvas_set_tool()}},
 \code{\link[=at_tile_source]{at_tile_source()}},
 \code{\link[=renderAtCanvas]{renderAtCanvas()}}

@@ -37,6 +37,7 @@ Other images:
 \code{\link{annotatR-classes}},
 \code{\link[=at_bands]{at_bands()}},
 \code{\link[=at_dims]{at_dims()}},
+\code{\link[=at_hsi_meta]{at_hsi_meta()}},
 \code{\link[=at_is_pyramidal]{at_is_pyramidal()}},
 \code{\link[=at_is_spectral]{at_is_spectral()}},
 \code{\link[=at_meta]{at_meta()}},

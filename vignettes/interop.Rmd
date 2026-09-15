@@ -89,29 +89,37 @@ when a downstream consumer explicitly wants a cartesian, bottom-left origin.
 
 ## QuPath
 
-QuPath reads and writes its own GeoJSON dialect. `at_write_qupath()` emits
-`annotation` objects (or `detection` for mask-derived ROIs), maps each ROI's
-label to a `classification.name`, records the lock state as `isLocked`, and
-packs the layer colour into a `colorRGB` field. On the way back,
-`at_read_qupath()` restores those classifications as labels; any feature whose
-classification is `null` is imported under the label `"unclassified"` rather
-than being dropped.
+QuPath reads and writes its own GeoJSON dialect. By default `at_write_qupath()`
+writes the form QuPath 0.4 and later read natively, checked against a real
+QuPath 0.7.0 installation: `objectType` (`annotation`, or `detection` for
+mask-derived ROIs), a `classification` with its `name` (or the `names` of a
+derived class such as `"Tumor: Positive"`) and an `[r, g, b]` `color`, and
+`isLocked` for locked ROIs. QuPath silently replaces feature ids that are not
+UUIDs, so each ROI gets a deterministic UUID and annotatR's own id, layer,
+source and level travel in `properties.metadata`. `at_read_qupath()` restores
+labels, colours and those ids, and keeps everything else QuPath carries under
+`attributes$qupath`: object type, measurements with explicit `NaN`/infinity
+states, image planes, cell nuclei, and a flag on ellipses that QuPath exported
+as polygons. Features without a classification are imported as
+`"unclassified"` rather than dropped.
 
 ```{r qupath-write}
 qp <- tempfile(fileext = ".geojson")
 at_write_qupath(proj, qp)
-grep("name|colorRGB", readLines(qp), value = TRUE)[1:2]
+feature <- jsonlite::read_json(qp)$features[[1]]
+str(feature$properties[c("objectType", "classification", "metadata")], max.level = 2)
 ```
 
 ### The colour gotcha
 
-QuPath stores a classification colour as a **signed** 32-bit integer packed as
-`0xFFRRGGBB`. The `0xFF` alpha byte pushes most colours past `2^31`, so they wrap
-around to negative values: the grey `#999999` above serialises as `-6710887`,
-not a friendly positive number. annotatR handles the modular arithmetic for you
-in both directions, so you never touch the raw integer, but it is worth knowing
-why the field looks odd. Reading the file back recovers the hex colours onto the
-layer style:
+Older QuPath versions, and annotatR 0.1, stored a classification colour as a
+**signed** 32-bit `colorRGB` integer packed as `0xFFRRGGBB`. The `0xFF` alpha
+byte pushes most colours past `2^31`, so they wrap around to negative values:
+the grey `#999999` serialises as `-6710887`. annotatR still reads that form and
+writes it with `dialect = "legacy"`; the modular arithmetic is handled in both
+directions. QuPath keeps a single colour per classification name, so identical
+labels with different layer colours collapse to the first colour it sees.
+Reading the file back recovers the hex colours onto the layer style:
 
 ```{r qupath-read}
 lyr <- at_read_qupath(qp)

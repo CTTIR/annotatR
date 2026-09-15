@@ -1,10 +1,7 @@
 skip_if_not_installed("shiny")
 
-# Source the app's module files so their servers can be tested with testServer.
-.mod_dir <- system.file("shiny", "annotatR", "modules", package = "annotatR")
-for (.f in list.files(.mod_dir, pattern = "\\.R$", full.names = TRUE)) {
-  source(.f, local = TRUE)
-}
+# The app's module servers live in R/ (see R/app-modules.R) and are tested
+# directly with testServer.
 
 make_rv <- function(project = demo_project(), session = demo_session(3)) {
   shiny::reactiveValues(
@@ -155,8 +152,9 @@ test_that("at_annotate normalises inputs and rejects bad ones", {
 })
 
 test_that("the app contains no library()/require() calls", {
-  files <- list.files(system.file("shiny", "annotatR", package = "annotatR"),
-                      pattern = "\\.R$", recursive = TRUE, full.names = TRUE)
+  files <- c(list.files(system.file("shiny", "annotatR", package = "annotatR"),
+                        pattern = "\\.R$", recursive = TRUE, full.names = TRUE),
+             list.files(test_path("..", "..", "R"), pattern = "^app-.*\\.R$", full.names = TRUE))
   hits <- unlist(lapply(files, function(f) grep("library\\(|require\\(", readLines(f), value = TRUE)))
   expect_length(hits, 0L)
 })

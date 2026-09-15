@@ -82,13 +82,14 @@ at_write_geojson <- function(project, path, layer = NULL, level = 0L,
   height <- at_dims(project$image, level)[2]
   fc <- .project_to_features(project, layer, level, flip_y, height,
                              qupath = FALSE)
-  jsonlite::write_json(fc, path, auto_unbox = TRUE, digits = NA, null = "null",
+  jsonlite::write_json(fc, path, auto_unbox = TRUE, digits = I(17), null = "null",
                        pretty = TRUE)
   invisible(path)
 }
 
 # Build a FeatureCollection list from a project.
-.project_to_features <- function(project, layer, level, flip_y, height, qupath) {
+.project_to_features <- function(project, layer, level, flip_y, height, qupath,
+                                dialect = "qupath") {
   Ls <- project$layers
   if (!is.null(layer)) Ls <- Ls[intersect(layer, names(Ls))]
   features <- list()
@@ -100,7 +101,7 @@ at_write_geojson <- function(project, path, layer = NULL, level = 0L,
       if (flip_y) g <- .flip_sfg_y(g, height)
       colour <- if (!is.null(cols) && r$label %in% names(cols)) unname(cols[[r$label]]) else "#5E2C8E"
       feat <- if (qupath) {
-        .roi_to_qupath_feature(r, nm, g, colour)
+        .roi_to_qupath_feature(r, nm, g, colour, dialect = dialect)
       } else {
         .roi_to_feature(r, nm, g)
       }

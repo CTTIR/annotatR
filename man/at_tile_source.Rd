@@ -9,6 +9,7 @@ at_tile_source(
   level_max = NULL,
   tile_size = 512L,
   embed = TRUE,
+  view = NULL,
   call = rlang::caller_env()
 )
 }
@@ -23,6 +24,10 @@ default.}
 \item{embed}{Logical; embed a downsampled base image as a data URI (for the
 self-contained canvas). Default \code{TRUE}.}
 
+\item{view}{Optional band view: a list with \code{operation} (see
+\code{\link[=at_band_operations]{at_band_operations()}}), \code{bands} and \code{params}. \code{NULL} shows natural-colour
+RGB (nearest bands to 640/550/460 nm for spectral cubes). Display only.}
+
 \item{call}{The calling environment, for error reporting.}
 }
 \value{
@@ -36,12 +41,14 @@ Build a tile-source descriptor for the canvas
 Other shiny:
 \code{\link[=atCanvasOutput]{atCanvasOutput()}},
 \code{\link[=at_annotate]{at_annotate()}},
+\code{\link[=at_app]{at_app()}},
 \code{\link[=at_canvas]{at_canvas()}},
 \code{\link[=at_canvas_fit]{at_canvas_fit()}},
 \code{\link[=at_canvas_proxy]{at_canvas_proxy()}},
 \code{\link[=at_canvas_set_annotations]{at_canvas_set_annotations()}},
 \code{\link[=at_canvas_set_band]{at_canvas_set_band()}},
 \code{\link[=at_canvas_set_overlay]{at_canvas_set_overlay()}},
+\code{\link[=at_canvas_set_selection]{at_canvas_set_selection()}},
 \code{\link[=at_canvas_set_tool]{at_canvas_set_tool()}},
 \code{\link[=renderAtCanvas]{renderAtCanvas()}}
 }
