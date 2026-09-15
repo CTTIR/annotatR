@@ -1,0 +1,20 @@
+
+CASE: folder load while cursor already 1
+Loading required package: shiny
+manifest image: new.tif live image: image_01.png old retained: TRUE 
+
+CASE: undo crosses images
+before undo cursor: 2 image: image_02.png history: 1 
+after undo cursor: 2 image: image_01.png is first image: TRUE 
+
+CASE: unsaved navigation discards edits
+before navigation: 1 
+after navigation: 0 initial: 0 
+
+CASE: shift-enter commit/advance
+before commit live ROI count: 1 
+cursor: 2 status: complete pending project counts: -1 1 
+project sources: NULL image_01.png 
+
+CASE: undo not autosaved
+after undo live: 0 saved: 1 indicator: saved 

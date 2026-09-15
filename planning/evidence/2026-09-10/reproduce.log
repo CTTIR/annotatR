@@ -1,0 +1,47 @@
+
+CASE: triangle short-circuit 
+same triangle pixels alone: 25 with another ROI: 13 
+
+CASE: lightweight save and resume 
+original tile dimensions: 512 512 3 
+resumed tile dimensions: length: 0 
+resumed canvas has image: FALSE 
+
+CASE: GeoJSON and CSV pyramid round-trips 
+json original area: 36 round-trip area: 144 
+csv original area: 36 round-trip area: 144 
+
+CASE: ID collision after restart 
+IDs: roi_000000001 roi_000000002 roi_000000003 roi_000000004 roi_000000003 
+ERROR: ROI identifiers must be unique across the project.
+✖ Duplicated: "roi_000000003". 
+
+CASE: explicit numeric bits 
+ERROR: `bits` must be one of 16 or 8.
+✖ You supplied 8. 
+
+CASE: explicit numeric connectivity 
+ERROR: `connectivity` must be one of 8 or 4.
+✖ You supplied 4. 
+
+CASE: point extraction 
+mask pixels: 1 extraction rows: 0 
+
+CASE: ENVI offset and short payload 
+offset payload should be 1,2,3,4; read: 999 2 1 3 
+truncated read: 1 1 2 2 
+
+CASE: NPY short payload 
+declares 4 values, contains 2, read: 1 2 1 2 
+
+CASE: cache collision between relative sources 
+first: 0 0 0 0 second: 0 0 0 0 expected second: 255 255 255 255 
+
+CASE: duplicate basename export 
+success receipts: 2 unique exported paths: 1 surviving label: second 
+
+CASE: set operations mix pyramid levels 
+same physical ROI difference area: 75 
+
+CASE: nonzero background and binary foreground collision 
+foreground expected 9, got: 0 

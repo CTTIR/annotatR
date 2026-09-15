@@ -1,0 +1,9 @@
+ℹ Testing annotatR
+Loading required package: shiny
+files: 54  tests: 381  failed: 0  skipped: 2  errors: 0  warnings: 0  passed-expectations: 1647 
+                     file
+ test-backend-cuvis-sdk.R
+  test-backend-optional.R
+                                                                       test
+ an installed CUVIS SDK reads a permitted local measurement with provenance
+                        reading a .cu3 without cuvis.r errors informatively

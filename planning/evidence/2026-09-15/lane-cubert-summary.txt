@@ -1,0 +1,1 @@
+cubert: dims 1080 x 1000, bands 61, wavelengths 430-910 nm, value_unit reflectance, mode Reflectance, sdk CUBERT SDK v. 3.5.3 build: 0f416fb6327f26644290b554c9b16050a515b89d, cuvis.r 0.1.0, calibration_digest 5242153466aa1a5502701f178239d224553b05caf4378402fded095de6273f16, file_sha256 d7883c7fcc20c1b191a35a410506d2de1bcfc51eddb4c1874d18f3f245f39fa8, read_s 4.24

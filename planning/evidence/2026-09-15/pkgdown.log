@@ -1,0 +1,448 @@
+── Installing package annotatR into temporary library ──────────────────────────
+── Initialising site ───────────────────────────────────────────────────────────
+Copying <pkgdown>/BS5/assets/katex-auto.js to katex-auto.js
+Copying <pkgdown>/BS5/assets/lightswitch.js to lightswitch.js
+Copying <pkgdown>/BS5/assets/link.svg to link.svg
+Copying <pkgdown>/BS5/assets/pkgdown.js to pkgdown.js
+Updating
+deps/Inter-0.4.10/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hiA.woff2
+Updating
+deps/Inter-0.4.10/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZBhiI2B.woff2
+Updating
+deps/Inter-0.4.10/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZFhiI2B.woff2
+Updating
+deps/Inter-0.4.10/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZJhiI2B.woff2
+Updating
+deps/Inter-0.4.10/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZNhiI2B.woff2
+Updating
+deps/Inter-0.4.10/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZthiI2B.woff2
+Updating
+deps/Inter-0.4.10/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZxhiI2B.woff2
+Updating deps/Inter-0.4.10/font.css
+Updating deps/JetBrains_Mono-0.4.10/font.css
+Updating
+deps/JetBrains_Mono-0.4.10/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxTN1OVgaY.woff2
+Updating
+deps/JetBrains_Mono-0.4.10/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxTNFOVgaY.woff2
+Updating
+deps/JetBrains_Mono-0.4.10/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxTNVOVgaY.woff2
+Updating
+deps/JetBrains_Mono-0.4.10/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxTOVOVgaY.woff2
+Updating
+deps/JetBrains_Mono-0.4.10/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxTOlOV.woff2
+Updating
+deps/JetBrains_Mono-0.4.10/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxTPlOVgaY.woff2
+Updating deps/bootstrap-5.3.8/bootstrap.bundle.min.js
+Updating deps/bootstrap-5.3.8/bootstrap.bundle.min.js.map
+Updating deps/bootstrap-5.3.8/bootstrap.min.css
+Updating deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js
+Updating deps/clipboard.js-2.0.11/clipboard.min.js
+Updating deps/font-awesome-6.5.2/css/all.css
+Updating deps/font-awesome-6.5.2/css/all.min.css
+Updating deps/font-awesome-6.5.2/css/v4-shims.css
+Updating deps/font-awesome-6.5.2/css/v4-shims.min.css
+Updating deps/font-awesome-6.5.2/webfonts/fa-brands-400.ttf
+Updating deps/font-awesome-6.5.2/webfonts/fa-brands-400.woff2
+Updating deps/font-awesome-6.5.2/webfonts/fa-regular-400.ttf
+Updating deps/font-awesome-6.5.2/webfonts/fa-regular-400.woff2
+Updating deps/font-awesome-6.5.2/webfonts/fa-solid-900.ttf
+Updating deps/font-awesome-6.5.2/webfonts/fa-solid-900.woff2
+Updating deps/font-awesome-6.5.2/webfonts/fa-v4compatibility.ttf
+Updating deps/font-awesome-6.5.2/webfonts/fa-v4compatibility.woff2
+Updating deps/headroom-0.11.0/headroom.min.js
+Updating deps/headroom-0.11.0/jQuery.headroom.min.js
+Updating deps/jquery-3.6.0/jquery-3.6.0.js
+Updating deps/jquery-3.6.0/jquery-3.6.0.min.js
+Updating deps/jquery-3.6.0/jquery-3.6.0.min.map
+Updating deps/search-1.0.0/autocomplete.jquery.min.js
+Updating deps/search-1.0.0/fuse.min.js
+Updating deps/search-1.0.0/mark.min.js
+Copying pkgdown/favicon/apple-touch-icon.png to apple-touch-icon.png
+Copying pkgdown/favicon/favicon-96x96.png to favicon-96x96.png
+Copying pkgdown/favicon/favicon.ico to favicon.ico
+Copying pkgdown/favicon/favicon.svg to favicon.svg
+Copying pkgdown/favicon/site.webmanifest to site.webmanifest
+Copying pkgdown/favicon/web-app-manifest-192x192.png to
+web-app-manifest-192x192.png
+Copying pkgdown/favicon/web-app-manifest-512x512.png to
+web-app-manifest-512x512.png
+Copying logo.svg
+── Building pkgdown site for package annotatR ──────────────────────────────────
+Reading from:
+<scratch>/src/annotatR
+Writing to:
+<scratch>/site
+── Sitrep ──────────────────────────────────────────────────────────────────────
+✔ URLs ok.
+✔ Favicons ok.
+✔ Open graph metadata ok.
+✔ Articles metadata ok.
+✔ Reference metadata ok.
+── Initialising site ───────────────────────────────────────────────────────────
+── Building home ───────────────────────────────────────────────────────────────
+Writing `authors.html`
+Reading LICENSE.md
+Writing `LICENSE.html`
+Writing `LICENSE-text.html`
+Reading README.md
+Writing `index.html`
+Writing `404.html`
+── Building function reference ─────────────────────────────────────────────────
+Writing `reference/index.html`
+Copying man/figures/README-overlay-1.png to
+reference/figures/README-overlay-1.png
+Copying man/figures/annotatR-hex.png to reference/figures/annotatR-hex.png
+Copying man/figures/logo.png to reference/figures/logo.png
+Copying man/figures/logo.svg to reference/figures/logo.svg
+Reading man/annotatR-classes.Rd
+Writing `reference/annotatR-classes.html`
+Reading man/annotatR-package.Rd
+Writing `reference/annotatR-package.html`
+Reading man/atCanvasOutput.Rd
+Writing `reference/atCanvasOutput.html`
+Reading man/at_add_layer.Rd
+Writing `reference/at_add_layer.html`
+Reading man/at_add_roi.Rd
+Writing `reference/at_add_roi.html`
+Reading man/at_annotate.Rd
+Writing `reference/at_annotate.html`
+Reading man/at_annotation_revision.Rd
+Writing `reference/at_annotation_revision.html`
+Reading man/at_app.Rd
+Writing `reference/at_app.html`
+Reading man/at_backend_detect.Rd
+Writing `reference/at_backend_detect.html`
+Reading man/at_backend_get.Rd
+Writing `reference/at_backend_get.html`
+Reading man/at_backend_list.Rd
+Writing `reference/at_backend_list.html`
+Reading man/at_backend_register.Rd
+Writing `reference/at_backend_register.html`
+Reading man/at_band_operations.Rd
+Writing `reference/at_band_operations.html`
+Reading man/at_band_view.Rd
+Writing `reference/at_band_view.html`
+Reading man/at_bands.Rd
+Writing `reference/at_bands.html`
+Reading man/at_batch_apply.Rd
+Writing `reference/at_batch_apply.html`
+Reading man/at_batch_check_geometry.Rd
+Writing `reference/at_batch_check_geometry.html`
+Reading man/at_canvas.Rd
+Writing `reference/at_canvas.html`
+Reading man/at_canvas_fit.Rd
+Writing `reference/at_canvas_fit.html`
+Reading man/at_canvas_proxy.Rd
+Writing `reference/at_canvas_proxy.html`
+Reading man/at_canvas_set_annotations.Rd
+Writing `reference/at_canvas_set_annotations.html`
+Reading man/at_canvas_set_band.Rd
+Writing `reference/at_canvas_set_band.html`
+Reading man/at_canvas_set_overlay.Rd
+Writing `reference/at_canvas_set_overlay.html`
+Reading man/at_canvas_set_selection.Rd
+Writing `reference/at_canvas_set_selection.html`
+Reading man/at_canvas_set_tool.Rd
+Writing `reference/at_canvas_set_tool.html`
+Reading man/at_check_containment.Rd
+Writing `reference/at_check_containment.html`
+Reading man/at_check_geometry.Rd
+Writing `reference/at_check_geometry.html`
+Reading man/at_clamp.Rd
+Writing `reference/at_clamp.html`
+Reading man/at_commit_qupflowr.Rd
+Writing `reference/at_commit_qupflowr.html`
+Reading man/at_control_capabilities.Rd
+Writing `reference/at_control_capabilities.html`
+Reading man/at_control_close.Rd
+Writing `reference/at_control_close.html`
+Reading man/at_control_command.Rd
+Writing `reference/at_control_command.html`
+Reading man/at_control_connect.Rd
+Writing `reference/at_control_connect.html`
+Reading man/at_control_events.Rd
+Writing `reference/at_control_events.html`
+Reading man/at_control_request_status.Rd
+Writing `reference/at_control_request_status.html`
+Reading man/at_control_start.Rd
+Writing `reference/at_control_start.html`
+Reading man/at_control_state.Rd
+Writing `reference/at_control_state.html`
+Reading man/at_control_stop.Rd
+Writing `reference/at_control_stop.html`
+Reading man/at_convert_values.Rd
+Writing `reference/at_convert_values.html`
+Reading man/at_cubert_export_envi.Rd
+Writing `reference/at_cubert_export_envi.html`
+Reading man/at_current.Rd
+Writing `reference/at_current.html`
+Reading man/at_dims.Rd
+Writing `reference/at_dims.html`
+Reading man/at_example_image.Rd
+Writing `reference/at_example_image.html`
+Reading man/at_example_path.Rd
+Writing `reference/at_example_path.html`
+Reading man/at_example_project.Rd
+Writing `reference/at_example_project.html`
+Reading man/at_example_session.Rd
+Writing `reference/at_example_session.html`
+Reading man/at_export_all.Rd
+Writing `reference/at_export_all.html`
+Reading man/at_export_qupflowr.Rd
+Writing `reference/at_export_qupflowr.html`
+Reading man/at_extract.Rd
+Writing `reference/at_extract.html`
+Reading man/at_extract_pixels.Rd
+Writing `reference/at_extract_pixels.html`
+Reading man/at_extract_spectrum.Rd
+Writing `reference/at_extract_spectrum.html`
+Reading man/at_fix_geometry.Rd
+Writing `reference/at_fix_geometry.html`
+Reading man/at_flip_y.Rd
+Writing `reference/at_flip_y.html`
+Reading man/at_goto.Rd
+Writing `reference/at_goto.html`
+Reading man/at_hsi_meta.Rd
+Writing `reference/at_hsi_meta.html`
+Reading man/at_import_qupflowr.Rd
+Writing `reference/at_import_qupflowr.html`
+Reading man/at_interop_capabilities.Rd
+Writing `reference/at_interop_capabilities.html`
+Reading man/at_interop_manifest.Rd
+Writing `reference/at_interop_manifest.html`
+Reading man/at_is_pyramidal.Rd
+Writing `reference/at_is_pyramidal.html`
+Reading man/at_is_spectral.Rd
+Writing `reference/at_is_spectral.html`
+Reading man/at_layer.Rd
+Writing `reference/at_layer.html`
+Reading man/at_layer_add.Rd
+Writing `reference/at_layer_add.html`
+Reading man/at_layer_n.Rd
+Writing `reference/at_layer_n.html`
+Reading man/at_layer_remove.Rd
+Writing `reference/at_layer_remove.html`
+Reading man/at_layer_rois.Rd
+Writing `reference/at_layer_rois.html`
+Reading man/at_layers.Rd
+Writing `reference/at_layers.html`
+Reading man/at_load_project.Rd
+Writing `reference/at_load_project.html`
+Reading man/at_load_session.Rd
+Writing `reference/at_load_session.html`
+Reading man/at_manifest.Rd
+Writing `reference/at_manifest.html`
+Reading man/at_mask.Rd
+Writing `reference/at_mask.html`
+Reading man/at_mask_agreement.Rd
+Writing `reference/at_mask_agreement.html`
+Reading man/at_mask_boundary.Rd
+Writing `reference/at_mask_boundary.html`
+Reading man/at_mask_derive.Rd
+Writing `reference/at_mask_derive.html`
+Reading man/at_mask_legend.Rd
+Writing `reference/at_mask_legend.html`
+Reading man/at_mask_preview.Rd
+Writing `reference/at_mask_preview.html`
+Reading man/at_mask_stack.Rd
+Writing `reference/at_mask_stack.html`
+Reading man/at_mask_stats.Rd
+Writing `reference/at_mask_stats.html`
+Reading man/at_meta.Rd
+Writing `reference/at_meta.html`
+Reading man/at_n_bands.Rd
+Writing `reference/at_n_bands.html`
+Reading man/at_n_levels.Rd
+Writing `reference/at_n_levels.html`
+Reading man/at_next.Rd
+Writing `reference/at_next.html`
+Reading man/at_pixel_size.Rd
+Writing `reference/at_pixel_size.html`
+Reading man/at_plot.Rd
+Writing `reference/at_plot.html`
+Reading man/at_plot_image.Rd
+Writing `reference/at_plot_image.html`
+Reading man/at_plot_mask.Rd
+Writing `reference/at_plot_mask.html`
+Reading man/at_plot_overlay.Rd
+Writing `reference/at_plot_overlay.html`
+Reading man/at_plot_project.Rd
+Writing `reference/at_plot_project.html`
+Reading man/at_plot_spectrum.Rd
+Writing `reference/at_plot_spectrum.html`
+Reading man/at_plot_summary.Rd
+Writing `reference/at_plot_summary.html`
+Reading man/at_prev.Rd
+Writing `reference/at_prev.html`
+Reading man/at_project.Rd
+Writing `reference/at_project.html`
+Reading man/at_read_geojson.Rd
+Writing `reference/at_read_geojson.html`
+Reading man/at_read_image.Rd
+Writing `reference/at_read_image.html`
+Reading man/at_read_mask.Rd
+Writing `reference/at_read_mask.html`
+Reading man/at_read_npy.Rd
+Writing `reference/at_read_npy.html`
+Reading man/at_read_qupath.Rd
+Writing `reference/at_read_qupath.html`
+Reading man/at_read_rois_csv.Rd
+Writing `reference/at_read_rois_csv.html`
+Reading man/at_read_stats.Rd
+Writing `reference/at_read_stats.html`
+Reading man/at_remove_layer.Rd
+Writing `reference/at_remove_layer.html`
+Reading man/at_remove_roi.Rd
+Writing `reference/at_remove_roi.html`
+Reading man/at_resume.Rd
+Writing `reference/at_resume.html`
+Reading man/at_roi_area.Rd
+Writing `reference/at_roi_area.html`
+Reading man/at_roi_bbox.Rd
+Writing `reference/at_roi_bbox.html`
+Reading man/at_roi_buffer.Rd
+Writing `reference/at_roi_buffer.html`
+Reading man/at_roi_centroid.Rd
+Writing `reference/at_roi_centroid.html`
+Reading man/at_roi_circle.Rd
+Writing `reference/at_roi_circle.html`
+Reading man/at_roi_contains.Rd
+Writing `reference/at_roi_contains.html`
+Reading man/at_roi_distance.Rd
+Writing `reference/at_roi_distance.html`
+Reading man/at_roi_ellipse.Rd
+Writing `reference/at_roi_ellipse.html`
+Reading man/at_roi_freehand.Rd
+Writing `reference/at_roi_freehand.html`
+Reading man/at_roi_from_geojson.Rd
+Writing `reference/at_roi_from_geojson.html`
+Reading man/at_roi_from_sf.Rd
+Writing `reference/at_roi_from_sf.html`
+Reading man/at_roi_overlaps.Rd
+Writing `reference/at_roi_overlaps.html`
+Reading man/at_roi_point.Rd
+Writing `reference/at_roi_point.html`
+Reading man/at_roi_polygon.Rd
+Writing `reference/at_roi_polygon.html`
+Reading man/at_roi_rect.Rd
+Writing `reference/at_roi_rect.html`
+Reading man/at_roi_rescale.Rd
+Writing `reference/at_roi_rescale.html`
+Reading man/at_roi_ring.Rd
+Writing `reference/at_roi_ring.html`
+Reading man/at_roi_setops.Rd
+Writing `reference/at_roi_setops.html`
+Reading man/at_roi_simplify.Rd
+Writing `reference/at_roi_simplify.html`
+Reading man/at_rois.Rd
+Writing `reference/at_rois.html`
+Reading man/at_rois_overlap.Rd
+Writing `reference/at_rois_overlap.html`
+Reading man/at_save_project.Rd
+Writing `reference/at_save_project.html`
+Reading man/at_save_session.Rd
+Writing `reference/at_save_session.html`
+Reading man/at_session.Rd
+Writing `reference/at_session.html`
+Reading man/at_session_status.Rd
+Writing `reference/at_session_status.html`
+Reading man/at_set_status.Rd
+Writing `reference/at_set_status.html`
+Reading man/at_snap.Rd
+Writing `reference/at_snap.html`
+Reading man/at_stage_qupflowr.Rd
+Writing `reference/at_stage_qupflowr.html`
+Reading man/at_style.Rd
+Writing `reference/at_style.html`
+Reading man/at_summary.Rd
+Writing `reference/at_summary.html`
+Reading man/at_summary_table.Rd
+Writing `reference/at_summary_table.html`
+Reading man/at_tile.Rd
+Writing `reference/at_tile.html`
+Reading man/at_tile_source.Rd
+Writing `reference/at_tile_source.html`
+Reading man/at_tivita_profile.Rd
+Writing `reference/at_tivita_profile.html`
+Reading man/at_training_check.Rd
+Writing `reference/at_training_check.html`
+Reading man/at_training_export.Rd
+Writing `reference/at_training_export.html`
+Reading man/at_training_import.Rd
+Writing `reference/at_training_import.html`
+Reading man/at_transform.Rd
+Writing `reference/at_transform.html`
+Reading man/at_validate.Rd
+Writing `reference/at_validate.html`
+Reading man/at_wavelengths.Rd
+Writing `reference/at_wavelengths.html`
+Reading man/at_write_geojson.Rd
+Writing `reference/at_write_geojson.html`
+Reading man/at_write_mask.Rd
+Writing `reference/at_write_mask.html`
+Reading man/at_write_masks.Rd
+Writing `reference/at_write_masks.html`
+Reading man/at_write_npy.Rd
+Writing `reference/at_write_npy.html`
+Reading man/at_write_qupath.Rd
+Writing `reference/at_write_qupath.html`
+Reading man/at_write_rois_csv.Rd
+Writing `reference/at_write_rois_csv.html`
+Reading man/plot.annot_mask.Rd
+Writing `reference/plot.annot_mask.html`
+Reading man/plot.annot_roi.Rd
+Writing `reference/plot.annot_roi.html`
+Reading man/renderAtCanvas.Rd
+Writing `reference/renderAtCanvas.html`
+── Building articles ───────────────────────────────────────────────────────────
+Writing `articles/index.html`
+Reading vignettes/annotation-model.Rmd
+Writing `articles/annotation-model.html`
+Reading vignettes/annotatR.Rmd
+Writing `articles/annotatR.html`
+Reading vignettes/images-and-backends.Rmd
+Writing `articles/images-and-backends.html`
+Reading vignettes/interop.Rmd
+Writing `articles/interop.html`
+Reading vignettes/masks.Rmd
+Writing `articles/masks.html`
+Reading vignettes/partner-interop.Rmd
+Writing `articles/partner-interop.html`
+Reading vignettes/shiny-workflow.Rmd
+Writing `articles/shiny-workflow.html`
+── Building news ───────────────────────────────────────────────────────────────
+Writing `news/index.html`
+── Building sitemap ────────────────────────────────────────────────────────────
+Writing `sitemap.xml`
+── Building docs for llms ──────────────────────────────────────────────────────
+── Building redirects ──────────────────────────────────────────────────────────
+Adding redirect from reference/annot_image.html to
+reference/annotatR-classes.html.
+Adding redirect from reference/annot_layer.html to
+reference/annotatR-classes.html.
+Adding redirect from reference/annot_mask.html to
+reference/annotatR-classes.html.
+Adding redirect from reference/annot_project.html to
+reference/annotatR-classes.html.
+Adding redirect from reference/annot_roi.html to
+reference/annotatR-classes.html.
+Adding redirect from reference/annot_session.html to
+reference/annotatR-classes.html.
+Adding redirect from reference/annot_style.html to
+reference/annotatR-classes.html.
+Adding redirect from reference/annot_summary.html to
+reference/annotatR-classes.html.
+Adding redirect from reference/annotatR.html to
+reference/annotatR-package.html.
+Adding redirect from reference/at_roi_difference.html to
+reference/at_roi_setops.html.
+Adding redirect from reference/at_roi_intersect.html to
+reference/at_roi_setops.html.
+Adding redirect from reference/at_roi_symdiff.html to
+reference/at_roi_setops.html.
+Adding redirect from reference/at_roi_union.html to
+reference/at_roi_setops.html.
+── Building search index ───────────────────────────────────────────────────────
+── Checking for problems ───────────────────────────────────────────────────────
+── Finished building pkgdown site for package annotatR ─────────────────────────
+── Finished building pkgdown site for package annotatR ─────────────────────────

@@ -1,0 +1,9 @@
+ℹ Testing annotatR
+backend-cuvis-sdk: .......sleep: invalid time interval './R'
+Try 'sleep --help' for more information.
+sleep failed with exit status 1.
+..........
+backend-tivita-profile: ................................................................................................................................................
+backend-tivita: ..................
+
+══ DONE ════════════════════════════════════════════════════════════════════════
