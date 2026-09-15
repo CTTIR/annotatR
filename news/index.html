@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html"><img src="../logo.svg" alt="" class="themakr-navbar-logo">annotatR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,63 @@
       <small>Source: <a href="https://github.com/CTTIR/annotatR/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="annotatr-020">annotatR 0.2.0<a class="anchor" aria-label="anchor" href="#annotatr-020"></a></h2>
+<p>A partner contract for the qupflowR package, a testable app builder with an optional local control service, hyperspectral metadata and windowed readers, and deep-learning training datasets. The existing API, S3 classes and files remain compatible; behaviour changes are listed under <em>Changes</em>.</p>
+<div class="section level3">
+<h3 id="partner-interoperability-qupflowr-0-2-0">Partner interoperability (qupflowR)<a class="anchor" aria-label="anchor" href="#partner-interoperability-qupflowr-0-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/at_interop_capabilities.html">at_interop_capabilities()</a></code> reports the I0-I3 profiles with <code>status</code>, <code>implemented</code>, <code>available</code> and <code>reason</code>, limits, formats, HSI backends and a capability digest. Direct control (I2) and embedding (I3) are reported as <code>planned</code> until they are qualified against a real qupflowR client.</li>
+<li>
+<code><a href="../reference/at_interop_manifest.html">at_interop_manifest()</a></code> writes a sanitised <code>annotatr-handoff-v1</code> manifest: content-derived image ids, dimensions, levels, planes, coordinate convention, band tables, HSI value semantics, calibration/transform digests and annotation revisions, without local paths. <code><a href="../reference/at_annotation_revision.html">at_annotation_revision()</a></code> gives the content revision partners use as <code>expected_revision</code>.</li>
+<li>
+<code><a href="../reference/at_export_qupflowr.html">at_export_qupflowr()</a></code> writes a staged, SHA-256-inventoried handoff directory (QuPath GeoJSON, GeoJSON, integer masks with legends, NPY, CSV, RDS, HSI manifest). Its digest follows qupflowR’s canonical-JSON bundle digest rule.</li>
+<li>
+<code><a href="../reference/at_import_qupflowr.html">at_import_qupflowr()</a></code> verifies inventory, schema, major version, id joins, labels, mask dimensions and legends, and returns namespaced annotatR objects with a conversion report.</li>
+<li>
+<code><a href="../reference/at_stage_qupflowr.html">at_stage_qupflowr()</a></code> and <code><a href="../reference/at_commit_qupflowr.html">at_commit_qupflowr()</a></code> apply partner changes as an explicit, revision-checked, idempotent diff that never overwrites reviewed or locked annotations.</li>
+<li>JSON Schemas ship under <code>inst/schema/</code> and are enforced by a small built-in validator. Errors are classified (<code>at_validation_error</code>, <code>at_conflict_error</code>, <code>at_io_error</code>, <code>at_protocol_error</code>, <code>at_auth_error</code>, <code>at_limit_error</code>, <code>at_capability_error</code>) with machine-readable <code>code</code>s.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="app-builder-and-control-service-0-2-0">App builder and control service<a class="anchor" aria-label="anchor" href="#app-builder-and-control-service-0-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/at_app.html">at_app()</a></code> builds the annotation app as a <code>shiny.appobj</code> from explicit arguments; all app code now lives in <code>R/</code>. <code><a href="../reference/at_annotate.html">at_annotate()</a></code> is a launcher around it and no longer passes the session through <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options()</a></code>. <code>inst/shiny/annotatR/app.R</code> remains as a thin compatibility wrapper.</li>
+<li>
+<code><a href="../reference/at_control_start.html">at_control_start()</a></code>, <code><a href="../reference/at_control_stop.html">at_control_stop()</a></code>, <code><a href="../reference/at_control_close.html">at_control_close()</a></code>, <code><a href="../reference/at_control_connect.html">at_control_connect()</a></code>, <code><a href="../reference/at_control_capabilities.html">at_control_capabilities()</a></code>, <code><a href="../reference/at_control_state.html">at_control_state()</a></code>, <code><a href="../reference/at_control_events.html">at_control_events()</a></code>, <code><a href="../reference/at_control_command.html">at_control_command()</a></code> and <code><a href="../reference/at_control_request_status.html">at_control_request_status()</a></code> implement <code>annotatr-control-v1</code>: loopback only, expiring bearer token (never in URLs, logs, manifests or RDS), size and path limits, monotonic state revision, event cursors with resync, idempotent typed commands and response-loss recovery. There is no code-evaluation endpoint.</li>
+<li>New app panels: band / pseudo-RGB / band-operation display, cube and calibration status, pixel, ROI and layer spectra, raw region download, mask overlay on the canvas, staged-patch review with commit/discard, and a read-only/unsaved/staged/committed status badge. New <code>probe</code> and <code>select</code> canvas tools and <code><a href="../reference/at_canvas_set_selection.html">at_canvas_set_selection()</a></code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="hyperspectral-cubes-0-2-0">Hyperspectral cubes<a class="anchor" aria-label="anchor" href="#hyperspectral-cubes-0-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/at_hsi_meta.html">at_hsi_meta()</a></code>, <code><a href="../reference/at_read_stats.html">at_read_stats()</a></code>, <code><a href="../reference/at_convert_values.html">at_convert_values()</a></code>, <code><a href="../reference/at_band_operations.html">at_band_operations()</a></code> and <code><a href="../reference/at_band_view.html">at_band_view()</a></code>.</li>
+<li>
+<code><a href="../reference/at_bands.html">at_bands()</a></code> gains <code>fwhm</code>, <code>order</code> and <code>wavelength_status</code> columns; missing or duplicated wavelengths are flagged, never interpolated.</li>
+<li>The ENVI reader validates the header and payload length, honours <code>header offset</code> (a sentinel header byte no longer becomes a pixel), supports uint32, keeps FWHM, band names, ignore value, scale factor and gain/offset values, and reads windows by seeking instead of loading the cube.</li>
+<li>TIVITA SpecCubes are read through <code><a href="../reference/at_tivita_profile.html">at_tivita_profile()</a></code> or a <code>&lt;cube&gt;.tivita.json</code> sidecar with windowed reads; a file that matches no declared profile is refused.</li>
+<li>The Cubert backend was rewritten against the <code>cuvis.r</code> 0.1.0 API (the previous call did not exist) and records SDK, processing mode and calibration provenance; <code><a href="../reference/at_cubert_export_envi.html">at_cubert_export_envi()</a></code> writes the portable ENVI fallback. Without the SDK the backend reports itself unavailable.</li>
+<li>A TIFF is spectral only with declared <code>wavelengths</code>.</li>
+<li>
+<code><a href="../reference/at_tile.html">at_tile()</a></code> enforces <code>options(annotatR.max_tile_bytes)</code>; app previews read only the displayed bands.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="training-datasets-0-2-0">Training datasets<a class="anchor" aria-label="anchor" href="#training-datasets-0-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/at_training_export.html">at_training_export()</a></code>, <code><a href="../reference/at_training_check.html">at_training_check()</a></code> and <code><a href="../reference/at_training_import.html">at_training_import()</a></code>: grouped leakage-free splits, integer tile masks with complete legends, band and transform provenance, independent dataset checks, and staged prediction import that never overwrites reviewed annotations.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="changes-0-2-0">Changes<a class="anchor" aria-label="anchor" href="#changes-0-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/at_write_qupath.html">at_write_qupath()</a></code> now writes the QuPath 0.4+ dialect by default (<code>objectType</code>, <code>classification.color</code>, UUID feature ids plus annotatR ids in <code>properties.metadata</code>), verified with QuPath 0.7.0. Use <code>dialect = "legacy"</code> for the 0.1 form. <code><a href="../reference/at_read_qupath.html">at_read_qupath()</a></code> reads both, including derived classes, measurements, planes, nuclei and ellipse flags.</li>
+<li>GeoJSON writers use 17 significant digits so coordinates round-trip exactly.</li>
+<li>
+<code><a href="../reference/at_roi_circle.html">at_roi_circle()</a></code> and <code><a href="../reference/at_roi_ellipse.html">at_roi_ellipse()</a></code> record <code>attributes$shape</code>.</li>
+<li>Numeric choice arguments such as <code>bits = 8L</code> and <code>connectivity = 4L</code> are accepted; argument validation errors now carry class <code>at_validation_error</code>.</li>
+<li>Navigating in the app keeps the edited project in its own queue entry, and Shift+Enter stores the current project before advancing.</li>
+<li>App export file names are sanitised and unique.</li>
+<li>
+<code>R CMD build</code> excludes a local <code>inst/shiny/annotatR/hsi-workbench/</code> directory.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.1" id="annotatr-001">annotatR 0.0.1<a class="anchor" aria-label="anchor" href="#annotatr-001"></a></h2>
 <p>Initial development release.</p>

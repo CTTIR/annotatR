@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="../index.html"><img src="../logo.svg" alt="" class="themakr-navbar-logo">annotatR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -164,6 +164,9 @@ rectangle with fractional bounds shows the contrast:</p>
 <code class="sourceCode R"><span><span class="va">r2</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/at_roi_rect.html">at_roi_rect</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="fl">4.5</span>, <span class="fl">4.5</span>, label <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span>
 <span><span class="va">off</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="../reference/at_mask.html">at_mask</a></span><span class="op">(</span><span class="va">r2</span>, <span class="st">"binary"</span>, dims <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">8</span><span class="op">)</span>, touches <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>, <span class="fl">8</span>, <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="va">on</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="../reference/at_mask.html">at_mask</a></span><span class="op">(</span><span class="va">r2</span>, <span class="st">"binary"</span>, dims <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">8</span><span class="op">)</span>, touches <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,  <span class="fl">8</span>, <span class="fl">8</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Registered S3 method overwritten by 'stars':</span></span>
+<span><span class="co">#&gt;   method                  from</span></span>
+<span><span class="co">#&gt;   st_interpolate_aw.stars sf</span></span>
 <span><span class="va">off</span></span>
 <span><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
 <span><span class="co">#&gt; [1,]    0    0    0    0    0    0    0    0</span></span>
@@ -283,8 +286,8 @@ it:</p>
 <span><span class="co">#&gt; [1] "regions.tif"             "regions.tif.legend.json"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path</span>, <span class="st">".legend.json"</span><span class="op">)</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; {</span></span>
-<span><span class="co">#&gt;   "annotatR_version": "0.1.0",</span></span>
-<span><span class="co">#&gt;   "created": "2026-08-22T13:05:43+0000",</span></span>
+<span><span class="co">#&gt;   "annotatR_version": "0.2.0",</span></span>
+<span><span class="co">#&gt;   "created": "2026-09-15T09:34:43+0000",</span></span>
 <span><span class="co">#&gt;   "mask_type": "multiclass",</span></span>
 <span><span class="co">#&gt;   "level": 0,</span></span>
 <span><span class="co">#&gt;   "dims": [512, 512],</span></span>

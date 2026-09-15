@@ -115,34 +115,52 @@ bottom-left origin.
 
 ## QuPath
 
-QuPath reads and writes its own GeoJSON dialect.
+QuPath reads and writes its own GeoJSON dialect. By default
 [`at_write_qupath()`](https://cttir.github.io/annotatR/reference/at_write_qupath.md)
-emits `annotation` objects (or `detection` for mask-derived ROIs), maps
-each ROI’s label to a `classification.name`, records the lock state as
-`isLocked`, and packs the layer colour into a `colorRGB` field. On the
-way back,
+writes the form QuPath 0.4 and later read natively, checked against a
+real QuPath 0.7.0 installation: `objectType` (`annotation`, or
+`detection` for mask-derived ROIs), a `classification` with its `name`
+(or the `names` of a derived class such as `"Tumor: Positive"`) and an
+`[r, g, b]` `color`, and `isLocked` for locked ROIs. QuPath silently
+replaces feature ids that are not UUIDs, so each ROI gets a
+deterministic UUID and annotatR’s own id, layer, source and level travel
+in `properties.metadata`.
 [`at_read_qupath()`](https://cttir.github.io/annotatR/reference/at_read_qupath.md)
-restores those classifications as labels; any feature whose
-classification is `null` is imported under the label `"unclassified"`
-rather than being dropped.
+restores labels, colours and those ids, and keeps everything else QuPath
+carries under `attributes$qupath`: object type, measurements with
+explicit `NaN`/infinity states, image planes, cell nuclei, and a flag on
+ellipses that QuPath exported as polygons. Features without a
+classification are imported as `"unclassified"` rather than dropped.
 
 ``` r
 
 qp <- tempfile(fileext = ".geojson")
 at_write_qupath(proj, qp)
-grep("name|colorRGB", readLines(qp), value = TRUE)[1:2]
-#> [1] "          \"name\": \"tumour\","  "          \"colorRGB\": -6710887"
+feature <- jsonlite::read_json(qp)$features[[1]]
+str(feature$properties[c("objectType", "classification", "metadata")], max.level = 2)
+#> List of 3
+#>  $ objectType    : chr "annotation"
+#>  $ classification:List of 2
+#>   ..$ name : chr "tumour"
+#>   ..$ color:List of 3
+#>  $ metadata      :List of 4
+#>   ..$ annotatr_roi_id: chr "roi_000000001"
+#>   ..$ annotatr_layer : chr "regions"
+#>   ..$ annotatr_source: chr "manual"
+#>   ..$ annotatr_level : chr "0"
 ```
 
 ### The colour gotcha
 
-QuPath stores a classification colour as a **signed** 32-bit integer
-packed as `0xFFRRGGBB`. The `0xFF` alpha byte pushes most colours past
-`2^31`, so they wrap around to negative values: the grey `#999999` above
-serialises as `-6710887`, not a friendly positive number. annotatR
-handles the modular arithmetic for you in both directions, so you never
-touch the raw integer, but it is worth knowing why the field looks odd.
-Reading the file back recovers the hex colours onto the layer style:
+Older QuPath versions, and annotatR 0.1, stored a classification colour
+as a **signed** 32-bit `colorRGB` integer packed as `0xFFRRGGBB`. The
+`0xFF` alpha byte pushes most colours past `2^31`, so they wrap around
+to negative values: the grey `#999999` serialises as `-6710887`.
+annotatR still reads that form and writes it with `dialect = "legacy"`;
+the modular arithmetic is handled in both directions. QuPath keeps a
+single colour per classification name, so identical labels with
+different layer colours collapse to the first colour it sees. Reading
+the file back recovers the hex colours onto the layer style:
 
 ``` r
 
@@ -167,12 +185,15 @@ class, and it travels with the raster so the mapping is never lost.
 ``` r
 
 m <- at_mask(proj, type = "labelled")
+#> Registered S3 method overwritten by 'stars':
+#>   method                  from
+#>   st_interpolate_aw.stars sf
 mp <- tempfile(fileext = ".tiff")
 at_write_mask(m, mp)
 cat(readLines(paste0(mp, ".legend.json"))[1:14], sep = "\n")
 #> {
-#>   "annotatR_version": "0.1.0",
-#>   "created": "2026-08-22T13:05:40+0000",
+#>   "annotatR_version": "0.2.0",
+#>   "created": "2026-09-15T09:34:40+0000",
 #>   "mask_type": "labelled",
 #>   "level": 0,
 #>   "dims": [512, 512],

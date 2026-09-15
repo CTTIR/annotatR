@@ -53,6 +53,6 @@ Other geometry:
 ``` r
 at_roi_simplify(at_roi_circle(50, 50, 10, n_seg = 128, label = "a"), 1)
 #> <annot_roi> a (POLYGON)
-#> id: "roi_000000071"  |  level: 0  |  source: manual
+#> id: "roi_000000086"  |  level: 0  |  source: manual
 #> bbox: [40, 40] - [60, 60]
 ```

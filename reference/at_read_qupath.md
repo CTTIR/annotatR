@@ -1,8 +1,17 @@
 # Read ROIs from a QuPath GeoJSON file
 
-Maps `classification.name` to the ROI label, `colorRGB` to the layer
-style colour, and `object_type` to the ROI source. Features with a
-`null` classification are imported as `"unclassified"`.
+Reads QuPath 0.4+ exports (a FeatureCollection or a bare feature array)
+and the legacy annotatR 0.1 dialect. `classification.name` (or the
+joined `names` of a derived class, e.g. `"Tumor: Positive"`) becomes the
+ROI label, the classification colour the layer style colour, and
+features without a classification are labelled `"unclassified"`.
+Everything else QuPath carries is kept, never invented, under each ROI's
+`attributes$qupath`: the object id and type, name, measurements (with
+explicit `value_state`), the image plane (zero-based `c`, `z`, `t`;
+`c = NA` for all channels), metadata, a nucleus geometry, and
+`roi_native = "ellipse"` with `geometry_fidelity = "approximated"` for
+polygonised ellipses. An annotatR id stored in
+`metadata.annotatr_roi_id` is restored as the ROI id.
 
 ## Usage
 

@@ -10,6 +10,7 @@ at_tile_source(
   level_max = NULL,
   tile_size = 512L,
   embed = TRUE,
+  view = NULL,
   call = rlang::caller_env()
 )
 ```
@@ -34,6 +35,13 @@ at_tile_source(
   Logical; embed a downsampled base image as a data URI (for the
   self-contained canvas). Default `TRUE`.
 
+- view:
+
+  Optional band view: a list with `operation` (see
+  [`at_band_operations()`](https://cttir.github.io/annotatR/reference/at_band_operations.md)),
+  `bands` and `params`. `NULL` shows natural-colour RGB (nearest bands
+  to 640/550/460 nm for spectral cubes). Display only.
+
 - call:
 
   The calling environment, for error reporting.
@@ -49,11 +57,13 @@ A list describing the image for the widget: `width`, `height`,
 Other shiny:
 [`atCanvasOutput()`](https://cttir.github.io/annotatR/reference/atCanvasOutput.md),
 [`at_annotate()`](https://cttir.github.io/annotatR/reference/at_annotate.md),
+[`at_app()`](https://cttir.github.io/annotatR/reference/at_app.md),
 [`at_canvas()`](https://cttir.github.io/annotatR/reference/at_canvas.md),
 [`at_canvas_fit()`](https://cttir.github.io/annotatR/reference/at_canvas_fit.md),
 [`at_canvas_proxy()`](https://cttir.github.io/annotatR/reference/at_canvas_proxy.md),
 [`at_canvas_set_annotations()`](https://cttir.github.io/annotatR/reference/at_canvas_set_annotations.md),
 [`at_canvas_set_band()`](https://cttir.github.io/annotatR/reference/at_canvas_set_band.md),
 [`at_canvas_set_overlay()`](https://cttir.github.io/annotatR/reference/at_canvas_set_overlay.md),
+[`at_canvas_set_selection()`](https://cttir.github.io/annotatR/reference/at_canvas_set_selection.md),
 [`at_canvas_set_tool()`](https://cttir.github.io/annotatR/reference/at_canvas_set_tool.md),
 [`renderAtCanvas()`](https://cttir.github.io/annotatR/reference/renderAtCanvas.md)

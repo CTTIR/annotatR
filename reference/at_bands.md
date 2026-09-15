@@ -34,13 +34,28 @@ with one row per band and the columns:
 
 - `wavelength`:
 
-  Centre wavelength (double); `NA` when not spectral.
+  Centre wavelength (double); `NA` when not spectral or unknown for that
+  band. Never interpolated.
 
 - `unit`:
 
   Wavelength unit (character); `NA` when not spectral.
 
-Always has `at_n_bands(x)` rows.
+- `fwhm`:
+
+  Full width at half maximum in the wavelength unit (double); `NA` when
+  the source does not declare it.
+
+- `order`:
+
+  Position of the band in file/manifest order (integer).
+
+- `wavelength_status`:
+
+  `"ok"`, `"missing"`, `"duplicate"` or `"non_numeric"` (character).
+
+Always has `at_n_bands(x)` rows. The first four columns are unchanged
+from annotatR 0.1; the remaining columns were added in 0.2.0.
 
 ## See also
 
@@ -48,6 +63,7 @@ Other images:
 [`annotatR-classes`](https://cttir.github.io/annotatR/reference/annotatR-classes.md),
 [`at_dims()`](https://cttir.github.io/annotatR/reference/at_dims.md),
 [`at_example_image()`](https://cttir.github.io/annotatR/reference/at_example_image.md),
+[`at_hsi_meta()`](https://cttir.github.io/annotatR/reference/at_hsi_meta.md),
 [`at_is_pyramidal()`](https://cttir.github.io/annotatR/reference/at_is_pyramidal.md),
 [`at_is_spectral()`](https://cttir.github.io/annotatR/reference/at_is_spectral.md),
 [`at_meta()`](https://cttir.github.io/annotatR/reference/at_meta.md),

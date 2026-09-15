@@ -5,11 +5,15 @@
 Annotating one image is a job for
 [`at_project()`](https://cttir.github.io/annotatR/reference/at_project.md)
 and the ROI constructors. Annotating a *queue* of images — a plate of
-serial sections, a batch of slides, a folder of cubes — is what
-[`at_annotate()`](https://cttir.github.io/annotatR/reference/at_annotate.md)
-is for. It wraps a Shiny and OpenSeadragon canvas around a resumable
+serial sections, a batch of slides, a folder of cubes — is what the
+annotation app is for. It wraps a Shiny canvas around a resumable
 **session**, so you can work through many images without losing your
 place, your labels, or your unsaved edits.
+[`at_app()`](https://cttir.github.io/annotatR/reference/at_app.md)
+builds the app as an ordinary `shiny.appobj` from explicit arguments
+(for embedding or testing), and
+[`at_annotate()`](https://cttir.github.io/annotatR/reference/at_annotate.md)
+launches it.
 
 ## Building a session
 
@@ -27,7 +31,7 @@ sess <- at_example_session(3)
 sess
 #> <annot_session>
 #> images: 3  |  complete: 0  |  cursor: 1
-#> out_dir: /tmp/RtmpouBoYi/annotatR-example-session-2d5c7b6d3191  |  autosave: TRUE
+#> out_dir: /tmp/RtmpV9urkM/annotatR-example-session-381e108e58b2  |  autosave: TRUE
 ```
 
 Every image starts with status `"pending"`, the cursor sits on the first
@@ -80,6 +84,42 @@ at_annotate(templated)
 is forgiving about its first argument: pass a session, a project, an
 image, a vector of paths, a directory, or `NULL` to open the bundled
 example.
+
+To embed the app, or to exercise it in tests without a browser, build
+the app object instead. Nothing is passed through global options:
+
+``` r
+
+app <- at_app(session = templated, read_only = FALSE)
+class(app)
+#> [1] "shiny.appobj"
+```
+
+## Hyperspectral cubes in the app
+
+For spectral cubes the **Display** panel switches the canvas between
+natural colour, a single band, a pseudo-RGB / false-colour triple and
+the registered band operations listed by
+[`at_band_operations()`](https://cttir.github.io/annotatR/reference/at_band_operations.md)
+(ratio, normalised difference, band means). These are display products:
+masks, spectra and exports always use the original cube values. The
+**Cube** table shows the image kind, wavelength range and gaps, value
+unit, calibration state, plane and how many bytes have been read. The
+**probe** tool picks a pixel whose spectrum appears on the Summary page
+next to ROI and layer spectra, and **Download region** exports the raw
+values of a selected ROI, the current view or custom bounds as an ENVI
+cube with provenance.
+
+## Staged changes and status
+
+Annotations proposed by a partner package, such as a qupflowR handoff
+imported on the Data page or a control command, arrive as a **staged**
+patch. The Annotate page lists its creates, updates and conflicts;
+reviewed or locked ROIs are never changed automatically. Commit or
+discard it explicitly. The badge next to the save controls always shows
+the state: *read-only*, *unsaved*, *staged*, *committed* or *saved*. See
+[`vignette("partner-interop")`](https://cttir.github.io/annotatR/articles/partner-interop.md)
+for the contract behind this.
 
 ## Keyboard shortcuts
 
@@ -135,7 +175,7 @@ recovered <- at_resume(file.path(sess$out_dir, "_session.rds"))
 recovered
 #> <annot_session>
 #> images: 3  |  complete: 1  |  cursor: 2
-#> out_dir: /tmp/RtmpouBoYi/annotatR-example-session-2d5c7b6d3191  |  autosave: TRUE
+#> out_dir: /tmp/RtmpV9urkM/annotatR-example-session-381e108e58b2  |  autosave: TRUE
 ```
 
 The cursor, statuses, materialised projects, and templates all come back
@@ -160,17 +200,17 @@ at_session_status(sess)
 #> # A tibble: 3 × 7
 #>     idx path                name  status project_path n_rois modified
 #>   <int> <chr>               <chr> <chr>  <chr>         <int> <dttm>  
-#> 1     1 /tmp/RtmpouBoYi/an… imag… compl… NA                0 NA      
-#> 2     2 /tmp/RtmpouBoYi/an… imag… pendi… NA                0 NA      
-#> 3     3 /tmp/RtmpouBoYi/an… imag… pendi… NA                0 NA
+#> 1     1 /tmp/RtmpV9urkM/an… imag… compl… NA                0 NA      
+#> 2     2 /tmp/RtmpV9urkM/an… imag… pendi… NA                0 NA      
+#> 3     3 /tmp/RtmpV9urkM/an… imag… pendi… NA                0 NA
 
 at_manifest(sess)
 #> # A tibble: 3 × 9
 #>     idx name     path              status n_layers n_rois tumour necrosis stroma
 #>   <int> <chr>    <chr>             <chr>     <int>  <int>  <int>    <int>  <int>
-#> 1     1 image_01 /tmp/RtmpouBoYi/… compl…        0      0      0        0      0
-#> 2     2 image_02 /tmp/RtmpouBoYi/… pendi…        0      0      0        0      0
-#> 3     3 image_03 /tmp/RtmpouBoYi/… pendi…        0      0      0        0      0
+#> 1     1 image_01 /tmp/RtmpV9urkM/… compl…        0      0      0        0      0
+#> 2     2 image_02 /tmp/RtmpV9urkM/… pendi…        0      0      0        0      0
+#> 3     3 image_03 /tmp/RtmpV9urkM/… pendi…        0      0      0        0      0
 ```
 
 Use these to seed a session programmatically, pre-fill statuses, or

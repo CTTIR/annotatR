@@ -54,6 +54,6 @@ Other geometry:
 ``` r
 at_flip_y(at_roi_rect(0, 0, 10, 5, label = "a"), height = 100)
 #> <annot_roi> a (POLYGON)
-#> id: "roi_000000014"  |  level: 0  |  source: manual
+#> id: "roi_000000023"  |  level: 0  |  source: manual
 #> bbox: [0, 95] - [10, 100]
 ```

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html"><img src="../logo.svg" alt="" class="themakr-navbar-logo">annotatR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,13 +69,26 @@
 <dd><p>Band name (character); a default <code>"Band k"</code> when unnamed.</p></dd>
 
 <dt><code>wavelength</code></dt>
-<dd><p>Centre wavelength (double); <code>NA</code> when not spectral.</p></dd>
+<dd><p>Centre wavelength (double); <code>NA</code> when not spectral
+or unknown for that band. Never interpolated.</p></dd>
 
 <dt><code>unit</code></dt>
 <dd><p>Wavelength unit (character); <code>NA</code> when not spectral.</p></dd>
 
+<dt><code>fwhm</code></dt>
+<dd><p>Full width at half maximum in the wavelength unit
+(double); <code>NA</code> when the source does not declare it.</p></dd>
 
-</dl><p>Always has <code>at_n_bands(x)</code> rows.</p>
+<dt><code>order</code></dt>
+<dd><p>Position of the band in file/manifest order (integer).</p></dd>
+
+<dt><code>wavelength_status</code></dt>
+<dd><p><code>"ok"</code>, <code>"missing"</code>, <code>"duplicate"</code> or
+<code>"non_numeric"</code> (character).</p></dd>
+
+
+</dl><p>Always has <code>at_n_bands(x)</code> rows. The first four columns are unchanged
+from annotatR 0.1; the remaining columns were added in 0.2.0.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -83,6 +96,7 @@
 <code><a href="annotatR-classes.html">annotatR-classes</a></code>,
 <code><a href="at_dims.html">at_dims()</a></code>,
 <code><a href="at_example_image.html">at_example_image()</a></code>,
+<code><a href="at_hsi_meta.html">at_hsi_meta()</a></code>,
 <code><a href="at_is_pyramidal.html">at_is_pyramidal()</a></code>,
 <code><a href="at_is_spectral.html">at_is_spectral()</a></code>,
 <code><a href="at_meta.html">at_meta()</a></code>,

@@ -73,5 +73,5 @@ at_check_containment(at_project(at_example_image("cube"), list(anatomy, state)))
 #> # A tibble: 1 × 5
 #>   roi_id        layer issue                                     severity fixable
 #>   <chr>         <chr> <chr>                                     <chr>    <lgl>  
-#> 1 roi_000000002 state ROI is not contained in layer 'anatomy' … warning  FALSE  
+#> 1 roi_000000005 state ROI is not contained in layer 'anatomy' … warning  FALSE  
 ```

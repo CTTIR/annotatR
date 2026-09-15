@@ -60,7 +60,8 @@ at_roi_ellipse(
 
 An
 [annot_roi](https://cttir.github.io/annotatR/reference/annotatR-classes.md)
-with `POLYGON` geometry.
+with `POLYGON` geometry and `attributes$shape = "ellipse"`, so exports
+can flag the polygon as an approximation.
 
 ## See also
 

@@ -38,6 +38,7 @@ Other images:
 [`annotatR-classes`](https://cttir.github.io/annotatR/reference/annotatR-classes.md),
 [`at_bands()`](https://cttir.github.io/annotatR/reference/at_bands.md),
 [`at_dims()`](https://cttir.github.io/annotatR/reference/at_dims.md),
+[`at_hsi_meta()`](https://cttir.github.io/annotatR/reference/at_hsi_meta.md),
 [`at_is_pyramidal()`](https://cttir.github.io/annotatR/reference/at_is_pyramidal.md),
 [`at_is_spectral()`](https://cttir.github.io/annotatR/reference/at_is_spectral.md),
 [`at_meta()`](https://cttir.github.io/annotatR/reference/at_meta.md),

@@ -1,6 +1,12 @@
 # Write a project's ROIs as QuPath GeoJSON
 
-Write a project's ROIs as QuPath GeoJSON
+The default `dialect = "qupath"` writes what QuPath 0.4 and later read
+natively (verified with QuPath 0.7.0): `objectType`, `classification`
+with an `[r, g, b]` colour, `isLocked` for locked ROIs, a deterministic
+UUID per ROI as the feature id (QuPath replaces non-UUID ids), and
+annotatR's own ROI id, layer, source and level in `properties.metadata`.
+`dialect = "legacy"` writes the annotatR 0.1 form (`object_type`, signed
+`colorRGB`), which QuPath still reads with a deprecation warning.
 
 ## Usage
 
@@ -11,6 +17,7 @@ at_write_qupath(
   layer = NULL,
   level = 0L,
   overwrite = FALSE,
+  dialect = c("qupath", "legacy"),
   call = rlang::caller_env()
 )
 ```
@@ -38,6 +45,10 @@ at_write_qupath(
 
   Logical; overwrite an existing file. Default `FALSE`.
 
+- dialect:
+
+  `"qupath"` (default) or `"legacy"`.
+
 - call:
 
   The calling environment, for error reporting.
@@ -45,6 +56,11 @@ at_write_qupath(
 ## Value
 
 The output path, invisibly.
+
+## Details
+
+QuPath keeps one colour per classification name, so identical labels
+with different layer colours collapse to the first colour QuPath sees.
 
 ## See also
 

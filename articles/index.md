@@ -18,3 +18,5 @@
 - [The batch annotation
   app](https://cttir.github.io/annotatR/articles/shiny-workflow.md):
 - [Interoperability](https://cttir.github.io/annotatR/articles/interop.md):
+- [Working with qupflowR: handoffs, control and training
+  data](https://cttir.github.io/annotatR/articles/partner-interop.md):

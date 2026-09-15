@@ -34,6 +34,26 @@ Read images and register formats.
   : Detect the backend for a file
 - [`at_backend_register()`](https://cttir.github.io/annotatR/reference/at_backend_register.md)
   : Register an image backend
+- [`at_tivita_profile()`](https://cttir.github.io/annotatR/reference/at_tivita_profile.md)
+  : Declare a TIVITA SpecCube layout profile
+- [`at_cubert_export_envi()`](https://cttir.github.io/annotatR/reference/at_cubert_export_envi.md)
+  : Export a Cubert measurement to a portable ENVI cube
+
+## Hyperspectral metadata
+
+Band tables, value semantics, display band operations and read
+accounting.
+
+- [`at_hsi_meta()`](https://cttir.github.io/annotatR/reference/at_hsi_meta.md)
+  : Hyperspectral and acquisition metadata of an image
+- [`at_convert_values()`](https://cttir.github.io/annotatR/reference/at_convert_values.md)
+  : Convert spectral values between declared units
+- [`at_band_operations()`](https://cttir.github.io/annotatR/reference/at_band_operations.md)
+  : Registered band operations
+- [`at_band_view()`](https://cttir.github.io/annotatR/reference/at_band_view.md)
+  : Compute a registered band view
+- [`at_read_stats()`](https://cttir.github.io/annotatR/reference/at_read_stats.md)
+  : Read accounting for an image
 
 ## Regions of interest
 
@@ -270,10 +290,66 @@ Interchange with GeoJSON, QuPath, CSV, and RDS.
 - [`at_read_rois_csv()`](https://cttir.github.io/annotatR/reference/at_read_rois_csv.md)
   : Read ROIs from a CSV with WKT geometry
 
+## Partner interoperability
+
+The versioned qupflowR contract - capabilities, manifests, handoffs,
+staging and commits.
+
+- [`at_interop_capabilities()`](https://cttir.github.io/annotatR/reference/at_interop_capabilities.md)
+  : Partner interoperability capabilities
+- [`at_interop_manifest()`](https://cttir.github.io/annotatR/reference/at_interop_manifest.md)
+  : Build a partner interop manifest
+- [`at_annotation_revision()`](https://cttir.github.io/annotatR/reference/at_annotation_revision.md)
+  : Annotation revision token
+- [`at_export_qupflowr()`](https://cttir.github.io/annotatR/reference/at_export_qupflowr.md)
+  : Export annotations as a qupflowR handoff directory
+- [`at_import_qupflowr()`](https://cttir.github.io/annotatR/reference/at_import_qupflowr.md)
+  : Import a qupflowR handoff or neutral interchange file
+- [`at_stage_qupflowr()`](https://cttir.github.io/annotatR/reference/at_stage_qupflowr.md)
+  : Stage partner changes against an annotatR project
+- [`at_commit_qupflowr()`](https://cttir.github.io/annotatR/reference/at_commit_qupflowr.md)
+  : Commit a staged partner patch
+
+## Training datasets
+
+Leakage-free deep-learning datasets and staged prediction import.
+
+- [`at_training_export()`](https://cttir.github.io/annotatR/reference/at_training_export.md)
+  : Export a DNN training dataset
+- [`at_training_check()`](https://cttir.github.io/annotatR/reference/at_training_check.md)
+  : Check a training dataset
+- [`at_training_import()`](https://cttir.github.io/annotatR/reference/at_training_import.md)
+  : Import model predictions as staged annotations
+
+## Control service
+
+The optional loopback annotatr-control-v1 service.
+
+- [`at_control_capabilities()`](https://cttir.github.io/annotatR/reference/at_control_capabilities.md)
+  : Control protocol capabilities
+- [`at_control_start()`](https://cttir.github.io/annotatR/reference/at_control_start.md)
+  : Start the local control service
+- [`at_control_stop()`](https://cttir.github.io/annotatR/reference/at_control_stop.md)
+  : Stop a local control service
+- [`at_control_close()`](https://cttir.github.io/annotatR/reference/at_control_close.md)
+  : Close a control service connection
+- [`at_control_connect()`](https://cttir.github.io/annotatR/reference/at_control_connect.md)
+  : Connect to a running control service
+- [`at_control_state()`](https://cttir.github.io/annotatR/reference/at_control_state.md)
+  : Read the state of a control service
+- [`at_control_events()`](https://cttir.github.io/annotatR/reference/at_control_events.md)
+  : Read control events after a cursor
+- [`at_control_command()`](https://cttir.github.io/annotatR/reference/at_control_command.md)
+  : Send a typed control command
+- [`at_control_request_status()`](https://cttir.github.io/annotatR/reference/at_control_request_status.md)
+  : Resolve the outcome of a control request
+
 ## Shiny application
 
 The batch annotation app and canvas widget.
 
+- [`at_app()`](https://cttir.github.io/annotatR/reference/at_app.md) :
+  Build the annotation app as a Shiny app object
 - [`at_annotate()`](https://cttir.github.io/annotatR/reference/at_annotate.md)
   : Launch the batch annotation application
 - [`at_canvas()`](https://cttir.github.io/annotatR/reference/at_canvas.md)
@@ -294,6 +370,8 @@ The batch annotation app and canvas widget.
   : Overlay a mask on the canvas
 - [`at_canvas_fit()`](https://cttir.github.io/annotatR/reference/at_canvas_fit.md)
   : Zoom the canvas to a bounding box
+- [`at_canvas_set_selection()`](https://cttir.github.io/annotatR/reference/at_canvas_set_selection.md)
+  : Highlight selected ROIs on a canvas
 - [`at_tile_source()`](https://cttir.github.io/annotatR/reference/at_tile_source.md)
   : Build a tile-source descriptor for the canvas
 

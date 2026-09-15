@@ -43,6 +43,7 @@ Other images:
 [`at_bands()`](https://cttir.github.io/annotatR/reference/at_bands.md),
 [`at_dims()`](https://cttir.github.io/annotatR/reference/at_dims.md),
 [`at_example_image()`](https://cttir.github.io/annotatR/reference/at_example_image.md),
+[`at_hsi_meta()`](https://cttir.github.io/annotatR/reference/at_hsi_meta.md),
 [`at_is_pyramidal()`](https://cttir.github.io/annotatR/reference/at_is_pyramidal.md),
 [`at_is_spectral()`](https://cttir.github.io/annotatR/reference/at_is_spectral.md),
 [`at_meta()`](https://cttir.github.io/annotatR/reference/at_meta.md),
@@ -57,7 +58,9 @@ Other backends:
 [`at_backend_get()`](https://cttir.github.io/annotatR/reference/at_backend_get.md),
 [`at_backend_list()`](https://cttir.github.io/annotatR/reference/at_backend_list.md),
 [`at_backend_register()`](https://cttir.github.io/annotatR/reference/at_backend_register.md),
-[`at_tile()`](https://cttir.github.io/annotatR/reference/at_tile.md)
+[`at_cubert_export_envi()`](https://cttir.github.io/annotatR/reference/at_cubert_export_envi.md),
+[`at_tile()`](https://cttir.github.io/annotatR/reference/at_tile.md),
+[`at_tivita_profile()`](https://cttir.github.io/annotatR/reference/at_tivita_profile.md)
 
 ## Examples
 

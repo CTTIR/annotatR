@@ -48,12 +48,12 @@ at_n_bands(img)
 at_is_spectral(img)
 #> [1] FALSE
 at_bands(img)
-#> # A tibble: 3 × 4
-#>   index name  wavelength unit 
-#>   <int> <chr>      <dbl> <chr>
-#> 1     1 R             NA NA   
-#> 2     2 G             NA NA   
-#> 3     3 B             NA NA
+#> # A tibble: 3 × 7
+#>   index name  wavelength unit   fwhm order wavelength_status
+#>   <int> <chr>      <dbl> <chr> <dbl> <int> <chr>            
+#> 1     1 R             NA NA       NA     1 missing          
+#> 2     2 G             NA NA       NA     2 missing          
+#> 3     3 B             NA NA       NA     3 missing
 ```
 
 This is an ordinary 512 by 512 RGB image with three bands and no
@@ -175,6 +175,9 @@ per label class. We build a labelled mask.
 ``` r
 
 m <- at_mask(project, type = "labelled")
+#> Registered S3 method overwritten by 'stars':
+#>   method                  from
+#>   st_interpolate_aw.stars sf
 m
 #> <annot_mask> labelled  |  512 x 512 px  |  level 0
 #> values: 2

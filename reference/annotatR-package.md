@@ -6,9 +6,11 @@ Annotations are stored as validated simple-feature geometries in image
 pixel coordinates with explicit pyramid-level transforms, and can be
 rasterised to binary, labelled, or multi-class integer masks for
 downstream segmentation and classification workflows. A batch annotation
-application built on 'shiny' and 'OpenSeadragon' supports resumable
-sessions across image queues, live mask preview, and export to
-'GeoJSON', 'QuPath', and 'TIFF' formats.
+application built on 'shiny' supports resumable sessions across image
+queues, live mask preview, and export to 'GeoJSON', 'QuPath', and 'TIFF'
+formats. A versioned partner contract exchanges hash-inventoried handoff
+directories, deep-learning training datasets and typed commands over an
+optional local control service.
 
 ## See also
 

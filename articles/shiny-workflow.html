@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="../index.html"><img src="../logo.svg" alt="" class="themakr-navbar-logo">annotatR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,11 +78,13 @@
 <p><img src="../reference/figures/logo.png" class="r-plt" alt="annotatR logo" width="110px" style="display: block; margin: auto 0 auto auto;"></p>
 <p>Annotating one image is a job for <code><a href="../reference/at_project.html">at_project()</a></code> and the
 ROI constructors. Annotating a <em>queue</em> of images — a plate of
-serial sections, a batch of slides, a folder of cubes — is what
-<code><a href="../reference/at_annotate.html">at_annotate()</a></code> is for. It wraps a Shiny and OpenSeadragon
-canvas around a resumable <strong>session</strong>, so you can work
-through many images without losing your place, your labels, or your
-unsaved edits.</p>
+serial sections, a batch of slides, a folder of cubes — is what the
+annotation app is for. It wraps a Shiny canvas around a resumable
+<strong>session</strong>, so you can work through many images without
+losing your place, your labels, or your unsaved edits.
+<code><a href="../reference/at_app.html">at_app()</a></code> builds the app as an ordinary
+<code>shiny.appobj</code> from explicit arguments (for embedding or
+testing), and <code><a href="../reference/at_annotate.html">at_annotate()</a></code> launches it.</p>
 <div class="section level2">
 <h2 id="building-a-session">Building a session<a class="anchor" aria-label="anchor" href="#building-a-session"></a>
 </h2>
@@ -96,7 +98,7 @@ into a temporary directory so the queue has real files to iterate.</p>
 <span><span class="va">sess</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">&lt;annot_session&gt;</span></span></span>
 <span><span class="co">#&gt; images: 3  |  complete: 0  |  cursor: 1</span></span>
-<span><span class="co">#&gt; out_dir: <span style="color: #0000BB;">/tmp/RtmpouBoYi/annotatR-example-session-2d5c7b6d3191</span>  |  autosave: TRUE</span></span></code></pre></div>
+<span><span class="co">#&gt; out_dir: <span style="color: #0000BB;">/tmp/RtmpV9urkM/annotatR-example-session-381e108e58b2</span>  |  autosave: TRUE</span></span></code></pre></div>
 <p>Every image starts with status <code>"pending"</code>, the cursor
 sits on the first image, and per-image projects are materialised lazily
 — nothing is read from disk until you visit it.</p>
@@ -140,6 +142,41 @@ and blocks, so it is never run inside a vignette:</p>
 <p><code><a href="../reference/at_annotate.html">at_annotate()</a></code> is forgiving about its first argument:
 pass a session, a project, an image, a vector of paths, a directory, or
 <code>NULL</code> to open the bundled example.</p>
+<p>To embed the app, or to exercise it in tests without a browser, build
+the app object instead. Nothing is passed through global options:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">app</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/at_app.html">at_app</a></span><span class="op">(</span>session <span class="op">=</span> <span class="va">templated</span>, read_only <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "shiny.appobj"</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="hyperspectral-cubes-in-the-app">Hyperspectral cubes in the app<a class="anchor" aria-label="anchor" href="#hyperspectral-cubes-in-the-app"></a>
+</h2>
+<p>For spectral cubes the <strong>Display</strong> panel switches the
+canvas between natural colour, a single band, a pseudo-RGB /
+false-colour triple and the registered band operations listed by
+<code><a href="../reference/at_band_operations.html">at_band_operations()</a></code> (ratio, normalised difference, band
+means). These are display products: masks, spectra and exports always
+use the original cube values. The <strong>Cube</strong> table shows the
+image kind, wavelength range and gaps, value unit, calibration state,
+plane and how many bytes have been read. The <strong>probe</strong> tool
+picks a pixel whose spectrum appears on the Summary page next to ROI and
+layer spectra, and <strong>Download region</strong> exports the raw
+values of a selected ROI, the current view or custom bounds as an ENVI
+cube with provenance.</p>
+</div>
+<div class="section level2">
+<h2 id="staged-changes-and-status">Staged changes and status<a class="anchor" aria-label="anchor" href="#staged-changes-and-status"></a>
+</h2>
+<p>Annotations proposed by a partner package, such as a qupflowR handoff
+imported on the Data page or a control command, arrive as a
+<strong>staged</strong> patch. The Annotate page lists its creates,
+updates and conflicts; reviewed or locked ROIs are never changed
+automatically. Commit or discard it explicitly. The badge next to the
+save controls always shows the state: <em>read-only</em>,
+<em>unsaved</em>, <em>staged</em>, <em>committed</em> or <em>saved</em>.
+See <code><a href="../articles/partner-interop.html">vignette("partner-interop")</a></code> for the contract behind
+this.</p>
 </div>
 <div class="section level2">
 <h2 id="keyboard-shortcuts">Keyboard shortcuts<a class="anchor" aria-label="anchor" href="#keyboard-shortcuts"></a>
@@ -262,7 +299,7 @@ in a few keystrokes each.</p>
 laptop costs you nothing. Save on demand with
 <code><a href="../reference/at_save_session.html">at_save_session()</a></code> (bound to <code>s</code>), and pick up
 exactly where you left off with <code><a href="../reference/at_resume.html">at_resume()</a></code>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sess</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/at_set_status.html">at_set_status</a></span><span class="op">(</span><span class="va">sess</span>, <span class="fl">1</span>, <span class="st">"complete"</span><span class="op">)</span></span>
 <span><span class="va">sess</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/at_next.html">at_next</a></span><span class="op">(</span><span class="va">sess</span><span class="op">)</span></span>
 <span></span>
@@ -271,7 +308,7 @@ exactly where you left off with <code><a href="../reference/at_resume.html">at_r
 <span><span class="va">recovered</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">&lt;annot_session&gt;</span></span></span>
 <span><span class="co">#&gt; images: 3  |  complete: 1  |  cursor: 2</span></span>
-<span><span class="co">#&gt; out_dir: <span style="color: #0000BB;">/tmp/RtmpouBoYi/annotatR-example-session-2d5c7b6d3191</span>  |  autosave: TRUE</span></span></code></pre></div>
+<span><span class="co">#&gt; out_dir: <span style="color: #0000BB;">/tmp/RtmpV9urkM/annotatR-example-session-381e108e58b2</span>  |  autosave: TRUE</span></span></code></pre></div>
 <p>The cursor, statuses, materialised projects, and templates all come
 back intact.</p>
 </div>
@@ -284,22 +321,22 @@ the queue with <code><a href="../reference/at_session_status.html">at_session_st
 <code><a href="../reference/at_next.html">at_next()</a></code> / <code><a href="../reference/at_prev.html">at_prev()</a></code> /
 <code><a href="../reference/at_goto.html">at_goto()</a></code>, and read a richer progress report — one column
 per label — with <code><a href="../reference/at_manifest.html">at_manifest()</a></code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/at_session_status.html">at_session_status</a></span><span class="op">(</span><span class="va">sess</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 7</span></span></span>
 <span><span class="co">#&gt;     idx path                name  status project_path n_rois modified</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 /tmp/RtmpouBoYi/an… imag… compl… <span style="color: #BB0000;">NA</span>                0 <span style="color: #BB0000;">NA</span>      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 /tmp/RtmpouBoYi/an… imag… pendi… <span style="color: #BB0000;">NA</span>                0 <span style="color: #BB0000;">NA</span>      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 /tmp/RtmpouBoYi/an… imag… pendi… <span style="color: #BB0000;">NA</span>                0 <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 /tmp/RtmpV9urkM/an… imag… compl… <span style="color: #BB0000;">NA</span>                0 <span style="color: #BB0000;">NA</span>      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 /tmp/RtmpV9urkM/an… imag… pendi… <span style="color: #BB0000;">NA</span>                0 <span style="color: #BB0000;">NA</span>      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 /tmp/RtmpV9urkM/an… imag… pendi… <span style="color: #BB0000;">NA</span>                0 <span style="color: #BB0000;">NA</span></span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/at_manifest.html">at_manifest</a></span><span class="op">(</span><span class="va">sess</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 9</span></span></span>
 <span><span class="co">#&gt;     idx name     path              status n_layers n_rois tumour necrosis stroma</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 image_01 /tmp/RtmpouBoYi/… compl…        0      0      0        0      0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 image_02 /tmp/RtmpouBoYi/… pendi…        0      0      0        0      0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 image_03 /tmp/RtmpouBoYi/… pendi…        0      0      0        0      0</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 image_01 /tmp/RtmpV9urkM/… compl…        0      0      0        0      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 image_02 /tmp/RtmpV9urkM/… pendi…        0      0      0        0      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 image_03 /tmp/RtmpV9urkM/… pendi…        0      0      0        0      0</span></span></code></pre></div>
 <p>Use these to seed a session programmatically, pre-fill statuses, or
 audit progress in a report — no Shiny required.</p>
 </div>

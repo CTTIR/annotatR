@@ -81,7 +81,7 @@ at_read_npy(f)
 #> # A tibble: 3 × 6
 #>   value label    layer   roi_id         n_px colour 
 #>   <int> <chr>    <chr>   <chr>         <int> <chr>  
-#> 1     1 tumour   regions roi_000000049 19600 #999999
-#> 2     2 necrosis regions roi_000000050 72704 #E69F00
-#> 3     3 stroma   regions roi_000000051 34200 #56B4E9
+#> 1     1 tumour   regions roi_000000064 19600 #999999
+#> 2     2 necrosis regions roi_000000065 72704 #E69F00
+#> 3     3 stroma   regions roi_000000066 34200 #56B4E9
 ```

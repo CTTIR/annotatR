@@ -86,6 +86,9 @@ fractional bounds shows the contrast:
 r2  <- at_roi_rect(2.5, 2.5, 4.5, 4.5, label = "a")
 off <- matrix(as.integer(at_mask(r2, "binary", dims = c(8, 8), touches = FALSE)), 8, 8)
 on  <- matrix(as.integer(at_mask(r2, "binary", dims = c(8, 8), touches = TRUE)),  8, 8)
+#> Registered S3 method overwritten by 'stars':
+#>   method                  from
+#>   st_interpolate_aw.stars sf
 off
 #>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
 #> [1,]    0    0    0    0    0    0    0    0
@@ -214,8 +217,8 @@ list.files(dir)
 #> [1] "regions.tif"             "regions.tif.legend.json"
 cat(readLines(paste0(path, ".legend.json")), sep = "\n")
 #> {
-#>   "annotatR_version": "0.1.0",
-#>   "created": "2026-08-22T13:05:43+0000",
+#>   "annotatR_version": "0.2.0",
+#>   "created": "2026-09-15T09:34:43+0000",
 #>   "mask_type": "multiclass",
 #>   "level": 0,
 #>   "dims": [512, 512],

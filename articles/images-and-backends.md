@@ -152,12 +152,12 @@ cu <- at_example_image("cube")
 at_is_spectral(cu)
 #> [1] TRUE
 head(at_bands(cu), 3)
-#> # A tibble: 3 × 4
-#>   index name   wavelength unit      
-#>   <int> <chr>       <dbl> <chr>     
-#> 1     1 Band 1       450  Nanometers
-#> 2     2 Band 2       462. Nanometers
-#> 3     3 Band 3       473. Nanometers
+#> # A tibble: 3 × 7
+#>   index name   wavelength unit   fwhm order wavelength_status
+#>   <int> <chr>       <dbl> <chr> <dbl> <int> <chr>            
+#> 1     1 Band 1       450  nm       NA     1 ok               
+#> 2     2 Band 2       462. nm       NA     2 ok               
+#> 3     3 Band 3       473. nm       NA     3 ok
 range(at_wavelengths(cu))
 #> [1] 450 900
 ```
@@ -225,7 +225,7 @@ saveRDS(list(width = 64L, height = 48L, bands = 2L, value = 0.5), path)
 
 cimg <- at_read_image(path)
 cimg
-#> <annot_image> file2c981c8c0ffd.const
+#> <annot_image> file370a2f14d09a.const
 #> backend: "const"  |  dtype: "double"
 #> size: 64 x 48 px  |  levels: 1  |  bands: 2
 #> pixel size: 1 x 1 px

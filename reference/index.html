@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html"><img src="../logo.svg" alt="" class="themakr-navbar-logo">annotatR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -151,6 +151,64 @@
 
         </dt>
         <dd>Register an image backend</dd>
+
+        <dt>
+
+          <code><a href="at_tivita_profile.html">at_tivita_profile()</a></code>
+
+        </dt>
+        <dd>Declare a TIVITA SpecCube layout profile</dd>
+
+        <dt>
+
+          <code><a href="at_cubert_export_envi.html">at_cubert_export_envi()</a></code>
+
+        </dt>
+        <dd>Export a Cubert measurement to a portable ENVI cube</dd>
+      </dl></div><div class="section level2">
+      <h2 id="hyperspectral-metadata">Hyperspectral metadata<a class="anchor" aria-label="anchor" href="#hyperspectral-metadata"></a></h2>
+
+      <div class="section-desc"><p>Band tables, value semantics, display band operations and read accounting.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="at_hsi_meta.html">at_hsi_meta()</a></code>
+
+        </dt>
+        <dd>Hyperspectral and acquisition metadata of an image</dd>
+
+        <dt>
+
+          <code><a href="at_convert_values.html">at_convert_values()</a></code>
+
+        </dt>
+        <dd>Convert spectral values between declared units</dd>
+
+        <dt>
+
+          <code><a href="at_band_operations.html">at_band_operations()</a></code>
+
+        </dt>
+        <dd>Registered band operations</dd>
+
+        <dt>
+
+          <code><a href="at_band_view.html">at_band_view()</a></code>
+
+        </dt>
+        <dd>Compute a registered band view</dd>
+
+        <dt>
+
+          <code><a href="at_read_stats.html">at_read_stats()</a></code>
+
+        </dt>
+        <dd>Read accounting for an image</dd>
       </dl></div><div class="section level2">
       <h2 id="regions-of-interest">Regions of interest<a class="anchor" aria-label="anchor" href="#regions-of-interest"></a></h2>
 
@@ -840,6 +898,166 @@
         </dt>
         <dd>Read ROIs from a CSV with WKT geometry</dd>
       </dl></div><div class="section level2">
+      <h2 id="partner-interoperability">Partner interoperability<a class="anchor" aria-label="anchor" href="#partner-interoperability"></a></h2>
+
+      <div class="section-desc"><p>The versioned qupflowR contract - capabilities, manifests, handoffs, staging and commits.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="at_interop_capabilities.html">at_interop_capabilities()</a></code>
+
+        </dt>
+        <dd>Partner interoperability capabilities</dd>
+
+        <dt>
+
+          <code><a href="at_interop_manifest.html">at_interop_manifest()</a></code>
+
+        </dt>
+        <dd>Build a partner interop manifest</dd>
+
+        <dt>
+
+          <code><a href="at_annotation_revision.html">at_annotation_revision()</a></code>
+
+        </dt>
+        <dd>Annotation revision token</dd>
+
+        <dt>
+
+          <code><a href="at_export_qupflowr.html">at_export_qupflowr()</a></code>
+
+        </dt>
+        <dd>Export annotations as a qupflowR handoff directory</dd>
+
+        <dt>
+
+          <code><a href="at_import_qupflowr.html">at_import_qupflowr()</a></code>
+
+        </dt>
+        <dd>Import a qupflowR handoff or neutral interchange file</dd>
+
+        <dt>
+
+          <code><a href="at_stage_qupflowr.html">at_stage_qupflowr()</a></code>
+
+        </dt>
+        <dd>Stage partner changes against an annotatR project</dd>
+
+        <dt>
+
+          <code><a href="at_commit_qupflowr.html">at_commit_qupflowr()</a></code>
+
+        </dt>
+        <dd>Commit a staged partner patch</dd>
+      </dl></div><div class="section level2">
+      <h2 id="training-datasets">Training datasets<a class="anchor" aria-label="anchor" href="#training-datasets"></a></h2>
+
+      <div class="section-desc"><p>Leakage-free deep-learning datasets and staged prediction import.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="at_training_export.html">at_training_export()</a></code>
+
+        </dt>
+        <dd>Export a DNN training dataset</dd>
+
+        <dt>
+
+          <code><a href="at_training_check.html">at_training_check()</a></code>
+
+        </dt>
+        <dd>Check a training dataset</dd>
+
+        <dt>
+
+          <code><a href="at_training_import.html">at_training_import()</a></code>
+
+        </dt>
+        <dd>Import model predictions as staged annotations</dd>
+      </dl></div><div class="section level2">
+      <h2 id="control-service">Control service<a class="anchor" aria-label="anchor" href="#control-service"></a></h2>
+
+      <div class="section-desc"><p>The optional loopback annotatr-control-v1 service.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="at_control_capabilities.html">at_control_capabilities()</a></code>
+
+        </dt>
+        <dd>Control protocol capabilities</dd>
+
+        <dt>
+
+          <code><a href="at_control_start.html">at_control_start()</a></code>
+
+        </dt>
+        <dd>Start the local control service</dd>
+
+        <dt>
+
+          <code><a href="at_control_stop.html">at_control_stop()</a></code>
+
+        </dt>
+        <dd>Stop a local control service</dd>
+
+        <dt>
+
+          <code><a href="at_control_close.html">at_control_close()</a></code>
+
+        </dt>
+        <dd>Close a control service connection</dd>
+
+        <dt>
+
+          <code><a href="at_control_connect.html">at_control_connect()</a></code>
+
+        </dt>
+        <dd>Connect to a running control service</dd>
+
+        <dt>
+
+          <code><a href="at_control_state.html">at_control_state()</a></code>
+
+        </dt>
+        <dd>Read the state of a control service</dd>
+
+        <dt>
+
+          <code><a href="at_control_events.html">at_control_events()</a></code>
+
+        </dt>
+        <dd>Read control events after a cursor</dd>
+
+        <dt>
+
+          <code><a href="at_control_command.html">at_control_command()</a></code>
+
+        </dt>
+        <dd>Send a typed control command</dd>
+
+        <dt>
+
+          <code><a href="at_control_request_status.html">at_control_request_status()</a></code>
+
+        </dt>
+        <dd>Resolve the outcome of a control request</dd>
+      </dl></div><div class="section level2">
       <h2 id="shiny-application">Shiny application<a class="anchor" aria-label="anchor" href="#shiny-application"></a></h2>
 
       <div class="section-desc"><p>The batch annotation app and canvas widget.</p></div>
@@ -850,6 +1068,13 @@
 
 
       <dl><dt>
+
+          <code><a href="at_app.html">at_app()</a></code>
+
+        </dt>
+        <dd>Build the annotation app as a Shiny app object</dd>
+
+        <dt>
 
           <code><a href="at_annotate.html">at_annotate()</a></code>
 
@@ -918,6 +1143,13 @@
 
         </dt>
         <dd>Zoom the canvas to a bounding box</dd>
+
+        <dt>
+
+          <code><a href="at_canvas_set_selection.html">at_canvas_set_selection()</a></code>
+
+        </dt>
+        <dd>Highlight selected ROIs on a canvas</dd>
 
         <dt>
 

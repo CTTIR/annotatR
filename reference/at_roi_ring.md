@@ -75,6 +75,6 @@ Other geometry:
 inj <- at_roi_rect(10, 10, 20, 20, label = "injury")
 at_roi_ring(inj, outer = 3, label = "penumbra")
 #> <annot_roi> penumbra (POLYGON)
-#> id: "roi_000000067"  |  level: 0  |  source: derived
+#> id: "roi_000000082"  |  level: 0  |  source: derived
 #> bbox: [7, 7] - [23, 23]
 ```
