@@ -1,5 +1,22 @@
 # Changelog
 
+## annotatR (development version)
+
+- Stopping a local control listener now cancels its pending expiry
+  callback. This releases the stopped service and prevents subsequent
+  Shiny module tests from waiting for the old expiry time.
+  Active-service expiry is preserved.
+
+- TIFF image reads, TIFF mask imports and the TIFF raster fallback now
+  decode in a clean R subprocess to avoid native callback failures after
+  ImageMagick has been used. Pixel values, attributes and
+  caller-specific conversions are preserved. Decoding requires an
+  executable `Rscript` and writable temporary storage. Set
+  `options(annotatR.tiff_timeout = 120L)` to control the timeout in
+  whole seconds (default 120). Failed or timed-out decoding returns an
+  error. This remains eager decoding; isolation does not provide bounded
+  image memory or native window reads.
+
 ## annotatR 0.2.0
 
 A partner contract for the qupflowR package, a testable app builder with

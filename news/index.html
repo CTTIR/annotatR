@@ -39,6 +39,11 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="development version" id="annotatr-development-version">annotatR (development version)<a class="anchor" aria-label="anchor" href="#annotatr-development-version"></a></h2>
+<ul><li><p>Stopping a local control listener now cancels its pending expiry callback. This releases the stopped service and prevents subsequent Shiny module tests from waiting for the old expiry time. Active-service expiry is preserved.</p></li>
+<li><p>TIFF image reads, TIFF mask imports and the TIFF raster fallback now decode in a clean R subprocess to avoid native callback failures after ImageMagick has been used. Pixel values, attributes and caller-specific conversions are preserved. Decoding requires an executable <code>Rscript</code> and writable temporary storage. Set <code>options(annotatR.tiff_timeout = 120L)</code> to control the timeout in whole seconds (default 120). Failed or timed-out decoding returns an error. This remains eager decoding; isolation does not provide bounded image memory or native window reads.</p></li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="annotatr-020">annotatR 0.2.0<a class="anchor" aria-label="anchor" href="#annotatr-020"></a></h2>
 <p>A partner contract for the qupflowR package, a testable app builder with an optional local control service, hyperspectral metadata and windowed readers, and deep-learning training datasets. The existing API, S3 classes and files remain compatible; behaviour changes are listed under <em>Changes</em>.</p>
 <div class="section level3">

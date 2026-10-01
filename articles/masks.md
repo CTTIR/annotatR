@@ -218,7 +218,7 @@ list.files(dir)
 cat(readLines(paste0(path, ".legend.json")), sep = "\n")
 #> {
 #>   "annotatR_version": "0.2.0",
-#>   "created": "2026-09-15T09:34:43+0000",
+#>   "created": "2026-10-01T12:32:27+0000",
 #>   "mask_type": "multiclass",
 #>   "level": 0,
 #>   "dims": [512, 512],
