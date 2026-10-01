@@ -25,7 +25,7 @@
     nb <- d[1]
     dtype <- "uint8"
   } else if (requireNamespace("tiff", quietly = TRUE)) {
-    t <- tiff::readTIFF(path, as.is = FALSE)
+    t <- .tiff_read_isolated(path, as.is = FALSE)
     if (length(dim(t)) == 2L) {
       t <- array(t, dim = c(dim(t), 1L))
     }

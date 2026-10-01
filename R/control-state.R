@@ -42,6 +42,7 @@
   hub$apps <- new.env(parent = emptyenv())
   hub$image_ids <- new.env(parent = emptyenv())
   hub$server <- NULL
+  hub$cancel_expiry <- NULL
   hub$manifest_path <- NA_character_
   class(hub) <- c("at_control_hub", class(hub))
   hub

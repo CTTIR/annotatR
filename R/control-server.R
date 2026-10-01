@@ -33,6 +33,10 @@
   if (identical(hub$status, "stopped")) {
     return(invisible(FALSE))
   }
+  if (is.function(hub$cancel_expiry)) {
+    hub$cancel_expiry()
+    hub$cancel_expiry <- NULL
+  }
   if (!is.null(hub$server) && requireNamespace("httpuv", quietly = TRUE)) {
     tryCatch(httpuv::stopServer(hub$server), error = function(e) NULL)
   }
@@ -186,7 +190,7 @@ at_control_start <- function(session, control = "loopback", host = "127.0.0.1", 
                   code = "LISTEN_FAILED", call = call)
       }
     )
-    later::later(function() {
+    hub$cancel_expiry <- later::later(function() {
       if (identical(hub$status, "running")) .control_shutdown(hub, "ttl expired")
     }, delay = ttl_seconds)
   }

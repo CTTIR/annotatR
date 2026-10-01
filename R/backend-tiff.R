@@ -72,7 +72,9 @@
   }
   # Multi-channel TIFFs can emit benign libtiff ExtraSamples warnings; the read
   # itself is correct, so they are suppressed here.
-  raw <- suppressWarnings(tiff::readTIFF(path, all = TRUE, as.is = TRUE, info = TRUE))
+  raw <- suppressWarnings(
+    .tiff_read_isolated(path, all = TRUE, as.is = TRUE, info = TRUE)
+  )
   desc <- attr(if (is.list(raw)) raw[[1]] else raw, "description")
   levels <- .tiff_to_levels(raw)
   level_dims <- lapply(levels, function(a) c(dim(a)[2], dim(a)[1]))

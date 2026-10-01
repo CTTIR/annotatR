@@ -118,7 +118,7 @@ at_write_mask <- function(mask, path, format = c("tiff", "png", "rds"),
     return(list(m = .npy_read_matrix(path, call = call), mask = NULL))
   }
   if (requireNamespace("tiff", quietly = TRUE) && ext %in% c("tif", "tiff")) {
-    raw <- suppressWarnings(tiff::readTIFF(path, as.is = TRUE))
+    raw <- suppressWarnings(.tiff_read_isolated(path, as.is = TRUE))
     if (length(dim(raw)) == 3L) raw <- raw[, , 1]
     return(list(m = matrix(as.integer(round(raw)), nrow = nrow(raw)), mask = NULL))
   }

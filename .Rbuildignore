@@ -19,3 +19,5 @@
 ^inst/shiny/annotatR/hsi-workbench$
 ^\.zenodo\.json$
 ^CITATION\.cff$
+^\.git$
+^tests/testthat/_problems$
