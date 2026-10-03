@@ -106,7 +106,7 @@ rc <- at_export_qupflowr(at_example_project(), dest, overwrite = TRUE)
 #>   method                  from
 #>   st_interpolate_aw.stars sf  
 rc$handoff_digest
-#> [1] "2c40a4ca17593788af363f25da7258907a4ef558a7b131e242302e4719b75a1f"
+#> [1] "3fc9b28e1c15e6ac4b126e54fc93000f0dfc270dad434ba027660ad9d856cb53"
 rc$files[, c("path", "format")]
 #> # A tibble: 5 × 2
 #>   path                                   format        
