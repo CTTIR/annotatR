@@ -16,7 +16,8 @@ at_mask(
   values = NULL,
   overlap = c("last", "first", "max", "min", "error", "bitor"),
   engine = c("stars", "terra"),
-  call = rlang::caller_env()
+  call = rlang::caller_env(),
+  image = NULL
 )
 }
 \arguments{
@@ -31,12 +32,14 @@ ROI), or \code{"multiclass"} (one id per label class).}
 
 \item{level}{Integer pyramid level at which to rasterise. Default \code{0}.}
 
-\item{background}{Integer background value. Default \code{0}.}
+\item{background}{Integer background value. Default \code{0}. Foreground codes
+must differ from background. Binary masks reject \code{1} (foreground), and
+normalize other accepted backgrounds to the stored logical \code{FALSE}/\code{0}.}
 
 \item{touches}{Logical; see the coverage contract. Default \code{FALSE}.}
 
 \item{dims}{Optional \code{c(width, height)}; taken from the image (projects) or
-the geometry bounding box otherwise.}
+the geometry bounding box otherwise, including containing cells for points.}
 
 \item{values}{Optional named integer vector mapping labels to explicit class
 codes (e.g. \code{c(specular = 1L, blood = 2L, shadow = 4L)}), used only for
@@ -49,17 +52,28 @@ the default), \code{"first"}, \code{"max"}, \code{"min"}, \code{"error"} (abort 
 or \code{"bitor"} (bitwise-OR the overlapping values, for bitfield masks; use
 with power-of-two \code{values} and \code{background = 0}).}
 
-\item{engine}{\code{"stars"} (reference) or \code{"terra"} (accelerated, if installed);
-the two produce identical masks.}
+\item{engine}{\code{"stars"} or \code{"terra"} (if installed). Centre-based polygons
+and points use shared membership; other coverage uses the selected engine.}
 
 \item{call}{The calling environment, for error reporting.}
+
+\item{image}{Optional \link{annot_image} for standalone ROIs or layers. Required
+when changing coordinate levels; dimensions alone do not define a scale.
+Projects always use their own image. Without \code{dims}, the image supplies
+the full mask extent at \code{level}.}
 }
 \value{
 An \code{annot_mask}: a matrix (logical for \code{"binary"}, otherwise integer)
 with attributes \code{legend} (a tibble with columns \code{value}, \code{label}, \code{layer},
 \code{roi_id}, \code{n_px}, \code{colour}), \code{level}, \code{dims}, \code{type}, and \code{created}. An
 all-background mask of the correct dimensions is returned when there are no
-ROIs.
+ROIs. The \code{mask_metadata} attribute has schema version 1 and records
+encoding (\code{binary}, \code{instance}, \code{categorical}, or \code{bitfield}), background,
+overlap policy, grid (dimensions, level, origin, stride), source descriptor
+and entry provenance, and the complete label codebook. Supplied \code{values}
+retain mapped-but-absent classes with zero counts. Bitfields require unique
+positive single-bit codes and zero background; category \code{3} is exclusive
+unless bitfield encoding is explicitly declared.
 }
 \description{
 Produce a binary, labelled, or multi-class integer mask from annotations.
@@ -69,9 +83,21 @@ This is the package's core output artifact.
 \strong{Pixel-coverage contract.} Pixel \verb{(i, j)} covers the half-open square
 \verb{[j-1, j) x [i-1, i)} with \verb{(0, 0)} at the top-left corner of the top-left
 pixel; its centre is \verb{(j - 0.5, i - 0.5)}. With \code{touches = FALSE} (default) a
-pixel is included when its centre lies inside the polygon; with
-\code{touches = TRUE} a pixel is included if the polygon touches it at all. ROI
-coordinates use the image convention (top-left origin, y down).
+pixel is included when its centre lies inside the polygon. Boundary ties use
+the symbolic sample \verb{(x + epsilon, y + epsilon^2)} as \code{epsilon} tends to zero
+from above, without a finite coordinate shift. Equivalently, scanline edges
+are active on \verb{[minY, maxY)} and crossing pairs fill \verb{[left, right)}.
+Hole rings exclude pixels by parity regardless of winding; \code{MULTIPOLYGON}
+components combine by union. Thin polygons containing no selected centres
+have empty masks. This rule is shared by both engines and all overlap paths.
+
+\code{POINT} and \code{MULTIPOINT} geometries select their half-open containing cells:
+\verb{(5, 5)} selects row 6, column 6. Extraction uses the same membership and
+bounds. With \code{touches = TRUE}, polygon coverage uses the selected engine's
+all-touched rasterisation; lines and other geometry types also retain the
+selected engine's rasterisation behavior. Engine equality is guaranteed for
+centre-based polygons and points. ROI coordinates use the image convention
+(top-left origin, y down).
 }
 \examples{
 \dontshow{if (requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)) withAutoprint(\{ # examplesIf}

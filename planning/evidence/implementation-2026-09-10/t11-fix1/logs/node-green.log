@@ -1,0 +1,44 @@
+✔ keyboard envelopes capture rendered canvas identity, preserve payload, and suppress missing identity (3.093061ms)
+✔ shortcuts prevent browser undo and leave native controls alone (1.100539ms)
+✔ real action handler snapshots form values and current identity before delayed delivery (1.13681ms)
+✔ divergent server stamps never replace the displayed mutation origin (2.465878ms)
+✔ same-entry mutation intent retains the rendered revision while server output is pending (0.958949ms)
+✔ A24 hole hit-testing ignores empty interior and selects shell (5.207052ms)
+✔ A24 polygon display submits the exterior and hole contours (1.854849ms)
+✔ A24 MultiPolygon display submits both disconnected components (1.236973ms)
+✔ A24 MultiPolygon hit-testing selects a component and ignores the gap (2.259854ms)
+✔ A25 tool routing targets each mounted widget independently (1.386505ms)
+✔ polygon contours close and fill even-odd, without filling lines (1.157947ms)
+✔ Point hit and translation preserve every coordinate and properties (1.375033ms)
+✔ MultiPoint hit and translation preserve every coordinate and properties (1.261342ms)
+✔ LineString hit and translation preserve every coordinate and properties (4.513658ms)
+✔ Polygon hit and translation preserve every coordinate and properties (1.242706ms)
+✔ MultiPolygon hit and translation preserve every coordinate and properties (1.140842ms)
+✔ rect is cancelled on {"entry_id":"entry-b","revision":0} (1.139177ms)
+✔ freehand is cancelled on {"entry_id":"entry-b","revision":0} (1.45937ms)
+✔ circle is cancelled on {"entry_id":"entry-b","revision":0} (1.0403ms)
+✔ polygon is cancelled on {"entry_id":"entry-b","revision":0} (0.906584ms)
+✔ edit is cancelled on {"entry_id":"entry-b","revision":0} (1.071482ms)
+✔ rect is cancelled on {"entry_id":"entry-a","revision":1} (0.942154ms)
+✔ freehand is cancelled on {"entry_id":"entry-a","revision":1} (2.075162ms)
+✔ circle is cancelled on {"entry_id":"entry-a","revision":1} (0.955873ms)
+✔ polygon is cancelled on {"entry_id":"entry-a","revision":1} (0.832671ms)
+✔ edit is cancelled on {"entry_id":"entry-a","revision":1} (0.871683ms)
+✔ base and overlay loads ignore older generations and missing sources clear pixels (1.139367ms)
+✔ one dispatcher per message survives remount, disposal removes listeners and callbacks (1.342637ms)
+✔ creation captures the displayed target at gesture birth (1.223778ms)
+✔ MultiPoint display draws disconnected circles and lines select only their stroke (1.202985ms)
+✔ only the newest overlay callback can paint and disposal cancels pending overlays (0.984837ms)
+✔ a same-source render restarts its pending overlay without accepting the old callback (1.115043ms)
+✔ failed decode reports not ready and blocks drawing until current load succeeds (0.954035ms)
+✔ keyboard rectangle anchors and Escape cancellation create real geometry (1.567744ms)
+✔ protected and hidden features cannot be hit by erase (2.477504ms)
+✔ pointer coordinates use canvas content dimensions rather than bordered host size (1.011701ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 123.071463

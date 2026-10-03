@@ -32,10 +32,19 @@ masks are split into files.}
 }
 \value{
 An invisible export-receipt \link[tibble:tibble]{tibble::tibble} with columns \code{path},
-\code{type}, \code{n_px}, and \code{bytes}.
+\code{type}, \code{n_px}, \code{bytes}, \code{name}, \code{status}, \code{message}, \code{sidecar_path}, and
+\code{sidecar_bytes}. Counts and bytes use double precision. Display names are
+retained in \code{name}; filenames use safe components with unique suffixes.
+Each item is \code{"ok"}, \code{"error"}, or \code{"skipped"}; one failure does not abort
+later items. A TIFF and its legend form one staged output bundle.
 }
 \description{
 Batch-write the masks of a project
+}
+\details{
+Output plans reject symlinked descendants and aliases before writing.
+Callers must serialize concurrent writes and keep destination paths stable;
+preflight plus staged renames is not a race-free filesystem transaction.
 }
 \seealso{
 Other masks:

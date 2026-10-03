@@ -1,0 +1,15 @@
+ℹ Testing annotatR
+reproducible-analysis: 1
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Error ('test-reproducible-analysis.R:8:3'): persisted analytical workflow 
+Error in `sys.source(test_path("..", "..", "inst", "examples", "reproducible-analysis.R"), env)`: '../../inst/examples/reproducible-analysis.R' is not an existing file
+Backtrace:
+    ▆
+ 1. └─annotatR (local) workflow_example() at test-reproducible-analysis.R:8:3
+ 2.   └─base::sys.source(...) at test-reproducible-analysis.R:3:3
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+No one is perfect!
+ failed   error warning  passed 
+      0       1       0       0 

@@ -6,8 +6,9 @@
 #   * Pixel (i, j) covers the half-open square [j-1, j) x [i-1, i) in ROI
 #     coordinate space, with (0, 0) at the top-left corner of the top-left pixel.
 #     Its centre is (j - 0.5, i - 0.5).
-#   * touches = FALSE (default): a pixel is included when its CENTRE lies inside
-#     the polygon (GDAL ALL_TOUCHED=FALSE).
+#   * touches = FALSE (default): polygon centres use the symbolic sample
+#     (x + epsilon, y + epsilon^2), epsilon -> 0+, to resolve boundary ties.
+#     Points occupy their half-open containing cells.
 #   * touches = TRUE: a pixel is included if the polygon touches it at all.
 #   * ROI coordinates use the image convention (top-left origin, y increasing
 #     downward); the rasteriser flips the y-axis to reconcile with GDAL's y-up
@@ -15,27 +16,78 @@
 
 # ---- Per-ROI cover primitive -----------------------------------------------
 
-# Rasterise a single geometry to a logical [height, width] cover matrix in image
-# orientation. `engine` selects the reference (stars) or accelerated (terra)
-# implementation; the two are verified bit-identical in tests.
-#
-# For centre-based coverage (touches = FALSE) the geometry is shifted by a
-# sub-pixel epsilon so that no pixel centre ever lands exactly on a polygon edge.
-# This makes the boundary-tie rule deterministic and axis-symmetric: a centre on
-# the lower edge falls strictly inside (included) and one on the upper edge falls
-# strictly outside (excluded), i.e. the half-open `[lower, upper)` convention.
-# The shift is far below pixel scale, so no non-tie pixel is affected and the
-# stars and terra paths remain bit-identical.
-.cover <- function(geom, dims, touches = FALSE, engine = "stars") {
-  if (!touches) {
-    # Fast, exact path for axis-aligned rectangles and points (bit-identical to
-    # the general rasteriser); avoids stars/terra entirely.
-    sc <- .cover_shortcircuit(geom, dims)
-    if (!is.null(sc)) {
-      return(sc)
+# Centre polygon membership is evaluated symbolically at
+# (x + epsilon, y + epsilon^2), epsilon -> 0+. No finite shift or tolerance is
+# applied: narrow regions and non-tie centres retain their original meaning.
+# Crossings at each centre y use edges active on [minY, maxY); sorted crossing
+# pairs fill [left, right). Ring parity removes holes regardless of orientation.
+# MultiPolygon components combine by union, rather than cancelling overlaps.
+.cover_polygon <- function(geom, dims, origin = c(0, 0)) {
+  width <- as.integer(dims[1])
+  height <- as.integer(dims[2])
+  out <- matrix(FALSE, height, width)
+  polygons <- if (inherits(geom, "POLYGON")) list(unclass(geom)) else unclass(geom)
+  for (rings in polygons) {
+    if (!length(rings)) next
+    starts <- do.call(rbind, lapply(rings, function(r) r[-nrow(r), 1:2, drop = FALSE]))
+    ends <- do.call(rbind, lapply(rings, function(r) r[-1L, 1:2, drop = FALSE]))
+    if (!nrow(starts)) next
+    # Orient each edge upwards numerically for reproducible side comparisons
+    # when ring winding is reversed; horizontal edges never cross a scanline.
+    swap <- starts[, 2] > ends[, 2]
+    low <- starts; high <- ends
+    low[swap, ] <- ends[swap, , drop = FALSE]
+    high[swap, ] <- starts[swap, , drop = FALSE]
+    yr <- .centre_range(min(low[, 2]), max(high[, 2]), height, origin[2])
+    if (yr[1] > yr[2]) next
+    for (i in yr[1]:yr[2]) {
+      y <- origin[2] + i - 0.5
+      active <- low[, 2] <= y & y < high[, 2]
+      if (!any(active)) next
+      a <- low[active, , drop = FALSE]; b <- high[active, , drop = FALSE]
+      # Locate the first centre at or to the right of each crossing using
+      # cross products, never a rounded interpolated x. With edges directed
+      # from low y to high y, a symbolic x+epsilon tie is always to the right.
+      # Binary search keeps work logarithmic in image width for each edge.
+      left <- rep.int(1, nrow(a)); right <- rep.int(width + 1, nrow(a))
+      dx <- b[, 1] - a[, 1]; dy <- b[, 2] - a[, 2]
+      while (any(left < right)) {
+        pending <- which(left < right)
+        mid <- floor((left[pending] + right[pending]) / 2)
+        x <- origin[1] + mid - 0.5
+        before <- (x - a[pending, 1]) * dy[pending] <
+          (y - a[pending, 2]) * dx[pending]
+        left[pending[before]] <- mid[before] + 1
+        right[pending[!before]] <- mid[!before]
+      }
+      crossings <- sort(left)
+      for (k in seq.int(1L, length(crossings), by = 2L)) {
+        if (crossings[k] < crossings[k + 1L]) {
+          out[i, crossings[k]:(crossings[k + 1L] - 1L)] <- TRUE
+        }
+      }
     }
+  }
+  out
+}
+
+# The selected engine retains its native line and all-touched rasterisation.
+# All centre polygons and points share one membership path across engines.
+# A private window origin evaluates the unchanged global geometry at global
+# centres, so extraction does not alter fractional vertices before classifying.
+.cover <- function(geom, dims, touches = FALSE, engine = "stars", origin = c(0, 0)) {
+  if (!touches) {
+    sc <- .cover_shortcircuit(geom, dims, origin)
+    if (!is.null(sc)) return(sc)
+    if (inherits(geom, "POLYGON") || inherits(geom, "MULTIPOLYGON")) {
+      return(.cover_polygon(geom, dims, origin))
+    }
+    # Preserve the established GDAL line convention.
     eps <- 1e-7
-    geom <- .apply_coords(geom, function(m) cbind(m[, 1] - eps, m[, 2] - eps))
+    geom <- .apply_coords(geom, function(m) cbind(m[, 1] - origin[1] - eps,
+                                                m[, 2] - origin[2] - eps))
+  } else if (any(origin != 0)) {
+    geom <- .apply_coords(geom, function(m) cbind(m[, 1] - origin[1], m[, 2] - origin[2]))
   }
   if (engine == "terra" && requireNamespace("terra", quietly = TRUE)) {
     return(.cover_terra(geom, dims, touches))
@@ -77,16 +129,15 @@
 # Return a list describing the ROIs to rasterise, ordered by draw order
 # (ascending z, then insertion), with geometry transformed to `level`.
 .collect_mask_rois <- function(x, layer = NULL, label = NULL, level = 0L,
-                               call = rlang::caller_env()) {
-  image <- if (inherits(x, "annot_project")) x$image else NULL
+                               call = rlang::caller_env(), image = NULL) {
+  if (inherits(x, "annot_project")) image <- x$image
   entries <- list()
   add_layer <- function(lyr) {
     z <- lyr$style$z %||% 1L
     cols <- lyr$style$colour
     for (r in lyr$rois) {
       if (!is.null(label) && !(r$label %in% label)) next
-      g0 <- .to_level0(r$geometry, r$level, image)
-      g <- .geom_to_level(g0, level, image)
+      g <- .transform_geom(r$geometry, r$level, level, image, call = call)
       colour <- if (!is.null(cols) && r$label %in% names(cols)) unname(cols[[r$label]]) else "#5E2C8E"
       entries[[length(entries) + 1L]] <<- list(
         roi_id = r$id, label = r$label, layer = lyr$name,
@@ -95,8 +146,7 @@
     }
   }
   if (inherits(x, "annot_roi")) {
-    g0 <- .to_level0(x$geometry, x$level, NULL)
-    g <- .geom_to_level(g0, level, NULL)
+    g <- .transform_geom(x$geometry, x$level, level, image, call = call)
     entries[[1]] <- list(roi_id = x$id, label = x$label, layer = NA_character_,
                          z = 1L, colour = "#5E2C8E", geom = g[[1]])
   } else if (inherits(x, "annot_layer")) {
@@ -138,8 +188,11 @@
   ymax <- 0
   for (e in entries) {
     co <- sf::st_coordinates(sf::st_sfc(e$geom))
-    xmax <- max(xmax, co[, "X"], na.rm = TRUE)
-    ymax <- max(ymax, co[, "Y"], na.rm = TRUE)
+    # Integer-coordinate points occupy the cell beginning at that coordinate.
+    point <- inherits(e$geom, "POINT") || inherits(e$geom, "MULTIPOINT")
+    extent <- if (point) floor(co[, c("X", "Y"), drop = FALSE]) + 1 else co[, c("X", "Y"), drop = FALSE]
+    xmax <- max(xmax, extent[, "X"], na.rm = TRUE)
+    ymax <- max(ymax, extent[, "Y"], na.rm = TRUE)
   }
   as.integer(c(ceiling(xmax), ceiling(ymax)))
 }
@@ -155,20 +208,38 @@
 #' **Pixel-coverage contract.** Pixel `(i, j)` covers the half-open square
 #' `[j-1, j) x [i-1, i)` with `(0, 0)` at the top-left corner of the top-left
 #' pixel; its centre is `(j - 0.5, i - 0.5)`. With `touches = FALSE` (default) a
-#' pixel is included when its centre lies inside the polygon; with
-#' `touches = TRUE` a pixel is included if the polygon touches it at all. ROI
-#' coordinates use the image convention (top-left origin, y down).
+#' pixel is included when its centre lies inside the polygon. Boundary ties use
+#' the symbolic sample `(x + epsilon, y + epsilon^2)` as `epsilon` tends to zero
+#' from above, without a finite coordinate shift. Equivalently, scanline edges
+#' are active on `[minY, maxY)` and crossing pairs fill `[left, right)`.
+#' Hole rings exclude pixels by parity regardless of winding; `MULTIPOLYGON`
+#' components combine by union. Thin polygons containing no selected centres
+#' have empty masks. This rule is shared by both engines and all overlap paths.
+#'
+#' `POINT` and `MULTIPOINT` geometries select their half-open containing cells:
+#' `(5, 5)` selects row 6, column 6. Extraction uses the same membership and
+#' bounds. With `touches = TRUE`, polygon coverage uses the selected engine's
+#' all-touched rasterisation; lines and other geometry types also retain the
+#' selected engine's rasterisation behavior. Engine equality is guaranteed for
+#' centre-based polygons and points. ROI coordinates use the image convention
+#' (top-left origin, y down).
 #'
 #' @param x An [annot_roi], [annot_layer], or [annot_project].
+#' @param image Optional [annot_image] for standalone ROIs or layers. Required
+#'   when changing coordinate levels; dimensions alone do not define a scale.
+#'   Projects always use their own image. Without `dims`, the image supplies
+#'   the full mask extent at `level`.
 #' @param type `"binary"` (a logical matrix), `"labelled"` (one integer id per
 #'   ROI), or `"multiclass"` (one id per label class).
 #' @param layer Optional layer name(s) to restrict to (projects only).
 #' @param label Optional label(s) to restrict to.
 #' @param level Integer pyramid level at which to rasterise. Default `0`.
-#' @param background Integer background value. Default `0`.
+#' @param background Integer background value. Default `0`. Foreground codes
+#'   must differ from background. Binary masks reject `1` (foreground), and
+#'   normalize other accepted backgrounds to the stored logical `FALSE`/`0`.
 #' @param touches Logical; see the coverage contract. Default `FALSE`.
 #' @param dims Optional `c(width, height)`; taken from the image (projects) or
-#'   the geometry bounding box otherwise.
+#'   the geometry bounding box otherwise, including containing cells for points.
 #' @param values Optional named integer vector mapping labels to explicit class
 #'   codes (e.g. `c(specular = 1L, blood = 2L, shadow = 4L)`), used only for
 #'   `type = "multiclass"`. When `NULL` (default) codes follow first-seen label
@@ -178,15 +249,21 @@
 #'   the default), `"first"`, `"max"`, `"min"`, `"error"` (abort on any overlap),
 #'   or `"bitor"` (bitwise-OR the overlapping values, for bitfield masks; use
 #'   with power-of-two `values` and `background = 0`).
-#' @param engine `"stars"` (reference) or `"terra"` (accelerated, if installed);
-#'   the two produce identical masks.
+#' @param engine `"stars"` or `"terra"` (if installed). Centre-based polygons
+#'   and points use shared membership; other coverage uses the selected engine.
 #' @param call The calling environment, for error reporting.
 #'
 #' @return An `annot_mask`: a matrix (logical for `"binary"`, otherwise integer)
 #'   with attributes `legend` (a tibble with columns `value`, `label`, `layer`,
 #'   `roi_id`, `n_px`, `colour`), `level`, `dims`, `type`, and `created`. An
 #'   all-background mask of the correct dimensions is returned when there are no
-#'   ROIs.
+#'   ROIs. The `mask_metadata` attribute has schema version 1 and records
+#'   encoding (`binary`, `instance`, `categorical`, or `bitfield`), background,
+#'   overlap policy, grid (dimensions, level, origin, stride), source descriptor
+#'   and entry provenance, and the complete label codebook. Supplied `values`
+#'   retain mapped-but-absent classes with zero counts. Bitfields require unique
+#'   positive single-bit codes and zero background; category `3` is exclusive
+#'   unless bitfield encoding is explicitly declared.
 #' @family masks
 #' @seealso [at_write_mask()], [at_read_mask()], [at_mask_stats()]
 #' @export
@@ -200,16 +277,27 @@ at_mask <- function(x,
                     touches = FALSE, dims = NULL, values = NULL,
                     overlap = c("last", "first", "max", "min", "error", "bitor"),
                     engine = c("stars", "terra"),
-                    call = rlang::caller_env()) {
-  type <- .check_choice(type, c("binary", "labelled", "multiclass"), call = call)
-  overlap <- .check_choice(overlap, c("last", "first", "max", "min", "error", "bitor"), call = call)
-  engine <- .check_choice(engine, c("stars", "terra"), call = call)
+                    call = rlang::caller_env(), image = NULL) {
+  type <- .check_choice(type, c("binary", "labelled", "multiclass"), default = missing(type), call = call)
+  overlap <- .check_choice(overlap, c("last", "first", "max", "min", "error", "bitor"), default = missing(overlap), call = call)
+  engine <- .check_choice(engine, c("stars", "terra"), default = missing(engine), call = call)
   level <- .check_count(level, call = call)
   background <- .check_count(background, min = 0L, call = call)
   .check_flag(touches, call = call)
   values <- .check_values_map(values, type, call = call)
+  code_map <- values
+  if (type == "binary") {
+    if (background == 1L) cli::cli_abort("Binary foreground code collides with requested background.", call = call)
+    background <- 0L
+  }
 
-  entries <- .collect_mask_rois(x, layer = layer, label = label, level = level, call = call)
+  if (inherits(x, "annot_project")) image <- x$image
+  if (!is.null(image)) {
+    .check_image(image, call = call)
+    image_dims <- at_dims(image, level, call = call)
+    if (is.null(dims)) dims <- image_dims
+  }
+  entries <- .collect_mask_rois(x, layer = layer, label = label, level = level, call = call, image = image)
   d <- .resolve_mask_dims(x, level, dims, entries, call = call)
   width <- d[1]
   height <- d[2]
@@ -238,12 +326,16 @@ at_mask <- function(x,
     switch(type, binary = 1L, labelled = k, multiclass = val_of(entries[[k]]))
   }, integer(1))
 
+  codes <- code_map %||% unique(values)
+  if (any(codes == background)) cli::cli_abort("Foreground codes collide with background.", call = call)
+  if (overlap == "bitor" && (background != 0L || any(codes <= 0L) || any(bitwAnd(codes, codes - 1L) != 0L))) {
+    cli::cli_abort("Bitfield codes must be positive single-bit powers of two with zero background.", call = call)
+  }
   if (length(entries) == 0L) {
     out <- matrix(as.integer(background), nrow = height, ncol = width)
   } else if (overlap %in% c("last", "first") && length(entries) >= 2L) {
-    # Fast path: burn every ROI in one rasterisation (painter's order gives the
-    # "last" policy; reversing the order gives "first"). Bit-identical to the
-    # per-ROI combine but far cheaper for many ROIs.
+    # Batch all-touched rasterisation; centre coverage shares the per-ROI
+    # membership primitive so adding another ROI cannot change its support.
     out <- .rasterize_batch(entries, values, c(width, height), background,
                             touches, reverse = (overlap == "first"), engine = engine)
   } else {
@@ -252,12 +344,23 @@ at_mask <- function(x,
   }
 
   legend <- .build_legend(type, entries, values, out, background, overlap)
+  if (!is.null(code_map)) {
+    # Retain the caller's global mapping and order, including absent classes.
+    absent <- setdiff(names(code_map), legend$label)
+    for (lb in absent) legend <- rbind(legend, tibble::tibble(
+      value = unname(code_map[[lb]]), label = lb, layer = NA_character_,
+      roi_id = NA_character_, n_px = 0L, colour = "#5E2C8E"))
+    legend <- legend[match(names(code_map), legend$label), , drop = FALSE]
+  }
 
   if (type == "binary") {
     out <- out != background
   }
   .new_annot_mask(out, legend, level, c(width, height), type,
-                  source = if (inherits(x, "annot_project")) x$meta$name %||% NA_character_ else NA_character_)
+                  source = if (inherits(x, "annot_project")) x$meta$name %||% NA_character_ else NA_character_,
+                  encoding = if (type == "binary") "binary" else if (overlap == "bitor") "bitfield" else if (type == "labelled") "instance" else "categorical",
+                  background = background, overlap = overlap,
+                  source_identity = .mask_source(image, if (inherits(x, "annot_project")) x else NULL))
 }
 
 # Per-ROI rasterise-and-combine (short-circuits + all five overlap policies).
@@ -317,22 +420,21 @@ at_mask <- function(x,
       call = call
     )
   }
-  if (any(is.na(values)) || any(values != as.integer(values))) {
-    cli::cli_abort("{.arg values} must contain whole numbers.", call = call)
-  }
+  values <- .mask_integers(values, "Label codes")
+  if (anyDuplicated(values)) cli::cli_abort("Label codes must be unique; duplicate codes are ambiguous.", call = call)
   stats::setNames(as.integer(values), nm)
 }
 
-# Batched rasterisation: burn all ROIs in one st_rasterize/terra call.
+# Batched all-touched rasterisation, with shared per-ROI centre membership.
 .rasterize_batch <- function(entries, values, dims, background, touches, reverse,
                              engine = "stars") {
+  if (!touches) {
+    return(.rasterize_per_roi(entries, values, dims, background, FALSE,
+                              if (reverse) "first" else "last", engine))
+  }
   width <- dims[1]
   height <- dims[2]
   geoms <- lapply(entries, `[[`, "geom")
-  if (!touches) {
-    eps <- 1e-7
-    geoms <- lapply(geoms, function(g) .apply_coords(g, function(m) cbind(m[, 1] - eps, m[, 2] - eps)))
-  }
   ord <- if (reverse) rev(seq_along(geoms)) else seq_along(geoms)
   sfc <- sf::st_sfc(geoms[ord], crs = sf::NA_crs_)
   sfobj <- sf::st_sf(value = as.integer(values[ord]), geometry = sfc)
@@ -400,23 +502,26 @@ at_mask <- function(x,
 
 # ---- annot_mask class ------------------------------------------------------
 
-.new_annot_mask <- function(matrix, legend, level, dims, type, source = NA_character_) {
-  structure(
-    matrix,
-    legend = legend,
-    level = as.integer(level),
-    dims = as.integer(dims),
-    mask_type = type,
-    source_project = source,
-    created = .now(),
-    class = "annot_mask"
-  )
+.new_annot_mask <- function(matrix, legend, level, dims, type, source = NA_character_,
+                            encoding = NULL, background = 0L, overlap = "last",
+                            source_identity = NULL, grid = NULL, metadata = NULL) {
+  legend <- .mask_legend_normalize(legend)
+  metadata <- metadata %||% .mask_default_metadata(matrix, legend, level, type,
+    status = if (is.null(encoding)) "legacy-default" else "declared",
+    encoding = encoding, background = background, overlap = overlap,
+    source = source_identity, grid = grid)
+  metadata <- .mask_validate_metadata(matrix, metadata, legend, dims, level)
+  if (!is.logical(matrix)) storage.mode(matrix) <- "integer"
+  structure(matrix, legend = .mask_recount(matrix, legend, metadata$encoding),
+    level = as.integer(level), dims = as.integer(dims), mask_type = type,
+    source_project = source, mask_metadata = metadata, created = .now(), class = "annot_mask")
 }
 
 #' @export
 print.annot_mask <- function(x, ...) {
-  d <- attr(x, "dims")
-  lg <- attr(x, "legend")
+  info <- .mask_info(x)
+  d <- info$metadata$grid$dims
+  lg <- info$legend
   cat(cli::format_inline(
     "{.cls annot_mask} {attr(x, 'mask_type')}  |  {d[1]} x {d[2]} px  |  level {attr(x, 'level')}"
   ), "\n", sep = "")
@@ -429,7 +534,7 @@ print.annot_mask <- function(x, ...) {
 
 #' @export
 dim.annot_mask <- function(x) {
-  attr(x, "dims")[c(2, 1)] # [height, width] to match the matrix
+  attr(unclass(x), "dim")
 }
 
 #' @export
@@ -440,7 +545,7 @@ as.matrix.annot_mask <- function(x, ...) {
 
 #' @export
 summary.annot_mask <- function(object, ...) {
-  attr(object, "legend")
+  .mask_info(object)$legend
 }
 
 #' Legend of a mask
@@ -455,7 +560,7 @@ summary.annot_mask <- function(object, ...) {
 #' at_mask_legend(at_mask(at_example_project(), "labelled"))
 at_mask_legend <- function(mask, call = rlang::caller_env()) {
   .check_class(mask, "annot_mask", call = call)
-  attr(mask, "legend")
+  .mask_info(mask)$legend
 }
 
 # ---- Additional mask operations --------------------------------------------
@@ -492,11 +597,9 @@ at_mask_stack <- function(project, layers = NULL, level = 0L,
 
 #' Derive a training mask from layer masks
 #'
-#' Combine rasterised layer masks into the derived training mask
-#' `state WHERE anatomy == keep_label AND artefact == 0 AND state != background`.
-#' This is the cross-layer operation the four-layer HSI scheme relies on: it
-#' keeps a state (class) label only where the anatomy layer marks the region of
-#' interest, no artefact bit is set, and the state is actually labelled.
+#' Keep foreground state codes inside the requested anatomy class and outside
+#' artefacts, using each mask's declared background and class membership. An
+#' anatomy bitfield includes composite samples containing the requested bit.
 #'
 #' @param state An `annot_mask` of state (class) codes.
 #' @param anatomy An `annot_mask` of anatomy codes, sharing `state`'s dimensions
@@ -504,11 +607,19 @@ at_mask_stack <- function(project, layers = NULL, level = 0L,
 #' @param artefact Optional `annot_mask` (bitfield); pixels with any artefact bit
 #'   set are dropped. `NULL` (default) applies no artefact exclusion.
 #' @param keep_label The anatomy label whose region is kept (e.g. `"wound"`).
-#' @param background Integer background/unlabeled value. Default `0`.
+#' @param background Output background value. `NULL` (default) preserves the
+#'   state mask's background. Must not collide with any state class code.
+#' @param alignment `"legacy"` (default) validates declared source descriptors
+#'   and grids; masks with only legacy metadata use a recorded legacy assumption.
+#'   Modern masks with missing or conflicting provenance require `"assert"`,
+#'   explicitly asserting registration without resampling. Dimensions must
+#'   always agree. Entry IDs and runtime cache generations do not establish
+#'   source compatibility. Combining the same object records `self-grid`.
 #' @param call The calling environment, for error reporting.
 #'
-#' @return An `annot_mask` (multiclass) of the surviving state codes, with the
-#'   state legend restricted to those classes and pixel counts recomputed.
+#' @return An `annot_mask` retaining state encoding and the full state codebook,
+#'   with counts recomputed, zero counts for absent classes, and alignment
+#'   provenance recorded in `mask_metadata$derivation`.
 #' @family masks
 #' @seealso [at_mask()], [at_mask_stack()]
 #' @export
@@ -519,51 +630,34 @@ at_mask_stack <- function(project, layers = NULL, level = 0L,
 #' m <- at_mask(proj, "multiclass")
 #' at_mask_derive(m, m, keep_label = at_mask_legend(m)$label[1])
 at_mask_derive <- function(state, anatomy, artefact = NULL, keep_label = "wound",
-                           background = 0L, call = rlang::caller_env()) {
+                           background = NULL, call = rlang::caller_env(),
+                           alignment = c("legacy", "assert")) {
   .check_class(state, "annot_mask", call = call)
   .check_class(anatomy, "annot_mask", call = call)
   if (!is.null(artefact)) .check_class(artefact, "annot_mask", call = call)
-  background <- .check_count(background, min = 0L, call = call)
-  sm <- as.matrix(state)
-  am <- as.matrix(anatomy)
-  if (!identical(dim(sm), dim(am))) {
-    cli::cli_abort(
-      c("{.arg state} and {.arg anatomy} must have the same dimensions.",
-        "x" = "state is {nrow(sm)}x{ncol(sm)}; anatomy is {nrow(am)}x{ncol(am)}."),
-      call = call
-    )
-  }
-  lg_a <- attr(anatomy, "legend")
-  wound_val <- lg_a$value[match(keep_label, lg_a$label)]
-  if (length(wound_val) != 1L || is.na(wound_val)) {
-    cli::cli_abort(
-      c("{.arg keep_label} {.val {keep_label}} is not a label of the anatomy mask.",
-        "i" = "Anatomy labels: {.val {lg_a$label}}."),
-      call = call
-    )
-  }
-  keep <- (am == wound_val) & (sm != background)
+  alignment <- .check_choice(alignment, c("legacy", "assert"), default = missing(alignment), call = call)
+  s <- .mask_info(state); a <- .mask_info(anatomy)
+  # Combining the exact same object needs no external registration claim.
+  provenance <- if (identical(state, anatomy)) "self-grid" else .mask_alignment(s, a, alignment)
+  background <- background %||% s$metadata$background
+  background <- .mask_integers(background, "Derived background")
+  if (length(background) != 1L || any(s$legend$value == background)) cli::cli_abort("Invalid derived background or foreground/background collision.")
+  vals <- a$legend$value[a$legend$label == keep_label]
+  if (!length(vals)) cli::cli_abort("{.arg keep_label} {.val {keep_label}} is not a label of the anatomy mask.", call = call)
+  keep <- Reduce(`|`, lapply(vals, function(v) .mask_membership(a$m, v, a$metadata$encoding))) & (s$m != s$metadata$background)
   if (!is.null(artefact)) {
-    fm <- as.matrix(artefact)
-    if (!identical(dim(fm), dim(sm))) {
-      cli::cli_abort(
-        c("{.arg artefact} must share the {.arg state} dimensions.",
-          "x" = "state is {nrow(sm)}x{ncol(sm)}; artefact is {nrow(fm)}x{ncol(fm)}."),
-        call = call
-      )
-    }
-    keep <- keep & (fm == 0L)
+    f <- .mask_info(artefact)
+    artefact_alignment <- if (identical(state, artefact)) "self-grid" else .mask_alignment(s, f, alignment)
+    keep <- keep & (f$m == f$metadata$background)
   }
-  out <- sm
-  out[!keep] <- as.integer(background)
-  lg_s <- attr(state, "legend")
-  surv <- sort(unique(as.integer(out[out != background])))
-  lg <- lg_s[lg_s$value %in% surv, , drop = FALSE]
-  if (nrow(lg) > 0L) {
-    lg$n_px <- vapply(lg$value, function(v) as.integer(sum(out == v)), integer(1))
-  }
-  .new_annot_mask(out, lg, attr(state, "level"), attr(state, "dims"),
-                  "multiclass", source = attr(state, "source_project"))
+  out <- s$m; out[!keep] <- background
+  md <- s$metadata; md$background <- background
+  md$derivation <- list(anatomy_alignment = provenance,
+                        artefact_alignment = if (is.null(artefact)) NULL else artefact_alignment,
+                        anatomy_source = a$metadata[["source"]],
+                        artefact_source = if (is.null(artefact)) NULL else f$metadata[["source"]])
+  .new_annot_mask(out, s$legend, md$grid$level, md$grid$dims,
+                  attr(state, "mask_type"), source = attr(state, "source_project"), metadata = md)
 }
 
 #' Object boundaries of a mask
@@ -598,7 +692,7 @@ at_mask_boundary <- function(mask, width = 1L, call = rlang::caller_env()) {
     }
   }
   # Keep only foreground (object) boundary pixels, not adjacent background.
-  b & (m != 0)
+  b & (m != .mask_info(mask)$metadata$background)
 }
 
 #' Downsampled preview of a mask
@@ -609,13 +703,17 @@ at_mask_boundary <- function(mask, width = 1L, call = rlang::caller_env()) {
 #' @param mask An `annot_mask`.
 #' @param max_dim Integer maximum dimension of the preview. Default `1024`.
 #' @param call The calling environment, for error reporting.
-#' @return A downsampled `annot_mask` with the legend pixel counts recomputed.
+#' @return A downsampled `annot_mask` with membership-aware counts recomputed.
+#'   Metadata records the preview dimensions and sampling stride, its parent
+#'   grid, and the original source provenance. No full-resolution counts are
+#'   copied onto the sampled matrix.
 #' @family masks
 #' @export
 at_mask_preview <- function(mask, max_dim = 1024L, call = rlang::caller_env()) {
   .check_class(mask, "annot_mask", call = call)
   max_dim <- .check_count(max_dim, min = 1L, call = call)
-  m <- as.matrix(mask)
+  info <- .mask_info(mask)
+  m <- info$m
   nr <- nrow(m)
   nc <- ncol(m)
   fac <- max(1L, ceiling(max(nr, nc) / max_dim))
@@ -625,15 +723,12 @@ at_mask_preview <- function(mask, max_dim = 1024L, call = rlang::caller_env()) {
   ys <- seq(1L, nr, by = fac)
   xs <- seq(1L, nc, by = fac)
   small <- m[ys, xs, drop = FALSE]
-  lg <- attr(mask, "legend")
-  if (nrow(lg) > 0L) {
-    lg$n_px <- vapply(lg$value, function(v) as.integer(sum(small == v)), integer(1))
-  }
-  .new_annot_mask(
-    small, lg, attr(mask, "level"),
-    c(ncol(small), nrow(small)), attr(mask, "mask_type"),
-    source = attr(mask, "source_project")
-  )
+  md <- info$metadata
+  md$preview <- list(parent_grid = md$grid, sampling = "nearest-neighbour")
+  md$grid$dims <- as.integer(c(ncol(small), nrow(small)))
+  md$grid$stride <- md$grid$stride * fac
+  .new_annot_mask(small, info$legend, md$grid$level, md$grid$dims,
+                  attr(mask, "mask_type"), source = attr(mask, "source_project"), metadata = md)
 }
 
 #' Per-value statistics of a mask
@@ -645,15 +740,19 @@ at_mask_preview <- function(mask, max_dim = 1024L, call = rlang::caller_env()) {
 #' @return A [tibble::tibble] with one row per mask value: `value`, `label`,
 #'   `n_px`, `area_px`, `area_physical`, `frac_total`, bounding box
 #'   (`bbox_xmin`, `bbox_ymin`, `bbox_xmax`, `bbox_ymax`), and centroid
-#'   (`centroid_x`, `centroid_y`). A 0-row tibble when the mask is empty.
+#'   (`centroid_x`, `centroid_y`). Every bitfield membership contributes to its
+#'   class count, including composite samples; categorical counts are exclusive.
+#'   Mapped-but-absent classes have zero counts. A 0-row tibble is returned only
+#'   when the codebook is empty.
 #' @family masks
 #' @export
 #' @examplesIf requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)
 #' at_mask_stats(at_mask(at_example_project(), "labelled"))
 at_mask_stats <- function(mask, pixel_size = NULL, call = rlang::caller_env()) {
   .check_class(mask, "annot_mask", call = call)
-  m <- as.matrix(mask)
-  lg <- attr(mask, "legend")
+  info <- .mask_info(mask)
+  m <- info$m
+  lg <- info$legend
   total <- length(m)
   cols <- c("value", "label", "n_px", "area_px", "area_physical", "frac_total",
             "bbox_xmin", "bbox_ymin", "bbox_xmax", "bbox_ymax",
@@ -670,7 +769,7 @@ at_mask_stats <- function(mask, pixel_size = NULL, call = rlang::caller_env()) {
   psf <- if (is.null(pixel_size)) NA_real_ else prod(pixel_size)
   rows <- lapply(seq_len(nrow(lg)), function(k) {
     v <- lg$value[k]
-    idx <- which(m == v, arr.ind = TRUE)
+    idx <- which(.mask_membership(m, v, info$metadata$encoding), arr.ind = TRUE)
     n <- nrow(idx)
     if (n == 0L) {
       return(tibble::tibble(
@@ -707,15 +806,15 @@ at_mask_stats <- function(mask, pixel_size = NULL, call = rlang::caller_env()) {
 #' @export
 plot.annot_mask <- function(x, legend = TRUE, ...) {
   m <- as.matrix(x)
-  lg <- attr(x, "legend")
+  lg <- .mask_display(x)
   # Only foreground pixels are drawn (background is left blank). geom_tile (not
   # geom_raster) is used so sparse foreground data raises no warnings.
   df <- expand.grid(y = seq_len(nrow(m)), x = seq_len(ncol(m)))
   df$value <- as.vector(m)
-  df <- df[df$value != 0, , drop = FALSE]
-  df$label <- if (nrow(df) > 0L && nrow(lg) > 0L) lg$label[match(df$value, lg$value)] else character(0)
+  df <- df[df$value != lg$background, , drop = FALSE]
+  df$label <- if (nrow(df) > 0L && length(lg$value) > 0L) lg$label[match(df$value, lg$value)] else character(0)
   pal <- NULL
-  if (nrow(lg) > 0L) {
+  if (length(lg$value) > 0L) {
     pal <- lg$colour
     names(pal) <- lg$label
   }

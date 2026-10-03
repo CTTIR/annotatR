@@ -1,0 +1,215 @@
+
+══ Testing test-widget-events.R ════════════════════════════════════════════════
+
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 0 ]
+[ FAIL 1 | WARN 0 | SKIP 0 | PASS 0 ]
+[ FAIL 2 | WARN 0 | SKIP 0 | PASS 0 ]
+[ FAIL 2 | WARN 0 | SKIP 0 | PASS 1 ]
+[ FAIL 2 | WARN 0 | SKIP 0 | PASS 2 ]
+[ FAIL 2 | WARN 0 | SKIP 0 | PASS 3 ]
+[ FAIL 2 | WARN 0 | SKIP 0 | PASS 4 ]
+[ FAIL 2 | WARN 0 | SKIP 0 | PASS 5 ]
+[ FAIL 2 | WARN 0 | SKIP 0 | PASS 6 ]
+[ FAIL 3 | WARN 0 | SKIP 0 | PASS 6 ]
+[ FAIL 4 | WARN 0 | SKIP 0 | PASS 6 ]Loading required package: shiny
+
+[ FAIL 5 | WARN 0 | SKIP 0 | PASS 6 ]
+[ FAIL 6 | WARN 0 | SKIP 0 | PASS 6 ]
+[ FAIL 6 | WARN 0 | SKIP 0 | PASS 7 ]
+[ FAIL 6 | WARN 0 | SKIP 0 | PASS 8 ]
+[ FAIL 6 | WARN 0 | SKIP 0 | PASS 9 ]
+[ FAIL 6 | WARN 0 | SKIP 0 | PASS 10 ]
+[ FAIL 6 | WARN 0 | SKIP 0 | PASS 11 ]
+[ FAIL 6 | WARN 0 | SKIP 0 | PASS 12 ]
+[ FAIL 6 | WARN 0 | SKIP 0 | PASS 13 ]
+[ FAIL 6 | WARN 0 | SKIP 0 | PASS 14 ]
+
+── Failure ('test-widget-events.R:14:7'): widget and keyboard ingress reject raw, partial, stale and malformed events immediately ──
+Expected `decode(1)` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+
+Backtrace:
+     ▆
+  1. ├─shiny::isolate(...) at test-widget-events.R:7:3
+  2. │ ├─shiny::..stacktraceoff..(...)
+  3. │ └─ctx$run(...)
+  4. │   ├─promises::with_promise_domain(...)
+  5. │   │ └─domain$wrapSync(expr)
+  6. │   ├─shiny::withReactiveDomain(...)
+  7. │   │ └─promises::with_promise_domain(...)
+  8. │   │   └─domain$wrapSync(expr)
+  9. │   │     └─base::force(expr)
+ 10. │   ├─shiny:::with_otel_span_context(...)
+ 11. │   │ └─base::force(expr)
+ 12. │   ├─shiny::captureStackTraces(...)
+ 13. │   │ └─promises::with_promise_domain(...)
+ 14. │   │   └─domain$wrapSync(expr)
+ 15. │   │     └─base::withCallingHandlers(expr, error = doCaptureStack)
+ 16. │   └─env$runWith(self, func)
+ 17. │     └─shiny (local) contextFunc()
+ 18. │       └─shiny::..stacktraceon..(expr)
+ 19. └─testthat::expect_null(decode(1)) at test-widget-events.R:14:7
+
+── Failure ('test-widget-events.R:15:7'): widget and keyboard ingress reject raw, partial, stale and malformed events immediately ──
+Expected `decode(...)` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+
+Backtrace:
+     ▆
+  1. ├─shiny::isolate(...) at test-widget-events.R:7:3
+  2. │ ├─shiny::..stacktraceoff..(...)
+  3. │ └─ctx$run(...)
+  4. │   ├─promises::with_promise_domain(...)
+  5. │   │ └─domain$wrapSync(expr)
+  6. │   ├─shiny::withReactiveDomain(...)
+  7. │   │ └─promises::with_promise_domain(...)
+  8. │   │   └─domain$wrapSync(expr)
+  9. │   │     └─base::force(expr)
+ 10. │   ├─shiny:::with_otel_span_context(...)
+ 11. │   │ └─base::force(expr)
+ 12. │   ├─shiny::captureStackTraces(...)
+ 13. │   │ └─promises::with_promise_domain(...)
+ 14. │   │   └─domain$wrapSync(expr)
+ 15. │   │     └─base::withCallingHandlers(expr, error = doCaptureStack)
+ 16. │   └─env$runWith(self, func)
+ 17. │     └─shiny (local) contextFunc()
+ 18. │       └─shiny::..stacktraceon..(expr)
+ 19. └─testthat::expect_null(...) at test-widget-events.R:15:7
+
+── Error ('test-widget-events.R:13:17'): widget and keyboard ingress reject raw, partial, stale and malformed events immediately ──
+Error in `(function (rv, value, widget = FALSE)  {     envelope <- is.list(value) && any(c("entry_id", "revision", "payload") %in% names(value))     if (envelope) {         if (widget)              rv$modern_widget <- TRUE         if (!all(c("entry_id", "revision", "payload") %in% names(value)))              return(NULL)         event <- value     }     else {         if (widget && isTRUE(rv$modern_widget))              return(NULL)         event <- c(.state_stamp(rv), list(payload = value))     }     if (!.state_matches(rv, event, require_project = FALSE))          return(NULL)     event })(rv = structure(list(impl = <environment>, readonly = FALSE, ns = function (x)  x), class = "reactivevalues"), value = 1, keyboard = TRUE)`: unused argument (keyboard = TRUE)
+Backtrace:
+     ▆
+  1. ├─shiny::isolate(...) at test-widget-events.R:7:3
+  2. │ ├─shiny::..stacktraceoff..(...)
+  3. │ └─ctx$run(...)
+  4. │   ├─promises::with_promise_domain(...)
+  5. │   │ └─domain$wrapSync(expr)
+  6. │   ├─shiny::withReactiveDomain(...)
+  7. │   │ └─promises::with_promise_domain(...)
+  8. │   │   └─domain$wrapSync(expr)
+  9. │   │     └─base::force(expr)
+ 10. │   ├─shiny:::with_otel_span_context(...)
+ 11. │   │ └─base::force(expr)
+ 12. │   ├─shiny::captureStackTraces(...)
+ 13. │   │ └─promises::with_promise_domain(...)
+ 14. │   │   └─domain$wrapSync(expr)
+ 15. │   │     └─base::withCallingHandlers(expr, error = doCaptureStack)
+ 16. │   └─env$runWith(self, func)
+ 17. │     └─shiny (local) contextFunc()
+ 18. │       └─shiny::..stacktraceon..(expr)
+ 19. ├─testthat::expect_null(decode(1)) at test-widget-events.R:14:7
+ 20. │ └─testthat::quasi_label(enquo(object), label)
+ 21. │   └─rlang::eval_bare(expr, quo_get_env(quo))
+ 22. ├─decode(1)
+ 23. │ └─base::do.call(...) at test-widget-events.R:13:17
+ 24. └─base::.handleSimpleError(...)
+ 25.   └─shiny (local) h(simpleError(msg, call))
+
+── Failure ('test-widget-events.R:37:5'): widget exposes project identity and edit preserves attributes and anisotropic stored level ──
+Expected `at_canvas(img, rv$project)$x$identity` to equal `.state_stamp(rv)`.
+Differences:
+`actual` is NULL
+`expected` is a list
+
+Backtrace:
+     ▆
+  1. ├─shiny::isolate(...) at test-widget-events.R:36:3
+  2. │ ├─shiny::..stacktraceoff..(...)
+  3. │ └─ctx$run(...)
+  4. │   ├─promises::with_promise_domain(...)
+  5. │   │ └─domain$wrapSync(expr)
+  6. │   ├─shiny::withReactiveDomain(...)
+  7. │   │ └─promises::with_promise_domain(...)
+  8. │   │   └─domain$wrapSync(expr)
+  9. │   │     └─base::force(expr)
+ 10. │   ├─shiny:::with_otel_span_context(...)
+ 11. │   │ └─base::force(expr)
+ 12. │   ├─shiny::captureStackTraces(...)
+ 13. │   │ └─promises::with_promise_domain(...)
+ 14. │   │   └─domain$wrapSync(expr)
+ 15. │   │     └─base::withCallingHandlers(expr, error = doCaptureStack)
+ 16. │   └─env$runWith(self, func)
+ 17. │     └─shiny (local) contextFunc()
+ 18. │       └─shiny::..stacktraceon..(expr)
+ 19. └─testthat::expect_equal(...) at test-widget-events.R:37:5
+
+── Failure ('test-widget-events.R:46:5'): widget exposes project identity and edit preserves attributes and anisotropic stored level ──
+Expected `result$level` to equal 1L.
+Differences:
+  `actual`: 0
+`expected`: 1
+
+Backtrace:
+     ▆
+  1. ├─shiny::testServer(...) at test-widget-events.R:39:3
+  2. │ ├─shiny:::withMockContext(...)
+  3. │ │ ├─shiny::isolate(...)
+  4. │ │ │ ├─shiny::..stacktraceoff..(...)
+  5. │ │ │ └─ctx$run(...)
+  6. │ │ │   ├─promises::with_promise_domain(...)
+  7. │ │ │   │ └─domain$wrapSync(expr)
+  8. │ │ │   ├─shiny::withReactiveDomain(...)
+  9. │ │ │   │ └─promises::with_promise_domain(...)
+ 10. │ │ │   │   └─domain$wrapSync(expr)
+ 11. │ │ │   │     └─base::force(expr)
+ 12. │ │ │   ├─shiny:::with_otel_span_context(...)
+ 13. │ │ │   │ └─base::force(expr)
+ 14. │ │ │   ├─shiny::captureStackTraces(...)
+ 15. │ │ │   │ └─promises::with_promise_domain(...)
+ 16. │ │ │   │   └─domain$wrapSync(expr)
+ 17. │ │ │   │     └─base::withCallingHandlers(expr, error = doCaptureStack)
+ 18. │ │ │   └─env$runWith(self, func)
+ 19. │ │ │     └─shiny (local) contextFunc()
+ 20. │ │ │       └─shiny::..stacktraceon..(expr)
+ 21. │ │ ├─shiny::withReactiveDomain(...)
+ 22. │ │ │ └─promises::with_promise_domain(...)
+ 23. │ │ │   └─domain$wrapSync(expr)
+ 24. │ │ │     └─base::force(expr)
+ 25. │ │ └─withr::with_options(...)
+ 26. │ │   └─base::force(code)
+ 27. │ └─rlang::eval_tidy(quosure, mask, rlang::caller_env())
+ 28. └─testthat::expect_equal(result$level, 1L) at test-widget-events.R:46:5
+
+── Failure ('test-widget-events.R:47:5'): widget exposes project identity and edit preserves attributes and anisotropic stored level ──
+Expected `unname(sf::st_bbox(result$geometry))` to equal `c(8, 6, 16, 12)`.
+Differences:
+  `actual`: 20.0 18.0 40.0 36.0
+`expected`:  8.0  6.0 16.0 12.0
+
+Backtrace:
+     ▆
+  1. ├─shiny::testServer(...) at test-widget-events.R:39:3
+  2. │ ├─shiny:::withMockContext(...)
+  3. │ │ ├─shiny::isolate(...)
+  4. │ │ │ ├─shiny::..stacktraceoff..(...)
+  5. │ │ │ └─ctx$run(...)
+  6. │ │ │   ├─promises::with_promise_domain(...)
+  7. │ │ │   │ └─domain$wrapSync(expr)
+  8. │ │ │   ├─shiny::withReactiveDomain(...)
+  9. │ │ │   │ └─promises::with_promise_domain(...)
+ 10. │ │ │   │   └─domain$wrapSync(expr)
+ 11. │ │ │   │     └─base::force(expr)
+ 12. │ │ │   ├─shiny:::with_otel_span_context(...)
+ 13. │ │ │   │ └─base::force(expr)
+ 14. │ │ │   ├─shiny::captureStackTraces(...)
+ 15. │ │ │   │ └─promises::with_promise_domain(...)
+ 16. │ │ │   │   └─domain$wrapSync(expr)
+ 17. │ │ │   │     └─base::withCallingHandlers(expr, error = doCaptureStack)
+ 18. │ │ │   └─env$runWith(self, func)
+ 19. │ │ │     └─shiny (local) contextFunc()
+ 20. │ │ │       └─shiny::..stacktraceon..(expr)
+ 21. │ │ ├─shiny::withReactiveDomain(...)
+ 22. │ │ │ └─promises::with_promise_domain(...)
+ 23. │ │ │   └─domain$wrapSync(expr)
+ 24. │ │ │     └─base::force(expr)
+ 25. │ │ └─withr::with_options(...)
+ 26. │ │   └─base::force(code)
+ 27. │ └─rlang::eval_tidy(quosure, mask, rlang::caller_env())
+ 28. └─testthat::expect_equal(...) at test-widget-events.R:47:5
+
+[ FAIL 6 | WARN 0 | SKIP 0 | PASS 14 ]

@@ -18,7 +18,10 @@ area. When \code{NULL}, \code{area_physical} is \code{NA}.}
 A \link[tibble:tibble]{tibble::tibble} with one row per mask value: \code{value}, \code{label},
 \code{n_px}, \code{area_px}, \code{area_physical}, \code{frac_total}, bounding box
 (\code{bbox_xmin}, \code{bbox_ymin}, \code{bbox_xmax}, \code{bbox_ymax}), and centroid
-(\code{centroid_x}, \code{centroid_y}). A 0-row tibble when the mask is empty.
+(\code{centroid_x}, \code{centroid_y}). Every bitfield membership contributes to its
+class count, including composite samples; categorical counts are exclusive.
+Mapped-but-absent classes have zero counts. A 0-row tibble is returned only
+when the codebook is empty.
 }
 \description{
 Per-value statistics of a mask

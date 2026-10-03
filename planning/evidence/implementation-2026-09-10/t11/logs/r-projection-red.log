@@ -1,0 +1,55 @@
+app-capabilities: ....................Loading required package: shiny
+....123456.7
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Failure ('test-app-capabilities.R:74:3'): canvas projection respects visib
+Expected `f` to have length 2.
+Actual length: 3.
+
+── 2. Failure ('test-app-capabilities.R:75:3'): canvas projection respects visib
+Expected `vapply(f, function(f) f$properties$layer, "")` to equal `c("low", "high")`.
+Differences:
+`actual`:   "high" "low"  "hidden"
+`expected`: "low"  "high"         
+
+
+── 3. Failure ('test-app-capabilities.R:76:3'): canvas projection respects visib
+Expected `all(vapply(f, function(f) isTRUE(f$properties$locked), FALSE))` to be TRUE.
+Differences:
+`actual`:   FALSE
+`expected`: TRUE 
+
+
+── 4. Failure ('test-app-capabilities.R:77:3'): canvas projection respects visib
+Expected `f[[2]]$properties$colour` to equal "#ff0000".
+Differences:
+`actual` is NULL
+`expected` is a character vector ('#ff0000')
+
+
+── 5. Failure ('test-app-capabilities.R:78:3'): canvas projection respects visib
+Expected `f[[2]]$properties$fill_alpha` to equal 0.3.
+Differences:
+`actual` is NULL
+`expected` is a double vector (0.3)
+
+
+── 6. Failure ('test-app-capabilities.R:79:3'): canvas projection respects visib
+Expected `f[[2]]$properties$stroke_width` to equal 4.
+Differences:
+`actual` is NULL
+`expected` is a double vector (4)
+
+
+── 7. Error ('test-app-capabilities.R:83:3'): PNG reader and missing display enc
+Error in `testthat::local_mocked_bindings(requireNamespace = function(package, ...) package == "tiff")`: Can't find binding for `requireNamespace`
+Backtrace:
+    ▆
+ 1. └─testthat::local_mocked_bindings(requireNamespace = function(package, ...) package == "tiff") at test-app-capabilities.R:83:3
+ 2.   └─cli::cli_abort("Can't find binding for {.arg {missing}}")
+ 3.     └─rlang::abort(...)
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+No one is perfect!
+ failed   error warning skipped  passed 
+      6       1       0       0      25 

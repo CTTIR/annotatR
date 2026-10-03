@@ -1,0 +1,4 @@
+"entry_id","band","wavelength","unit","estimand","n_selected","n_valid","n_invalid","mean","median","sd","min","max","sum"
+"analytical-image-001",1,450,"nm","unique selected pixels within image",16,15,1,129.133333333333,131,10.3569622315941,112,145,1937
+"analytical-image-001",2,550,"nm","unique selected pixels within image",16,15,1,228.333333333333,231,11.2863170423727,211,245,3425
+"analytical-image-001",3,650,"nm","unique selected pixels within image",16,14,2,326.357142857143,324.5,10.5510272402348,311,344,4569

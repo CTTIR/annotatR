@@ -23,7 +23,8 @@ columns:
 \item{\code{layer}}{Layer name (character).}
 \item{\code{label}}{Class label (character).}
 \item{\code{geom_type}}{Geometry type, e.g. \code{"POLYGON"} (character).}
-\item{\code{level}}{Reference pyramid level (integer).}
+\item{\code{level}}{Coordinate pyramid level, always 0 (integer).}
+\item{\code{source_level}}{Stored ROI reference level (integer provenance).}
 \item{\code{area_px}}{Area in level-0 pixels (double); \code{NA} for points/lines.}
 \item{\code{centroid_x},\code{centroid_y}}{Centroid at level 0 (double).}
 \item{\code{n_vertices}}{Vertex count (integer).}
@@ -39,8 +40,12 @@ Return a tidy table of ROIs, optionally filtered by layer and/or label.
 }
 \details{
 Coordinates in the \code{geometry} column, together with \code{area_px} and the
-centroid, are expressed at pyramid level 0; the \code{level} column records the
-level at which each ROI was originally defined.
+centroid, are expressed at pyramid level 0. The \code{level} column is 0;
+\code{source_level} records the stored level at which each ROI was defined.
+
+Older tables used \code{level} for the stored reference level despite
+returning level-0 geometry. Consumers needing that provenance must now use
+\code{source_level}. The stored ROI geometry, level, and identifier are unchanged.
 }
 \examples{
 # proj <- at_example_project()

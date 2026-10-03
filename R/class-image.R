@@ -15,7 +15,13 @@ new_annot_image <- function(source,
                             pixel_unit = "px",
                             dtype = "uint8",
                             handle = NULL,
-                            meta = list()) {
+                            meta = list(),
+                            source_descriptor = NULL,
+                            read_generation = NULL,
+                            cache_identity = NULL) {
+  if (is.null(cache_identity)) {
+    cache_identity <- .new_identity_id("image")
+  }
   structure(
     list(
       source          = as.character(source),
@@ -31,7 +37,10 @@ new_annot_image <- function(source,
       pixel_unit      = as.character(pixel_unit),
       dtype           = as.character(dtype),
       handle          = handle,
-      meta            = meta
+      meta            = meta,
+      source_descriptor = source_descriptor,
+      read_generation = read_generation,
+      cache_identity  = as.character(cache_identity)
     ),
     class = "annot_image"
   )
@@ -101,7 +110,9 @@ at_n_bands <- function(x, call = rlang::caller_env()) {
 #'     \item{`index`}{Band index, 1-based (integer).}
 #'     \item{`name`}{Band name (character); a default `"Band k"` when unnamed.}
 #'     \item{`wavelength`}{Centre wavelength (double); `NA` when not spectral.}
-#'     \item{`unit`}{Wavelength unit (character); `NA` when not spectral.}
+#'     \item{`unit`}{Declared spectral coordinate unit (character); `NA` when
+#'       not spectral or when the unit is unknown. Scalar metadata applies to
+#'       all bands; per-band units are preserved without conversion.}
 #'   }
 #'   Always has `at_n_bands(x)` rows.
 #' @family images
@@ -118,7 +129,10 @@ at_bands <- function(x, call = rlang::caller_env()) {
   }
   spectral <- at_is_spectral(x)
   wl <- if (spectral) as.numeric(x$wavelengths)[seq_len(n)] else rep(NA_real_, n)
-  unit <- if (spectral) rep(x$wavelength_unit %||% NA_character_, n) else rep(NA_character_, n)
+  unit <- if (spectral) x[["wavelength_unit"]] %||% NA_character_ else NA_character_
+  if (!is.character(unit) || !length(unit) %in% c(1L,n))
+    cli::cli_abort("Wavelength units must be a character scalar or one value per band.", call = call)
+  unit <- rep(unit,length.out=n)
   tibble::tibble(
     index      = seq_len(n),
     name       = nm,
@@ -178,7 +192,7 @@ at_is_pyramidal <- function(x, call = rlang::caller_env()) {
 #' @export
 at_pixel_size <- function(x, call = rlang::caller_env()) {
   .check_image(x, call = call)
-  x$pixel_size
+  x[["pixel_size"]]
 }
 
 #' Image metadata
@@ -198,7 +212,9 @@ at_meta <- function(x, key = NULL, call = rlang::caller_env()) {
     source     = x$source,
     backend    = x$backend,
     dtype      = x$dtype,
-    pixel_unit = x$pixel_unit
+    pixel_unit = x$pixel_unit,
+    source_descriptor = x$source_descriptor,
+    read_generation = x$read_generation
   )
   full <- utils::modifyList(base, x$meta)
   if (is.null(key)) {

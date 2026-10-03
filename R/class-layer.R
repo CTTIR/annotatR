@@ -112,8 +112,12 @@ at_layer_add <- function(layer, roi, call = rlang::caller_env()) {
   .check_layer(layer, call = call)
   .check_roi(roi, call = call)
   existing <- vapply(layer$rois, `[[`, character(1), "id")
-  if (roi$id %in% existing) {
-    roi$id <- .new_id("roi")
+  if (!.valid_roi_id(roi$id) || roi$id %in% existing) {
+    repeat {
+      candidate <- .new_id("roi")
+      if (!candidate %in% existing) break
+    }
+    roi$id <- candidate
   }
   if (!roi$label %in% layer$labels) {
     layer$labels <- c(layer$labels, roi$label)
@@ -148,7 +152,8 @@ at_layer_remove <- function(layer, id, call = rlang::caller_env()) {
 #' Layer ROI table
 #'
 #' @param layer An [annot_layer].
-#' @param image Optional [annot_image] for accurate level-0 coordinate transforms.
+#' @param image [annot_image] defining actual pyramid dimensions. Required when
+#'   any ROI is stored at a nonzero level; no scale is inferred without it.
 #' @param call The calling environment, for error reporting.
 #' @return An ROI table (see [at_rois()] for the column contract). A 0-row table
 #'   with the same columns when the layer has no ROIs.

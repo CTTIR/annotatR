@@ -1,4 +1,4 @@
-# The atcanvas htmlwidget: a deep-zoom viewer with ROI drawing.
+# The atcanvas htmlwidget: a self-contained image overview with ROI drawing.
 #
 # For v0.0.1 the JavaScript is a self-contained HTML5 canvas (pan/zoom plus
 # rectangle/polygon/point/freehand drawing) with no external libraries, so the
@@ -91,8 +91,34 @@ at_tile_source <- function(img, level_max = NULL, tile_size = 512L, embed = TRUE
   )
   if (embed) {
     src$dataUri <- .image_data_uri(img)
+    if (is.null(src$dataUri)) src$displayError <- if (!requireNamespace("magick", quietly = TRUE))
+      "Canvas display requires package magick. Install it with install.packages(\"magick\") and reopen the app."
+    else "Could not encode the image for display. Check the image reader and choose another image."
   }
   src
+}
+
+# Display projection only: analytical masks and exports retain hidden layers.
+.canvas_features <- function(project, layer = NULL) {
+  names <- names(project$layers)
+  if (!is.null(layer)) names <- intersect(names, layer)
+  names <- names[!vapply(project$layers[names], function(x) identical(x$style$visible, FALSE), logical(1))]
+  names <- names[order(vapply(project$layers[names], function(x) x$style$z %||% 1, numeric(1)))]
+  fc <- .project_to_features(project, names, 0L, FALSE, at_dims(project$image, 0)[2], FALSE)
+  fc$features <- lapply(fc$features, function(f) {
+    style <- project$layers[[f$properties$layer]]$style
+    label <- f$properties$label
+    cols <- style$colour
+    f$properties$colour <- if (!is.null(cols) && label %in% names(cols)) unname(cols[[label]]) else "#5E2C8E"
+    f$properties$fill_alpha <- style$fill_alpha
+    f$properties$stroke_width <- style$stroke_width
+    f$properties$locked <- isTRUE(style$locked) || isTRUE(f$properties$attributes$locked)
+    f$properties$visible <- TRUE
+    f
+  })
+  # .project_to_features retains project ordering; impose the display z order.
+  fc$features <- fc$features[order(vapply(fc$features, function(f) match(f$properties$layer, names), integer(1)))]
+  fc
 }
 
 #' An annotation canvas widget
@@ -118,16 +144,18 @@ at_canvas <- function(img, project = NULL, tool = "pan", width = NULL,
   .check_image(img, call = call)
   .canvas_deps_ok(call = call)
   tool <- .check_choice(tool, c("pan", "rect", "polygon", "freehand", "circle",
-                                "point", "edit", "erase"), call = call)
+                                "point", "edit", "erase"), default = missing(tool), call = call)
   annotations <- if (!is.null(project)) {
     .check_project(project, call = call)
-    .project_to_features(project, NULL, 0L, FALSE, at_dims(img, 0)[2], qupath = FALSE)
+    .canvas_features(project)
   } else {
     list(type = "FeatureCollection", features = list())
   }
   x <- list(
     tileSource = at_tile_source(img, call = call),
     annotations = annotations,
+    identity = if (!is.null(project$meta$entry_id)) list(
+      entry_id = project$meta$entry_id, revision = project$meta$annotation_revision %||% 0) else NULL,
     tool = tool,
     options = options
   )
@@ -198,8 +226,9 @@ at_canvas_set_annotations <- function(proxy, project, layer = NULL,
                                       call = rlang::caller_env()) {
   .check_project(project, call = call)
   h <- at_dims(project$image, 0)[2]
-  fc <- .project_to_features(project, layer, 0L, FALSE, h, qupath = FALSE)
-  .canvas_msg(proxy, "set_annotations", list(annotations = fc), call = call)
+  fc <- .canvas_features(project, layer)
+  .canvas_msg(proxy, "set_annotations", list(annotations = fc, identity = if (!is.null(project$meta$entry_id))
+    list(entry_id = project$meta$entry_id, revision = project$meta$annotation_revision %||% 0) else NULL), call = call)
 }
 
 #' Set the active drawing tool
@@ -210,7 +239,7 @@ at_canvas_set_annotations <- function(proxy, project, layer = NULL,
 #' @export
 at_canvas_set_tool <- function(proxy, tool, call = rlang::caller_env()) {
   tool <- .check_choice(tool, c("pan", "rect", "polygon", "freehand", "circle",
-                                "point", "edit", "erase"), call = call)
+                                "point", "edit", "erase"), default = missing(tool), call = call)
   .canvas_msg(proxy, "set_tool", list(tool = tool), call = call)
 }
 
@@ -246,10 +275,10 @@ at_canvas_set_overlay <- function(proxy, mask, alpha = 0.5,
   }
   pv <- at_mask_preview(mask, max_dim = max_dim)
   m <- as.matrix(pv)
-  lg <- attr(pv, "legend")
+  lg <- .mask_display(pv)
   arr <- array(0, dim = c(nrow(m), ncol(m), 4L))
-  if (nrow(lg) > 0L) {
-    for (k in seq_len(nrow(lg))) {
+  if (length(lg$value) > 0L) {
+    for (k in seq_along(lg$value)) {
       col <- grDevices::col2rgb(lg$colour[k]) / 255
       sel <- m == lg$value[k]
       arr[, , 1][sel] <- col[1]

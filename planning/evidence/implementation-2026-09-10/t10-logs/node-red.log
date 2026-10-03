@@ -1,0 +1,439 @@
+✖ A24 hole hit-testing ignores empty interior and selects shell (4.925761ms)
+✖ A24 polygon display submits the exterior and hole contours (1.88182ms)
+✖ A24 MultiPolygon display submits both disconnected components (1.114671ms)
+✖ A24 MultiPolygon hit-testing selects a component and ignores the gap (1.153665ms)
+✖ A25 tool routing targets each mounted widget independently (1.366921ms)
+✖ polygon contours close and fill even-odd, without filling lines (1.06112ms)
+✖ Point hit and translation preserve every coordinate and properties (1.394554ms)
+✖ MultiPoint hit and translation preserve every coordinate and properties (0.948937ms)
+✖ LineString hit and translation preserve every coordinate and properties (0.999912ms)
+✖ Polygon hit and translation preserve every coordinate and properties (1.193353ms)
+✖ MultiPolygon hit and translation preserve every coordinate and properties (0.876254ms)
+✖ rect is cancelled on entry/revision change (1.07351ms)
+✖ freehand is cancelled on entry/revision change (0.947074ms)
+✖ circle is cancelled on entry/revision change (1.013508ms)
+✖ polygon is cancelled on entry/revision change (0.9696ms)
+✖ edit is cancelled on entry/revision change (0.888707ms)
+✖ base and overlay loads ignore older generations and missing sources clear pixels (0.976149ms)
+✖ one dispatcher per message survives remount, disposal removes listeners and callbacks (0.941971ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 0
+ℹ fail 18
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 94.921672
+
+✖ failing tests:
+
+test at tests/audit/widget.test.js:50:1
+✖ A24 hole hit-testing ignores empty interior and selects shell (4.925761ms)
+  AssertionError [ERR_ASSERTION]: a click in a hole must not erase the polygon
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:54:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:60:1
+✖ A24 polygon display submits the exterior and hole contours (1.88182ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      [
+        0,
+        0
+      ],
+  -   [
+  -     40,
+  -     40
+  -   ]
+    ]
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:63:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ 0, 0 ] ],
+    expected: [ [ 0, 0 ], [ 40, 40 ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:66:1
+✖ A24 MultiPolygon display submits both disconnected components (1.114671ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   [
+  -     0,
+  -     0
+  -   ],
+  -   [
+  -     80,
+  -     80
+  -   ]
+  - ]
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:69:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ [ 0, 0 ], [ 80, 80 ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:72:1
+✖ A24 MultiPolygon hit-testing selects a component and ignores the gap (1.153665ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'a_erased'
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:78:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'a_erased',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:81:1
+✖ A25 tool routing targets each mounted widget independently (1.366921ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'a_created'
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:86:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'a_created',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:97:1
+✖ polygon contours close and fill even-odd, without filling lines (1.06112ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  4 !== 8
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:99:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 4,
+    expected: 8,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:111:4
+✖ Point hit and translation preserve every coordinate and properties (1.394554ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'entry-a'
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:117:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'entry-a',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:111:4
+✖ MultiPoint hit and translation preserve every coordinate and properties (0.948937ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'entry-a'
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:117:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'entry-a',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:111:4
+✖ LineString hit and translation preserve every coordinate and properties (0.999912ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'entry-a'
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:117:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'entry-a',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:111:4
+✖ Polygon hit and translation preserve every coordinate and properties (1.193353ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'entry-a'
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:117:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'entry-a',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:111:4
+✖ MultiPolygon hit and translation preserve every coordinate and properties (0.876254ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'entry-a'
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:117:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'entry-a',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:124:67
+✖ rect is cancelled on entry/revision change (1.07351ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:129:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:124:67
+✖ freehand is cancelled on entry/revision change (0.947074ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:129:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:124:67
+✖ circle is cancelled on entry/revision change (1.013508ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:129:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:124:67
+✖ polygon is cancelled on entry/revision change (0.9696ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:129:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:124:67
+✖ edit is cancelled on entry/revision change (0.888707ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:129:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:132:1
+✖ base and overlay loads ignore older generations and missing sources clear pixels (0.976149ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'fixture' !== 'new'
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:136:46)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'fixture',
+    expected: 'new',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/widget.test.js:146:1
+✖ one dispatcher per message survives remount, disposal removes listeners and callbacks (0.941971ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  3 !== 2
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:149:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 3,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

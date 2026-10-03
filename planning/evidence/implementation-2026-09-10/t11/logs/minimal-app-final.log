@@ -1,0 +1,5 @@
+[1] 1
+{"libraries":["/tmp/annotatr-roadmap-minimal-library-lrbzwagc","/usr/lib/R/library"],"magick":false,"tiff":true,"tiff_dims":[10,10],"display_error":"Canvas display requires package magick. Install it with install.packages(\"magick\") and reopen the app.","png_error":"PNG, JPEG and other non-TIFF raster images require package magick; TIFF\ncan also use tiff.\nℹ Install one with `install.packages(\"magick\")`."} 
+Loading required package: shiny
+
+Listening on http://127.0.0.1:5820

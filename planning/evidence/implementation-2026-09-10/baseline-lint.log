@@ -1,0 +1,16 @@
+R/backend.R:56:3: warning: [cttir_condition] Use cli::cli_abort() with a condition class rather than stopifnot().
+  stopifnot(is.function(read_fn), is.function(tile_fn), is.function(detect_fn),
+  ^~~~~~~~~~
+R/geometry.R:578:38: style: [cttir_quiet] Use `quiet` (readr/usethis spelling) as the single chattiness argument.
+at_fix_geometry <- function(project, verbose = TRUE, call = rlang::caller_env()) {
+                                     ^~~~~~~~~~~~~~
+R/utils.R:224:3: warning: [cttir_condition] Use cli::cli_abort() with a condition class rather than stopifnot().
+  stopifnot(inherits(geom, "sfc"))
+  ^~~~~~~~~~
+tests/testthat/test-geometry.R:118:51: style: [cttir_quiet] Use `quiet` (readr/usethis spelling) as the single chattiness argument.
+  fixed <- suppressMessages(at_fix_geometry(proj, verbose = FALSE))
+                                                  ^~~~~~~~~~~~~~~
+tests/testthat/test-refine-correctness.R:45:34: style: [cttir_quiet] Use `quiet` (readr/usethis spelling) as the single chattiness argument.
+  fixed <- at_fix_geometry(proj, verbose = FALSE)
+                                 ^~~~~~~~~~~~~~~
+Findings: 5 

@@ -1,0 +1,13 @@
+WARNING: Unknown module: javafx.graphics specified to --add-opens
+WARNING: Unknown module: javafx.base specified to --add-opens
+WARNING: Unknown module: javafx.web specified to --enable-native-access
+WARNING: Unknown module: javafx.graphics specified to --enable-native-access
+WARNING: Unknown module: javafx.media specified to --enable-native-access
+17:33:28.079 [main] [INFO ] qupath.lib.gui.prefs.PathPrefs - Setting default Locale to en_US
+17:33:28.084 [main] [INFO ] qupath.lib.gui.prefs.PathPrefs - Setting Locale for FORMAT to en_US
+17:33:28.084 [main] [INFO ] qupath.lib.gui.prefs.PathPrefs - Setting Locale for DISPLAY to en_US
+17:33:28.110 [main] [INFO ] qupath.lib.common.ThreadTools - Setting parallelism to 71
+17:33:28.150 [main] [INFO ] qupath.ScriptCommand - Setting tile cache size to 24040.00 MB (25.0% max memory)
+17:33:28.276 [main] [INFO ] qupath.lib.scripting.QP - Initializing type adapters
+17:33:29.725 [main] [WARN ] q.l.i.QuPathTypeAdapters$PathObjectTypeAdapter - PathObject using 'object_type' property - this should be updated to 'objectType'
+QUPath_CONSUMER_PASS

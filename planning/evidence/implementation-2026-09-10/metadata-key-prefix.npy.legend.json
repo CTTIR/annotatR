@@ -1,0 +1,67 @@
+{
+  "mask_metadata": {
+    "schema_version": 1,
+    "status": "legacy-default",
+    "encoding": "instance",
+    "background": 0,
+    "overlap": "last",
+    "grid": {
+      "dims": [2, 2],
+      "level": 0,
+      "origin": [0, 0],
+      "stride": [1, 1]
+    },
+    "source": {
+      "descriptor": {
+        "schema_version": 1,
+        "path": "/synthetic/square.ome.tif",
+        "backend": "ometiff",
+        "options": {
+          "schema_version": 2,
+          "node": {
+            "type": "list",
+            "data": [],
+            "s4": false,
+            "attributes": null
+          }
+        },
+        "signature": {
+          "size": 100,
+          "mtime": 10
+        },
+        "reader_contract_extra": {
+          "axes": "yxb",
+          "samples": "raw-scalar-v1"
+        },
+        "options_encoding": "typed-json-v2"
+      },
+      "entry_id": "different-entry"
+    },
+    "codebook": [
+      {
+        "value": 1,
+        "label": "1"
+      }
+    ]
+  },
+  "storage": {
+    "axes": "yx",
+    "shape": [2, 2]
+  },
+  "annotatR_version": "0.1.0",
+  "created": "2026-09-10T19:27:15+0200",
+  "mask_type": "labelled",
+  "level": 0,
+  "dims": [2, 2],
+  "source_project": null,
+  "legend": [
+    {
+      "value": 1,
+      "label": "1",
+      "layer": null,
+      "roi_id": null,
+      "n_px": 2,
+      "colour": "#5E2C8E"
+    }
+  ]
+}

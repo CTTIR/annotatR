@@ -12,8 +12,9 @@ at_session_status(session, call = rlang::caller_env())
 \item{call}{The calling environment, for error reporting.}
 }
 \value{
-The manifest \link[tibble:tibble]{tibble::tibble} with columns \code{idx}, \code{path}, \code{name},
-\code{status}, \code{project_path}, \code{n_rois}, and \code{modified}.
+The manifest \link[tibble:tibble]{tibble::tibble} with columns \code{idx}, \code{entry_id},
+\code{export_stem}, \code{path}, \code{name}, \code{status}, \code{project_path}, \code{n_rois}, and
+\code{modified}.
 }
 \description{
 The session manifest

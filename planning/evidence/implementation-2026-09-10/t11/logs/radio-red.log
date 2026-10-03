@@ -1,0 +1,45 @@
+app-capabilities: ....................Loading required package: shiny
+..........................1
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Failure ('test-app-capabilities.R:141:5'): radio remount selection cannot 
+Expected `rv$active_label` to be identical to "b".
+Differences:
+`actual`:   "a"
+`expected`: "b"
+
+Backtrace:
+     ▆
+  1. ├─shiny::testServer(...) at test-app-capabilities.R:139:3
+  2. │ ├─shiny:::withMockContext(...)
+  3. │ │ ├─shiny::isolate(...)
+  4. │ │ │ ├─shiny::..stacktraceoff..(...)
+  5. │ │ │ └─ctx$run(...)
+  6. │ │ │   ├─promises::with_promise_domain(...)
+  7. │ │ │   │ └─domain$wrapSync(expr)
+  8. │ │ │   ├─shiny::withReactiveDomain(...)
+  9. │ │ │   │ └─promises::with_promise_domain(...)
+ 10. │ │ │   │   └─domain$wrapSync(expr)
+ 11. │ │ │   │     └─base::force(expr)
+ 12. │ │ │   ├─shiny:::with_otel_span_context(...)
+ 13. │ │ │   │ └─base::force(expr)
+ 14. │ │ │   ├─shiny::captureStackTraces(...)
+ 15. │ │ │   │ └─promises::with_promise_domain(...)
+ 16. │ │ │   │   └─domain$wrapSync(expr)
+ 17. │ │ │   │     └─base::withCallingHandlers(expr, error = doCaptureStack)
+ 18. │ │ │   └─env$runWith(self, func)
+ 19. │ │ │     └─shiny (local) contextFunc()
+ 20. │ │ │       └─shiny::..stacktraceon..(expr)
+ 21. │ │ ├─shiny::withReactiveDomain(...)
+ 22. │ │ │ └─promises::with_promise_domain(...)
+ 23. │ │ │   └─domain$wrapSync(expr)
+ 24. │ │ │     └─base::force(expr)
+ 25. │ │ └─withr::with_options(...)
+ 26. │ │   └─base::force(code)
+ 27. │ └─rlang::eval_tidy(quosure, mask, rlang::caller_env())
+ 28. └─testthat::expect_identical(rv$active_label, "b") at test-app-capabilities.R:141:5
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+Error:
+! Test failures.
+Execution halted

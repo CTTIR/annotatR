@@ -1,0 +1,375 @@
+{
+  "divergent": {
+    "rendered": {
+      "entry_id": "entry_at_383df552828fb3_000000002",
+      "revision": 0
+    },
+    "server": {
+      "entry_id": "entry_at_383df552828fb3_000000005",
+      "revision": 0,
+      "ready": false,
+      "error": "Loading current image…"
+    }
+  },
+  "afterMutations": {
+    "ping": 1789068210244.391,
+    "tool": "pan",
+    "entry_id": "entry_at_383df552828fb3_000000005",
+    "revision": 0,
+    "cursor": 5,
+    "ready": false,
+    "error": "Loading current image…",
+    "saved": "saved",
+    "attempts": 0,
+    "active_layer": "annotations",
+    "active_label": "first",
+    "autosave": false,
+    "status": [
+      "skipped",
+      "pending",
+      "skipped",
+      "pending",
+      "pending"
+    ],
+    "recovery": false,
+    "replacement": "/tmp/Rtmp8HEz47/annotatr-journey-383df54cf01571/replacement",
+    "out_dir": "/tmp/Rtmp8HEz47/annotatr-journey-383df54cf01571/saved",
+    "undo": 0,
+    "redo": 0,
+    "rois": {
+      "annotations": [
+        {
+          "id": "roi_000000049",
+          "label": "first",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              3,
+              3
+            ]
+          },
+          "locked": true
+        }
+      ],
+      "locked": [
+        {
+          "id": "roi_000000050",
+          "label": "protected",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  20,
+                  20
+                ],
+                [
+                  25,
+                  20
+                ],
+                [
+                  25,
+                  25
+                ],
+                [
+                  20,
+                  25
+                ],
+                [
+                  20,
+                  20
+                ]
+              ]
+            ]
+          },
+          "locked": false
+        }
+      ],
+      "hidden": [
+        {
+          "id": "roi_000000051",
+          "label": "hidden",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              10,
+              10
+            ]
+          },
+          "locked": false
+        }
+      ]
+    },
+    "labels": {
+      "annotations": [
+        "first",
+        "second"
+      ],
+      "locked": "protected",
+      "hidden": "hidden"
+    }
+  },
+  "controlOrigins": [
+    {
+      "name": "session-complete",
+      "value": {
+        "entry_id": "entry_at_383df552828fb3_000000002",
+        "revision": 0,
+        "payload": {}
+      }
+    },
+    {
+      "name": "session-save",
+      "value": {
+        "entry_id": "entry_at_383df552828fb3_000000002",
+        "revision": 0,
+        "payload": {}
+      }
+    },
+    {
+      "name": "session-flag",
+      "value": {
+        "entry_id": "entry_at_383df552828fb3_000000002",
+        "revision": 0,
+        "payload": {}
+      }
+    },
+    {
+      "name": "key_save",
+      "value": {
+        "entry_id": "entry_at_383df552828fb3_000000002",
+        "revision": 0,
+        "payload": 1789068210029
+      }
+    },
+    {
+      "name": "key_flag",
+      "value": {
+        "entry_id": "entry_at_383df552828fb3_000000002",
+        "revision": 0,
+        "payload": 1789068210091
+      }
+    },
+    {
+      "name": "key_commit_advance",
+      "value": {
+        "entry_id": "entry_at_383df552828fb3_000000002",
+        "revision": 0,
+        "payload": 1789068210141
+      }
+    },
+    {
+      "name": "key_undo",
+      "value": {
+        "entry_id": "entry_at_383df552828fb3_000000002",
+        "revision": 0,
+        "payload": 1789068210191
+      }
+    },
+    {
+      "name": "key_paste_forward",
+      "value": {
+        "entry_id": "entry_at_383df552828fb3_000000002",
+        "revision": 0,
+        "payload": 1789068210242
+      }
+    }
+  ],
+  "savedAfterDecodeFailure": {
+    "ping": 1789068210244.391,
+    "tool": "pan",
+    "entry_id": "entry_at_383df552828fb3_000000004",
+    "revision": 0,
+    "cursor": 4,
+    "ready": false,
+    "error": "Image could not be decoded. Choose another image or restore the previous queue.",
+    "saved": "saved",
+    "attempts": 3,
+    "active_layer": "annotations",
+    "active_label": "first",
+    "autosave": false,
+    "status": [
+      "skipped",
+      "pending",
+      "skipped",
+      "pending",
+      "pending"
+    ],
+    "recovery": false,
+    "replacement": "/tmp/Rtmp8HEz47/annotatr-journey-383df54cf01571/replacement",
+    "out_dir": "/tmp/Rtmp8HEz47/annotatr-journey-383df54cf01571/saved",
+    "undo": 0,
+    "redo": 0,
+    "rois": {
+      "annotations": [
+        {
+          "id": "roi_000000046",
+          "label": "first",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              3,
+              3
+            ]
+          },
+          "locked": true
+        }
+      ],
+      "locked": [
+        {
+          "id": "roi_000000047",
+          "label": "protected",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  20,
+                  20
+                ],
+                [
+                  25,
+                  20
+                ],
+                [
+                  25,
+                  25
+                ],
+                [
+                  20,
+                  25
+                ],
+                [
+                  20,
+                  20
+                ]
+              ]
+            ]
+          },
+          "locked": false
+        }
+      ],
+      "hidden": [
+        {
+          "id": "roi_000000048",
+          "label": "hidden",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              10,
+              10
+            ]
+          },
+          "locked": false
+        }
+      ]
+    },
+    "labels": {
+      "annotations": [
+        "first",
+        "second"
+      ],
+      "locked": "protected",
+      "hidden": "hidden"
+    }
+  },
+  "recovered": {
+    "ping": 1789068210244.391,
+    "tool": "pan",
+    "entry_id": "entry_at_383df552828fb3_000000002",
+    "revision": 0,
+    "cursor": 2,
+    "ready": true,
+    "error": null,
+    "saved": "saved",
+    "attempts": 3,
+    "active_layer": "annotations",
+    "active_label": "first",
+    "autosave": false,
+    "status": [
+      "skipped",
+      "pending",
+      "skipped",
+      "pending",
+      "pending"
+    ],
+    "recovery": false,
+    "replacement": "/tmp/Rtmp8HEz47/annotatr-journey-383df54cf01571/replacement",
+    "out_dir": "/tmp/Rtmp8HEz47/annotatr-journey-383df54cf01571/saved",
+    "undo": 0,
+    "redo": 0,
+    "rois": {
+      "annotations": [
+        {
+          "id": "roi_000000043",
+          "label": "first",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              3,
+              3
+            ]
+          },
+          "locked": true
+        }
+      ],
+      "locked": [
+        {
+          "id": "roi_000000044",
+          "label": "protected",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  20,
+                  20
+                ],
+                [
+                  25,
+                  20
+                ],
+                [
+                  25,
+                  25
+                ],
+                [
+                  20,
+                  25
+                ],
+                [
+                  20,
+                  20
+                ]
+              ]
+            ]
+          },
+          "locked": false
+        }
+      ],
+      "hidden": [
+        {
+          "id": "roi_000000045",
+          "label": "hidden",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              10,
+              10
+            ]
+          },
+          "locked": false
+        }
+      ]
+    },
+    "labels": {
+      "annotations": [
+        "first",
+        "second"
+      ],
+      "locked": "protected",
+      "hidden": "hidden"
+    }
+  },
+  "errors": []
+}

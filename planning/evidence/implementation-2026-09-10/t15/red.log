@@ -1,0 +1,117 @@
+ℹ Loading annotatR
+
+══ Testing test-windowed-readers.R ═════════════════════════════════════════════
+
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 0 ]
+[ FAIL 1 | WARN 0 | SKIP 0 | PASS 0 ]
+[ FAIL 2 | WARN 0 | SKIP 0 | PASS 0 ]
+[ FAIL 3 | WARN 0 | SKIP 0 | PASS 0 ]
+[ FAIL 3 | WARN 0 | SKIP 0 | PASS 1 ]
+[ FAIL 3 | WARN 0 | SKIP 0 | PASS 2 ]
+[ FAIL 3 | WARN 0 | SKIP 0 | PASS 3 ]
+[ FAIL 3 | WARN 0 | SKIP 0 | PASS 4 ]
+[ FAIL 3 | WARN 0 | SKIP 0 | PASS 5 ]
+[ FAIL 3 | WARN 0 | SKIP 0 | PASS 6 ]
+[ FAIL 3 | WARN 0 | SKIP 0 | PASS 7 ]
+[ FAIL 4 | WARN 0 | SKIP 0 | PASS 7 ]
+[ FAIL 5 | WARN 0 | SKIP 0 | PASS 7 ]
+[ FAIL 6 | WARN 0 | SKIP 0 | PASS 7 ]
+[ FAIL 6 | WARN 0 | SKIP 0 | PASS 8 ]
+[ FAIL 6 | WARN 0 | SKIP 0 | PASS 9 ]
+[ FAIL 7 | WARN 0 | SKIP 0 | PASS 9 ]
+[ FAIL 8 | WARN 0 | SKIP 0 | PASS 9 ]
+[ FAIL 9 | WARN 0 | SKIP 0 | PASS 9 ]
+[ FAIL 10 | WARN 0 | SKIP 0 | PASS 9 ]
+[ FAIL 11 | WARN 0 | SKIP 0 | PASS 9 ]
+[ FAIL 11 | WARN 0 | SKIP 0 | PASS 10 ]
+[ FAIL 11 | WARN 0 | SKIP 0 | PASS 11 ]
+[ FAIL 12 | WARN 0 | SKIP 0 | PASS 11 ]
+[ FAIL 13 | WARN 0 | SKIP 0 | PASS 11 ]
+[ FAIL 13 | WARN 0 | SKIP 0 | PASS 12 ]
+[ FAIL 13 | WARN 0 | SKIP 0 | PASS 13 ]
+[ FAIL 13 | WARN 0 | SKIP 0 | PASS 14 ]
+[ FAIL 13 | WARN 0 | SKIP 0 | PASS 15 ]
+[ FAIL 13 | WARN 0 | SKIP 0 | PASS 16 ]
+[ FAIL 13 | WARN 0 | SKIP 0 | PASS 17 ]
+[ FAIL 13 | WARN 0 | SKIP 0 | PASS 18 ]
+[ FAIL 14 | WARN 0 | SKIP 0 | PASS 18 ]
+[ FAIL 15 | WARN 0 | SKIP 0 | PASS 18 ]
+[ FAIL 16 | WARN 0 | SKIP 0 | PASS 18 ]
+[ FAIL 16 | WARN 0 | SKIP 0 | PASS 19 ]
+[ FAIL 17 | WARN 0 | SKIP 0 | PASS 19 ]
+
+── Error ('test-windowed-readers.R:9:5'): ENVI opens metadata only and reads bounded ordered duplicate bands ──
+Error in `.read_telemetry_reset()`: could not find function ".read_telemetry_reset"
+
+── Failure ('test-windowed-readers.R:27:3'): bands reject invalid values before integer conversion ──
+Expected `at_tile(img, bands = b)` to throw a error.
+
+── Error ('test-windowed-readers.R:27:3'): bands reject invalid values before integer conversion ──
+Error in `if (any(bands < 1L) || any(bands > img$n_bands)) {     cli::cli_abort(c("{.arg bands} out of range.", x = "Bands must be in {.val {1:img$n_bands}}; got {.val {bands}}."), call = call) }`: missing value where TRUE/FALSE needed
+Backtrace:
+    ▆
+ 1. ├─testthat::expect_error(at_tile(img, bands = b), "bands|Bands") at test-windowed-readers.R:27:3
+ 2. │ └─testthat:::expect_condition_matching_(...)
+ 3. │   └─testthat:::quasi_capture(...)
+ 4. │     ├─testthat (local) .capture(...)
+ 5. │     │ └─base::withCallingHandlers(...)
+ 6. │     └─rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+ 7. └─annotatR::at_tile(img, bands = b)
+
+── Failure ('test-windowed-readers.R:39:5'): composite source changes reject cached and uncached windows and mask alignment ──
+Expected `at_tile(img, xrange = c(1, 2), yrange = c(1, 2))` to throw a error.
+
+── Failure ('test-windowed-readers.R:40:5'): composite source changes reject cached and uncached windows and mask alignment ──
+Expected `at_tile(img, xrange = c(3, 4), yrange = c(2, 3))` to throw a error.
+
+── Failure ('test-windowed-readers.R:43:5'): composite source changes reject cached and uncached windows and mask alignment ──
+Expected `at_mask_derive(m, n, keep_label = "1")` to throw a error.
+
+── Failure ('test-windowed-readers.R:48:5'): composite source changes reject cached and uncached windows and mask alignment ──
+Expected `at_mask_derive(back, n, keep_label = "1")` to throw a error.
+
+── Failure ('test-windowed-readers.R:50:5'): composite source changes reject cached and uncached windows and mask alignment ──
+Expected `at_tile(old)` to throw a error.
+
+── Failure ('test-windowed-readers.R:39:5'): composite source changes reject cached and uncached windows and mask alignment ──
+Expected `at_tile(img, xrange = c(1, 2), yrange = c(1, 2))` to throw a error.
+
+── Failure ('test-windowed-readers.R:40:5'): composite source changes reject cached and uncached windows and mask alignment ──
+Expected `at_tile(img, xrange = c(3, 4), yrange = c(2, 3))` to throw a error.
+
+── Failure ('test-windowed-readers.R:43:5'): composite source changes reject cached and uncached windows and mask alignment ──
+Expected `at_mask_derive(m, n, keep_label = "1")` to throw a error.
+
+── Failure ('test-windowed-readers.R:48:5'): composite source changes reject cached and uncached windows and mask alignment ──
+Expected `at_mask_derive(back, n, keep_label = "1")` to throw a error.
+
+── Failure ('test-windowed-readers.R:50:5'): composite source changes reject cached and uncached windows and mask alignment ──
+Expected `at_tile(old)` to throw a error.
+
+── Error ('test-windowed-readers.R:59:3'): legacy ENVI memory snapshots survive source replacement and remain unverified ──
+Error in `.reopen_image(img, require_pixels = TRUE)`: Image source is changed: /tmp/Rtmp6RN2To/file3c1afb24a12cbe/cube.bin. Use at_inspect_source() and at_relink_source() with the original source and reader options. 
+Backtrace:
+    ▆
+ 1. ├─testthat::expect_equal(at_tile(img), window_cube()) at test-windowed-readers.R:59:3
+ 2. │ └─testthat::quasi_label(enquo(object), label)
+ 3. │   └─rlang::eval_bare(expr, quo_get_env(quo))
+ 4. └─annotatR::at_tile(img)
+ 5.   └─annotatR:::.reopen_image(img, require_pixels = TRUE) at annotatR-roadmap/R/backend.R:267:3
+
+── Error ('test-windowed-readers.R:70:3'): binary metadata opens above eager limits and budgets apply to windows ──
+Error in `.read_telemetry_reset()`: could not find function ".read_telemetry_reset"
+
+── Failure ('test-windowed-readers.R:79:3'): SpecCube window orientation and legacy eager handle both work ──
+Expected `img$handle$data` to be NULL.
+Differences:
+`actual` is a double vector (111, 121, 131, 141, 112, ...)
+`expected` is NULL
+
+
+── Error ('test-windowed-readers.R:84:3'): OME metadata open and optional native subwindows preserve levels and duplicates ──
+Error in `.read_telemetry_reset()`: could not find function ".read_telemetry_reset"
+
+[ FAIL 17 | WARN 0 | SKIP 0 | PASS 19 ]
+Error:
+! Test failures.
+Execution halted

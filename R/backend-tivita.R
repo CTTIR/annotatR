@@ -33,6 +33,8 @@
 .tivita_read_speccube <- function(path, nx = .TIVITA_NX, ny = .TIVITA_NY,
                                   nb = .TIVITA_NB, header = .TIVITA_HEADER,
                                   wavelengths = .tivita_wavelengths(nb), ...) {
+  if (!is.numeric(header) || length(header)!=1L || !is.finite(header) ||
+      header<0 || header!=trunc(header)) cli::cli_abort("SpecCube header must be a nonnegative whole float count.")
   expected <- .tivita_speccube_bytes(nx, ny, nb, header)
   size <- file.info(path)$size
   if (!isTRUE(size == expected)) {
@@ -42,15 +44,9 @@
       "i" = "Pass {.arg nx}/{.arg ny}/{.arg nb} to {.fn at_read_image} for a non-standard cube."
     ))
   }
-  con <- file(path, "rb")
-  on.exit(close(con))
-  if (header > 0L) readBin(con, "double", n = header, size = 4L, endian = "big")
-  vec <- readBin(con, what = "double", n = nx * ny * nb, size = 4L,
-                 signed = TRUE, endian = "big")
-  # File order is band-fastest, then rows (y), then columns (x); reshape to
-  # [band, y, x] then permute to the universal [y, x, band] tile contract.
-  arr <- aperm(array(vec, dim = c(nb, ny, nx)), c(2L, 3L, 1L))
-  storage.mode(arr) <- "double"
+  layout <- .binary_layout(path,c(nx,ny,nb),4,header*4,eager=FALSE)
+  layout$interleave <- "speccube"
+  layout$endian <- "big"
   spectral <- !is.null(wavelengths) && length(wavelengths) == nb
   new_annot_image(
     source = path, backend = "tivita",
@@ -59,8 +55,10 @@
     wavelengths = if (spectral) wavelengths else NULL,
     wavelength_unit = if (spectral) "nm" else NULL,
     pixel_size = c(1, 1), pixel_unit = "px", dtype = "float32",
-    handle = list(data = arr),
-    meta = list(vendor = "Diaspective Vision Tivita", format = "SpecCube")
+    handle = list(windowed=TRUE,path=path,layout=layout,
+      spec=list(what="double",size=4L,signed=TRUE),files=.source_files(c(payload=path))),
+    meta = list(vendor = "Diaspective Vision Tivita", format = "SpecCube",
+      reader_contract=list(axes="yxb",samples="raw-scalar-v1"),capabilities=.window_capabilities("binary"))
   )
 }
 

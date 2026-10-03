@@ -1,0 +1,70 @@
+{
+  "absent": {
+    "independent_values": [
+      [
+        0,
+        1,
+        255,
+        256
+      ],
+      [
+        4096,
+        32767,
+        32768,
+        65535
+      ]
+    ],
+    "exact_recovered_pgm": true
+  },
+  "linear": {
+    "independent_values": [
+      [
+        0,
+        1,
+        255,
+        256
+      ],
+      [
+        4096,
+        32767,
+        32768,
+        65535
+      ]
+    ],
+    "exact_recovered_pgm": true
+  },
+  "gamma02": {
+    "independent_values": [
+      [
+        0,
+        1,
+        255,
+        256
+      ],
+      [
+        4096,
+        32767,
+        32768,
+        65535
+      ]
+    ],
+    "exact_recovered_pgm": true
+  },
+  "gamma22": {
+    "independent_values": [
+      [
+        0,
+        1,
+        255,
+        256
+      ],
+      [
+        4096,
+        32767,
+        32768,
+        65535
+      ]
+    ],
+    "exact_recovered_pgm": true
+  }
+}

@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Reproducible analytical summaries</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Reproducible analytical summaries</h1>
+
+
+
+<p>This example follows persisted annotations through masks, raw pixel
+records, ROI spectra, image summaries, and agreement tables. It uses the
+small synthetic reference bundle in the source repository at
+<code>tests/testthat/fixtures/analytical/</code>. Its NumPy generator
+computes the numerical reference independently of annotatR. The workflow
+never reads the expected JSON to calculate its results; the regression
+test uses that JSON only for comparison.</p>
+<p>The example functions are installed at
+<code>examples/reproducible-analysis.R</code>. They are reusable source
+code, not exported package APIs. The fixture bundle is kept in the
+repository tests rather than duplicated in the installed package. To
+reproduce this vignette, use a source checkout with the reviewed package
+code installed, or use <code>pkgload::load_all()</code> from that
+checkout first. Run the following code from the repository root (the
+vignette build uses the equivalent relative path from its own
+directory).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">system.file</span>(<span class="st">&quot;examples&quot;</span>, <span class="st">&quot;reproducible-analysis.R&quot;</span>, <span class="at">package =</span> <span class="st">&quot;annotatR&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>fixture_dir <span class="ot">&lt;-</span> <span class="fu">normalizePath</span>(<span class="st">&quot;tests/testthat/fixtures/analytical&quot;</span>)</span></code></pre></div>
+<p>Create the input once, then reopen it for every analysis. The
+synthetic entry ID is <code>analytical-image-001</code>; the two
+imported ROI IDs are preserved. Revision zero is an explicit metadata
+value, not a new revision generated by each analysis. For an adapted
+study, retain its actual entry IDs and increment the persisted
+<code>annotation_revision</code> whenever annotations change.
+Reimporting annotations into a fresh project for every run would obscure
+that history.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>work <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="st">&quot;analytical-example-&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">dir.create</span>(work)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>project_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(work, <span class="st">&quot;annotations.rds&quot;</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">prepare_analytical_example</span>(fixture_dir, project_path)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>first <span class="ot">&lt;-</span> <span class="fu">run_analytical_example</span>(project_path, fixture_dir, <span class="fu">file.path</span>(work, <span class="st">&quot;first&quot;</span>))</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>second <span class="ot">&lt;-</span> <span class="fu">run_analytical_example</span>(project_path, fixture_dir, <span class="fu">file.path</span>(work, <span class="st">&quot;second&quot;</span>))</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(first, second))</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="fu">file.path</span>(work, <span class="st">&quot;first&quot;</span>))</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  <span class="fu">unname</span>(tools<span class="sc">::</span><span class="fu">md5sum</span>(<span class="fu">file.path</span>(work, <span class="st">&quot;first&quot;</span>, files))),</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>  <span class="fu">unname</span>(tools<span class="sc">::</span><span class="fu">md5sum</span>(<span class="fu">file.path</span>(work, <span class="st">&quot;second&quot;</span>, files)))</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>))</span></code></pre></div>
+<p>Both functions refuse to overwrite existing outputs. The analysis
+does not save or mutate its input project. The ten CSV tables and
+<code>settings.json</code> are deterministic for the same persisted
+input and software environment. Source paths, signatures, input hashes
+and software versions deliberately remain in the settings; relocating
+files or changing software can change provenance. No run timestamp or
+runtime cache/read-generation identity enters these outputs. The saved
+project’s own historical timestamps remain in that input file and
+therefore in its checksum. Optional execution timestamps belong in a
+separate run log, not in a result table or its deterministic
+configuration.</p>
+<div id="counts-and-estimands" class="section level2">
+<h2>Counts and estimands</h2>
+<p>Rectangles A and B each select nine pixels on the 4 by 5 grid. They
+share two pixels. The bitfield mask assigns A=1, B=2, overlap=3 and
+background=0. Membership is determined at polygon pixel centres at level
+zero with <code>touches=FALSE</code>, <code>engine=&quot;stars&quot;</code> and
+<code>overlap=&quot;bitor&quot;</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>first<span class="sc">$</span>tables<span class="sc">$</span>counts</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt;               entry_id n_image n_roi n_unique_selected n_roi_memberships</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; 1 analytical-image-001       1     2                16                18</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt;   n_overlap n_background n_excluded_rois</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; 1         2            4               0</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>first<span class="sc">$</span>tables<span class="sc">$</span>mask</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt;   V1 V2 V3 V4 V5</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; 1  1  1  1  0  0</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; 2  1  1  3  2  2</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; 3  1  1  3  2  2</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; 4  0  0  2  2  2</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>first<span class="sc">$</span>tables<span class="sc">$</span>mask_codebook</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt;   value label      layer roi_id n_px  colour</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; 1     1     A analytical   &lt;NA&gt;    9 #999999</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; 2     2     B analytical   &lt;NA&gt;    9 #E69F00</span></span></code></pre></div>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Table</th>
+<th>Row or count unit</th>
+<th>Overlap treatment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>pixel_memberships</code></td>
+<td>One ROI-pixel-band record: 54 rows</td>
+<td>Shared cells appear once per ROI</td>
+</tr>
+<tr class="even">
+<td><code>unique_pixels</code></td>
+<td>One image-pixel-band record: 48 rows</td>
+<td>Deduplicate <code>(x,y,band)</code> within this one image</td>
+</tr>
+<tr class="odd">
+<td><code>roi_statistics</code></td>
+<td>One ROI-band-statistic: 42 rows</td>
+<td>Each ROI is summarized separately</td>
+</tr>
+<tr class="even">
+<td><code>spectra</code></td>
+<td>One ROI-band finite mean: 6 rows</td>
+<td>Each ROI has its own spectrum</td>
+</tr>
+<tr class="odd">
+<td><code>image_statistics</code></td>
+<td>One image-band summary: 3 rows</td>
+<td>Each selected cell contributes once</td>
+</tr>
+<tr class="even">
+<td><code>counts</code></td>
+<td>One image: 16 unique cells, 18 ROI memberships, 2 ROIs</td>
+<td>Two overlap cells counted explicitly</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>x</code> and <code>y</code> columns are one-based
+column/row indices, whereas ROI geometry uses zero-based image
+coordinates. Band identity and spectral coordinates are recorded in
+settings. <code>unit=&quot;nm&quot;</code> describes the spectral coordinate, not
+the intensity values. No intensity unit or physical calibration is
+inferred: this cube declares pixel calibration <code>(1,1)</code> in
+<code>px</code>. Settings explicitly mark its physical calibration
+unknown, so no physical-area result is produced.</p>
+<p>The image summary below estimates finite-only statistics across the
+<strong>unique selected pixels within this image</strong>. Its band-one
+sum is 1937, with 15 finite contributors out of 16 selected cells, so
+its mean is <code>1937/15</code>. Pooling repeated ROI records would use
+17 finite contributors and sum 2193. Averaging ROI means would weight
+the two ROIs equally. Those are different estimands and neither is
+silently substituted for the unique-pixel image summary.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>first<span class="sc">$</span>tables<span class="sc">$</span>image_statistics</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt;               entry_id band wavelength unit                            estimand</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt; 1 analytical-image-001    1        450   nm unique selected pixels within image</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; 2 analytical-image-001    2        550   nm unique selected pixels within image</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; 3 analytical-image-001    3        650   nm unique selected pixels within image</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt;   n_selected n_valid n_invalid     mean median       sd min max  sum</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; 1         16      15         1 129.1333  131.0 10.35696 112 145 1937</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; 2         16      15         1 228.3333  231.0 11.28632 211 245 3425</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; 3         16      14         2 326.3571  324.5 10.55103 311 344 4569</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="fu">stopifnot</span>(first<span class="sc">$</span>tables<span class="sc">$</span>image_statistics<span class="sc">$</span>sum[<span class="dv">1</span>] <span class="sc">==</span> <span class="dv">1937</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="fu">stopifnot</span>(first<span class="sc">$</span>tables<span class="sc">$</span>image_statistics<span class="sc">$</span>mean[<span class="dv">1</span>] <span class="sc">==</span> <span class="dv">1937</span> <span class="sc">/</span> <span class="dv">15</span>)</span></code></pre></div>
+</div>
+<div id="nonfinite-values-and-spectra" class="section level2">
+<h2>Nonfinite values and spectra</h2>
+<p><code>at_extract(..., stat=&quot;all&quot;, nonfinite=&quot;omit&quot;)</code> and
+<code>at_extract_spectrum(..., nonfinite=&quot;omit&quot;)</code> choose
+finite-only statistics explicitly. <code>n_px</code> and the statistic
+<code>n</code> still mean selected support. <code>n_valid</code> counts
+finite contributors; <code>n_invalid</code> counts selected NA, NaN and
+infinite values. Sample SD uses denominator <code>n_valid - 1</code>; it
+is undefined for a singleton. All-invalid summaries, including sum, are
+NA. Empty selections have zero contributors; the example retains an
+image-band row with NA statistics.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>first<span class="sc">$</span>tables<span class="sc">$</span>spectra[<span class="fu">c</span>(<span class="st">&quot;label&quot;</span>, <span class="st">&quot;band&quot;</span>, <span class="st">&quot;wavelength&quot;</span>, <span class="st">&quot;unit&quot;</span>, <span class="st">&quot;value&quot;</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                      <span class="st">&quot;n_px&quot;</span>, <span class="st">&quot;n_valid&quot;</span>, <span class="st">&quot;n_invalid&quot;</span>)]</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt;   label band wavelength unit    value n_px n_valid n_invalid</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; 1     A    1        450   nm 123.3750    9       8         1</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt; 2     A    2        550   nm 221.8750    9       8         1</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; 3     A    3        650   nm 322.0000    9       9         0</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt; 4     B    1        450   nm 134.0000    9       9         0</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; 5     B    2        550   nm 235.3750    9       8         1</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; 6     B    3        650   nm 332.4286    9       7         2</span></span></code></pre></div>
+<p>The raw pixel API retains nonfinite samples. There are four unique
+invalid pixel-band values but five invalid ROI-pixel-band records,
+because the positive infinity in the overlap belongs to both ROIs. The
+raw tables include <code>sample_status</code> (<code>finite</code>,
+<code>NA</code>, <code>NaN</code>, <code>+Inf</code>, <code>-Inf</code>)
+to preserve distinctions that CSV missing-value serialization could
+collapse. The four unselected background cells are a spatial exclusion,
+separate from invalid selected samples. <code>n_excluded_rois</code>
+counts ROIs with no selected cells; it is zero here. The example applies
+no ROI or label filters.</p>
+<p>This workflow produces numerical spectra and tables. It generates no
+image preview. Display normalization for the mixed NaN/Inf RGB fixture
+remains outside this qualification; no RGB or native ImageMagick success
+is claimed.</p>
+</div>
+<div id="agreement-with-explicit-alignment" class="section level2">
+<h2>Agreement with explicit alignment</h2>
+<p>The separate 3 by 4 categorical and bitfield NPY cases exercise
+agreement; these are not prediction masks for the 4 by 5 cube. The
+independent fixture generator declares their common row/column grids.
+Since arrays alone cannot prove source registration, this example uses
+<code>alignment=&quot;assert&quot;</code> and records that basis. For study masks
+with durable common source/grid metadata, use
+<code>alignment=&quot;check&quot;</code> to verify it. Equal dimensions alone are
+not evidence of registration, and assertion never resamples mismatched
+grids.</p>
+<p><code>at_read_npy()</code> receives explicit encoding, background and
+label codebooks. Ordinary comparisons use
+<code>code_alignment=&quot;strict&quot;</code>. The deliberately swapped
+categorical codes use <code>code_alignment=&quot;by-label&quot;</code>, preserving
+original codebooks in settings. An absent class remains a table row with
+undefined Dice/IoU, and macro means exclude such undefined rows.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>first<span class="sc">$</span>tables<span class="sc">$</span>agreement</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt;             comparison value  label n_true n_pred tp fp fn dice       iou</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt; 1          categorical     1      A      4      4  3  1  1 0.75 0.6000000</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt; 2          categorical     2      B      4      4  3  1  1 0.75 0.6000000</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt; 3          categorical     3 absent      0      0  0  0  0   NA        NA</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; 4 categorical_remapped     1      A      4      4  3  1  1 0.75 0.6000000</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; 5 categorical_remapped     2      B      4      4  3  1  1 0.75 0.6000000</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; 6 categorical_remapped     3 absent      0      0  0  0  0   NA        NA</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt; 7             bitfield     1      A      5      5  5  0  0 1.00 1.0000000</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt; 8             bitfield     2      B      5      5  3  2  2 0.60 0.4285714</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt; 9             bitfield     4 absent      0      0  0  0  0   NA        NA</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>first<span class="sc">$</span>tables<span class="sc">$</span>agreement_overall</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt;             comparison  accuracy kappa mean_dice  mean_iou n_px    encoding</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; 1          categorical 0.7500000 0.625      0.75 0.6000000   12 categorical</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt; 2 categorical_remapped 0.7500000 0.625      0.75 0.6000000   12 categorical</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt; 3             bitfield 0.6666667    NA      0.80 0.7142857   12    bitfield</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt;   alignment code_alignment background nonfinite</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co">#&gt; 1  asserted         strict          0     error</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co">#&gt; 2  asserted       by-label          0     error</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co">#&gt; 3  asserted         strict          0     error</span></span></code></pre></div>
+<p>Categorical accuracy is 3/4, Cohen’s kappa is 5/8, and A/B Dice and
+IoU are 3/4 and 3/5. Explicit remapping reproduces them. Bitfield A has
+Dice/IoU 1; B has Dice 3/5 and IoU 3/7. Its overall accuracy of 2/3 is
+exact membership-set agreement, including background; categorical kappa
+is undefined for bitfields. Each overall agreement row counts all 12
+cells, including background. Its nonfinite policy is
+<code>error</code>.</p>
+</div>
+<div id="traceability-and-scope" class="section level2">
+<h2>Traceability and scope</h2>
+<p><code>settings.json</code> accompanies the tables with the persisted
+entry/ROI IDs and revision, durable source descriptor and reader
+options, MD5 hashes of the project and all eight data inputs (including
+the ENVI payload), calibration, band coordinates/units, extraction and
+rasterization settings, mask codebook, both sides’ validated agreement
+metadata/codebooks, estimands, and count definitions. It records the
+actual R and dependency versions and sf external library versions. The
+ENVI backend is implemented by annotatR, whose version is recorded;
+separately unavailable plugin-version metadata is explicitly
+<code>&quot;unknown&quot;</code>. MD5 checks exact-byte integrity, not
+authenticity. The source tree or build artifact used for a study should
+also be archived with these outputs.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>first<span class="sc">$</span>settings<span class="sc">$</span>sampling_units</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#&gt; $unique_selected_pixels</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; [1] 16</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; $selected_roi_memberships</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; [1] 18</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; $roi_count</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; [1] 2</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt; $image_count</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt; [1] 1</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>first<span class="sc">$</span>settings<span class="sc">$</span>extraction</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt; $level</span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt; $bands</span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt; [1] 1 2 3</span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt; $layer</span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt; NULL</span></span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt; $label</span></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co">#&gt; NULL</span></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a><span class="co">#&gt; $nonfinite</span></span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a><span class="co">#&gt; [1] &quot;omit&quot;</span></span>
+<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a><span class="co">#&gt; $statistics</span></span>
+<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a><span class="co">#&gt; [1] &quot;mean&quot;   &quot;median&quot; &quot;sd&quot;     &quot;min&quot;    &quot;max&quot;    &quot;sum&quot;    &quot;n&quot;     </span></span>
+<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a><span class="co">#&gt; $max_px</span></span>
+<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a><span class="co">#&gt; [1] 1000000</span></span>
+<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-35"><a href="#cb8-35" tabindex="-1"></a><span class="co">#&gt; $pixel_coordinates</span></span>
+<span id="cb8-36"><a href="#cb8-36" tabindex="-1"></a><span class="co">#&gt; [1] &quot;one-based x column, y row&quot;</span></span>
+<span id="cb8-37"><a href="#cb8-37" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a><span class="co">#&gt; $selected_support</span></span>
+<span id="cb8-39"><a href="#cb8-39" tabindex="-1"></a><span class="co">#&gt; [1] &quot;polygon pixel centres; touches=FALSE&quot;</span></span>
+<span id="cb8-40"><a href="#cb8-40" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-41"><a href="#cb8-41" tabindex="-1"></a><span class="co">#&gt; $n</span></span>
+<span id="cb8-42"><a href="#cb8-42" tabindex="-1"></a><span class="co">#&gt; [1] &quot;selected pixels per ROI and band&quot;</span></span>
+<span id="cb8-43"><a href="#cb8-43" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-44"><a href="#cb8-44" tabindex="-1"></a><span class="co">#&gt; $n_valid</span></span>
+<span id="cb8-45"><a href="#cb8-45" tabindex="-1"></a><span class="co">#&gt; [1] &quot;finite contributors&quot;</span></span>
+<span id="cb8-46"><a href="#cb8-46" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-47"><a href="#cb8-47" tabindex="-1"></a><span class="co">#&gt; $n_invalid</span></span>
+<span id="cb8-48"><a href="#cb8-48" tabindex="-1"></a><span class="co">#&gt; [1] &quot;selected NA, NaN, +Inf or -Inf samples&quot;</span></span>
+<span id="cb8-49"><a href="#cb8-49" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-50"><a href="#cb8-50" tabindex="-1"></a><span class="co">#&gt; $sd</span></span>
+<span id="cb8-51"><a href="#cb8-51" tabindex="-1"></a><span class="co">#&gt; [1] &quot;sample SD, denominator n_valid - 1; singleton is NA&quot;</span></span>
+<span id="cb8-52"><a href="#cb8-52" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-53"><a href="#cb8-53" tabindex="-1"></a><span class="co">#&gt; $empty_or_all_invalid</span></span>
+<span id="cb8-54"><a href="#cb8-54" tabindex="-1"></a><span class="co">#&gt; [1] &quot;All-invalid statistics are NA including sum; empty ROIs yield no summary rows and are counted as excluded; empty image-band rows retain zero counts and NA statistics&quot;</span></span>
+<span id="cb8-55"><a href="#cb8-55" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-56"><a href="#cb8-56" tabindex="-1"></a><span class="co">#&gt; $sample_contract</span></span>
+<span id="cb8-57"><a href="#cb8-57" tabindex="-1"></a><span class="co">#&gt; [1] &quot;raw-scalar-v1&quot;</span></span>
+<span id="cb8-58"><a href="#cb8-58" tabindex="-1"></a>first<span class="sc">$</span>settings<span class="sc">$</span>versions</span>
+<span id="cb8-59"><a href="#cb8-59" tabindex="-1"></a><span class="co">#&gt; $R</span></span>
+<span id="cb8-60"><a href="#cb8-60" tabindex="-1"></a><span class="co">#&gt; [1] &quot;4.6.1&quot;</span></span>
+<span id="cb8-61"><a href="#cb8-61" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-62"><a href="#cb8-62" tabindex="-1"></a><span class="co">#&gt; $platform</span></span>
+<span id="cb8-63"><a href="#cb8-63" tabindex="-1"></a><span class="co">#&gt; [1] &quot;x86_64-pc-linux-gnu&quot;</span></span>
+<span id="cb8-64"><a href="#cb8-64" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-65"><a href="#cb8-65" tabindex="-1"></a><span class="co">#&gt; $packages</span></span>
+<span id="cb8-66"><a href="#cb8-66" tabindex="-1"></a><span class="co">#&gt; $packages$annotatR</span></span>
+<span id="cb8-67"><a href="#cb8-67" tabindex="-1"></a><span class="co">#&gt; [1] &quot;0.1.0&quot;</span></span>
+<span id="cb8-68"><a href="#cb8-68" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-69"><a href="#cb8-69" tabindex="-1"></a><span class="co">#&gt; $packages$sf</span></span>
+<span id="cb8-70"><a href="#cb8-70" tabindex="-1"></a><span class="co">#&gt; [1] &quot;1.1.2&quot;</span></span>
+<span id="cb8-71"><a href="#cb8-71" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-72"><a href="#cb8-72" tabindex="-1"></a><span class="co">#&gt; $packages$stars</span></span>
+<span id="cb8-73"><a href="#cb8-73" tabindex="-1"></a><span class="co">#&gt; [1] &quot;0.7.3&quot;</span></span>
+<span id="cb8-74"><a href="#cb8-74" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-75"><a href="#cb8-75" tabindex="-1"></a><span class="co">#&gt; $packages$tibble</span></span>
+<span id="cb8-76"><a href="#cb8-76" tabindex="-1"></a><span class="co">#&gt; [1] &quot;3.3.1&quot;</span></span>
+<span id="cb8-77"><a href="#cb8-77" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-78"><a href="#cb8-78" tabindex="-1"></a><span class="co">#&gt; $packages$dplyr</span></span>
+<span id="cb8-79"><a href="#cb8-79" tabindex="-1"></a><span class="co">#&gt; [1] &quot;1.2.1&quot;</span></span>
+<span id="cb8-80"><a href="#cb8-80" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-81"><a href="#cb8-81" tabindex="-1"></a><span class="co">#&gt; $packages$jsonlite</span></span>
+<span id="cb8-82"><a href="#cb8-82" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2.0.0&quot;</span></span>
+<span id="cb8-83"><a href="#cb8-83" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-84"><a href="#cb8-84" tabindex="-1"></a><span class="co">#&gt; $packages$rlang</span></span>
+<span id="cb8-85"><a href="#cb8-85" tabindex="-1"></a><span class="co">#&gt; [1] &quot;1.3.0&quot;</span></span>
+<span id="cb8-86"><a href="#cb8-86" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-87"><a href="#cb8-87" tabindex="-1"></a><span class="co">#&gt; $packages$cli</span></span>
+<span id="cb8-88"><a href="#cb8-88" tabindex="-1"></a><span class="co">#&gt; [1] &quot;3.6.6&quot;</span></span>
+<span id="cb8-89"><a href="#cb8-89" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-90"><a href="#cb8-90" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-91"><a href="#cb8-91" tabindex="-1"></a><span class="co">#&gt; $sf_external</span></span>
+<span id="cb8-92"><a href="#cb8-92" tabindex="-1"></a><span class="co">#&gt; $sf_external$GEOS</span></span>
+<span id="cb8-93"><a href="#cb8-93" tabindex="-1"></a><span class="co">#&gt; [1] &quot;3.14.1&quot;</span></span>
+<span id="cb8-94"><a href="#cb8-94" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-95"><a href="#cb8-95" tabindex="-1"></a><span class="co">#&gt; $sf_external$GDAL</span></span>
+<span id="cb8-96"><a href="#cb8-96" tabindex="-1"></a><span class="co">#&gt; [1] &quot;3.12.2&quot;</span></span>
+<span id="cb8-97"><a href="#cb8-97" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-98"><a href="#cb8-98" tabindex="-1"></a><span class="co">#&gt; $sf_external$proj.4</span></span>
+<span id="cb8-99"><a href="#cb8-99" tabindex="-1"></a><span class="co">#&gt; [1] &quot;9.7.1&quot;</span></span>
+<span id="cb8-100"><a href="#cb8-100" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-101"><a href="#cb8-101" tabindex="-1"></a><span class="co">#&gt; $sf_external$GDAL_with_GEOS</span></span>
+<span id="cb8-102"><a href="#cb8-102" tabindex="-1"></a><span class="co">#&gt; [1] &quot;true&quot;</span></span>
+<span id="cb8-103"><a href="#cb8-103" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-104"><a href="#cb8-104" tabindex="-1"></a><span class="co">#&gt; $sf_external$USE_PROJ_H</span></span>
+<span id="cb8-105"><a href="#cb8-105" tabindex="-1"></a><span class="co">#&gt; [1] &quot;true&quot;</span></span>
+<span id="cb8-106"><a href="#cb8-106" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-107"><a href="#cb8-107" tabindex="-1"></a><span class="co">#&gt; $sf_external$PROJ</span></span>
+<span id="cb8-108"><a href="#cb8-108" tabindex="-1"></a><span class="co">#&gt; [1] &quot;9.7.1&quot;</span></span></code></pre></div>
+<p>This is a descriptive example for one image and two overlapping ROIs.
+Pixels, bands and ROI means are not independent image replicates.
+Inferential uncertainty requires the study’s independent sampling unit
+(for example a donor, specimen or image, as justified by its design),
+with nesting and overlap handled explicitly. There is no resampling here
+and the recorded seed is null. Any added resampling must declare its
+seed and independent unit. No model training or clinical claim is part
+of this example.</p>
+<p>The implementation retains existing extraction memory bounds: one
+bounding-box tile per ROI, a <code>max_px=1e6</code> raw extraction
+guard, and in-memory deduplication and tables. It is a small synthetic
+workflow, not a streaming analysis engine or whole-slide resource
+qualification.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

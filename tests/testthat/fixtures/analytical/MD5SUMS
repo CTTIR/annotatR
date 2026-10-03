@@ -1,0 +1,14 @@
+a82227d73bd66682db7e0e6e59fb56c9  agreement-expected.json
+c53553ad5f52518e9193cf8ebc8c712a  analysis-expected.json
+cbb0f9bd50abfb63dafe476895288ccf  analysis-rois.geojson
+484c22e4cd9f9486655964a8f8e6901c  bitfield-prediction.npy
+c0233969f464676ad916fc9c5320440c  bitfield-reference.npy
+a213a7d536b198d58412f8af7b818e11  categorical-prediction-remapped.npy
+46da9714c6889dcd39f5ee0c5a1bf295  categorical-prediction.npy
+881643822bd074d5cdcdf96a5d553ebb  categorical-reference.npy
+5f271525b4d4e2de08f0eb706dabf920  cube.dat
+b6ab16417bd58e956019a5c67dd3c7f7  cube.hdr
+d39ea37835e3c68ef8577291ce1e85b3  cube.npy
+c3e1997ccfe0831aa4a9473694abf4b3  optional-formats.json
+53d6433d8162f0c72a536cc2d14cc8fd  physical-area-expected.json
+badcfc61c28ab6bf5768c063bd431749  physical-roi-level1.geojson

@@ -1,0 +1,96 @@
+COMMAND: Rscript tests/audit/run-regressions.R app 
+REVISION: f69bf201f651c845ab496f76e25638bc919d4b13 
+R: R version 4.6.1 (2026-06-24) 
+PLATFORM: x86_64-pc-linux-gnu 
+DEPENDENCY: pkgload 1.5.3 
+DEPENDENCY: testthat 3.3.2 
+DEPENDENCY: sf 1.1.2 
+DEPENDENCY: stars 0.7.3 
+DEPENDENCY: terra 1.9.34 
+DEPENDENCY: tiff 0.1.12 
+DEPENDENCY: shiny 1.14.0 
+DEPENDENCY: ggplot2 4.0.3 
+DEPENDENCY: magick 2.9.1 
+          GEOS           GDAL         proj.4 GDAL_with_GEOS     USE_PROJ_H 
+      "3.14.1"       "3.12.2"        "9.7.1"         "true"         "true" 
+          PROJ 
+       "9.7.1" 
+Loading required package: shiny
+
+TEST: A02 commit advance stores the edited project in its own queue slot 
+RESULT: expectation_failure 
+ Expected `if (is.null(rv$session$projects[[1]])) 0L else nrow(at_rois(rv$session$projects[[1]]))` to equal 1L.
+Differences:
+  `actual`: 0
+`expected`: 1
+ 
+RESULT: expectation_failure 
+ Expected `rv$session$projects[[1]]$image$source` to be identical to `first`.
+Differences:
+`actual` is NULL
+`expected` is a character vector ('/tmp/Rtmpj51eCr/file13c8ee1901a9c4/first.tif')
+ 
+RESULT: expectation_failure 
+ Expected `rv$project$image$source` to be identical to `rv$session$manifest$path[2]`.
+Differences:
+`actual`:   "/tmp/Rtmpj51eCr/file13c8ee1901a9c4/first.tif" 
+`expected`: "/tmp/Rtmpj51eCr/file13c8ee1901a9c4/second.tif"
+ 
+RESULT: expectation_failure 
+ Expected `identical(rv$session$projects[[2]]$image$source, first)` to be FALSE.
+Differences:
+`actual`:   TRUE 
+`expected`: FALSE
+ 
+
+TEST: A03 undo history cannot cross queue entries 
+RESULT: expectation_failure 
+ Expected `rv$project$image$source` to be identical to `second`.
+Differences:
+`actual`:   "/tmp/Rtmpj51eCr/file13c8ee7114dd43/first.tif" 
+`expected`: "/tmp/Rtmpj51eCr/file13c8ee7114dd43/second.tif"
+ 
+RESULT: expectation_failure 
+ Expected `rv$project$image$source` to be identical to `rv$session$manifest$path[2]`.
+Differences:
+`actual`:   "/tmp/Rtmpj51eCr/file13c8ee7114dd43/first.tif" 
+`expected`: "/tmp/Rtmpj51eCr/file13c8ee7114dd43/second.tif"
+ 
+
+TEST: A04 replacing a folder refreshes the project when cursor stays one 
+RESULT: expectation_failure 
+ Expected `rv$project$image$source` to be identical to `rv$session$manifest$path[1]`.
+Differences:
+`actual`:   "/tmp/Rtmpj51eCr/file13c8ee26ec2523/first.tif"
+`expected`: "/tmp/Rtmpj51eCr/file13c8ee51632a2e/new.tif"  
+ 
+
+TEST: A11 autosaved undo keeps persisted state and saved indicator truthful 
+RESULT: expectation_failure 
+ Expected `nrow(at_rois(rv$session$projects[[1]]))` to equal 0L.
+Differences:
+  `actual`: 1
+`expected`: 0
+ 
+RESULT: expectation_failure 
+ Expected `nrow(at_rois(saved$projects[[1]]))` to equal 0L.
+Differences:
+  `actual`: 1
+`expected`: 0
+ 
+
+TEST: A12 navigation retains in-session edits with autosave off 
+RESULT: expectation_failure 
+ Expected `nrow(at_rois(rv$project))` to equal 1L.
+Differences:
+  `actual`: 0
+`expected`: 1
+ 
+RESULT: expectation_failure 
+ Expected `at_rois(rv$project)$roi_id` to be identical to `id`.
+Differences:
+`actual`:                  
+`expected`: "roi_000000004"
+ 
+
+TOTAL: tests=5 failed_assertions=11 error_cases=0 warnings=0 skipped=0 passed_assertions=6

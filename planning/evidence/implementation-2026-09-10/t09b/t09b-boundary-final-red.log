@@ -1,0 +1,14 @@
+ℹ Testing annotatR
+provenance-keys: ...........................................................................................................................12
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Failure ('test-provenance-keys.R:260:3'): relink defaults and mask source 
+Expected `at_relink_source(img, path)` to throw a error.
+
+── 2. Failure ('test-provenance-keys.R:265:3'): relink defaults and mask source 
+Expected `at_mask(at_roi_rect(0, 0, 1, 1, "1"), image = img)` to throw a error.
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+Error:
+! Test failures.
+Execution halted

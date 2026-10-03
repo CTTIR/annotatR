@@ -1,0 +1,28 @@
+Runtime baseline: f69bf201f651c845ab496f76e25638bc919d4b13 (tracked source snapshot)
+Corrected raw 8-bit TIFF oracles independently checked with Python tifffile.
+R version 4.6.1 (2026-06-24) 
+
+TEST: A09 equal relative filenames refer to distinct source pixels 
+Expected `as.vector(at_tile(b))` to equal `rep(255, 4)`.
+Differences:
+  `actual`:   0.0   0.0   0.0   0.0
+`expected`: 255.0 255.0 255.0 255.0
+ 
+
+TEST: A01 stripped project reopens identical pixels in a fresh process 
+Expected `dim(tile)` to equal `c(2L, 2L, 1L)`.
+Differences:
+`actual` is NULL
+`expected` is an integer vector (2, 2, 1)
+ 
+Expected `as.vector(tile)` to equal `c(0, 255, 255, 0)`.
+Differences:
+`actual` is NULL
+`expected` is a double vector (0, 255, 255, 0)
+ 
+                                                             test failed error
+     A09 equal relative filenames refer to distinct source pixels      1 FALSE
+ A01 stripped project reopens identical pixels in a fresh process      2 FALSE
+ warning skipped passed
+       0   FALSE      1
+       0   FALSE      0

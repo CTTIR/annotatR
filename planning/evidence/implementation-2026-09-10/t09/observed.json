@@ -1,0 +1,56 @@
+[
+  {
+    "id": "a71f79f7-7237-89d1-ad63-e08acb14a9c2",
+    "label": "region",
+    "color": -15584170,
+    "locked": true,
+    "objectClass": "PathAnnotationObject",
+    "metadata": {
+      "annotatR_roi_id": "level-roi",
+      "annotatR_coordinate_schema": "annotatR-pixel-level-v1",
+      "annotatR_coordinate_level": "0"
+    },
+    "x": 8.0,
+    "y": 6.0,
+    "width": 12.0,
+    "height": 8.0,
+    "area": 96.0,
+    "wkt": "POLYGON ((8 6, 8 14, 20 14, 20 6, 8 6))"
+  },
+  {
+    "id": "072dc539-62cc-8ef6-a321-f3ede055c247",
+    "label": "donut",
+    "color": -5517841,
+    "locked": false,
+    "objectClass": "PathAnnotationObject",
+    "metadata": {
+      "annotatR_roi_id": "donut-roi",
+      "annotatR_coordinate_schema": "annotatR-pixel-level-v1",
+      "annotatR_coordinate_level": "0"
+    },
+    "x": 24.0,
+    "y": 2.0,
+    "width": 10.0,
+    "height": 10.0,
+    "area": 84.0,
+    "wkt": "POLYGON ((24 12, 34 12, 34 2, 24 2, 24 12), (31 5, 31 9, 27 9, 27 5, 31 5))"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000103",
+    "label": "cell",
+    "color": -16711165,
+    "locked": false,
+    "objectClass": "PathDetectionObject",
+    "metadata": {
+      "annotatR_roi_id": "00000000-0000-0000-0000-000000000103",
+      "annotatR_coordinate_schema": "annotatR-pixel-level-v1",
+      "annotatR_coordinate_level": "0"
+    },
+    "x": 1.0,
+    "y": 1.0,
+    "width": 2.0,
+    "height": 2.0,
+    "area": 4.0,
+    "wkt": "POLYGON ((1 1, 1 3, 3 3, 3 1, 1 1))"
+  }
+]

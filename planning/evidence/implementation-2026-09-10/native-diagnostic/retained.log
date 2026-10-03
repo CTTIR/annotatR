@@ -1,0 +1,5 @@
+R 4.6.1 tiff 0.1.12 magick 2.9.1 mode retained 
+tiff initialised
+magick TIFF read completed
+reading four-channel fixture with tiff
+R: ../../MagickCore/exception.c:1120: ThrowMagickExceptionList: Assertion `exception->signature == MagickCoreSignature' failed.

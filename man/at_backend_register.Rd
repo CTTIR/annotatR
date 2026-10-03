@@ -12,7 +12,10 @@ at_backend_register(
   available_fn,
   description = "",
   extensions = character(),
-  call = rlang::caller_env()
+  call = rlang::caller_env(),
+  capabilities = list(metadata_only = NA, window_read = NA, samples = "unqualified", io =
+    "unknown"),
+  close_fn = NULL
 )
 }
 \arguments{
@@ -34,6 +37,12 @@ dependencies are installed.}
 \item{extensions}{Character vector of file extensions the backend handles.}
 
 \item{call}{The calling environment, for error reporting.}
+
+\item{capabilities}{Additive list declaring metadata_only, window_read,
+samples and io. Omitted capabilities are unknown. Readers can override
+these per image in meta$capabilities.}
+
+\item{close_fn}{Optional function(img) releasing runtime resources.}
 }
 \value{
 The registered \code{annot_backend}, invisibly.

@@ -43,7 +43,9 @@ extracted from the original hyperspectral data**, not from the display image.
 
 ### 1. Data
 Load a folder of images or cubes, or start from the queue already configured for
-the session. The table lists every image and its status.
+the session. The table lists every image and its status. Loading a new folder
+retains the previous queue and its unsaved annotations. Use **Restore previous
+queue** to recover it, and save it before closing the app.
 
 ### 2. Annotate
 Three columns: the **queue** (left), the **canvas and tools** (middle), and
@@ -56,7 +58,17 @@ Three columns: the **queue** (left), the **canvas and tools** (middle), and
   fields beneath each list.
 - Draw a region and it joins the **active layer** with the **active label**.
   Overlapping regions are expected and fine.
-- Annotations **autosave**. Mark an image **Complete** or **Flag** it as you go.
+- Annotations autosave when enabled for the session. Otherwise press **Save**.
+  The indicator confirms successful persistence. **Complete** saves before marking
+  the entry complete; **Shift+Enter** also advances after a successful save.
+- Tab to the canvas. Arrows move the cursor (Shift: 10 pixels); Enter or Space
+  places point/rectangle anchors. Space adds polygon vertices and Enter finishes.
+  Escape cancels unfinished geometry. Shortcuts leave focused form controls their
+  native behavior.
+- The canvas shows an image overview with pan/zoom, not streamed pyramid tiles.
+  It reports missing display capabilities and decoding failures before editing.
+  Locked layers and protected ROIs cannot be changed in the app. Hidden layers
+  remain included in analytical masks and exports.
 - Press **?** (or the *? shortcuts* button) for the full keyboard-shortcut list:
   `n`/`p` to move between images, `q w e r t y` for tools, `1`-`9` for labels,
   `Ctrl+Z` to undo, `Shift+Enter` to complete and advance.

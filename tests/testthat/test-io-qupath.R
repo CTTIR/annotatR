@@ -38,5 +38,5 @@ test_that("QuPath detections map object_type through", {
   p <- withr::local_tempfile(fileext = ".geojson")
   at_write_qupath(proj, p)
   fc <- jsonlite::read_json(p, simplifyVector = FALSE)
-  expect_identical(fc$features[[1]]$properties$object_type, "detection")
+  expect_identical(fc$features[[1]]$properties$objectType, "detection")
 })

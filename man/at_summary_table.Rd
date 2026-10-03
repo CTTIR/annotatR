@@ -19,8 +19,9 @@ at_summary_table(
 }
 \value{
 A \link[tibble:tibble]{tibble::tibble} with the grouping key plus \code{n_rois},
-\code{total_area_px}, \code{mean_area}, and \code{sd_area}. A 0-row tibble when there are
-no ROIs.
+\code{total_area_px}, \code{mean_area}, and \code{sd_area}. Image summaries also include
+\code{entry_id}, so repeated display names remain separate. A 0-row tibble when
+there are no ROIs.
 }
 \description{
 Session summary statistics

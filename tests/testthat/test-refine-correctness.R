@@ -22,7 +22,7 @@ test_that("at_write_masks returns a typed 0-row receipt (not NULL) for a project
   r <- at_write_masks(proj, dir, per = "roi")
   expect_s3_class(r, "tbl_df")
   expect_equal(nrow(r), 0L)
-  expect_identical(names(r), c("path", "type", "n_px", "bytes"))
+  expect_identical(names(r), c("path", "type", "n_px", "bytes", "name", "status", "message", "sidecar_path", "sidecar_bytes"))
 })
 
 test_that("at_roi_overlaps normalises pyramid levels before intersecting", {
@@ -35,7 +35,10 @@ test_that("at_roi_overlaps normalises pyramid levels before intersecting", {
     ))), crs = sf::NA_crs_),
     id = "r2", label = "b", level = 2L
   )
-  expect_true(at_roi_overlaps(roi1, roi2))     # false without level normalisation
+  expect_error(at_roi_overlaps(roi1, roi2), "Mixed coordinate levels require image pyramid dimensions")
+  image <- new_annot_image("overlap-context", "raster", c(400L,400L), 3L,
+                            list(c(400L,400L),c(200L,200L),c(100L,100L)), 1L)
+  expect_true(at_roi_overlaps(roi1, roi2, image=image))
 })
 
 test_that("at_fix_geometry clamps out-of-bounds vertices into the image bounds", {

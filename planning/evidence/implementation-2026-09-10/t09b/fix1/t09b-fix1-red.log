@@ -1,0 +1,95 @@
+ℹ Testing annotatR
+                                                                                      test
+1                                  a prefix reader contract cannot verify square OME masks
+2         required descriptor, contract and signature names cannot be supplied by prefixes
+3            optional extension flags and metadata cannot change alignment or be rewritten
+4  sidecar recovery ignores prefix declarations but requires exact declared storage fields
+5         reopen uses exact contracts and leaves annotations available for explicit relink
+6                 duplicate authoritative provenance keys reject without selecting a value
+7                      custom backend extension metadata does not create a reader contract
+8                               explicit derivation records only exact source declarations
+9           reader option duplicate names remain exact data across the provenance boundary
+10                    metadata overrides reject duplicate declarations before merging them
+11                    relink defaults and mask source capture reject ambiguous descriptors
+12                         legacy source migration requires exact outer image declarations
+13                    a prefix image metadata container cannot authorize saved TIFF pixels
+14                            custom reader prefix metadata containers stay extension data
+15          outer image provenance duplicates and prefix runtime handles are not authority
+   failed error warning passed
+1       0 FALSE       0     10
+2       0 FALSE       0     14
+3       0 FALSE       0     34
+4       0 FALSE       0     23
+5       0 FALSE       0     16
+6       0 FALSE       0     11
+7       0 FALSE       0      6
+8       0 FALSE       0      4
+9       0 FALSE       0      2
+10      0 FALSE       0      3
+11      0 FALSE       0      2
+12      6 FALSE       0      6
+13      3 FALSE       0      7
+14      2 FALSE       0      4
+15      5 FALSE       0      4
+legacy source migration requires exact outer image declarations :  Expected `migrated[["source_descriptor"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+ 
+legacy source migration requires exact outer image declarations :  Expected `inspection$status` to be identical to "unresolved".
+Differences:
+`actual`:   "available" 
+`expected`: "unresolved"
+ 
+legacy source migration requires exact outer image declarations :  Expected `inspection[[if (key == "source") "path" else "backend"]]` to be NULL.
+Differences:
+`actual` is a character vector ('/data/GitHub/CTTIR/public/annotatR-roadmap/tests/testthat/fixtures/readers/images/reference-uint16.tif')
+`expected` is NULL
+ 
+legacy source migration requires exact outer image declarations :  Expected `migrated[["source_descriptor"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+ 
+legacy source migration requires exact outer image declarations :  Expected `inspection$status` to be identical to "unresolved".
+Differences:
+`actual`:   "available" 
+`expected`: "unresolved"
+ 
+legacy source migration requires exact outer image declarations :  Expected `inspection[[if (key == "source") "path" else "backend"]]` to be NULL.
+Differences:
+`actual` is a character vector ('tiff')
+`expected` is NULL
+ 
+a prefix image metadata container cannot authorize saved TIFF pixels :  Expected `back$image[["handle"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+ 
+a prefix image metadata container cannot authorize saved TIFF pixels :  Expected `back$image[["meta"]][["reader_contract"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+ 
+a prefix image metadata container cannot authorize saved TIFF pixels :  Expected `at_tile(back$image)` to throw a error. 
+custom reader prefix metadata containers stay extension data :  Expected `img[["source_descriptor"]][["reader_contract"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+ 
+custom reader prefix metadata containers stay extension data :  Expected `back$image[["meta"]][["reader_contract"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+ 
+outer image provenance duplicates and prefix runtime handles are not authority :  Expected `.migrate_image(bad)` to throw a error. 
+outer image provenance duplicates and prefix runtime handles are not authority :  Expected `.migrate_image(bad)` to throw a error. 
+outer image provenance duplicates and prefix runtime handles are not authority :  Expected `.migrate_image(bad)` to throw a error. 
+outer image provenance duplicates and prefix runtime handles are not authority :  Expected `.migrate_image(bad)` to throw a error. 
+outer image provenance duplicates and prefix runtime handles are not authority :  Expected `at_inspect_source(bad)$status` to be identical to "unresolved".
+Differences:
+`actual`:   "in_memory" 
+`expected`: "unresolved"
+ 
+ failed   error warning skipped  passed 
+     16       0       0       0     146 

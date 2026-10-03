@@ -1,0 +1,27 @@
+Recorded setup attempts, transcribed from the execution output (not package test failures):
+
+python3 tests/testthat/fixtures/windows/generate.py
+  ModuleNotFoundError: No module named 'tifffile'
+
+/tmp/annotatr-roadmap-python/bin/python tests/testthat/fixtures/windows/generate.py
+  no such file or directory: /tmp/annotatr-roadmap-python/bin/python
+
+The corrected command uses the existing target-package directory:
+  env PYTHONPATH=/tmp/annotatr-roadmap-python python3 tests/testthat/fixtures/windows/generate.py
+Successful generation/version output: fixture-generation.log.
+
+An early OME dtype probe ran before any fixture files had been generated, so it
+printed only the package-load message and exited 0 without exercising readers.
+Only ome-dtypes-probe.log after successful generation, the positive optional
+regressions, and installed qualification are used as reader evidence.
+
+The first install attempted a nonexistent library directory; see install.log.
+Corrected after mkdir -p /tmp/annotatr-t15-installed.
+
+Initial generalized SpecCube resource setup accidentally wrote a sibling ENVI
+header, and therefore selected its ENVI-export branch. Its outputs are retained
+as superseded-tivita-512*. They do not qualify bare SpecCube.
+The next setup removed the sidecar but omitted the 12-byte prefix. Both sizes
+correctly failed file-size validation; see speccube-*.fixture-error.log.
+The corrected resource runner writes the prefix, no sidecar, and explicitly
+asserts meta$format == 'SpecCube'. Successful speccube-* logs/results qualify it.

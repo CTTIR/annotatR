@@ -1,0 +1,2 @@
+Click inside empty donut hole emits: [{"n":"a_erased","v":"donut"}]
+Set first widget to point after mounting second, click still emits: [{"n":"a_erased","v":"donut"}]

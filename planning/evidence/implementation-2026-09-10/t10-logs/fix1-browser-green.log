@@ -1,0 +1,93 @@
+{
+  "hole": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "shell": [
+    231,
+    224,
+    238,
+    255
+  ],
+  "independentProxyCounts": [
+    2,
+    2
+  ],
+  "multiEdit": {
+    "id": "roi_000000002",
+    "label": "multi",
+    "level": 1,
+    "attributes": {
+      "note": "keep",
+      "score": 7
+    },
+    "author": "owner",
+    "geometry": {
+      "type": "MultiPolygon",
+      "coordinates": [
+        [
+          [
+            [
+              4,
+              3
+            ],
+            [
+              10,
+              3
+            ],
+            [
+              10,
+              9
+            ],
+            [
+              4,
+              9
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        ],
+        [
+          [
+            [
+              34,
+              23
+            ],
+            [
+              40,
+              23
+            ],
+            [
+              40,
+              29
+            ],
+            [
+              34,
+              29
+            ],
+            [
+              34,
+              23
+            ]
+          ]
+        ]
+      ]
+    }
+  },
+  "remounted": true,
+  "noAccumulatedHandlers": true,
+  "cancelledGesture": true,
+  "outOfOrderImages": true,
+  "pendingOverlaySurvivesRender": [
+    0,
+    128,
+    126,
+    255
+  ],
+  "missingSourceCleared": true,
+  "errors": []
+}

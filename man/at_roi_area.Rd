@@ -8,7 +8,8 @@ at_roi_area(
   roi,
   level = 0L,
   units = c("px", "physical"),
-  call = rlang::caller_env()
+  call = rlang::caller_env(),
+  image = NULL
 )
 }
 \arguments{
@@ -17,9 +18,18 @@ at_roi_area(
 \item{level}{Integer pyramid level at which to express the area. Default \code{0}.}
 
 \item{units}{Either \code{"px"} (pixels squared, the default) or \code{"physical"}.
-Physical units require a \code{pixel_size} attribute on the ROI.}
+Physical area uses \code{image} calibration at level zero, in squared
+\code{image$pixel_unit}, and is invariant to reporting level. Unknown or pixel-only
+image calibration rejects. Without an image, legacy ROI \code{pixel_size=c(x,y)}
+is supported at stored level zero, in squared calibration units. Nonzero
+ROI levels require explicit \code{pixel_size_level} and \code{pixel_unit}; differing calibration and
+stored levels require an image for the geometric transform. Pixel sizes
+must be finite and positive. Geometric area is not raster support count.}
 
 \item{call}{The calling environment, for error reporting.}
+
+\item{image}{Optional \link{annot_image} defining actual pyramid dimensions.
+Required when \code{level} differs from the ROI's stored level.}
 }
 \value{
 A numeric scalar area, or \code{NA_real_} for non-areal geometry (points,

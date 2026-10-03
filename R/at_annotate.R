@@ -4,7 +4,7 @@
 
 # Normalise the launcher's `x` argument to an annot_session.
 .to_session <- function(x, labels, layers, out_dir, call = rlang::caller_env()) {
-  od <- out_dir %||% tempdir()
+  od <- out_dir %||% .session_out_dir()
   if (inherits(x, "annot_session")) {
     return(x)
   }
@@ -12,12 +12,19 @@
     return(at_example_session(3, call = call))
   }
   if (inherits(x, "annot_project")) {
-    s <- at_session(x$image$source, labels = labels, layers = layers, out_dir = od, call = call)
-    s$projects[[1]] <- x
-    return(s)
+    .validate_project_structure(x)
+    entry_id <- x$meta$entry_id %||% .new_identity_id("entry")
+    x$meta$entry_id <- entry_id
+    if (!grepl("^(?:/|[A-Za-z]:[/\\\\]|\\\\\\\\)", path.expand(od), perl = TRUE)) od <- file.path(getwd(),od)
+    return(new_annot_session(.session_manifest(x$image$source,entry_id), list(x),
+      labels=labels,layer_spec=.normalize_layer_spec(layers),
+      out_dir=normalizePath(path.expand(od),mustWork=FALSE)))
   }
   if (inherits(x, "annot_image")) {
-    return(at_session(x$source, labels = labels, layers = layers, out_dir = od, call = call))
+    p <- at_project(x)
+    for (layer in .normalize_layer_spec(layers)) p <- at_add_layer(p,layer)
+    if (!length(p$layers)) p <- at_add_layer(p,at_layer("annotations",labels=labels))
+    return(.to_session(p,labels,layers,od,call=call))
   }
   if (is.character(x)) {
     if (length(x) == 1L && dir.exists(x)) {

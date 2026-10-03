@@ -28,7 +28,8 @@ test_that("queue module navigates the session", {
 test_that("layers module tracks the active layer and label", {
   rv <- make_rv()
   shiny::testServer(mod_layers_server, args = list(id = "l", rv = rv), {
-    session$setInputs(layer = "tumour", label = "tumour")
+    session$setInputs(layer_intent = c(.state_stamp(rv), list(payload=list(value="tumour"))))
+    session$setInputs(label_intent = c(.state_stamp(rv), list(payload=list(value="tumour",layer="tumour"))))
     expect_identical(rv$active_layer, "tumour")
     expect_identical(rv$active_label, "tumour")
   })
@@ -43,13 +44,26 @@ test_that("mask module toggles type and overlap", {
   })
 })
 
+test_that("one-click mask export uses the queue entry stem", {
+  rv <- make_rv()
+  shiny::testServer(mod_mask_server, args = list(id = "m", rv = rv), {
+    session$setInputs(export = 1)
+    path <- file.path(
+      rv$session$out_dir, "masks",
+      paste0(rv$session$manifest$export_stem[rv$cursor], ".tif")
+    )
+    expect_true(file.exists(path))
+  })
+})
+
 test_that("canvas module commits a drawn ROI and marks unsaved", {
   rv <- make_rv()
   shiny::testServer(mod_canvas_server, args = list(id = "c", rv = rv), {
     before <- nrow(at_rois(rv$project))
     feat <- list(geometry = list(type = "Polygon",
                                  coordinates = list(list(c(2, 2), c(6, 2), c(6, 6), c(2, 6), c(2, 2)))))
-    session$setInputs(canvas_created = feat)
+    feat$target <- list(layer = rv$active_layer, label = rv$active_label)
+    session$setInputs(canvas_created = c(.state_stamp(rv), list(payload = feat)))
     expect_identical(nrow(at_rois(rv$project)), before + 1L)
     expect_identical(rv$saved, "unsaved")
     expect_length(rv$undo, 1L)
@@ -71,7 +85,7 @@ test_that("roitable module deletes an ROI", {
   rv <- make_rv()
   shiny::testServer(mod_roitable_server, args = list(id = "t", rv = rv), {
     id <- at_rois(rv$project)$roi_id[1]
-    session$setInputs(del_id = id, delete = 1)
+    session$setInputs(del_id = id, delete = c(.state_stamp(rv), list(payload=list(del_id=id))))
     expect_false(id %in% at_rois(rv$project)$roi_id)
   })
 })
@@ -100,6 +114,11 @@ test_that("session module saves and reports status", {
   shiny::testServer(mod_session_server, args = list(id = "s", rv = rv), {
     session$setInputs(save = 1)
     expect_identical(rv$saved, "saved")
+    stem <- rv$session$manifest$export_stem[1]
+    path <- rv$session$manifest$project_path[1]
+    expect_true(file.exists(path))
+    expect_true(startsWith(basename(path), paste0(stem, "-checkpoint_")))
+    expect_identical(readRDS(file.path(rv$session$out_dir, "_session.rds"))$manifest$project_path[1], path)
     session$setInputs(complete = 1)
     expect_identical(at_session_status(rv$session)$status[1], "complete")
   })
@@ -109,9 +128,13 @@ test_that("export writes the selected formats for the scope", {
   rv <- make_rv()
   dir <- tempfile("atexport"); dir.create(dir)
   rc <- shiny::isolate(.write_exports(rv, c("geojson", "csv"), "current", dir))
+  entry_id <- shiny::isolate(rv$session$manifest$entry_id[rv$cursor])
+  stem <- shiny::isolate(rv$session$manifest$export_stem[rv$cursor])
   expect_true(any(grepl("\\.geojson$", list.files(dir))))
   expect_true(any(grepl("\\.csv$", list.files(dir))))
   expect_setequal(rc$format, c("geojson", "csv"))
+  expect_identical(unique(rc$entry_id), entry_id)
+  expect_true(all(startsWith(basename(rc$path), stem)))
 })
 
 test_that("export scope 'all' covers every annotated image, skipping empties", {
@@ -179,4 +202,14 @@ test_that("the keyboard handler guards against text-field focus", {
   js <- readLines(system.file("shiny", "annotatR", "www", "keys.js", package = "annotatR"))
   expect_true(any(grepl("inTextField", js)))
   expect_true(any(grepl("TEXTAREA", js)))
+})
+
+test_that("app export includes failed and skipped rows and complete sibling formats", {
+  rv <- make_rv();dir <- withr::local_tempdir()
+  testthat::local_mocked_bindings(at_write_qupath=function(...) stop("injected format failure"))
+  rc <- shiny::isolate(.write_exports(rv,c("qupath","csv"),"all",dir))
+  expect_identical(rc$status,c("error","ok","skipped","skipped","skipped","skipped"))
+  expect_equal(nrow(utils::read.csv(file.path(dir,"_export_manifest.csv"))),6)
+  expect_true(file.exists(rc$path[rc$status=="ok"]))
+  expect_match(rc$message[1],"injected format failure")
 })

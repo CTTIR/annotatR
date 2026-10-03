@@ -28,7 +28,7 @@ test_that(".check_count requires a non-negative whole number", {
 })
 
 test_that(".check_choice matches one of the allowed values", {
-  expect_identical(.check_choice(c("a", "b"), c("a", "b")), "a")
+  expect_identical(.check_choice(c("a", "b"), c("a", "b"), default = TRUE), "a")
   expect_identical(.check_choice("b", c("a", "b")), "b")
   expect_error(.check_choice("z", c("a", "b")), "must be one of")
 })
@@ -55,10 +55,11 @@ test_that(".empty_roi_tbl has the contracted structure", {
   expect_equal(nrow(t), 0L)
   expect_identical(
     names(t),
-    c("roi_id", "layer", "label", "geom_type", "level", "area_px",
+    c("roi_id", "layer", "label", "geom_type", "level", "source_level", "area_px",
       "centroid_x", "centroid_y", "n_vertices", "created", "modified",
       "author", "source", "geometry")
   )
+  expect_type(t$source_level, "integer")
   expect_true(inherits(t$geometry, "sfc"))
 })
 

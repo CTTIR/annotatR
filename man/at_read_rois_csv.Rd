@@ -4,7 +4,13 @@
 \alias{at_read_rois_csv}
 \title{Read ROIs from a CSV with WKT geometry}
 \usage{
-at_read_rois_csv(path, layer_name = "csv", call = rlang::caller_env())
+at_read_rois_csv(
+  path,
+  layer_name = "csv",
+  call = rlang::caller_env(),
+  coordinate_level = NULL,
+  legacy_levels = c("error", "recorded")
+)
 }
 \arguments{
 \item{path}{Path to a CSV with at least \code{label} and \code{geometry} (WKT) columns.
@@ -13,6 +19,16 @@ Other columns (\code{level}, \code{author}, \code{source}, ...) are used when pr
 \item{layer_name}{Layer name for the imported ROIs. Default \code{"csv"}.}
 
 \item{call}{The calling environment, for error reporting.}
+
+\item{coordinate_level}{Optional integer overriding every recorded \code{level}
+without scaling coordinates. Use only when the actual coordinate level is
+known, for example \code{0L} for legacy annotatR exports that wrote level-0
+coordinates beside a nonzero source level. \code{NULL} (default) uses the schema
+and \code{legacy_levels} policy. Coordinates are never automatically repaired.}
+
+\item{legacy_levels}{How to interpret files without the corrected coordinate
+schema marker: \code{"error"} (default) rejects ambiguous nonzero recorded levels;
+\code{"recorded"} explicitly trusts those levels. Level-0 files remain unambiguous.}
 }
 \value{
 An \link{annot_layer}.

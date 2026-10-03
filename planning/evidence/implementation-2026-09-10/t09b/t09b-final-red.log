@@ -1,0 +1,94 @@
+ℹ Testing annotatR
+                                                                                     test
+1                                 a prefix reader contract cannot verify square OME masks
+2        required descriptor, contract and signature names cannot be supplied by prefixes
+3           optional extension flags and metadata cannot change alignment or be rewritten
+4 sidecar recovery ignores prefix declarations but requires exact declared storage fields
+5        reopen uses exact contracts and leaves annotations available for explicit relink
+6                duplicate authoritative provenance keys reject without selecting a value
+  failed error warning passed
+1      2 FALSE       0      8
+2      5 FALSE       0      9
+3     14 FALSE       0     16
+4      1  TRUE       0      2
+5      5  TRUE       0      8
+6      7  TRUE       0      1
+a prefix reader contract cannot verify square OME masks :  Expected `at_mask_derive(a, candidate, keep_label = "1")` to throw a error. 
+a prefix reader contract cannot verify square OME masks :  Expected `at_mask_derive(a, candidate, keep_label = "1")` to throw a error. 
+required descriptor, contract and signature names cannot be supplied by prefixes :  Expected `.validate_descriptor(d)` to throw a error. 
+required descriptor, contract and signature names cannot be supplied by prefixes :  Expected `.validate_descriptor(d)` to throw a error. 
+required descriptor, contract and signature names cannot be supplied by prefixes :  Expected `.validate_descriptor(d)` to throw a error. 
+required descriptor, contract and signature names cannot be supplied by prefixes :  Expected `.mask_info(bad)` to throw a error. 
+required descriptor, contract and signature names cannot be supplied by prefixes :  Expected `.mask_info(bad)` to throw a error. 
+optional extension flags and metadata cannot change alignment or be rewritten :  Expected `at_mask_derive(a, candidate, keep_label = "1")` not to throw any errors.
+Actually got a <rlang_error> with message:
+  Inferred source options are unverified; an explicit alignment assertion is required. 
+optional extension flags and metadata cannot change alignment or be rewritten :  Expected `at_mask_derive(a, candidate, keep_label = "1")` not to throw any errors.
+Actually got a <rlang_error> with message:
+  Inferred source options are unverified; an explicit alignment assertion is required. 
+optional extension flags and metadata cannot change alignment or be rewritten :  Expected `inherits(recovered, "error")` to be FALSE.
+Differences:
+`actual`:   TRUE 
+`expected`: FALSE
+ 
+optional extension flags and metadata cannot change alignment or be rewritten :  Expected `at_mask_derive(a, candidate, keep_label = "1")` not to throw any errors.
+Actually got a <rlang_error> with message:
+  Invalid mask source descriptor: Invalid source reader contract. 
+optional extension flags and metadata cannot change alignment or be rewritten :  Expected `inherits(recovered, "error")` to be FALSE.
+Differences:
+`actual`:   TRUE 
+`expected`: FALSE
+ 
+optional extension flags and metadata cannot change alignment or be rewritten :  Expected `at_mask_derive(a, candidate, keep_label = "1")` not to throw any errors.
+Actually got a <rlang_error> with message:
+  Invalid mask source signature. 
+optional extension flags and metadata cannot change alignment or be rewritten :  Expected `at_mask_derive(a, b, keep_label = "1")` not to throw any errors.
+Actually got a <rlang_error> with message:
+  Legacy source option structure is unverified; an explicit alignment assertion is required. 
+optional extension flags and metadata cannot change alignment or be rewritten :  Expected `at_mask_derive(a, candidate, keep_label = "1")` to throw a error. 
+optional extension flags and metadata cannot change alignment or be rewritten :  Expected `at_mask_derive(a, candidate, keep_label = "1")` to throw a error. 
+optional extension flags and metadata cannot change alignment or be rewritten :  Expected `if (key == "source") md[["source"]] else md$source[["descriptor"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+ 
+optional extension flags and metadata cannot change alignment or be rewritten :  Expected `at_mask_derive(a, candidate, keep_label = "1")` to throw a error. 
+optional extension flags and metadata cannot change alignment or be rewritten :  Expected `at_mask_derive(a, candidate, keep_label = "1")` to throw a error. 
+optional extension flags and metadata cannot change alignment or be rewritten :  Expected `if (key == "source") md[["source"]] else md$source[["descriptor"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+ 
+optional extension flags and metadata cannot change alignment or be rewritten :  Expected `.mask_info(b)` not to throw any errors.
+Actually got a <rlang_error> with message:
+  Invalid mask source metadata. 
+sidecar recovery ignores prefix declarations but requires exact declared storage fields :  Expected `attr(got, "level")` to be identical to 0L.
+Differences:
+  `actual`: 7
+`expected`: 0
+ 
+sidecar recovery ignores prefix declarations but requires exact declared storage fields :  Error in `.mask_recover(m, sidecar = sidecar, level = level, legend = legend, metadata = metadata)`: Legacy mask dimensions disagree with matrix dimensions. 
+reopen uses exact contracts and leaves annotations available for explicit relink :  Expected `back$image$handle` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+ 
+reopen uses exact contracts and leaves annotations available for explicit relink :  Expected `at_tile(back$image)` to throw a error. 
+reopen uses exact contracts and leaves annotations available for explicit relink :  Expected `back$image$handle` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+ 
+reopen uses exact contracts and leaves annotations available for explicit relink :  Expected `at_tile(back$image)` to throw a error. 
+reopen uses exact contracts and leaves annotations available for explicit relink :  Expected `migrated <- .migrate_image(legacy)` not to throw any errors.
+Actually got a <simpleError> with message:
+  Unsupported source schema. Inspect the original file and upgrade annotatR. 
+reopen uses exact contracts and leaves annotations available for explicit relink :  Error in `eval(code, test_env)`: object 'migrated' not found 
+duplicate authoritative provenance keys reject without selecting a value :  Expected `.mask_info(bad)` to throw a error. 
+duplicate authoritative provenance keys reject without selecting a value :  Expected `.mask_info(bad)` to throw a error. 
+duplicate authoritative provenance keys reject without selecting a value :  Expected `.mask_info(bad)` to throw a error. 
+duplicate authoritative provenance keys reject without selecting a value :  Expected `.mask_info(bad)` to throw a error. 
+duplicate authoritative provenance keys reject without selecting a value :  Expected `.mask_info(bad)` to throw a error. 
+duplicate authoritative provenance keys reject without selecting a value :  Expected `at_read_npy(p)` to throw a error. 
+duplicate authoritative provenance keys reject without selecting a value :  Expected `at_read_npy(p)` to throw a error. 
+duplicate authoritative provenance keys reject without selecting a value :  Error in `.mask_recover(m, sidecar = sidecar, level = level, legend = legend, metadata = metadata)`: Versioned mask metadata requires a legend. 

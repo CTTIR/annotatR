@@ -1,0 +1,151 @@
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffdb1fff6c0 (LWP 3938585)]
+[New Thread 0x7ffdb17fe6c0 (LWP 3938586)]
+[New Thread 0x7ffdb0ffd6c0 (LWP 3938587)]
+[New Thread 0x7ffdb07fc6c0 (LWP 3938588)]
+[New Thread 0x7ffdafffb6c0 (LWP 3938589)]
+[New Thread 0x7ffdaf7fa6c0 (LWP 3938590)]
+[New Thread 0x7ffdaeff96c0 (LWP 3938591)]
+[New Thread 0x7ffdae7f86c0 (LWP 3938592)]
+[New Thread 0x7ffdadff76c0 (LWP 3938593)]
+[New Thread 0x7ffdad7f66c0 (LWP 3938594)]
+[New Thread 0x7ffdacff56c0 (LWP 3938595)]
+[New Thread 0x7ffdac7f46c0 (LWP 3938596)]
+[New Thread 0x7ffdabff36c0 (LWP 3938597)]
+[New Thread 0x7ffdab7f26c0 (LWP 3938598)]
+[New Thread 0x7ffdaaff16c0 (LWP 3938599)]
+[New Thread 0x7ffdaa7f06c0 (LWP 3938600)]
+[New Thread 0x7ffda9fef6c0 (LWP 3938601)]
+[New Thread 0x7ffda97ee6c0 (LWP 3938602)]
+[New Thread 0x7ffda8fed6c0 (LWP 3938603)]
+[New Thread 0x7ffda87ec6c0 (LWP 3938604)]
+[New Thread 0x7ffda7feb6c0 (LWP 3938605)]
+[New Thread 0x7ffda77ea6c0 (LWP 3938606)]
+[New Thread 0x7ffda6fe96c0 (LWP 3938607)]
+[New Thread 0x7ffda67e86c0 (LWP 3938608)]
+[New Thread 0x7ffda5fe76c0 (LWP 3938609)]
+[New Thread 0x7ffda57e66c0 (LWP 3938610)]
+[New Thread 0x7ffda4fe56c0 (LWP 3938611)]
+[New Thread 0x7ffda47e46c0 (LWP 3938612)]
+[New Thread 0x7ffda3fe36c0 (LWP 3938613)]
+[New Thread 0x7ffda37e26c0 (LWP 3938614)]
+[New Thread 0x7ffda2fe16c0 (LWP 3938615)]
+[New Thread 0x7ffda27e06c0 (LWP 3938616)]
+[New Thread 0x7ffda1fdf6c0 (LWP 3938617)]
+[New Thread 0x7ffda17de6c0 (LWP 3938618)]
+[New Thread 0x7ffda0fdd6c0 (LWP 3938619)]
+[New Thread 0x7ffda07dc6c0 (LWP 3938620)]
+[New Thread 0x7ffd9ffdb6c0 (LWP 3938621)]
+[New Thread 0x7ffd9f7da6c0 (LWP 3938622)]
+[New Thread 0x7ffd9efd96c0 (LWP 3938623)]
+[New Thread 0x7ffd9e7d86c0 (LWP 3938624)]
+[New Thread 0x7ffd9dfd76c0 (LWP 3938625)]
+[New Thread 0x7ffd9d7d66c0 (LWP 3938626)]
+[New Thread 0x7ffd9cfd56c0 (LWP 3938627)]
+[New Thread 0x7ffd9c7d46c0 (LWP 3938628)]
+[New Thread 0x7ffd9bfd36c0 (LWP 3938629)]
+[New Thread 0x7ffd9b7d26c0 (LWP 3938630)]
+[New Thread 0x7ffd9afd16c0 (LWP 3938631)]
+[New Thread 0x7ffd9a7d06c0 (LWP 3938632)]
+[New Thread 0x7ffd99fcf6c0 (LWP 3938633)]
+[New Thread 0x7ffd997ce6c0 (LWP 3938634)]
+[New Thread 0x7ffd98fcd6c0 (LWP 3938635)]
+[New Thread 0x7ffd987cc6c0 (LWP 3938636)]
+[New Thread 0x7ffd97fcb6c0 (LWP 3938637)]
+[New Thread 0x7ffd977ca6c0 (LWP 3938638)]
+[New Thread 0x7ffd96fc96c0 (LWP 3938639)]
+[New Thread 0x7ffd967c86c0 (LWP 3938640)]
+[New Thread 0x7ffd95fc76c0 (LWP 3938641)]
+[New Thread 0x7ffd957c66c0 (LWP 3938642)]
+[New Thread 0x7ffd94fc56c0 (LWP 3938643)]
+[New Thread 0x7ffd947c46c0 (LWP 3938644)]
+[New Thread 0x7ffd93fc36c0 (LWP 3938645)]
+[New Thread 0x7ffd937c26c0 (LWP 3938646)]
+[New Thread 0x7ffd92fc16c0 (LWP 3938647)]
+[New Thread 0x7ffd927c06c0 (LWP 3938648)]
+[New Thread 0x7ffd91fbf6c0 (LWP 3938649)]
+[New Thread 0x7ffd917be6c0 (LWP 3938650)]
+[New Thread 0x7ffd90fbd6c0 (LWP 3938651)]
+[New Thread 0x7ffd907bc6c0 (LWP 3938652)]
+[New Thread 0x7ffd8ffbb6c0 (LWP 3938653)]
+[New Thread 0x7ffd8f7ba6c0 (LWP 3938654)]
+[New Thread 0x7ffd8efb96c0 (LWP 3938655)]
+
+R version 4.6.1 (2026-06-24) -- "Happy Hop"
+Copyright (C) 2026 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Detaching after vfork from child process 3938656]
+[Detaching after vfork from child process 3938658]
+> args <- commandArgs(TRUE)
+> mode <- args[[1]]
+> path <- normalizePath("inst/extdata/example_multiplex.tif")
+> cat("R", as.character(getRversion()), "tiff", as.character(packageVersion("tiff")), "magick", as.character(packageVersion("magick")), "mode", mode, "\n")
+R 4.6.1 tiff 0.1.12 magick 2.9.1 mode retained 
+> if (mode != "tiff-only") {
++   tmp <- tempfile(fileext=".tif")
++   on.exit <- NULL
++   tiff::writeTIFF(matrix(c(0,1,1,0),2L,2L),tmp,bits.per.sample=8L,compression="none")
++   cat("tiff initialised\n"); flush.console()
++   image <- magick::image_read(tmp)
++   cat("magick TIFF read completed\n"); flush.console()
++   if (mode == "destroy") {
++     rm(image)
++     invisible(gc())
++     cat("magick image removed and GC completed\n"); flush.console()
++   }
++   unlink(tmp)
++ }
+tiff initialised
+magick TIFF read completed
+> cat("reading four-channel fixture with tiff\n"); flush.console()
+reading four-channel fixture with tiff
+> x <- tiff::readTIFF(path,all=TRUE,as.is=FALSE,info=TRUE)
+R: ../../MagickCore/exception.c:1120: ThrowMagickExceptionList: Assertion `exception->signature == MagickCoreSignature' failed.
+
+Thread 1 "R" received signal SIGABRT, Aborted.
+__pthread_kill_implementation (threadid=<optimized out>, signo=6, no_tid=0) at ./nptl/pthread_kill.c:44
+warning: 44	./nptl/pthread_kill.c: No such file or directory
+#0  __pthread_kill_implementation (threadid=<optimized out>, signo=6, no_tid=0) at ./nptl/pthread_kill.c:44
+#1  __pthread_kill_internal (threadid=<optimized out>, signo=6) at ./nptl/pthread_kill.c:89
+#2  __GI___pthread_kill (threadid=<optimized out>, signo=signo@entry=6) at ./nptl/pthread_kill.c:100
+#3  0x00007ffff7645b7e in __GI_raise (sig=sig@entry=6) at ../sysdeps/posix/raise.c:26
+#4  0x00007ffff76288ec in __GI_abort () at ./stdlib/abort.c:77
+#5  0x00007ffff7629979 in __libc_message_impl (vma_name=vma_name@entry=0x7ffff77db55b "glibc: assert", fmt=<optimized out>) at ../sysdeps/posix/libc_fatal.c:138
+#6  0x00007ffff763bf75 in __libc_message_wrapper (vmaname=0x7ffff77db55b "glibc: assert", fmt=<optimized out>) at ../include/stdio.h:203
+#7  __assert_fail (assertion=0x7ffd8ca42ae0 "exception->signature == MagickCoreSignature", file=0x7ffd8ca38d32 "../../MagickCore/exception.c", line=<optimized out>, function=<optimized out>) at ./assert/assert.c:37
+#8  0x00007ffd8c831adf in ?? () from /usr/lib/x86_64-linux-gnu/libMagickCore-7.Q16.so.10
+#9  0x00007ffd8c905495 in ThrowMagickException () from /usr/lib/x86_64-linux-gnu/libMagickCore-7.Q16.so.10
+#10 0x00007ffd8d8c2ffc in ?? () from /usr/lib/x86_64-linux-gnu/ImageMagick-7.1.2/modules-Q16/coders/tiff.so
+#11 0x00007ffd8d7577a7 in TIFFWarningExtR () from /usr/lib/x86_64-linux-gnu/libtiff.so.6
+#12 0x00007ffd8d71e5ee in TIFFReadDirectory () from /usr/lib/x86_64-linux-gnu/libtiff.so.6
+#13 0x00007ffd8d753360 in TIFFClientOpenExt () from /usr/lib/x86_64-linux-gnu/libtiff.so.6
+#14 0x00007ffd8d75360f in TIFFClientOpen () from /usr/lib/x86_64-linux-gnu/libtiff.so.6
+#15 0x00007ffff71b4e02 in TIFF_Open (mode=mode@entry=0x7ffff71b98a7 "rmc", rj=rj@entry=0x7fffffffb360) at common.c:169
+#16 0x00007ffff71b5d33 in read_tiff (sFn=<optimized out>, sNative=<optimized out>, sAll=0x5555574cb630, sConvert=0x5555574cb470, sInfo=0x5555574cb5c0, sIndexed=0x5555574cb3c8, sOriginal=0x5555574cb5f8, sPayload=0x555555581470) at read.c:200
+#17 0x00007ffff7b093f8 in ?? () from /lib/libR.so
+#18 0x00007ffff7b53c96 in ?? () from /lib/libR.so
+#19 0x00007ffff7b5b81a in ?? () from /lib/libR.so
+#20 0x00007ffff7b5bc3b in Rf_eval () from /lib/libR.so
+#21 0x00007ffff7b5dec3 in ?? () from /lib/libR.so
+#22 0x00007ffff7b5ecfb in ?? () from /lib/libR.so
+#23 0x00007ffff7b5bd8a in Rf_eval () from /lib/libR.so
+#24 0x00007ffff7b61306 in ?? () from /lib/libR.so
+#25 0x00007ffff7b5c088 in Rf_eval () from /lib/libR.so
+#26 0x00007ffff7b98fc3 in ?? () from /lib/libR.so
+#27 0x00007ffff7b99435 in ?? () from /lib/libR.so
+#28 0x00007ffff7b994f0 in run_Rmainloop () from /lib/libR.so
+#29 0x000055555555509f in main ()

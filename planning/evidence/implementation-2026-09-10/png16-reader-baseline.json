@@ -1,0 +1,41 @@
+{
+  "finding": "A32",
+  "source_snapshot": "reviewed pre-T06 runtime",
+  "input": "mask-pgm-reference.png",
+  "independent_Pillow_values": [
+    [
+      0,
+      1,
+      255,
+      256
+    ],
+    [
+      4096,
+      32767,
+      32768,
+      65535
+    ]
+  ],
+  "observed_mask_decoder_values": [
+    [
+      0,
+      0,
+      1,
+      1
+    ],
+    [
+      16,
+      127,
+      128,
+      255
+    ]
+  ],
+  "observed_public_import_labels": [
+    "16",
+    "127",
+    "128",
+    "255",
+    "1"
+  ],
+  "public_command_exit": 0
+}

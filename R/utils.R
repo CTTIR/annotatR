@@ -25,6 +25,40 @@
   sprintf("%s_%09d", prefix, .id_state$n)
 }
 
+# Runtime and queue identities have a process-specific namespace and their own
+# counters so independent R processes cannot repeat persisted IDs, and creating
+# sessions or reading images cannot change the established ROI identifier
+# sequence. Like .new_id(), this generator never touches R's random-number
+# generator.
+.identity_state <- new.env(parent = emptyenv())
+
+.initialize_identity_state <- function() {
+  rm(list = ls(envir = .identity_state, all.names = TRUE),
+     envir = .identity_state)
+  .identity_state$namespace <- gsub(
+    "[^A-Za-z0-9._-]", "_", basename(tempfile(pattern = "at_"))
+  )
+  invisible(NULL)
+}
+
+.new_identity_id <- function(kind) {
+  if (is.null(.identity_state$namespace)) {
+    .initialize_identity_state()
+  }
+  n <- .identity_state[[kind]] %||% 0L
+  n <- n + 1L
+  .identity_state[[kind]] <- n
+  sprintf("%s_%s_%09d", kind, .identity_state$namespace, n)
+}
+
+# A deterministic representation of a serializable object. Reader options are
+# fingerprinted once at image-open time, rather than expanded into every tile
+# cache key.
+.identity_fingerprint <- function(x) {
+  raw <- serialize(x, NULL, version = 2L)
+  paste(sprintf("%02x", as.integer(raw)), collapse = "")
+}
+
 # ---- Time and version ------------------------------------------------------
 
 # Current time as a length-1 POSIXct. Wrapped so the point of truth is single.
@@ -57,6 +91,7 @@
     label      = character(0),
     geom_type  = character(0),
     level      = integer(0),
+    source_level = integer(0),
     area_px    = double(0),
     centroid_x = double(0),
     centroid_y = double(0),
@@ -76,49 +111,65 @@
 
 # ---- Level transforms for the query contract -------------------------------
 
-# Transform an sfc from `level` to level 0. Uses the real pyramid ratio from an
-# annot_image when one is supplied (accurate for non-power-of-two pyramids),
-# otherwise assumes a power-of-two pyramid.
-.to_level0 <- function(geom, level, image = NULL) {
-  if (level == 0L) {
-    return(geom)
+# One transform boundary: coordinates are scaled independently on each axis.
+# Identity operations need no image; a change of level always requires metadata.
+.transform_geom <- function(geom, from_level, to_level, image = NULL,
+                            call = rlang::caller_env()) {
+  from_level <- .check_count(from_level, call = call)
+  to_level <- .check_count(to_level, call = call)
+  if (!is.null(image)) {
+    .check_image(image, call = call)
+    df <- at_dims(image, from_level, call = call)
+    dt <- at_dims(image, to_level, call = call)
+    valid_dims <- function(d) is.numeric(d) && length(d) == 2L &&
+      all(is.finite(d)) && all(d > 0)
+    if (!valid_dims(df) || !valid_dims(dt)) {
+      cli::cli_abort("Image pyramid levels require finite positive dimensions.", call = call)
+    }
   }
-  if (inherits(image, "annot_image") && length(image$level_dims) > level) {
-    d0 <- image$level_dims[[1L]]
-    dl <- image$level_dims[[level + 1L]]
-    fx <- d0[1] / dl[1]
-    fy <- d0[2] / dl[2]
-    out <- lapply(geom, .apply_coords,
-                  fun = function(m) cbind(m[, 1] * fx, m[, 2] * fy))
-    return(sf::st_sfc(out, crs = sf::st_crs(geom)))
+  if (from_level == to_level) return(geom)
+  if (is.null(image)) {
+    cli::cli_abort(
+      c("Changing coordinate levels requires image pyramid dimensions.",
+        "i" = "Supply an image, or explicitly use at_roi_rescale() for a power-of-two pyramid."),
+      call = call)
   }
-  factor <- 2^(level - 0L)
-  out <- lapply(geom, .apply_coords, fun = function(m) m * factor)
+  scale <- dt / df
+  out <- lapply(geom, .apply_coords,
+                fun = function(m) cbind(m[, 1] * scale[1], m[, 2] * scale[2]))
   sf::st_sfc(out, crs = sf::st_crs(geom))
 }
 
-# Transform an sfc from level 0 to `level`, using the real image pyramid ratio
-# when an annot_image is supplied (correct for non-power-of-two pyramids),
-# otherwise assuming a power-of-two pyramid. Inverse direction of .to_level0().
+.to_level0 <- function(geom, level, image = NULL) {
+  .transform_geom(geom, level, 0L, image)
+}
+
 .geom_to_level <- function(geom, level, image = NULL) {
-  if (level == 0L) {
-    return(geom)
+  .transform_geom(geom, 0L, level, image)
+}
+
+# Schema marker distinguishes corrected interchange from ambiguous old exports.
+.coordinate_schema <- "annotatR-pixel-level-v1"
+
+.import_coordinate_level <- function(recorded = NULL, fallback = 0L, schema = NULL,
+                                     coordinate_level = NULL, legacy_levels = "error",
+                                     call = rlang::caller_env()) {
+  if (!is.null(recorded)) recorded <- .check_count(recorded, call = call)
+  fallback <- .check_count(fallback, call = call)
+  if (!is.null(coordinate_level)) return(coordinate_level)
+  if (!is.null(recorded) && recorded != 0L &&
+      !identical(schema, .coordinate_schema) && legacy_levels != "recorded") {
+    cli::cli_abort(
+      c("Ambiguous legacy coordinate level: nonzero level without a coordinate schema.",
+        "i" = "Set coordinate_level to the known coordinate level (0L for old normalized exports), or legacy_levels = 'recorded' to explicitly trust recorded levels."),
+      call = call)
   }
-  if (inherits(image, "annot_image") && length(image$level_dims) > level) {
-    d0 <- image$level_dims[[1L]]
-    dl <- image$level_dims[[level + 1L]]
-    fx <- dl[1] / d0[1]
-    fy <- dl[2] / d0[2]
-    out <- lapply(geom, .apply_coords,
-                  fun = function(m) cbind(m[, 1] * fx, m[, 2] * fy))
-    return(sf::st_sfc(out, crs = sf::st_crs(geom)))
-  }
-  .rescale_geom(geom, 0L, level)
+  recorded %||% fallback
 }
 
 # Build the ROI query-contract tibble from a list of annot_roi and a matching
 # vector of layer names. Coordinates, area, and centroid are expressed at level
-# 0; the `level` column records each ROI's original reference level. Returns the
+# 0; `level` is 0 and `source_level` records the stored reference level. Returns the
 # canonical 0-row tibble when `rois` is empty.
 .rois_to_tbl <- function(rois, layers, image = NULL) {
   if (length(rois) == 0L) {
@@ -150,7 +201,8 @@
     layer      = as.character(layers),
     label      = vapply(rois, `[[`, character(1), "label"),
     geom_type  = gtype,
-    level      = vapply(rois, function(r) as.integer(r$level), integer(1)),
+    level      = rep.int(0L, n),
+    source_level = vapply(rois, function(r) as.integer(r$level), integer(1)),
     area_px    = area,
     centroid_x = cen[, 1],
     centroid_y = cen[, 2],

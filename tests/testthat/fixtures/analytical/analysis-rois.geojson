@@ -1,0 +1,91 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "00000000-0000-0000-0000-00000000012a",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              0,
+              0
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "roi_id": "00000000-0000-0000-0000-00000000012a",
+        "layer": "analytical",
+        "label": "A",
+        "level": 0,
+        "source_level": 0,
+        "coordinate_schema": "annotatR-pixel-level-v1",
+        "source": "synthetic-analytical-reference",
+        "attributes": {
+          "image_case": "analysis-cube"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "00000000-0000-0000-0000-00000000012b",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              2,
+              1
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              2,
+              1
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "roi_id": "00000000-0000-0000-0000-00000000012b",
+        "layer": "analytical",
+        "label": "B",
+        "level": 0,
+        "source_level": 0,
+        "coordinate_schema": "annotatR-pixel-level-v1",
+        "source": "synthetic-analytical-reference",
+        "attributes": {
+          "image_case": "analysis-cube"
+        }
+      }
+    }
+  ]
+}

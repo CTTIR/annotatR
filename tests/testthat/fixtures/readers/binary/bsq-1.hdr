@@ -1,0 +1,9 @@
+ENVI
+samples = 5
+lines = 4
+bands = 3
+header offset = 16
+data type = 12
+interleave = bsq
+byte order = 1
+data file = bsq-1.bin

@@ -4,12 +4,14 @@
 \alias{at_roi_overlaps}
 \title{Test whether two ROIs intersect}
 \usage{
-at_roi_overlaps(roi1, roi2, call = rlang::caller_env())
+at_roi_overlaps(roi1, roi2, call = rlang::caller_env(), image = NULL)
 }
 \arguments{
 \item{roi1, roi2}{\link{annot_roi} objects.}
 
 \item{call}{The calling environment, for error reporting.}
+
+\item{image}{Optional \link{annot_image}; required for mixed coordinate levels.}
 }
 \value{
 A logical scalar.

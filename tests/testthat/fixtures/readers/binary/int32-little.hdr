@@ -1,0 +1,7 @@
+ENVI
+samples = 4
+lines = 1
+bands = 1
+data type = 3
+interleave = bsq
+byte order = 0

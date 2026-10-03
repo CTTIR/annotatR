@@ -1,0 +1,64 @@
+✔ A24 hole hit-testing ignores empty interior and selects shell (4.630725ms)
+✔ A24 polygon display submits the exterior and hole contours (1.780781ms)
+✔ A24 MultiPolygon display submits both disconnected components (0.96749ms)
+✔ A24 MultiPolygon hit-testing selects a component and ignores the gap (1.077509ms)
+✔ A25 tool routing targets each mounted widget independently (1.193858ms)
+✔ polygon contours close and fill even-odd, without filling lines (2.121651ms)
+✔ Point hit and translation preserve every coordinate and properties (1.246956ms)
+✔ MultiPoint hit and translation preserve every coordinate and properties (1.054848ms)
+✔ LineString hit and translation preserve every coordinate and properties (1.112123ms)
+✔ Polygon hit and translation preserve every coordinate and properties (1.069315ms)
+✔ MultiPolygon hit and translation preserve every coordinate and properties (0.911467ms)
+✔ rect is cancelled on {"entry_id":"entry-b","revision":0} (0.944471ms)
+✔ freehand is cancelled on {"entry_id":"entry-b","revision":0} (0.891214ms)
+✔ circle is cancelled on {"entry_id":"entry-b","revision":0} (0.849095ms)
+✔ polygon is cancelled on {"entry_id":"entry-b","revision":0} (0.910233ms)
+✔ edit is cancelled on {"entry_id":"entry-b","revision":0} (0.85096ms)
+✔ rect is cancelled on {"entry_id":"entry-a","revision":1} (0.735612ms)
+✔ freehand is cancelled on {"entry_id":"entry-a","revision":1} (0.876464ms)
+✔ circle is cancelled on {"entry_id":"entry-a","revision":1} (0.901961ms)
+✔ polygon is cancelled on {"entry_id":"entry-a","revision":1} (0.76917ms)
+✔ edit is cancelled on {"entry_id":"entry-a","revision":1} (0.82592ms)
+✔ base and overlay loads ignore older generations and missing sources clear pixels (1.008604ms)
+✔ one dispatcher per message survives remount, disposal removes listeners and callbacks (1.435858ms)
+✔ creation captures the displayed target at gesture birth (1.044329ms)
+✖ MultiPoint display draws disconnected circles and lines select only their stroke (2.195074ms)
+✔ only the newest overlay callback can paint and disposal cancels pending overlays (0.863487ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 25
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 104.05814
+
+✖ failing tests:
+
+test at tests/audit/widget.test.js:168:1
+✖ MultiPoint display draws disconnected circles and lines select only their stroke (2.195074ms)
+  AssertionError [ERR_ASSERTION]: overlapping point markers use a union fill
+  + actual - expected
+  
+    [
+      [
+        'fill',
+  +     'evenodd'
+  -     undefined
+      ]
+    ]
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:171:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ [ 'fill', 'evenodd' ] ],
+    expected: [ [ 'fill', undefined ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

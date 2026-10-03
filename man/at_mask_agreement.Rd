@@ -9,7 +9,9 @@ at_mask_agreement(
   b,
   background = 0L,
   labels = NULL,
-  call = rlang::caller_env()
+  call = rlang::caller_env(),
+  alignment = c("check", "assert"),
+  code_alignment = c("strict", "by-label", "by-id")
 )
 }
 \arguments{
@@ -19,24 +21,49 @@ at_mask_agreement(
 
 \item{background}{Integer value treated as unlabeled/background and excluded
 from the per-class rows (still counted for overall accuracy/kappa).
-Default \code{0}.}
+Defaults to declared metadata background, or \code{0} for plain matrices.
+Explicit values must agree with metadata; both inputs must share background.}
 
 \item{labels}{Optional named vector or legend tibble (\code{value}, \code{label})
-overriding the reference legend for class labels.}
+overriding display labels only. It cannot certify semantic codebook alignment.}
 
 \item{call}{The calling environment, for error reporting.}
+
+\item{alignment}{\code{"check"} (default) verifies shared grid/source metadata;
+\code{"assert"} records the caller's assertion of spatial alignment. Dimensions
+must always agree. Identical inputs permit a self-grid comparison without
+source descriptors; legacy pairs retain explicit-code/grid assumptions.}
+
+\item{code_alignment}{\code{"strict"} (default) requires compatible code mappings;
+\code{"by-label"} explicitly maps categorical/binary/bitfield codes by unique
+semantic labels; \code{"by-id"} maps instance codes by stable unique \code{roi_id}.
+Remapping requires matching identity sets in both codebooks. Mixed plain
+matrices and annotated inputs require \code{alignment="assert"} and categorical
+encoding; plain codes then assert the annotated codebook.}
 }
 \value{
 A \link[tibble:tibble]{tibble::tibble} with one row per class: \code{value}, \code{label},
 \code{n_true}, \code{n_pred}, \code{tp}, \code{fp}, \code{fn}, \code{dice}, \code{iou}. The \code{overall}
 attribute is a list of \code{accuracy}, \code{kappa}, \code{mean_dice}, \code{mean_iou}, and
-\code{n_px}.
+\code{n_px}, \code{encoding}, \code{alignment}, \code{code_alignment}, \code{background} and
+\code{nonfinite} (always \code{"error"}). A \code{comparison} attribute retains validated
+input metadata and legends for interpretation.
 }
 \description{
 Per-class Dice and Jaccard (IoU) plus an overall accuracy and Cohen's kappa,
 comparing a reference mask \code{a} against a second mask \code{b} (e.g. an annotatR
-mask against a \code{.npy} ground truth, or two annotators). Classes are matched by
-integer value, so both masks must use the same class codebook.
+mask against a \code{.npy} ground truth, or two annotators). Versioned metadata,
+grids, source provenance, encodings and semantic codebooks are validated.
+Plain matrices are explicit-code legacy categorical inputs and require finite
+representable integer values; missing values are rejected.
+}
+\details{
+Categorical/binary classes use equality; bitfields use class memberships,
+with overall accuracy measuring exact membership-set agreement and kappa NA.
+Instance maps use stable unique ROI IDs, never display class names. No spatial
+instance matching is inferred. Absent classes retain rows with NA Dice/IoU;
+background-only accuracy is 1 and kappa is NA (zero Cohen denominator).
+Mean Dice/IoU exclude absent classes and are NA if none are defined.
 }
 \examples{
 \dontshow{if (requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)) withAutoprint(\{ # examplesIf}

@@ -12,7 +12,8 @@ at_backend_list(call = rlang::caller_env())
 \value{
 A \link[tibble:tibble]{tibble::tibble} with columns \code{name} (character), \code{description}
 (character), \code{extensions} (character, comma-separated), and \code{available}
-(logical). A 0-row tibble with these columns when nothing is registered.
+(logical), plus metadata_only and window_read (logical; NA when unknown).
+A 0-row tibble with these columns when nothing is registered.
 }
 \description{
 List registered image backends

@@ -1,0 +1,56 @@
+requested flag: NA effective: NaN 
+      scale-nodata
+ [1,]           NA
+ [2,]            1
+ [3,]            2
+ [4,]            3
+ [5,]            4
+ [6,]            5
+ [7,]            6
+ [8,]            7
+ [9,]            8
+[10,]            9
+[11,]           10
+[12,]           11
+requested flag: NaN effective: NaN 
+      scale-nodata
+ [1,]           NA
+ [2,]            1
+ [3,]            2
+ [4,]            3
+ [5,]            4
+ [6,]            5
+ [7,]            6
+ [8,]            7
+ [9,]            8
+[10,]            9
+[11,]           10
+[12,]           11
+requested flag: -1 effective: -1 
+      scale-nodata
+ [1,]           NA
+ [2,]            1
+ [3,]            2
+ [4,]            3
+ [5,]            4
+ [6,]            5
+ [7,]            6
+ [8,]            7
+ [9,]            8
+[10,]            9
+[11,]           10
+[12,]           11
+requested flag: 1e+300 effective: 1e+300 
+      scale-nodata
+ [1,]           NA
+ [2,]            1
+ [3,]            2
+ [4,]            3
+ [5,]            4
+ [6,]            5
+ [7,]            6
+ [8,]            7
+ [9,]            8
+[10,]            9
+[11,]           10
+[12,]           11

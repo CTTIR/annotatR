@@ -1,0 +1,13 @@
+ℹ Testing annotatR
+quantitative-contract: ..........................................................................................................................................................................12.....
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Failure ('test-quantitative-contract.R:256:3'): new nonzero-level calibrat
+Expected `at_roi_area(r, level = 1L, units = "physical")` to throw a error.
+
+── 2. Failure ('test-quantitative-contract.R:258:3'): new nonzero-level calibrat
+Expected `at_roi_area(r, level = 1L, units = "physical")` to throw a error.
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+ failed   error warning  passed 
+      2       0       0     175 

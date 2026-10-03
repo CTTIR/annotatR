@@ -37,8 +37,8 @@ at_save_project <- function(project, path, overwrite = FALSE,
     cli::cli_abort(c("{.path {path}} already exists.",
                     "i" = "Pass {.code overwrite = TRUE} to replace it."), call = call)
   }
-  project$provenance$saved_with <- .pkg_version()
-  saveRDS(project, path)
+  project <- .prepare_project(project)
+  .atomic_save_rds(project, path, overwrite = overwrite)
   invisible(path)
 }
 
@@ -55,7 +55,7 @@ at_load_project <- function(path, call = rlang::caller_env()) {
   obj <- readRDS(path)
   .check_project(obj, arg = "path", call = call)
   ver <- obj$provenance$saved_with %||% obj$provenance$annotatR_version
-  .migrate_object(obj, ver, call = call)
+  .restore_project(.migrate_object(obj, ver, call = call))
 }
 
 #' Save a session
@@ -71,12 +71,14 @@ at_load_project <- function(path, call = rlang::caller_env()) {
 at_save_session <- function(session, path = NULL, overwrite = FALSE,
                             call = rlang::caller_env()) {
   .check_session(session, call = call)
-  session$meta$annotatR_version <- .pkg_version()
+  session <- .prepare_session(session)
+  path <- path %||% file.path(session$out_dir, "_session.rds")
   if (!is.null(path) && file.exists(path) && !overwrite) {
     cli::cli_abort(c("{.path {path}} already exists.",
                     "i" = "Pass {.code overwrite = TRUE} to replace it."), call = call)
   }
-  .session_save(session, path = path, call = call)
+  .atomic_save_rds(session, path, overwrite = overwrite)
+  invisible(session)
 }
 
 #' Load a session
@@ -89,5 +91,7 @@ at_save_session <- function(session, path = NULL, overwrite = FALSE,
 #' @export
 at_load_session <- function(path, call = rlang::caller_env()) {
   obj <- .session_load(path, call = call)
-  .migrate_object(obj, obj$meta$annotatR_version, call = call)
+  obj <- .migrate_object(obj, obj$meta$annotatR_version, call = call)
+  obj$projects <- lapply(obj$projects,function(p) if (is.null(p)) NULL else .restore_project(p, materialize = FALSE))
+  obj
 }

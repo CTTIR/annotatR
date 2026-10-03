@@ -22,7 +22,12 @@
 
 # A cache key for a tile request.
 .tile_key <- function(img, level, xrange, yrange, bands) {
-  paste(img$source, img$backend, level,
+  descriptor <- img$source_descriptor
+  source <- descriptor$path %||% img$source
+  backend <- descriptor$backend %||% img$backend
+  options <- descriptor$options_identity %||% ""
+  identity <- img$cache_identity %||% .new_identity_id("image")
+  paste(source, backend, options, identity, level,
         paste(xrange, collapse = "-"), paste(yrange, collapse = "-"),
         paste(bands, collapse = ","), sep = "|")
 }
@@ -59,47 +64,52 @@
 
 # ---- Mask rasterisation fast paths -----------------------------------------
 
-# Is `geom` (an sfg) an axis-aligned rectangle: a single ring with exactly two
-# distinct x and two distinct y values?
+# Is `geom` a closed ring containing exactly the four distinct corners of an
+# axis-aligned rectangle, traversed by axis-aligned edges? Coordinate rounding
+# would incorrectly promote narrow/skew polygons, so use the stored coordinates.
 .is_axis_aligned_rect <- function(geom) {
-  if (length(unclass(geom)) != 1L) {
-    return(FALSE)
-  }
+  if (!inherits(geom, "POLYGON") || length(geom) != 1L) return(FALSE)
   ring <- geom[[1]]
-  length(unique(round(ring[, 1], 9))) == 2L &&
-    length(unique(round(ring[, 2], 9))) == 2L
+  if (nrow(ring) != 5L || !all(is.finite(ring[, 1:2])) ||
+      !all(ring[1, 1:2] == ring[5, 1:2])) return(FALSE)
+  corners <- ring[1:4, 1:2, drop = FALSE]
+  if (nrow(unique(corners)) != 4L || length(unique(corners[, 1])) != 2L ||
+      length(unique(corners[, 2])) != 2L) return(FALSE)
+  edges <- ring[2:5, 1:2, drop = FALSE] - ring[1:4, 1:2, drop = FALSE]
+  all(xor(edges[, 1] == 0, edges[, 2] == 0))
 }
 
-# Fast, exact cover for rectangles and points (touches = FALSE only). Returns a
-# logical [height, width] matrix identical to the general rasteriser, or NULL
-# when no fast path applies. Uses the same half-open [lower, upper) convention:
-# a pixel centre at k - 0.5 is covered when lower <= k - 0.5 < upper.
-.cover_shortcircuit <- function(geom, dims) {
-  type <- as.character(sf::st_geometry_type(sf::st_sfc(geom)))
+# Inclusive matrix indices whose centres fall in [lower, upper), clamped before
+# integer conversion so distant off-image coordinates cannot overflow integers.
+.centre_range <- function(lower, upper, size, origin = 0) {
+  # Subtract before rounding: adding .5 to the next double above .5 would
+  # round down to 1 and incorrectly include that boundary centre.
+  as.integer(c(max(1, min(size + 1, ceiling(lower - 0.5) + 1 - origin)),
+               max(0, min(size, ceiling(upper - 0.5) - origin))))
+}
+
+# Fast centre coverage for proven rectangles, and half-open containing cells
+# for points. Returns NULL when the general polygon/engine path is required.
+.cover_shortcircuit <- function(geom, dims, origin = c(0, 0)) {
   width <- as.integer(dims[1])
   height <- as.integer(dims[2])
-  if (type == "POINT") {
-    co <- as.numeric(unclass(geom))
-    j <- as.integer(floor(co[1] - 1e-7)) + 1L
-    i <- as.integer(floor(co[2] - 1e-7)) + 1L
+  if (inherits(geom, "POINT") || inherits(geom, "MULTIPOINT")) {
+    co <- if (inherits(geom, "POINT")) matrix(unclass(geom), nrow = 1L) else unclass(geom)
     m <- matrix(FALSE, height, width)
-    if (i >= 1L && i <= height && j >= 1L && j <= width) {
-      m[i, j] <- TRUE
+    if (nrow(co)) {
+      j <- floor(co[, 1]) + 1 - origin[1]
+      i <- floor(co[, 2]) + 1 - origin[2]
+      keep <- is.finite(i) & is.finite(j) & i >= 1 & i <= height & j >= 1 & j <= width
+      m[cbind(i[keep], j[keep])] <- TRUE
     }
     return(m)
   }
-  if (type == "POLYGON" && .is_axis_aligned_rect(geom)) {
+  if (.is_axis_aligned_rect(geom)) {
     ring <- geom[[1]]
-    xmin <- min(ring[, 1]); xmax <- max(ring[, 1])
-    ymin <- min(ring[, 2]); ymax <- max(ring[, 2])
-    j1 <- max(1L, as.integer(ceiling(xmin + 0.5)))
-    j2 <- min(width, as.integer(ceiling(xmax - 0.5)))
-    i1 <- max(1L, as.integer(ceiling(ymin + 0.5)))
-    i2 <- min(height, as.integer(ceiling(ymax - 0.5)))
+    x <- .centre_range(min(ring[, 1]), max(ring[, 1]), width, origin[1])
+    y <- .centre_range(min(ring[, 2]), max(ring[, 2]), height, origin[2])
     m <- matrix(FALSE, height, width)
-    if (j1 <= j2 && i1 <= i2) {
-      m[i1:i2, j1:j2] <- TRUE
-    }
+    if (x[1] <= x[2] && y[1] <= y[2]) m[y[1]:y[2], x[1]:x[2]] <- TRUE
     return(m)
   }
   NULL

@@ -1,0 +1,63 @@
+✔ keyboard envelopes capture rendered canvas identity, preserve payload, and suppress missing identity (3.337014ms)
+✔ shortcuts prevent browser undo and leave native controls alone (1.126535ms)
+✔ real action handler snapshots form values and current identity before delayed delivery (1.123474ms)
+✖ divergent server stamps never replace the displayed mutation origin (3.491826ms)
+✖ same-entry mutation intent retains the rendered revision while server output is pending (1.156513ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 3
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 73.920586
+
+✖ failing tests:
+
+test at tests/audit/keyboard.test.js:42:1
+✖ divergent server stamps never replace the displayed mutation origin (3.491826ms)
+  AssertionError [ERR_ASSERTION]: session-save
+  + actual - expected
+  
+    {
+  +   entry_id: 'unseen',
+  +   revision: 9
+  -   entry_id: 'displayed',
+  -   revision: 4
+    }
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/keyboard.test.js:56:36)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: { entry_id: 'unseen', revision: 9 },
+    expected: { entry_id: 'displayed', revision: 4 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/audit/keyboard.test.js:70:1
+✖ same-entry mutation intent retains the rendered revision while server output is pending (1.156513ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  5 !== 4
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/keyboard.test.js:76:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 5,
+    expected: 4,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

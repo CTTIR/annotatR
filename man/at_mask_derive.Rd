@@ -9,8 +9,9 @@ at_mask_derive(
   anatomy,
   artefact = NULL,
   keep_label = "wound",
-  background = 0L,
-  call = rlang::caller_env()
+  background = NULL,
+  call = rlang::caller_env(),
+  alignment = c("legacy", "assert")
 )
 }
 \arguments{
@@ -24,20 +25,27 @@ set are dropped. \code{NULL} (default) applies no artefact exclusion.}
 
 \item{keep_label}{The anatomy label whose region is kept (e.g. \code{"wound"}).}
 
-\item{background}{Integer background/unlabeled value. Default \code{0}.}
+\item{background}{Output background value. \code{NULL} (default) preserves the
+state mask's background. Must not collide with any state class code.}
 
 \item{call}{The calling environment, for error reporting.}
+
+\item{alignment}{\code{"legacy"} (default) validates declared source descriptors
+and grids; masks with only legacy metadata use a recorded legacy assumption.
+Modern masks with missing or conflicting provenance require \code{"assert"},
+explicitly asserting registration without resampling. Dimensions must
+always agree. Entry IDs and runtime cache generations do not establish
+source compatibility. Combining the same object records \code{self-grid}.}
 }
 \value{
-An \code{annot_mask} (multiclass) of the surviving state codes, with the
-state legend restricted to those classes and pixel counts recomputed.
+An \code{annot_mask} retaining state encoding and the full state codebook,
+with counts recomputed, zero counts for absent classes, and alignment
+provenance recorded in \code{mask_metadata$derivation}.
 }
 \description{
-Combine rasterised layer masks into the derived training mask
-\verb{state WHERE anatomy == keep_label AND artefact == 0 AND state != background}.
-This is the cross-layer operation the four-layer HSI scheme relies on: it
-keeps a state (class) label only where the anatomy layer marks the region of
-interest, no artefact bit is set, and the state is actually labelled.
+Keep foreground state codes inside the requested anatomy class and outside
+artefacts, using each mask's declared background and class membership. An
+anatomy bitfield includes composite samples containing the requested bit.
 }
 \examples{
 \dontshow{if (requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)) withAutoprint(\{ # examplesIf}

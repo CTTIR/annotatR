@@ -12,7 +12,7 @@
 #' at_example_path("tissue")
 at_example_path <- function(which = c("tissue", "multiplex", "cube"),
                             call = rlang::caller_env()) {
-  which <- .check_choice(which, c("tissue", "multiplex", "cube"), call = call)
+  which <- .check_choice(which, c("tissue", "multiplex", "cube"), default = missing(which), call = call)
   file <- switch(
     which,
     tissue    = "example_tissue.png",
@@ -36,7 +36,7 @@ at_example_path <- function(which = c("tissue", "multiplex", "cube"),
 #' at_dims(img)
 at_example_image <- function(which = c("tissue", "multiplex", "cube"),
                              call = rlang::caller_env()) {
-  which <- .check_choice(which, c("tissue", "multiplex", "cube"), call = call)
+  which <- .check_choice(which, c("tissue", "multiplex", "cube"), default = missing(which), call = call)
   img <- at_read_image(at_example_path(which, call = call))
   if (which == "multiplex") {
     img$band_names <- c("DAPI", "CD3", "CD8", "PanCK")

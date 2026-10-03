@@ -1,0 +1,59 @@
+ℹ Testing annotatR
+provenance-keys: ..1....2..345..67.......8.9.ab..cd..e..f..g..hijklm.nopq
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Failure ('test-provenance-keys.R:31:5'): a prefix reader contract cannot v
+Expected `at_mask_derive(a, candidate, keep_label = "1")` to throw a error.
+
+── 2. Failure ('test-provenance-keys.R:31:5'): a prefix reader contract cannot v
+Expected `at_mask_derive(a, candidate, keep_label = "1")` to throw a error.
+
+── 3. Failure ('test-provenance-keys.R:43:5'): required descriptor, contract and
+Expected `.validate_descriptor(d)` to throw a error.
+
+── 4. Failure ('test-provenance-keys.R:43:5'): required descriptor, contract and
+Expected `.validate_descriptor(d)` to throw a error.
+
+── 5. Failure ('test-provenance-keys.R:43:5'): required descriptor, contract and
+Expected `.validate_descriptor(d)` to throw a error.
+
+── 6. Failure ('test-provenance-keys.R:52:5'): required descriptor, contract and
+Expected `.mask_info(bad)` to throw a error.
+
+── 7. Failure ('test-provenance-keys.R:52:5'): required descriptor, contract and
+Expected `.mask_info(bad)` to throw a error.
+
+── 8. Failure ('test-provenance-keys.R:76:7'): optional extension flags and meta
+Expected `at_mask_derive(a, candidate, keep_label = "1")` not to throw any errors.
+Actually got a <rlang_error> with message:
+  Inferred source options are unverified; an explicit alignment assertion is required.
+
+── 9. Failure ('test-provenance-keys.R:76:7'): optional extension flags and meta
+Expected `at_mask_derive(a, candidate, keep_label = "1")` not to throw any errors.
+Actually got a <rlang_error> with message:
+  Inferred source options are unverified; an explicit alignment assertion is required.
+
+── 10. Error ('test-provenance-keys.R:75:5'): optional extension flags and metad
+Error in `value[[3L]](cond)`: Invalid mask source descriptor: Invalid source reader contract.
+Backtrace:
+     ▆
+  1. └─annotatR (local) provenance_key_roundtrip(b, dir) at test-provenance-keys.R:75:5
+  2.   └─annotatR::at_write_npy(m, p) at test-provenance-keys.R:17:3
+  3.     └─annotatR:::.mask_info(mask) at annotatR-roadmap/R/io-npy.R:140:3
+  4.       └─annotatR:::.mask_validate_metadata(...) at annotatR-roadmap/R/mask-metadata.R:135:3
+  5.         └─base::tryCatch(.validate_descriptor(src$descriptor), error = function(e) cli::cli_abort("Invalid mask source descriptor: {conditionMessage(e)}")) at annotatR-roadmap/R/mask-metadata.R:87:7
+  6.           └─base (local) tryCatchList(expr, classes, parentenv, handlers)
+  7.             └─base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+  8.               └─value[[3L]](cond)
+  9.                 └─cli::cli_abort("Invalid mask source descriptor: {conditionMessage(e)}") at annotatR-roadmap/R/mask-metadata.R:87:7
+ 10.                   └─rlang::abort(...)
+  ... and 16 more
+
+
+Maximum number of 10 failures reached, some test results may be missing.
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+Frustration is a natural part of programming :)
+Error:
+! Test failures.
+Execution halted

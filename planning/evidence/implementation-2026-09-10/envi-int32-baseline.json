@@ -1,0 +1,44 @@
+{
+  "finding": "A30",
+  "source_snapshot": "f69bf201f651c845ab496f76e25638bc919d4b13 tracked baseline",
+  "fixture": {
+    "shape_y_x_band": [
+      1,
+      4,
+      1
+    ],
+    "data_type": 3,
+    "expected": [
+      -2147483648,
+      -2147483647,
+      0,
+      2147483647
+    ],
+    "byte_orders": [
+      "little",
+      "big"
+    ],
+    "payload_sha256": {
+      "be.dat": "2dc5ad1e401871dc50615d0808e72cf8a4e46f32ee4aab686346f19ed7c23c9b",
+      "le.dat": "bd5bfe50ab1ab8f14faef8e638afd556aaecc314a43a7292ce458040955f9375"
+    }
+  },
+  "observed": {
+    "little": [
+      null,
+      -2147483647,
+      0,
+      2147483647
+    ],
+    "big": [
+      null,
+      -2147483647,
+      0,
+      2147483647
+    ]
+  },
+  "null_means": "R NA, not a missing input sample",
+  "command": "Rscript /tmp/annotatr-roadmap-envi-int32-probe/probe.R",
+  "command_exit": 0,
+  "assertion_status": "Diagnostic probe; observed values violate expected raw sample contract"
+}

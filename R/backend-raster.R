@@ -24,7 +24,7 @@
     h <- d[3]
     nb <- d[1]
     dtype <- "uint8"
-  } else if (requireNamespace("tiff", quietly = TRUE)) {
+  } else if (grepl("\\.tiff?$", path, ignore.case = TRUE) && requireNamespace("tiff", quietly = TRUE)) {
     t <- tiff::readTIFF(path, as.is = FALSE)
     if (length(dim(t)) == 2L) {
       t <- array(t, dim = c(dim(t), 1L))
@@ -36,7 +36,7 @@
     dtype <- "uint8"
   } else {
     cli::cli_abort(c(
-      "The {.val raster} backend requires package {.pkg magick} or {.pkg tiff}.",
+      "PNG, JPEG and other non-TIFF raster images require package {.pkg magick}; TIFF can also use {.pkg tiff}.",
       "i" = "Install one with {.code install.packages(\"magick\")}."
     ))
   }
@@ -45,7 +45,7 @@
     dims = c(w, h), n_levels = 1L, level_dims = list(c(w, h)),
     n_bands = nb, band_names = .raster_band_names(nb),
     pixel_size = c(1, 1), pixel_unit = "px", dtype = dtype,
-    handle = list(data = arr), meta = list()
+    handle = list(data = arr), meta = list(sample_contract = "display-converted-0-255")
   )
 }
 

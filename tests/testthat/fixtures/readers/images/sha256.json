@@ -1,0 +1,16 @@
+{
+  "reference-TCYX.ome.tif": "be29f2d4195f4119f7ed1456df134ef45c383525ea298f8e085d89aae8719a93",
+  "reference-ZCYX.ome.tif": "1c5a818cbd92e70ff5ef9b8db696541bc05fdefc2191639c3a3fe0f8d48084f2",
+  "reference-c.npy": "9bca21a820e5450b1a3407339cdfbeb05f3208380ba964cbe7c4728bd65b8c65",
+  "reference-f.npy": "8ef08fdac419691f25411f4db7fa0109d4d5b618cf689203389de0005bb15f88",
+  "reference-float32.tif": "06903d0d2a1eaae4b86cb20f018567f02691d16d0c222c2655fd9c31501d6e53",
+  "reference-float64.tif": "2ffa7ee59608fb1544a4eb69109b20dafb53d3dffb3e75a41e3ea1cb0e867dbe",
+  "reference-int16.tif": "33778268805c0b571c20ad23200b4dc2218b87ba8c866f5362167948daee9e01",
+  "reference-int32.tif": "638e3e185b185896a6664bd7493eec3cab9e463d4af7489f5fd7c6f9368f39f5",
+  "reference-pyramid.ome.tif": "df564cd510c9eb66cf597c7221727b6854d9c9452f81fb33490d6e46b616d229",
+  "reference-rgb.tif": "049f2c9f6bd26b2999430a5da3bdcf430f79ff8fcaa8faa6306a0c2c56c771a2",
+  "reference-uint16.tif": "99365210a1369244f3c5ec9708c8456f118b4297f4be19a2283db6a24f938a68",
+  "reference-uint32.tif": "08adcd283b9dc612a8ecbd0bab0b9169b8da2a329ddd8791f1ae1b3f3d5f212f",
+  "reference-uint8.tif": "992d701625c8bbff7a9da48df7cd034c23daccdadec46bc93e5730d3c8c0dd00",
+  "reference.ome.tif": "32d9a9dd21479a808ae1706d35752fd004f7f04b1ddffd404334f31b3f4f1dee"
+}

@@ -29,8 +29,8 @@
 
 # Convert a parsed GeoJSON geometry (from jsonlite, simplifyVector = FALSE) to sfg.
 .geojson_to_sfg <- function(geom) {
-  type <- geom$type
-  co <- geom$coordinates
+  type <- geom[["type"]]
+  co <- geom[["coordinates"]]
   switch(
     type,
     "Point"        = sf::st_point(as.numeric(unlist(co))),
@@ -54,7 +54,8 @@
 #' @param project An [annot_project].
 #' @param path Output file path.
 #' @param layer Optional layer filter.
-#' @param level Integer pyramid level for the coordinates. Default `0`.
+#' @param level Integer pyramid level for the coordinates and exported `level`
+#'   property. Default `0`; `source_level` separately records the stored ROI level.
 #' @param flip_y Logical; invert the y-axis (for GIS-oriented consumers). Default
 #'   `FALSE` (image orientation preserved). The consequence is documented in the
 #'   interop vignette.
@@ -82,8 +83,8 @@ at_write_geojson <- function(project, path, layer = NULL, level = 0L,
   height <- at_dims(project$image, level)[2]
   fc <- .project_to_features(project, layer, level, flip_y, height,
                              qupath = FALSE)
-  jsonlite::write_json(fc, path, auto_unbox = TRUE, digits = NA, null = "null",
-                       pretty = TRUE)
+  .export_bundle(path,function(stage) jsonlite::write_json(fc, stage[1], auto_unbox = TRUE, digits = NA, null = "null",
+                       pretty = TRUE),overwrite)
   invisible(path)
 }
 
@@ -96,13 +97,13 @@ at_write_geojson <- function(project, path, layer = NULL, level = 0L,
     lyr <- Ls[[nm]]
     cols <- lyr$style$colour
     for (r in lyr$rois) {
-      g <- .geom_to_level(.to_level0(r$geometry, r$level, project$image), level, project$image)[[1]]
+      g <- .transform_geom(r$geometry, r$level, level, project$image)[[1]]
       if (flip_y) g <- .flip_sfg_y(g, height)
       colour <- if (!is.null(cols) && r$label %in% names(cols)) unname(cols[[r$label]]) else "#5E2C8E"
       feat <- if (qupath) {
-        .roi_to_qupath_feature(r, nm, g, colour)
+        .roi_to_qupath_feature(r, nm, g, colour, level)
       } else {
-        .roi_to_feature(r, nm, g)
+        .roi_to_feature(r, nm, g, level)
       }
       features[[length(features) + 1L]] <- feat
     }
@@ -110,14 +111,15 @@ at_write_geojson <- function(project, path, layer = NULL, level = 0L,
   list(type = "FeatureCollection", features = features)
 }
 
-.roi_to_feature <- function(r, layer_name, g) {
+.roi_to_feature <- function(r, layer_name, g, level = r$level) {
   list(
     type = "Feature",
     id = r$id,
     geometry = .sfg_to_geojson(g),
     properties = list(
       roi_id = r$id, layer = layer_name, label = r$label,
-      level = r$level, author = r$author,
+      level = level, source_level = r$level, coordinate_schema = .coordinate_schema,
+      author = r$author,
       created = format(r$created, "%Y-%m-%dT%H:%M:%S%z"),
       modified = format(r$modified, "%Y-%m-%dT%H:%M:%S%z"),
       source = r$source, annotatR_version = .pkg_version(),
@@ -150,6 +152,7 @@ at_write_geojson <- function(project, path, layer = NULL, level = 0L,
 #' at_roi_from_geojson(feat, label = "region")
 at_roi_from_geojson <- function(feature, label = NULL, level = 0L,
                                 source = "manual", call = rlang::caller_env()) {
+  level <- .check_count(level, call = call)
   if (!is.list(feature) || is.null(feature$geometry)) {
     cli::cli_abort(
       c("{.arg feature} must be a parsed GeoJSON feature with a {.field geometry}.",
@@ -173,6 +176,14 @@ at_roi_from_geojson <- function(feature, label = NULL, level = 0L,
 #' @param level Integer level to record when a feature has no `level` property.
 #' @param flip_y Logical; invert the y-axis on read. Default `FALSE`.
 #' @param height Image height in pixels, required when `flip_y = TRUE`.
+#' @param coordinate_level Optional integer overriding every recorded `level`
+#'   without scaling coordinates. Use only when the actual coordinate level is
+#'   known, for example `0L` for legacy annotatR exports that wrote level-0
+#'   coordinates beside a nonzero source level. `NULL` (default) uses the schema
+#'   and `legacy_levels` policy. Coordinates are never automatically repaired.
+#' @param legacy_levels How to interpret files without the corrected coordinate
+#'   schema marker: `"error"` (default) rejects ambiguous nonzero recorded levels;
+#'   `"recorded"` explicitly trusts those levels. Level-0 files remain unambiguous.
 #' @param call The calling environment, for error reporting.
 #'
 #' @return A named list of [annot_layer] objects (one per distinct `layer`
@@ -180,7 +191,10 @@ at_roi_from_geojson <- function(feature, label = NULL, level = 0L,
 #' @family io
 #' @export
 at_read_geojson <- function(path, layer_name = NULL, level = 0L, flip_y = FALSE,
-                            height = NULL, call = rlang::caller_env()) {
+                            height = NULL, call = rlang::caller_env(), coordinate_level = NULL,
+                            legacy_levels = c("error", "recorded")) {
+  legacy_levels <- .check_choice(legacy_levels, c("error", "recorded"), default = missing(legacy_levels), call = call)
+  if (!is.null(coordinate_level)) coordinate_level <- .check_count(coordinate_level, call = call)
   .check_file(path, call = call)
   if (flip_y && is.null(height)) {
     cli::cli_abort("{.arg height} is required when {.code flip_y = TRUE}.", call = call)
@@ -194,7 +208,8 @@ at_read_geojson <- function(path, layer_name = NULL, level = 0L, flip_y = FALSE,
     if (flip_y) g <- .flip_sfg_y(g, height)
     ln <- layer_name %||% (props$layer %||% "imported")
     lb <- props$label %||% "unlabelled"
-    lvl <- props$level %||% level
+    lvl <- .import_coordinate_level(props$level, level, props$coordinate_schema,
+                                    coordinate_level, legacy_levels, call)
     roi <- at_roi_from_sf(
       sf::st_sfc(g, crs = sf::NA_crs_), label = as.character(lb), level = as.integer(lvl),
       id = props$roi_id %||% ft$id %||% .new_id("roi"),

@@ -20,7 +20,9 @@ at_write_qupath(
 
 \item{layer}{Optional layer filter.}
 
-\item{level}{Integer pyramid level. Default \code{0}.}
+\item{level}{Integer pyramid level for coordinates and the \code{level} property.
+Default \code{0}, as expected by QuPath; other levels are for consumers that
+explicitly support them. \code{source_level} records the stored ROI level.}
 
 \item{overwrite}{Logical; overwrite an existing file. Default \code{FALSE}.}
 
@@ -30,7 +32,15 @@ at_write_qupath(
 The output path, invisibly.
 }
 \description{
-Write a project's ROIs as QuPath GeoJSON
+Uses current \code{objectType} and classification RGB arrays. Arbitrary internal
+ROI IDs are mapped to deterministic UUID feature IDs and also recorded as
+\code{properties.metadata.annotatR_roi_id}; existing UUIDs remain unchanged.
+String metadata also preserves the coordinate schema and coordinate level.
+QuPath 0.7.0 retains these entries through native import/export. Removing
+that metadata loses the original non-UUID identity. Existing imported object
+kinds are retained; mask/derived ROIs otherwise export as detections and
+other sources as annotations. Geometry is unchanged apart from the requested
+pyramid-level transform. Publication uses a staged replacement.
 }
 \examples{
 \dontshow{if (requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)) withAutoprint(\{ # examplesIf}

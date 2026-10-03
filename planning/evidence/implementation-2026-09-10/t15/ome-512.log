@@ -1,0 +1,82 @@
+$backend
+[1] "ometiff"
+
+$dimensions
+[1] 512 512
+
+$source_bytes
+[1] 1501
+
+$hypothetical_double_cube_bytes
+[1] 2097152
+
+$rss_and_hwm_before
+[1] 260263936 260263936
+
+$rss_and_hwm_after_open
+[1] 491610112 491610112
+
+$rss_and_hwm_after_tile
+[1] 493252608 493252608
+
+$max_R_allocation
+[1] 800480
+
+$total_R_allocations
+[1] 71623672
+
+$image_object_bytes
+[1] 14184
+
+$tile_bytes
+[1] 98528
+
+$open_counts
+$open_counts$binary_bytes
+[1] 0
+
+$open_counts$binary_calls
+[1] 0
+
+$open_counts$native_metadata_calls
+[1] 2
+
+$open_counts$native_window_calls
+[1] 0
+
+$open_counts$native_file_bytes
+[1] NA
+
+$open_counts$decoded_bytes
+[1] 0
+
+
+$final_counts
+$final_counts$binary_bytes
+[1] 0
+
+$final_counts$binary_calls
+[1] 0
+
+$final_counts$native_metadata_calls
+[1] 2
+
+$final_counts$native_window_calls
+[1] 1
+
+$final_counts$native_file_bytes
+[1] NA
+
+$final_counts$decoded_bytes
+[1] 98304
+
+
+$elapsed
+[1] 2.088
+
+$R
+[1] "R version 4.6.1 (2026-06-24)"
+
+$platform
+[1] "x86_64-pc-linux-gnu"
+

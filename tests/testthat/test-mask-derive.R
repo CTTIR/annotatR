@@ -17,7 +17,7 @@ artefact_m <- function() mk_mask(list(at_roi_rect(0, 0, 1, 1, label = "blood")),
                                  c(blood = 2L), overlap = "bitor")
 
 test_that("derive keeps state only inside wound, artefact-free, and labelled", {
-  d <- at_mask_derive(state_m(), anatomy_m(), artefact_m(), keep_label = "wound")
+  d <- at_mask_derive(state_m(), anatomy_m(), artefact_m(), keep_label = "wound", alignment = "assert")
   dm <- as.matrix(d) # [y, x]
   expect_identical(dm[1, 1], 0L) # excluded by blood artefact
   expect_identical(dm[1, 2], 2L) # kept
@@ -29,14 +29,14 @@ test_that("derive keeps state only inside wound, artefact-free, and labelled", {
 })
 
 test_that("derive without an artefact layer keeps all labelled wound pixels", {
-  d <- at_mask_derive(state_m(), anatomy_m(), keep_label = "wound")
+  d <- at_mask_derive(state_m(), anatomy_m(), keep_label = "wound", alignment = "assert")
   dm <- as.matrix(d)
   expect_identical(dm[1, 1], 2L) # no artefact exclusion now
   expect_identical(sum(dm == 2L), 6L)
 })
 
 test_that("derive carries the state legend for surviving classes", {
-  d <- at_mask_derive(state_m(), anatomy_m(), keep_label = "wound")
+  d <- at_mask_derive(state_m(), anatomy_m(), keep_label = "wound", alignment = "assert")
   lg <- at_mask_legend(d)
   expect_identical(lg$label[lg$value == 2L], "injury")
   expect_identical(lg$n_px[lg$value == 2L], 6L)
@@ -44,7 +44,7 @@ test_that("derive carries the state legend for surviving classes", {
 
 test_that("derive aborts on a missing keep label", {
   expect_error(
-    at_mask_derive(state_m(), anatomy_m(), keep_label = "nonexistent"),
+    at_mask_derive(state_m(), anatomy_m(), keep_label = "nonexistent", alignment = "assert"),
     "nonexistent"
   )
 })
@@ -52,5 +52,5 @@ test_that("derive aborts on a missing keep label", {
 test_that("derive aborts on mismatched mask dimensions", {
   small <- mk_mask(list(at_roi_rect(0, 0, 2, 2, label = "wound")),
                    c(wound = 1L), dims = c(4, 4))
-  expect_error(at_mask_derive(state_m(), small, keep_label = "wound"), "dimension")
+  expect_error(at_mask_derive(state_m(), small, keep_label = "wound", alignment = "assert"), "dimension")
 })

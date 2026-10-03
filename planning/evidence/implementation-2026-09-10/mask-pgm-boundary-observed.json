@@ -1,0 +1,134 @@
+{
+  "zeros8": {
+    "tiff": {
+      "bits": 8,
+      "dtype": "uint8",
+      "values": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    "png": {
+      "bits": 1,
+      "colour_type": 0,
+      "values": [
+        [
+          false,
+          false
+        ]
+      ]
+    }
+  },
+  "binary8": {
+    "tiff": {
+      "bits": 8,
+      "dtype": "uint8",
+      "values": [
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    "png": {
+      "bits": 8,
+      "colour_type": 0,
+      "values": [
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  },
+  "extremes8": {
+    "tiff": {
+      "bits": 8,
+      "dtype": "uint8",
+      "values": [
+        [
+          0,
+          255
+        ]
+      ]
+    },
+    "png": {
+      "bits": 1,
+      "colour_type": 0,
+      "values": [
+        [
+          false,
+          true
+        ]
+      ]
+    }
+  },
+  "zeros16": {
+    "tiff": {
+      "bits": 16,
+      "dtype": "uint16",
+      "values": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    "png": {
+      "bits": 1,
+      "colour_type": 0,
+      "values": [
+        [
+          false,
+          false
+        ]
+      ]
+    }
+  },
+  "binary16": {
+    "tiff": {
+      "bits": 16,
+      "dtype": "uint16",
+      "values": [
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    "png": {
+      "bits": 16,
+      "colour_type": 0,
+      "values": [
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  },
+  "extremes16": {
+    "tiff": {
+      "bits": 16,
+      "dtype": "uint16",
+      "values": [
+        [
+          0,
+          65535
+        ]
+      ]
+    },
+    "png": {
+      "bits": 1,
+      "colour_type": 0,
+      "values": [
+        [
+          false,
+          true
+        ]
+      ]
+    }
+  }
+}

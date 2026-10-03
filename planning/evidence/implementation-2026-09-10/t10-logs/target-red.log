@@ -1,0 +1,41 @@
+✔ A24 hole hit-testing ignores empty interior and selects shell (5.03241ms)
+✔ A24 polygon display submits the exterior and hole contours (1.716072ms)
+✔ A24 MultiPolygon display submits both disconnected components (1.043257ms)
+✔ A24 MultiPolygon hit-testing selects a component and ignores the gap (1.070526ms)
+✔ A25 tool routing targets each mounted widget independently (1.218829ms)
+✔ polygon contours close and fill even-odd, without filling lines (1.145227ms)
+✔ Point hit and translation preserve every coordinate and properties (2.685371ms)
+✔ MultiPoint hit and translation preserve every coordinate and properties (1.249808ms)
+✔ LineString hit and translation preserve every coordinate and properties (1.204705ms)
+✔ Polygon hit and translation preserve every coordinate and properties (1.045116ms)
+✔ MultiPolygon hit and translation preserve every coordinate and properties (0.925876ms)
+✔ rect is cancelled on entry/revision change (1.2874ms)
+✔ freehand is cancelled on entry/revision change (0.888087ms)
+✔ circle is cancelled on entry/revision change (0.827827ms)
+✔ polygon is cancelled on entry/revision change (0.83751ms)
+✔ edit is cancelled on entry/revision change (0.992287ms)
+✔ base and overlay loads ignore older generations and missing sources clear pixels (0.982717ms)
+✔ one dispatcher per message survives remount, disposal removes listeners and callbacks (1.166137ms)
+✖ creation captures the displayed target at gesture birth (1.17807ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 18
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 97.17375
+
+✖ failing tests:
+
+test at tests/audit/widget.test.js:158:1
+✖ creation captures the displayed target at gesture birth (1.17807ms)
+  SyntaxError: "undefined" is not valid JSON
+      at JSON.parse (<anonymous>)
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:164:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)

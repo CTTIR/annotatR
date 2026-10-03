@@ -1,0 +1,6 @@
+Writer package: 0.1.0 
+Runtime baseline: f69bf201f651c845ab496f76e25638bc919d4b13
+Original ROI: roi_000000001 
+Original TIFF pixels: 0 255 255 0 
+Legacy manifest columns: idx, path, name, status, project_path, n_rois, modified 
+Schemas and source descriptors absent: TRUE TRUE 

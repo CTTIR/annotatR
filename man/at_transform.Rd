@@ -16,7 +16,8 @@ at_transform(roi, from_level, to_level, img, call = rlang::caller_env())
 \item{call}{The calling environment, for error reporting.}
 }
 \value{
-An \link{annot_roi} with coordinates at \code{to_level}. Exactly invertible.
+An \link{annot_roi} with coordinates at \code{to_level}. Invertible within
+floating-point precision (relative tolerance \code{1e-12}).
 }
 \description{
 Unlike \code{\link[=at_roi_rescale]{at_roi_rescale()}} (which assumes a power-of-two pyramid), this uses

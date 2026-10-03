@@ -1,0 +1,162 @@
+ℹ Loading annotatR
+✔ | F W  S  OK | Context
+
+⠏ |          0 | agree                                                          
+⠼ |          5 | agree                                                          
+⠋ |         11 | agree                                                          
+✔ |         13 | agree
+
+⠏ |          0 | analytical-reference                                           
+⠼ |         15 | analytical-reference                                           
+✔ |         43 | analytical-reference
+
+⠏ |          0 | backend-envi                                                   
+⠙ |          2 | backend-envi                                                   
+✔ |         11 | backend-envi
+
+⠏ |          0 | backend-tivita                                                 
+⠋ |         11 | backend-tivita                                                 
+✔ |      1  12 | backend-tivita
+
+⠏ |          0 | extract                                                        
+⠹ |          3 | extract                                                        
+⠏ |         10 | extract                                                        
+⠴ |         16 | extract                                                        
+✔ |         16 | extract
+
+⠏ |          0 | io-npy                                                         
+⠹ |          3 | io-npy                                                         
+⠼ |          5 | io-npy                                                         
+⠏ |         10 | io-npy                                                         
+✔ |      2  15 | io-npy
+
+⠏ |          0 | mask-metadata                                                  
+⠏ |         10 | mask-metadata                                                  
+⠴ |         16 | mask-metadata                                                  
+⠹ |         23 | mask-metadata                                                  
+⠼ |         25 | mask-metadata                                                  
+⠏ |         30 | mask-metadata                                                  
+⠹ |         33 | mask-metadata                                                  
+⠦ |         37 | mask-metadata                                                  
+⠏ |         40 | mask-metadata                                                  
+⠧ |         48 | mask-metadata                                                  
+⠋ |         51 | mask-metadata                                                  
+⠴ |         56 | mask-metadata                                                  
+⠦ |         57 | mask-metadata                                                  
+⠋ |         61 | mask-metadata                                                  
+⠴ |         66 | mask-metadata                                                  
+⠧ |         68 | mask-metadata                                                  
+⠋ |         71 | mask-metadata                                                  
+⠸ |         74 | mask-metadata                                                  
+⠏ |         80 | mask-metadata                                                  
+⠙ |         82 | mask-metadata                                                  
+⠴ |         86 | mask-metadata                                                  
+⠧ |         88 | mask-metadata                                                  
+⠙ |         92 | mask-metadata                                                  
+⠴ |         96 | mask-metadata                                                  
+⠋ |        101 | mask-metadata                                                  
+⠴ |        106 | mask-metadata                                                  
+⠇ |        109 | mask-metadata                                                  
+⠙ |        112 | mask-metadata                                                  
+⠼ |        115 | mask-metadata                                                  
+⠧ |        118 | mask-metadata                                                  
+⠸ |        124 | mask-metadata                                                  
+⠴ |        126 | mask-metadata                                                  
+⠧ |        128 | mask-metadata                                                  
+⠏ |        130 | mask-metadata                                                  
+⠙ |        132 | mask-metadata                                                  
+✔ |        133 | mask-metadata [4.5s]
+
+⠏ |          0 | persistence-contract                                           
+⠸ |          4 | persistence-contract                                           
+⠙ |         12 | persistence-contract                                           
+⠸ |         14 | persistence-contract                                           
+⠦ |         27 | persistence-contract                                           
+⠴ |         36 | persistence-contract                                           
+✔ |         41 | persistence-contract [2.8s]
+
+⠏ |          0 | persistence-legacy                                             
+⠼ |          5 | persistence-legacy                                             
+⠙ |         12 | persistence-legacy                                             
+⠸ |         14 | persistence-legacy                                             
+⠼ |         25 | persistence-legacy                                             
+⠙ |         32 | persistence-legacy                                             
+✔ |         34 | persistence-legacy [2.8s]
+
+⠏ |          0 | persistence-source                                             
+⠼ |         15 | persistence-source                                             
+⠼ |         55 | persistence-source                                             
+✔ |         56 | persistence-source
+
+⠏ |          0 | provenance-keys                                                
+⠧ |          8 | provenance-keys                                                
+⠼ |         15 | provenance-keys                                                
+⠋ |         21 | provenance-keys                                                
+⠴ |         26 | provenance-keys                                                
+⠼ |         35 | provenance-keys                                                
+⠴ |         46 | provenance-keys                                                
+⠼ |         55 | provenance-keys                                                
+⠋ |         71 | provenance-keys                                                
+⠧ |         78 | provenance-keys                                                
+⠴ |         86 | provenance-keys                                                
+⠙ |        102 | provenance-keys                                                
+⠋ |        111 | provenance-keys                                                
+⠇ |        119 | provenance-keys                                                
+⠸ |        124 | provenance-keys                                                
+⠴ |        146 | provenance-keys                                                
+⠼ |        165 | provenance-keys                                                
+✔ |        166 | provenance-keys [1.8s]
+
+⠏ |          0 | reader-correctness                                             
+⠏ |         10 | reader-correctness                                             
+⠧ |         18 | reader-correctness                                             
+⠴ |         26 | reader-correctness                                             
+⠹ |         33 | reader-correctness                                             
+⠋ |         41 | reader-correctness                                             
+⠇ |         49 | reader-correctness                                             
+⠦ |         57 | reader-correctness                                             
+⠙ |         62 | reader-correctness                                             
+⠙ |         72 | reader-correctness                                             
+⠏ |         80 | reader-correctness                                             
+⠼ |         95 | reader-correctness                                             
+⠦ |         97 | reader-correctness                                             
+⠼ |        105 | reader-correctness                                             
+⠇ |        109 | reader-correctness                                             
+⠏ |        120 | reader-correctness                                             
+⠦ |        127 | reader-correctness                                             
+⠸ |        134 | reader-correctness                                             
+⠋ |        141 | reader-correctness                                             
+✔ |        142 | reader-correctness [4.1s]
+
+⠏ |          0 | reader-provenance                                              
+⠸ |          4 | reader-provenance                                              
+⠇ |          9 | reader-provenance                                              
+✔ |         13 | reader-provenance
+
+⠏ |          0 | windowed-readers                                               
+⠙ |         32 | windowed-readers                                               
+⠦ |         57 | windowed-readers                                               
+⠸ |         64 | windowed-readers                                               
+⠇ |         69 | windowed-readers                                               
+⠸ |         74 | windowed-readers                                               
+⠏ |         80 | windowed-readers                                               
+⠴ |         86 | windowed-readers                                               
+⠋ |         91 | windowed-readers                                               
+⠹ |        103 | windowed-readers                                               
+⠦ |        117 | windowed-readers                                               
+⠦ |        127 | windowed-readers                                               
+⠼ |        135 | windowed-readers                                               
+⠋ |        141 | windowed-readers                                               
+⠦ |        147 | windowed-readers                                               
+⠼ |        155 | windowed-readers                                               
+✔ |        158 | windowed-readers [1.8s]
+
+══ Results ═════════════════════════════════════════════════════════════════════
+Duration: 20.8 s
+
+── Skipped tests (3) ───────────────────────────────────────────────────────────
+• no workbench reference annotation present (2): 'test-io-npy.R:100:3',
+  'test-io-npy.R:108:3'
+• no workbench TIVITA cube present (1): 'test-backend-tivita.R:66:3'
+
+[ FAIL 0 | WARN 0 | SKIP 3 | PASS 853 ]

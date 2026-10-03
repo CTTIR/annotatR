@@ -1,0 +1,9 @@
+AssertionError [ERR_ASSERTION]: the retained half-opacity green overlay must blend with the blue base: [0,128,126,255]
+    at /data/GitHub/CTTIR/public/annotatR-roadmap/tests/browser/widget.cjs:153:12 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

@@ -8,7 +8,9 @@ at_read_qupath(
   path,
   layer_name = "qupath",
   level = 0L,
-  call = rlang::caller_env()
+  call = rlang::caller_env(),
+  coordinate_level = NULL,
+  legacy_levels = c("error", "recorded")
 )
 }
 \arguments{
@@ -16,17 +18,35 @@ at_read_qupath(
 
 \item{layer_name}{Layer name for the imported ROIs. Default \code{"qupath"}.}
 
-\item{level}{Integer level to record on the ROIs. Default \code{0}.}
+\item{level}{Integer fallback level for features without level metadata.
+Default \code{0} (standard full-resolution QuPath coordinates).}
 
 \item{call}{The calling environment, for error reporting.}
+
+\item{coordinate_level}{Optional integer overriding every recorded \code{level}
+without scaling coordinates. Use only when the actual coordinate level is
+known, for example \code{0L} for legacy annotatR exports that wrote level-0
+coordinates beside a nonzero source level. \code{NULL} (default) uses the schema
+and \code{legacy_levels} policy. Coordinates are never automatically repaired.}
+
+\item{legacy_levels}{How to interpret files without the corrected coordinate
+schema marker: \code{"error"} (default) rejects ambiguous nonzero recorded levels;
+\code{"recorded"} explicitly trusts those levels. Level-0 files remain unambiguous.}
 }
 \value{
 An \link{annot_layer}.
 }
 \description{
-Maps \code{classification.name} to the ROI label, \code{colorRGB} to the layer style
-colour, and \code{object_type} to the ROI source. Features with a \code{null}
-classification are imported as \code{"unclassified"}.
+Accepts a native Feature array, FeatureCollection or single Feature. Current
+\code{classification.color} RGB arrays and legacy \code{colorRGB} integers recover the
+layer colour. Null classifications become \code{"unclassified"}. Current
+\code{objectType} and legacy \code{object_type} support annotations and detections;
+other kinds reject explicitly. Imported ROIs use source \code{"imported"} and keep
+the native kind in \code{attributes$qupath_object_type} for subsequent exports.
+Original IDs and coordinate declarations stored in annotatR string metadata
+survive native QuPath import/export. Ordinary external IDs remain unchanged.
+Contradictory duplicate fields or ID mappings reject; identical duplicate
+metadata emitted by QuPath 0.7.0 is accepted.
 }
 \seealso{
 Other io:

@@ -1,0 +1,15 @@
+ℹ Testing annotatR
+quantitative-contract: ...................................................................1...........................................................
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Error ('test-quantitative-contract.R:33:3'): finite-only summaries match e
+Error in `grDevices::rgb(as.vector(r), as.vector(g), as.vector(b))`: color intensity -nan, not in [0,1]
+Backtrace:
+    ▆
+ 1. └─annotatR::at_plot_image(p$image) at test-quantitative-contract.R:33:3
+ 2.   └─annotatR:::.image_display_df(img, level, bands, rgb, max_dim) at annotatR-roadmap/R/plot.R:99:3
+ 3.     └─grDevices::rgb(as.vector(r), as.vector(g), as.vector(b)) at annotatR-roadmap/R/plot.R:65:5
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+ failed   error warning  passed 
+      0       1       0     126 

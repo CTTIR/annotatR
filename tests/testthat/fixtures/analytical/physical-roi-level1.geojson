@@ -1,0 +1,48 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "00000000-0000-0000-0000-00000000012c",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              0,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "roi_id": "00000000-0000-0000-0000-00000000012c",
+        "layer": "analytical",
+        "label": "calibration-case",
+        "level": 1,
+        "source_level": 1,
+        "coordinate_schema": "annotatR-pixel-level-v1",
+        "source": "synthetic-analytical-reference",
+        "attributes": {
+          "image_case": "non-unit-anisotropic-grid"
+        }
+      }
+    }
+  ]
+}

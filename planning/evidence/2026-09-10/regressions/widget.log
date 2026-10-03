@@ -1,0 +1,176 @@
+TAP version 13
+# Subtest: A24 hole hit-testing ignores empty interior and selects shell
+not ok 1 - A24 hole hit-testing ignores empty interior and selects shell
+  ---
+  duration_ms: 3.397157
+  type: 'test'
+  location: '/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:49:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    a click in a hole must not erase the polygon
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:53:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.start (node:internal/test_runner/test:1242:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+  ...
+# Subtest: A24 polygon display submits the exterior and hole contours
+not ok 2 - A24 polygon display submits the exterior and hole contours
+  ---
+  duration_ms: 5.206231
+  type: 'test'
+  location: '/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:59:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        [
+          0,
+          0
+        ],
+    -   [
+    -     40,
+    -     40
+    -   ]
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0:
+      0: 0
+      1: 0
+    1:
+      0: 40
+      1: 40
+  actual:
+    0:
+      0: 0
+      1: 0
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:62:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: A24 MultiPolygon display submits both disconnected components
+not ok 3 - A24 MultiPolygon display submits both disconnected components
+  ---
+  duration_ms: 1.108221
+  type: 'test'
+  location: '/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:65:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + []
+    - [
+    -   [
+    -     0,
+    -     0
+    -   ],
+    -   [
+    -     80,
+    -     80
+    -   ]
+    - ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0:
+      0: 0
+      1: 0
+    1:
+      0: 80
+      1: 80
+  actual:
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:68:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: A24 MultiPolygon hit-testing selects a component and ignores the gap
+not ok 4 - A24 MultiPolygon hit-testing selects a component and ignores the gap
+  ---
+  duration_ms: 1.161556
+  type: 'test'
+  location: '/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:71:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + undefined
+    - 'a_erased'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'a_erased'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:77:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: A25 tool routing targets each mounted widget independently
+not ok 5 - A25 tool routing targets each mounted widget independently
+  ---
+  duration_ms: 1.116724
+  type: 'test'
+  location: '/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:80:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + undefined
+    - 'a_created'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'a_created'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/widget.test.js:85:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 0
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 70.642442

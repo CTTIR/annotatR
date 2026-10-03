@@ -17,7 +17,9 @@ A \link[tibble:tibble]{tibble::tibble} with one row per band and the columns:
 \item{\code{index}}{Band index, 1-based (integer).}
 \item{\code{name}}{Band name (character); a default \code{"Band k"} when unnamed.}
 \item{\code{wavelength}}{Centre wavelength (double); \code{NA} when not spectral.}
-\item{\code{unit}}{Wavelength unit (character); \code{NA} when not spectral.}
+\item{\code{unit}}{Declared spectral coordinate unit (character); \code{NA} when
+not spectral or when the unit is unknown. Scalar metadata applies to
+all bands; per-band units are preserved without conversion.}
 }
 Always has \code{at_n_bands(x)} rows.
 }

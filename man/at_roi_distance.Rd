@@ -4,12 +4,15 @@
 \alias{at_roi_distance}
 \title{Distance between two ROIs}
 \usage{
-at_roi_distance(roi1, roi2, call = rlang::caller_env())
+at_roi_distance(roi1, roi2, call = rlang::caller_env(), image = NULL)
 }
 \arguments{
 \item{roi1, roi2}{\link{annot_roi} objects.}
 
 \item{call}{The calling environment, for error reporting.}
+
+\item{image}{\link{annot_image} defining actual pyramid dimensions; required for
+any nonzero ROI level because measurements are reported at level 0.}
 }
 \value{
 A numeric scalar distance in level-0 pixels.

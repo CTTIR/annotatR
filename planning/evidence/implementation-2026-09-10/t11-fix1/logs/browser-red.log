@@ -1,0 +1,42 @@
+State: {
+  ping: 1789067938735.7556,
+  tool: 'pan',
+  entry_id: 'entry_at_383df552828fb3_000000005',
+  revision: 0,
+  cursor: 5,
+  ready: false,
+  error: 'Loading current image…',
+  saved: 'saved',
+  attempts: 4,
+  active_layer: 'annotations',
+  active_label: 'first',
+  autosave: false,
+  status: [ 'skipped', 'pending', 'skipped', 'pending', 'complete' ],
+  recovery: false,
+  replacement: '/tmp/Rtmp8HEz47/annotatr-journey-383df54cf01571/replacement',
+  out_dir: '/tmp/Rtmp8HEz47/annotatr-journey-383df54cf01571/saved',
+  undo: 0,
+  redo: 0,
+  rois: {
+    annotations: [ [Object] ],
+    locked: [ [Object] ],
+    hidden: [ [Object] ]
+  },
+  labels: {
+    annotations: [ 'first', 'second' ],
+    locked: 'protected',
+    hidden: 'hidden'
+  }
+}
+AssertionError [ERR_ASSERTION]: an unseen entry must not be saved or completed
+
+4 !== 0
+
+    at /data/GitHub/CTTIR/public/annotatR-roadmap/tests/browser/action-origin.cjs:36:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 4,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}

@@ -1,0 +1,4 @@
+"comparison","accuracy","kappa","mean_dice","mean_iou","n_px","encoding","alignment","code_alignment","background","nonfinite"
+"categorical",0.75,0.625,0.75,0.6,12,"categorical","asserted","strict",0,"error"
+"categorical_remapped",0.75,0.625,0.75,0.6,12,"categorical","asserted","by-label",0,"error"
+"bitfield",0.666666666666667,NA,0.8,0.714285714285714,12,"bitfield","asserted","strict",0,"error"

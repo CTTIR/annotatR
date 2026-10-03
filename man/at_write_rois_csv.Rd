@@ -19,7 +19,10 @@ at_write_rois_csv(project, path, overwrite = FALSE, call = rlang::caller_env())
 The path, invisibly.
 }
 \description{
-One row per ROI with a WKT \code{geometry} column.
+One row per ROI with a WKT \code{geometry} column. Coordinates and \code{level} are
+at level 0; \code{source_level} records the stored ROI level as provenance.
+WKT coordinates use 17 significant digits and a decimal point, independently
+of session display options, to preserve double-precision geometry.
 }
 \examples{
 \dontshow{if (requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)) withAutoprint(\{ # examplesIf}

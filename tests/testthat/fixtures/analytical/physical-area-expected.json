@@ -1,0 +1,31 @@
+{
+  "level_dimensions": [
+    [
+      10,
+      8
+    ],
+    [
+      4,
+      2
+    ]
+  ],
+  "dimension_order": "width,height",
+  "level0_pixel_size_um": [
+    0.5,
+    3
+  ],
+  "calibration_declared_at_level": 0,
+  "stored_roi_level": 1,
+  "stored_rectangle_width_height": [
+    2,
+    1
+  ],
+  "level1_to_level0_scale_xy": [
+    2.5,
+    4
+  ],
+  "geometric_area_level1_px2": 2,
+  "geometric_area_level0_px2": 20,
+  "physical_area_um2": 30,
+  "note": "Geometric area is distinct from raster-selected pixel count. The physical area uses the explicitly level-0 calibration."
+}

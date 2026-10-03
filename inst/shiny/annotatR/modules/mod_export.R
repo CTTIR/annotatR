@@ -13,6 +13,7 @@ mod_export_ui <- function(id) {
     shiny::downloadButton(ns("run"), "Export & download", class = "btn-primary"),
     shiny::helpText("Downloads a .zip; a copy is also written to the session's",
                     "export folder."),
+    shiny::textOutput(ns("outcome")),
     shiny::tableOutput(ns("receipt"))
   )
 }
@@ -29,46 +30,14 @@ mod_export_ui <- function(id) {
 }
 
 # Write the selected formats for every in-scope annotated image into `dir`.
-# Returns a receipt data.frame (image, format, path); skipped/failed image
-# names are carried as attributes.
+# Returns every image-format outcome, including paired sidecars and failures.
 .write_exports <- function(rv, formats, scope, dir) {
-  st <- annotatR::at_session_status(rv$session)
-  idx <- .export_targets(rv, scope)
-  overlap <- rv$overlap %||% "last"
-  rows <- list(); skipped <- character(0); failed <- character(0)
-  for (i in idx) {
-    name <- st$name[i]
-    proj <- if (i == rv$cursor) rv$project else rv$session$projects[[i]]
-    if (is.null(proj) || nrow(annotatR::at_rois(proj)) == 0L) {
-      skipped <- c(skipped, name); next
-    }
-    tryCatch({
-      if ("mask_tiff" %in% formats) {
-        p <- file.path(dir, paste0(name, ".tif"))
-        annotatR::at_write_mask(annotatR::at_mask(proj, "labelled", overlap = overlap),
-                                p, overwrite = TRUE)
-        rows[[length(rows) + 1L]] <- data.frame(image = name, format = "mask_tiff", path = p)
-      }
-      if ("geojson" %in% formats) {
-        p <- file.path(dir, paste0(name, ".geojson"))
-        annotatR::at_write_geojson(proj, p, overwrite = TRUE)
-        rows[[length(rows) + 1L]] <- data.frame(image = name, format = "geojson", path = p)
-      }
-      if ("qupath" %in% formats) {
-        p <- file.path(dir, paste0(name, "_qupath.geojson"))
-        annotatR::at_write_qupath(proj, p, overwrite = TRUE)
-        rows[[length(rows) + 1L]] <- data.frame(image = name, format = "qupath", path = p)
-      }
-      if ("csv" %in% formats) {
-        p <- file.path(dir, paste0(name, "_rois.csv"))
-        annotatR::at_write_rois_csv(proj, p, overwrite = TRUE)
-        rows[[length(rows) + 1L]] <- data.frame(image = name, format = "csv", path = p)
-      }
-    }, error = function(e) failed <<- c(failed, sprintf("%s (%s)", name, conditionMessage(e))))
-  }
-  rc <- if (length(rows)) do.call(rbind, rows) else NULL
-  attr(rc, "skipped") <- skipped
-  attr(rc, "failed") <- failed
+  rc <- annotatR:::.export_session_items(rv$session,.export_targets(rv,scope),dir,formats,
+    function(i) if(i==rv$cursor) rv$project else rv$session$projects[[i]],
+    overwrite=TRUE,overlap=rv$overlap %||% "last",flat=TRUE,skip_empty=TRUE)
+  rc <- annotatR:::.export_receipt_files(rc,dir)
+  attr(rc,"skipped") <- unique(rc$entry_id[rc$status=="skipped"])
+  attr(rc,"failed") <- rc$message[rc$status=="error"]
   rc
 }
 
@@ -87,28 +56,27 @@ mod_export_server <- function(id, rv) {
   shiny::moduleServer(id, function(input, output, session) {
     receipt <- shiny::reactiveVal(NULL)
     output$receipt <- shiny::renderTable(receipt())
+    output$outcome <- shiny::renderText({
+      rc <- receipt()
+      if(is.null(rc)) return("")
+      paste0(sum(rc$status=="ok"), " complete; ", sum(rc$status=="error"),
+             " failed; ", sum(rc$status=="skipped"), " skipped.",
+             if(!is.null(attr(rc,"receipt_error"))) paste0(" Receipt file failed: ",attr(rc,"receipt_error")))
+    })
 
     output$run <- shiny::downloadHandler(
       filename = function() sprintf("annotatR_export_%s.zip", input$scope %||% "current"),
       content = function(file) {
         dir <- file.path(rv$session$out_dir, "export")
         if (!dir.exists(dir)) dir.create(dir, recursive = TRUE)
-        rc <- if (is.null(rv$project)) NULL else
-          .write_exports(rv, input$formats, input$scope %||% "current", dir)
+        rc <- .write_exports(rv, input$formats, input$scope %||% "current", dir)
         receipt(rc)
 
-        paths <- if (is.null(rc)) character(0) else rc$path
-        # bundle the mask legend written next to each tiff
-        legends <- paste0(paths[grepl("\\.tif$", paths)], ".legend.json")
-        paths <- unique(c(paths, legends[file.exists(legends)]))
-
-        if (!length(paths)) {
-          note <- file.path(dir, "README.txt")
-          writeLines(c("annotatR export",
-                       sprintf("Scope '%s' matched no annotated images to export.",
-                               input$scope %||% "current")), note)
-          paths <- note
-        }
+        paths <- if(is.null(rc)) character() else c(rc$path[rc$status=="ok"],rc$sidecar_path[rc$status=="ok"])
+        paths <- unique(paths[!is.na(paths)])
+        manifest <- file.path(dir,"_export_manifest.csv")
+        if(!is.null(rc) && is.null(attr(rc,"receipt_error")) && file.exists(manifest)) paths <- c(paths,manifest)
+        if(!length(paths)) stop("Export produced no complete files or receipt.")
         .zip_into(file, paths, dir)
       }
     )

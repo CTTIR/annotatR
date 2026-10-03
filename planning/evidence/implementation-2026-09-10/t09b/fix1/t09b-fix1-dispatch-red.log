@@ -1,0 +1,21 @@
+ℹ Testing annotatR
+provenance-keys: ..................................................................................................................................................................12.3
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Failure ('test-provenance-keys.R:353:3'): pixel reopening and dispatch req
+Expected `at_tile(bad)` to throw a error.
+
+── 2. Failure ('test-provenance-keys.R:356:3'): pixel reopening and dispatch req
+Expected `back[["handle"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+
+
+── 3. Failure ('test-provenance-keys.R:358:3'): pixel reopening and dispatch req
+Expected `at_tile(back)` to throw a error.
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+Error:
+! Test failures.
+Execution halted

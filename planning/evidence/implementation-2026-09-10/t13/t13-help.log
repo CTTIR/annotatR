@@ -1,0 +1,10 @@
+ℹ Loading annotatR
+✖ annotatR-classes.R:27: @aliases must be only 1 line long, not 2.
+ℹ The first line is "annot_image annot_roi annot_layer annot_project
+  annot_session"
+Writing 'at_mask_agreement.Rd'
+Writing 'at_bands.Rd'
+Writing 'at_roi_area.Rd'
+Writing 'at_extract.Rd'
+Writing 'at_extract_spectrum.Rd'
+Writing 'at_plot_spectrum.Rd'

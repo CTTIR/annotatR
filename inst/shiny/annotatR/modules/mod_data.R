@@ -10,10 +10,12 @@ mod_data_ui <- function(id) {
     shiny::h5("Data source"),
     bslib::layout_columns(
       col_widths = c(9, 3),
-      shiny::textInput(ns("dir"), NULL, placeholder = "/path/to/a/folder of images or cubes"),
-      shiny::actionButton(ns("load"), "Load folder", class = "btn-primary")
+      shiny::textInput(ns("dir"), "Image folder", placeholder = "/path/to/a/folder of images or cubes"),
+      .at_action(ns("load"), "Load folder", class = "btn-primary", fields = list(dir = ns("dir")))
     ),
     shiny::div(class = "at-progress", shiny::textOutput(ns("msg"), inline = TRUE)),
+    .at_action(ns("restore"), "Restore previous queue"),
+    shiny::textOutput(ns("recovery")),
     shiny::h5("Current queue"),
     shiny::tableOutput(ns("table"))
   )
@@ -21,10 +23,14 @@ mod_data_ui <- function(id) {
 
 mod_data_server <- function(id, rv) {
   shiny::moduleServer(id, function(input, output, session) {
+    .state_init(rv)
     msg <- shiny::reactiveVal("")
 
     shiny::observeEvent(input$load, {
-      d <- input$dir
+      event <- .state_event(rv, input$load, fields = c("dir"))
+      shiny::req(event)
+      d <- event$payload$dir
+      shiny::req(is.character(d), length(d) == 1L)
       if (!nzchar(d) || !dir.exists(d)) {
         msg("Folder not found."); return()
       }
@@ -38,14 +44,22 @@ mod_data_server <- function(id, rv) {
       new_sess <- tryCatch(
         annotatR::at_session(files, labels = rv$session$labels,
                              layers = rv$session$layer_spec,
-                             out_dir = rv$session$out_dir),
+                             out_dir = file.path(rv$session$out_dir, annotatR:::.new_identity_id("session")),
+                             autosave = rv$session$autosave),
         error = function(e) e)
       if (inherits(new_sess, "error")) { msg(paste("Load failed:", conditionMessage(new_sess))); return() }
-      rv$session <- new_sess
-      rv$cursor <- 1L
-      msg(sprintf("Loaded %d image(s).", nrow(new_sess$manifest)))
+      if (.state_replace(rv, new_sess, event)) {
+        msg(sprintf("Loaded %d image(s). Previous queue retained; use Restore previous queue to recover its annotations.", nrow(new_sess$manifest)))
+      }
     })
 
+    shiny::observeEvent(input$restore, {
+      if (.state_restore_queue(rv, .state_event(rv, input$restore))) msg("Previous queue restored with its annotations and save state.")
+    })
+    output$recovery <- shiny::renderText({
+      if (!is.null(rv$recovery_queue)) "Previous queue and any unsaved annotations are retained in this session. Restore them before closing the app."
+      else "No previous queue is retained."
+    })
     output$msg <- shiny::renderText(msg())
 
     output$table <- shiny::renderTable({

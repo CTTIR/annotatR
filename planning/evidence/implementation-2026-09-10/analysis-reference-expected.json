@@ -1,0 +1,204 @@
+{
+  "shape_yxb": [
+    4,
+    5,
+    3
+  ],
+  "invalid_samples_zero_based": [
+    [
+      0,
+      0,
+      0,
+      "NaN"
+    ],
+    [
+      1,
+      2,
+      1,
+      "+Inf"
+    ],
+    [
+      2,
+      3,
+      2,
+      "-Inf"
+    ],
+    [
+      3,
+      4,
+      2,
+      "NaN"
+    ]
+  ],
+  "roi_cells_zero_based": {
+    "A": "y=0..2,x=0..2",
+    "B": "y=1..3,x=2..4"
+  },
+  "bitfield": [
+    [
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    [
+      1,
+      1,
+      3,
+      2,
+      2
+    ],
+    [
+      1,
+      1,
+      3,
+      2,
+      2
+    ],
+    [
+      0,
+      0,
+      2,
+      2,
+      2
+    ]
+  ],
+  "n_foreground": 16,
+  "n_overlap": 2,
+  "n_background": 4,
+  "finite_omit_statistics": [
+    {
+      "roi": "A",
+      "band": 1,
+      "wavelength_nm": 450,
+      "n_selected": 9,
+      "n_valid": 8,
+      "n_invalid": 1,
+      "mean": 123.375,
+      "median": 122.5,
+      "sd": 8.19298480408697,
+      "min": 112.0,
+      "max": 133.0,
+      "sum": 987.0
+    },
+    {
+      "roi": "A",
+      "band": 2,
+      "wavelength_nm": 550,
+      "n_selected": 9,
+      "n_valid": 8,
+      "n_invalid": 1,
+      "mean": 221.875,
+      "median": 221.5,
+      "sd": 9.295736349838796,
+      "min": 211.0,
+      "max": 233.0,
+      "sum": 1775.0
+    },
+    {
+      "roi": "A",
+      "band": 3,
+      "wavelength_nm": 650,
+      "n_selected": 9,
+      "n_valid": 9,
+      "n_invalid": 0,
+      "mean": 322.0,
+      "median": 322.0,
+      "sd": 8.703447592764606,
+      "min": 311.0,
+      "max": 333.0,
+      "sum": 2898.0
+    },
+    {
+      "roi": "B",
+      "band": 1,
+      "wavelength_nm": 450,
+      "n_selected": 9,
+      "n_valid": 9,
+      "n_invalid": 0,
+      "mean": 134.0,
+      "median": 134.0,
+      "sd": 8.703447592764606,
+      "min": 123.0,
+      "max": 145.0,
+      "sum": 1206.0
+    },
+    {
+      "roi": "B",
+      "band": 2,
+      "wavelength_nm": 550,
+      "n_selected": 9,
+      "n_valid": 8,
+      "n_invalid": 1,
+      "mean": 235.375,
+      "median": 234.5,
+      "sd": 8.19298480408697,
+      "min": 224.0,
+      "max": 245.0,
+      "sum": 1883.0
+    },
+    {
+      "roi": "B",
+      "band": 3,
+      "wavelength_nm": 650,
+      "n_selected": 9,
+      "n_valid": 7,
+      "n_invalid": 2,
+      "mean": 332.42857142857144,
+      "median": 333.0,
+      "sd": 8.829064557040057,
+      "min": 323.0,
+      "max": 344.0,
+      "sum": 2327.0
+    }
+  ],
+  "union_pixel_statistics": [
+    {
+      "band": 1,
+      "wavelength_nm": 450,
+      "n_selected": 16,
+      "n_valid": 15,
+      "n_invalid": 1,
+      "mean": 129.13333333333333,
+      "median": 131.0,
+      "sd": 10.356962231594101,
+      "min": 112.0,
+      "max": 145.0,
+      "sum": 1937.0
+    },
+    {
+      "band": 2,
+      "wavelength_nm": 550,
+      "n_selected": 16,
+      "n_valid": 15,
+      "n_invalid": 1,
+      "mean": 228.33333333333334,
+      "median": 231.0,
+      "sd": 11.286317042372698,
+      "min": 211.0,
+      "max": 245.0,
+      "sum": 3425.0
+    },
+    {
+      "band": 3,
+      "wavelength_nm": 650,
+      "n_selected": 16,
+      "n_valid": 14,
+      "n_invalid": 2,
+      "mean": 326.35714285714283,
+      "median": 324.5,
+      "sd": 10.551027240234754,
+      "min": 311.0,
+      "max": 344.0,
+      "sum": 4569.0
+    }
+  ],
+  "sampling_units": {
+    "unique_selected_pixels": 16,
+    "selected_roi_memberships": 18,
+    "roi_count": 2,
+    "image_count": 1,
+    "note": "ROI membership totals count the two overlapping cells twice; a unique-pixel image summary does not."
+  }
+}

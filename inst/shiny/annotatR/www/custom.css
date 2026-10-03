@@ -103,3 +103,7 @@ a, .nav-link.active { color: var(--at-blue-2); }
                        color: var(--at-muted); font-family: var(--at-mono-font); font-size: .9rem; }
 .at-prose ul { padding-left: 20px; }
 .at-prose code { color: var(--at-blue-2); }
+
+/* The drawing surface stays visible when reached by keyboard. */
+.atcanvas-canvas:focus-visible { outline: 3px solid #5E2C8E; outline-offset: 2px; }
+.atcanvas-status { font-size: 0.85rem; min-height: 1.2em; }

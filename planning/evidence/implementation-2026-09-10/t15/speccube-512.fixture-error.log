@@ -1,0 +1,15 @@
+Error in `.tivita_read_speccube()` at annotatR-roadmap/R/backend-tivita.R:72:5:
+! '/tmp/RtmpnRPKz0/file3d206635ec4a9b_SpecCube.dat' is not a 512x512x3
+  Tivita SpecCube.
+✖ Expected a file size of 3145740 bytes but found 3145728.
+ℹ Pass `nx`/`ny`/`nb` to `at_read_image()` for a non-standard cube.
+Backtrace:
+    ▆
+ 1. ├─base::system.time(...)
+ 2. └─annotatR::at_read_image(...)
+ 3.   └─b$read_fn(path, ...) at annotatR-roadmap/R/backend.R:216:3
+ 4.     └─annotatR:::.tivita_read_speccube(path, ...) at annotatR-roadmap/R/backend-tivita.R:72:5
+ 5.       └─cli::cli_abort(...) at annotatR-roadmap/R/backend-tivita.R:39:5
+ 6.         └─rlang::abort(...)
+Timing stopped at: 0.134 0.003 0.137
+Execution halted

@@ -1,0 +1,14 @@
+{
+  "display": "readable — Canvas display requires package magick. Install it with install.packages(\"magick\") and reopen the app.",
+  "identity": {
+    "entry_id": "entry_at_3785b56c22f837_000000001",
+    "revision": 0
+  },
+  "pixel": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "errors": []
+}

@@ -11,13 +11,17 @@ at_extract_spectrum(
   layer = NULL,
   label = NULL,
   level = 0L,
-  call = rlang::caller_env()
+  call = rlang::caller_env(),
+  nonfinite = c("propagate", "omit", "error")
 )
 }
 \arguments{
 \item{project}{An \link{annot_project}.}
 
-\item{img}{An \link{annot_image}; defaults to the project's image.}
+\item{img}{An \link{annot_image}; defaults to the project's image. Supplying an
+alternate image asserts spatial registration on the same level-0 pixel
+grid. Its level-0 extent must match; differing pyramid dimensions are
+handled using the alternate image's actual level dimensions.}
 
 \item{stat}{\code{"mean"} (default) or \code{"median"}.}
 
@@ -26,10 +30,17 @@ at_extract_spectrum(
 \item{level}{Integer pyramid level. Default \code{0}.}
 
 \item{call}{The calling environment, for error reporting.}
+
+\item{nonfinite}{Policy for NA, NaN and infinite samples: \code{"propagate"}
+(default) returns NA statistics for any affected ROI/band; \code{"omit"} uses
+finite samples only; \code{"error"} aborts on selected nonfinite samples.
+\code{n} always counts selected pixels. A wholly invalid selection has NA
+statistics under omit (including sum); singleton sample SD is NA.}
 }
 \value{
 The long tibble of \code{\link[=at_extract]{at_extract()}}, restricted to spectral bands and
-sorted by wavelength.
+sorted by ROI, declared unit, wavelength, then band index. Values are not
+converted between units; equal wavelengths retain band order.
 }
 \description{
 Extract mean/median spectra for a spectral cube

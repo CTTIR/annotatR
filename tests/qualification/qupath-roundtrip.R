@@ -1,0 +1,31 @@
+# Run from the package root. Arguments: output-directory command [command args].
+# Examples: Rscript tests/qualification/qupath-roundtrip.R /tmp/qp qupath
+# or supply java, JVM flags, -cp, the installed QuPath classpath, qupath.QuPath.
+args <- commandArgs(TRUE)
+stopifnot(length(args)>=2L)
+out <- args[1]; dir.create(out,recursive=TRUE,showWarnings=FALSE)
+out <- normalizePath(out)
+command <- args[2]; command_args <- args[-c(1,2)]
+pkgload::load_all(quiet=TRUE)
+img <- new_annot_image('qupath-consumer-fixture','raster',c(64L,48L),2L,list(c(64L,48L),c(16L,24L)),1L)
+L <- at_layer('L',labels=c('region','donut','cell'),style=at_style(colour=c(region='#123456',donut='#ABCDEF',cell='#010203')))
+L <- at_layer_add(L,at_roi_rect(2,3,5,7,'region',level=1L,id='level-roi',locked=TRUE))
+g <- sf::st_polygon(list(matrix(c(24,2,34,2,34,12,24,12,24,2),ncol=2,byrow=TRUE),matrix(c(27,5,27,9,31,9,31,5,27,5),ncol=2,byrow=TRUE)))
+L <- at_layer_add(L,at_roi_from_sf(g,'donut',id='donut-roi'))
+L <- at_layer_add(L,at_roi_rect(1,1,3,3,'cell',id='00000000-0000-0000-0000-000000000103',source='mask'))
+p <- at_project(img,L)
+input <- file.path(out,'input.geojson'); native <- file.path(out,'roundtrip.geojson'); diagnostics <- file.path(out,'observed.json')
+at_write_qupath(p,input,overwrite=TRUE)
+script <- normalizePath('tests/qualification/qupath-roundtrip.groovy')
+status <- system2(command,shQuote(c(command_args,'script',script,'--args',input,'--args',diagnostics,'--args',native)),timeout=60)
+stopifnot(status==0L,file.exists(native),file.exists(diagnostics))
+back <- at_read_qupath(native)
+stopifnot(identical(vapply(back$rois,`[[`,character(1),'id'),vapply(L$rois,`[[`,character(1),'id')))
+stopifnot(identical(unname(back$style$colour[c('region','donut','cell')]),c('#123456','#ABCDEF','#010203')))
+stopifnot(isTRUE(back$rois[[1]]$attributes$locked),identical(back$rois[[3]]$attributes$qupath_object_type,'detection'))
+stopifnot(identical(as.numeric(sf::st_bbox(back$rois[[1]]$geometry)),c(8,6,20,14)))
+stopifnot(identical(vapply(back$rois,function(r) as.numeric(sf::st_area(r$geometry)),numeric(1)),c(96,84,4)))
+exported <- file.path(out,'reexport.geojson');at_write_qupath(at_project(img,back),exported,overwrite=TRUE)
+features <- jsonlite::read_json(exported)$features
+stopifnot(identical(features[[3]]$properties$objectType,'detection'))
+cat('NATIVE_QUPATH_ROUNDTRIP_PASS\n')

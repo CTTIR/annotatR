@@ -42,7 +42,9 @@ Write an \code{annot_mask} as a lossless integer NumPy array, for interchange wi
 Python tools. A \verb{<path>.legend.json} sidecar (value -> label) is written
 alongside so the array stays self-describing. Unlike \code{\link[=at_write_mask]{at_write_mask()}}, values
 are stored raw (no bit-depth normalisation), so bitfield artefact masks
-survive intact.
+survive intact. The array and legend are staged as one output bundle; an
+existing sidecar also requires \code{overwrite=TRUE}. The explicit caller-selected
+path is respected. Concurrent writers must be serialized.
 }
 \examples{
 \dontshow{if (requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)) withAutoprint(\{ # examplesIf}

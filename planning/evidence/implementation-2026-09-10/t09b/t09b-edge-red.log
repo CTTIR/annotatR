@@ -1,0 +1,21 @@
+ℹ Testing annotatR
+provenance-keys: ............................................................................................................1...23
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Failure ('test-provenance-keys.R:208:3'): custom backend extension metadat
+Expected `img$source_descriptor[["reader_contract"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+
+
+── 2. Failure ('test-provenance-keys.R:220:5'): custom backend extension metadat
+Expected `.migrate_image(bad)` to throw a error.
+
+── 3. Failure ('test-provenance-keys.R:220:5'): custom backend extension metadat
+Expected `.migrate_image(bad)` to throw a error.
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+Error:
+! Test failures.
+Execution halted

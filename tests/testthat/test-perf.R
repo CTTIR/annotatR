@@ -1,8 +1,6 @@
-# The general rasterisation path (eps-shifted stars), bypassing the fast path.
-general_cover <- function(geom, dims) {
-  g <- .apply_coords(geom, function(m) cbind(m[, 1] - 1e-7, m[, 2] - 1e-7))
-  .cover_stars(g, dims, FALSE)
-}
+# Exercise the deterministic general polygon path, bypassing the rectangle
+# optimization. Finite GDAL epsilon shifts are no longer the boundary oracle.
+general_cover <- function(geom, dims) .cover_polygon(geom, dims)
 
 mkrect <- function(x0, y0, x1, y1) {
   sf::st_polygon(list(rbind(c(x0, y0), c(x1, y0), c(x1, y1), c(x0, y1), c(x0, y0))))
@@ -18,10 +16,15 @@ test_that("the rectangle short-circuit is bit-identical to the general path", {
   }
 })
 
-test_that("the point short-circuit is bit-identical to the general path", {
-  for (p in list(c(5, 5), c(5.3, 7.8), c(1, 1), c(9.5, 2.5))) {
-    pt <- sf::st_point(p)
-    expect_identical(.cover_shortcircuit(pt, c(10, 10)), general_cover(pt, c(10, 10)))
+test_that("point short-circuits use literal containing cells", {
+  # Correct the former shifted-GDAL oracle: (5,5) belongs to [5,6)x[5,6),
+  # hence matrix[6,6], rather than matrix[5,5].
+  cases <- list(list(p=c(5,5), ij=c(6,6)), list(p=c(5.3,7.8), ij=c(8,6)),
+                list(p=c(1,1), ij=c(2,2)), list(p=c(9.5,2.5), ij=c(3,10)))
+  for (case in cases) {
+    expected <- matrix(FALSE,10,10)
+    expected[matrix(case$ij,nrow=1)] <- TRUE
+    expect_identical(.cover_shortcircuit(sf::st_point(case$p),c(10,10)),expected)
   }
 })
 

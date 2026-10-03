@@ -12,13 +12,17 @@ at_extract(
   label = NULL,
   level = 0L,
   bands = NULL,
-  call = rlang::caller_env()
+  call = rlang::caller_env(),
+  nonfinite = c("propagate", "omit", "error")
 )
 }
 \arguments{
 \item{project}{An \link{annot_project}.}
 
-\item{img}{An \link{annot_image}; defaults to the project's image.}
+\item{img}{An \link{annot_image}; defaults to the project's image. Supplying an
+alternate image asserts spatial registration on the same level-0 pixel
+grid. Its level-0 extent must match; differing pyramid dimensions are
+handled using the alternate image's actual level dimensions.}
 
 \item{stat}{One or more of \code{"mean"}, \code{"median"}, \code{"sd"}, \code{"min"}, \code{"max"},
 \code{"sum"}, \code{"n"}, or \code{"all"} (every statistic).}
@@ -30,16 +34,31 @@ at_extract(
 \item{bands}{Optional band indices; all bands by default.}
 
 \item{call}{The calling environment, for error reporting.}
+
+\item{nonfinite}{Policy for NA, NaN and infinite samples: \code{"propagate"}
+(default) returns NA statistics for any affected ROI/band; \code{"omit"} uses
+finite samples only; \code{"error"} aborts on selected nonfinite samples.
+\code{n} always counts selected pixels. A wholly invalid selection has NA
+statistics under omit (including sum); singleton sample SD is NA.}
 }
 \value{
 A long \link[tibble:tibble]{tibble::tibble} with columns \code{roi_id}, \code{layer}, \code{label},
 \code{band} (integer), \code{band_name}, \code{wavelength} (\code{NA} when not spectral),
-\code{stat}, \code{value}, and \code{n_px}. A 0-row tibble with these columns when nothing
-matches.
+\code{unit} (declared wavelength unit, NA if unknown), \code{stat}, \code{value}, \code{n_px}
+(selected support), \code{n_valid} (finite samples), and \code{n_invalid}.
+Empty selections produce zero rows. Band order follows requested indices;
+wavelength values and units are preserved, without implicit conversion.
+The \code{analysis} attribute records policy, level, source, bands and limitations.
+Values come directly from tiles, independently of display contrast. The
+raster backend itself uses display conversion and cannot preserve original
+high-bit-depth samples; raw TIFF/OME/ENVI readers have separate contracts.
 }
 \description{
-Compute per-band summary statistics of image values inside each ROI. Works
-tile-wise and never materialises the whole image.
+Compute per-band summary statistics of image values inside each ROI. Reads
+one tile covering each ROI's clipped bounding box; an image-sized bounding
+box can allocate an image-sized tile. Polygon centre membership
+and point containing cells follow the pixel-coverage contract in \code{\link[=at_mask]{at_mask()}}.
+For example, point \verb{(5, 5)} selects matrix row 6, column 6.
 }
 \examples{
 \dontshow{if (requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)) withAutoprint(\{ # examplesIf}

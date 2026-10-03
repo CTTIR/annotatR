@@ -1,3 +1,19 @@
+.session_manifest <- function(paths, entry_id = NULL) {
+  n <- length(paths)
+  if (is.null(entry_id)) entry_id <- vapply(seq_len(n), function(i) .new_identity_id("entry"), character(1))
+  tibble::tibble(
+    idx          = seq_len(n),
+    entry_id     = entry_id,
+    export_stem  = unname(vapply(entry_id, .entry_export_stem, character(1))),
+    path         = as.character(paths),
+    name         = tools::file_path_sans_ext(basename(paths)),
+    status       = rep("pending", n),
+    project_path = rep(NA_character_, n),
+    n_rois       = rep(0L, n),
+    modified     = as.POSIXct(rep(NA_real_, n), origin = "1970-01-01", tz = "UTC")
+  )
+}
+
 # The annot_session class: a resumable batch-annotation session over a queue of
 # images, with a manifest, a cursor, per-image projects (materialised lazily),
 # and shared label/layer templates.
@@ -5,14 +21,59 @@
 # Allowed manifest status values.
 .session_statuses <- c("pending", "in_progress", "complete", "flagged", "skipped")
 
+.entry_export_stem <- function(entry_id) entry_id
+
+.validate_manifest_identity <- function(manifest,
+                                        call = rlang::caller_env()) {
+  required <- c("entry_id", "export_stem")
+  missing <- setdiff(required, names(manifest))
+  if (length(missing)) {
+    cli::cli_abort(
+      c(
+        "The session manifest has no persisted queue identity.",
+        "x" = "Missing field{?s}: {.field {missing}}."
+      ),
+      call = call
+    )
+  }
+  entry_id <- manifest$entry_id
+  export_stem <- manifest$export_stem
+  valid_entry <- is.character(entry_id) && length(entry_id) == nrow(manifest) &&
+    !anyNA(entry_id) && all(nzchar(entry_id)) &&
+    all(grepl("^[A-Za-z0-9._-]+$", entry_id))
+  if (!valid_entry) {
+    cli::cli_abort(
+      "Manifest entry identifiers must be non-empty safe strings.",
+      call = call
+    )
+  }
+  if (anyDuplicated(entry_id)) {
+    cli::cli_abort("Manifest entry identifiers must be unique.", call = call)
+  }
+  valid_stem <- is.character(export_stem) && length(export_stem) == nrow(manifest) &&
+    !anyNA(export_stem) && all(nzchar(export_stem)) &&
+    all(grepl("^[A-Za-z0-9._-]+$", export_stem))
+  if (!valid_stem) {
+    cli::cli_abort(
+      "Manifest export stems must be non-empty safe file stems.",
+      call = call
+    )
+  }
+  if (anyDuplicated(export_stem)) {
+    cli::cli_abort("Manifest export stems must be unique.", call = call)
+  }
+  invisible(manifest)
+}
+
 new_annot_session <- function(manifest,
                               projects,
                               cursor = 1L,
                               labels = character(),
                               layer_spec = list(),
-                              out_dir = tempdir(),
+                              out_dir = .session_out_dir(),
                               autosave = TRUE,
                               meta = list()) {
+  .validate_manifest_identity(manifest)
   structure(
     list(
       manifest   = manifest,
@@ -75,7 +136,7 @@ new_annot_session <- function(manifest,
 #' # Build a session over the bundled example image copied several times:
 #' # sess <- at_example_session(3)
 at_session <- function(paths, labels = character(), layers = NULL,
-                       out_dir = tempdir(), autosave = TRUE, ...,
+                       out_dir = .session_out_dir(), autosave = TRUE, ...,
                        call = rlang::caller_env()) {
   if (!is.character(paths) || length(paths) == 0L) {
     cli::cli_abort(
@@ -101,18 +162,13 @@ at_session <- function(paths, labels = character(), layers = NULL,
   # path would no longer resolve at read time. The autosave/export directory is
   # resolved the same way so those writes land where the caller intended.
   paths <- normalizePath(paths, mustWork = FALSE)
-  out_dir <- normalizePath(out_dir, mustWork = FALSE)
+  if (!grepl("^(?:/|[A-Za-z]:[/\\\\]|\\\\\\\\)", path.expand(out_dir), perl = TRUE)) {
+    out_dir <- file.path(getwd(), out_dir)
+  }
+  out_dir <- normalizePath(path.expand(out_dir), mustWork = FALSE)
   .check_flag(autosave, call = call)
   n <- length(paths)
-  manifest <- tibble::tibble(
-    idx          = seq_len(n),
-    path         = as.character(paths),
-    name         = tools::file_path_sans_ext(basename(paths)),
-    status       = rep("pending", n),
-    project_path = rep(NA_character_, n),
-    n_rois       = rep(0L, n),
-    modified     = as.POSIXct(rep(NA_real_, n), origin = "1970-01-01", tz = "UTC")
-  )
+  manifest <- .session_manifest(paths)
   new_annot_session(
     manifest   = manifest,
     projects   = vector("list", n),
@@ -181,10 +237,6 @@ at_goto <- function(session, i, call = rlang::caller_env()) {
 #' @export
 at_current <- function(session, call = rlang::caller_env()) {
   .check_session(session, call = call)
-  proj <- session$projects[[session$cursor]]
-  if (!is.null(proj)) {
-    return(proj)
-  }
   .materialize_project(session, session$cursor)
 }
 
@@ -200,7 +252,7 @@ at_current <- function(session, call = rlang::caller_env()) {
 at_set_status <- function(session, i, status, call = rlang::caller_env()) {
   .check_session(session, call = call)
   i <- .check_count(i, min = 1L, call = call)
-  status <- .check_choice(status, .session_statuses, call = call)
+  status <- .check_choice(status, .session_statuses, default = missing(status), call = call)
   n <- nrow(session$manifest)
   if (i > n) {
     cli::cli_abort(
@@ -214,8 +266,9 @@ at_set_status <- function(session, i, status, call = rlang::caller_env()) {
 
 #' The session manifest
 #' @inheritParams at_next
-#' @return The manifest [tibble::tibble] with columns `idx`, `path`, `name`,
-#'   `status`, `project_path`, `n_rois`, and `modified`.
+#' @return The manifest [tibble::tibble] with columns `idx`, `entry_id`,
+#'   `export_stem`, `path`, `name`, `status`, `project_path`, `n_rois`, and
+#'   `modified`.
 #' @family sessions
 #' @export
 at_session_status <- function(session, call = rlang::caller_env()) {
@@ -226,9 +279,9 @@ at_session_status <- function(session, call = rlang::caller_env()) {
 #' Session progress manifest with per-label counts
 #'
 #' @inheritParams at_next
-#' @return A [tibble::tibble] with `idx`, `name`, `path`, `status`, `n_layers`,
-#'   `n_rois`, and one integer column per label in the session vocabulary giving
-#'   its ROI count per image.
+#' @return A [tibble::tibble] with `idx`, `entry_id`, `export_stem`, `name`,
+#'   `path`, `status`, `n_layers`, `n_rois`, and one integer column per label in
+#'   the session vocabulary giving its ROI count per image.
 #' @family sessions
 #' @export
 at_manifest <- function(session, call = rlang::caller_env()) {
@@ -252,6 +305,8 @@ at_manifest <- function(session, call = rlang::caller_env()) {
   }, integer(1))
   base <- tibble::tibble(
     idx      = m$idx,
+    entry_id = m$entry_id,
+    export_stem = m$export_stem,
     name     = m$name,
     path     = m$path,
     status   = m$status,
@@ -268,26 +323,16 @@ at_manifest <- function(session, call = rlang::caller_env()) {
 
 # ---- Persistence -----------------------------------------------------------
 
-# Raw session serialisation. The public entry points are at_save_session() and
-# at_load_session() (R/io-project.R), which add version stamping and migration;
-# these internals do the bare saveRDS/readRDS with default-path handling.
+# Compatibility wrappers delegate to the versioned persistence contract.
 .session_save <- function(session, path = NULL, call = rlang::caller_env()) {
-  .check_session(session, call = call)
-  if (is.null(path)) {
-    if (!dir.exists(session$out_dir)) {
-      dir.create(session$out_dir, recursive = TRUE)
-    }
-    path <- file.path(session$out_dir, "_session.rds")
-  }
-  .check_string(path, call = call)
-  saveRDS(session, path)
-  invisible(session)
+  at_save_session(session, path = path, overwrite = TRUE, call = call)
 }
 
 .session_load <- function(path, call = rlang::caller_env()) {
   .check_file(path, call = call)
   obj <- readRDS(path)
   .check_session(obj, arg = "path", call = call)
+  obj <- .migrate_session(obj)
   obj
 }
 

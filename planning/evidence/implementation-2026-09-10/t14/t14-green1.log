@@ -1,0 +1,21 @@
+ℹ Testing annotatR
+reproducible-analysis: .......1............................................................................................2...............................................................
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Failure ('test-reproducible-analysis.R:29:3'): persisted analytical workfl
+Expected `as.matrix(a$tables$mask)` to equal `do.call(rbind, lapply(expected$bitfield, unlist))`.
+Differences:
+`dimnames(actual)` is a list
+`dimnames(expected)` is absent
+
+
+── 2. Failure ('test-reproducible-analysis.R:47:3'): persisted analytical workfl
+Expected `sum(a$tables$pixel_memberships$sample_status != "finite")` to equal 6L.
+Differences:
+  `actual`: 5
+`expected`: 6
+
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+ failed   error warning  passed 
+      2       0       0     162 

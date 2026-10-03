@@ -1,0 +1,23 @@
+ℹ Testing annotatR
+provenance-keys: ..................................................................................................................12....
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Failure ('test-provenance-keys.R:229:3'): explicit derivation records only
+Expected `provenance[["anatomy_source"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+
+
+── 2. Failure ('test-provenance-keys.R:230:3'): explicit derivation records only
+Expected `provenance[["artefact_source"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+No one is perfect!
+Error:
+! Test failures.
+Execution halted

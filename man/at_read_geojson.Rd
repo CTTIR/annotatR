@@ -10,7 +10,9 @@ at_read_geojson(
   level = 0L,
   flip_y = FALSE,
   height = NULL,
-  call = rlang::caller_env()
+  call = rlang::caller_env(),
+  coordinate_level = NULL,
+  legacy_levels = c("error", "recorded")
 )
 }
 \arguments{
@@ -26,6 +28,16 @@ at_read_geojson(
 \item{height}{Image height in pixels, required when \code{flip_y = TRUE}.}
 
 \item{call}{The calling environment, for error reporting.}
+
+\item{coordinate_level}{Optional integer overriding every recorded \code{level}
+without scaling coordinates. Use only when the actual coordinate level is
+known, for example \code{0L} for legacy annotatR exports that wrote level-0
+coordinates beside a nonzero source level. \code{NULL} (default) uses the schema
+and \code{legacy_levels} policy. Coordinates are never automatically repaired.}
+
+\item{legacy_levels}{How to interpret files without the corrected coordinate
+schema marker: \code{"error"} (default) rejects ambiguous nonzero recorded levels;
+\code{"recorded"} explicitly trusts those levels. Level-0 files remain unambiguous.}
 }
 \value{
 A named list of \link{annot_layer} objects (one per distinct \code{layer}

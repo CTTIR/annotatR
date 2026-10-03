@@ -1,0 +1,45 @@
+ℹ Testing annotatR
+batch: ......................
+export-contract: ............................1
+io-qupath: ...........
+mask-io: .....................
+qupath-native: ...2.....3.....4..............5........
+shiny-modules: Loading required package: shiny
+......................................
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Failure ('test-export-contract.R:65:3'): explicit single-file paths stay c
+Expected `as.matrix(at_read_npy(p))` to equal `as.matrix(m)`.
+Differences:
+`actual` is an integer vector (1, 1, 1, 1, 1, ...)
+`expected` is a logical vector (TRUE, TRUE, TRUE, TRUE, TRUE, ...)
+
+
+── 2. Failure ('test-qupath-native.R:10:5'): native QuPath arrays, Features and 
+Expected `unname(sf::st_bbox(L$rois[[1]]$geometry))` to equal `c(8, 6, 20, 14)`.
+Differences:
+`attr(actual, 'crs')` is an S3 object of class <crs>, a list
+`attr(expected, 'crs')` is absent
+
+
+── 3. Failure ('test-qupath-native.R:10:5'): native QuPath arrays, Features and 
+Expected `unname(sf::st_bbox(L$rois[[1]]$geometry))` to equal `c(8, 6, 20, 14)`.
+Differences:
+`attr(actual, 'crs')` is an S3 object of class <crs>, a list
+`attr(expected, 'crs')` is absent
+
+
+── 4. Failure ('test-qupath-native.R:10:5'): native QuPath arrays, Features and 
+Expected `unname(sf::st_bbox(L$rois[[1]]$geometry))` to equal `c(8, 6, 20, 14)`.
+Differences:
+`attr(actual, 'crs')` is an S3 object of class <crs>, a list
+`attr(expected, 'crs')` is absent
+
+
+── 5. Failure ('test-qupath-native.R:30:3'): malformed QuPath roots, fields and 
+Expected `qp_read(f)` to throw a error.
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+Error:
+! Test failures.
+Execution halted

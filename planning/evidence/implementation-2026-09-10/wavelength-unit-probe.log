@@ -1,0 +1,8 @@
+# A tibble: 3 × 4
+  index name   wavelength unit 
+  <int> <chr>       <dbl> <chr>
+1     1 Band 1       0.45 nm   
+2     2 Band 2       0.55 nm   
+3     3 Band 3       0.65 nm   
+character(0)
+Observed absent header units are assigned nm. This is reproduced current behavior, not a correct-unit assertion.

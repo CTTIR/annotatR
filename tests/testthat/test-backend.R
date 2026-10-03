@@ -2,7 +2,7 @@ test_that("all six backends are registered with availability flags", {
   bl <- at_backend_list()
   expect_s3_class(bl, "tbl_df")
   expect_setequal(bl$name, c("raster", "tiff", "ometiff", "cuvis", "tivita", "envi"))
-  expect_identical(names(bl), c("name", "description", "extensions", "available"))
+  expect_identical(names(bl), c("name", "description", "extensions", "available", "metadata_only", "window_read"))
   expect_type(bl$available, "logical")
 })
 

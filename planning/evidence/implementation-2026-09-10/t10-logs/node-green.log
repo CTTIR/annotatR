@@ -1,0 +1,35 @@
+✔ keyboard envelopes capture rendered canvas identity, preserve payload, and suppress missing identity (2.710132ms)
+✔ A24 hole hit-testing ignores empty interior and selects shell (4.907185ms)
+✔ A24 polygon display submits the exterior and hole contours (1.654361ms)
+✔ A24 MultiPolygon display submits both disconnected components (1.001704ms)
+✔ A24 MultiPolygon hit-testing selects a component and ignores the gap (1.061554ms)
+✔ A25 tool routing targets each mounted widget independently (1.356143ms)
+✔ polygon contours close and fill even-odd, without filling lines (1.146176ms)
+✔ Point hit and translation preserve every coordinate and properties (1.229655ms)
+✔ MultiPoint hit and translation preserve every coordinate and properties (1.137268ms)
+✔ LineString hit and translation preserve every coordinate and properties (1.108104ms)
+✔ Polygon hit and translation preserve every coordinate and properties (1.076371ms)
+✔ MultiPolygon hit and translation preserve every coordinate and properties (0.996752ms)
+✔ rect is cancelled on {"entry_id":"entry-b","revision":0} (0.986948ms)
+✔ freehand is cancelled on {"entry_id":"entry-b","revision":0} (0.937772ms)
+✔ circle is cancelled on {"entry_id":"entry-b","revision":0} (0.868627ms)
+✔ polygon is cancelled on {"entry_id":"entry-b","revision":0} (1.206317ms)
+✔ edit is cancelled on {"entry_id":"entry-b","revision":0} (0.911129ms)
+✔ rect is cancelled on {"entry_id":"entry-a","revision":1} (0.812403ms)
+✔ freehand is cancelled on {"entry_id":"entry-a","revision":1} (0.830011ms)
+✔ circle is cancelled on {"entry_id":"entry-a","revision":1} (1.111454ms)
+✔ polygon is cancelled on {"entry_id":"entry-a","revision":1} (1.2335ms)
+✔ edit is cancelled on {"entry_id":"entry-a","revision":1} (1.25551ms)
+✔ base and overlay loads ignore older generations and missing sources clear pixels (1.144725ms)
+✔ one dispatcher per message survives remount, disposal removes listeners and callbacks (1.212944ms)
+✔ creation captures the displayed target at gesture birth (1.055802ms)
+✔ MultiPoint display draws disconnected circles and lines select only their stroke (0.993554ms)
+✔ only the newest overlay callback can paint and disposal cancels pending overlays (0.829216ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 111.992358

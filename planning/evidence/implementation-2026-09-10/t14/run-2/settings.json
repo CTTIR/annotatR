@@ -1,0 +1,560 @@
+{
+  "schema": "annotatR-analytical-example-v1",
+  "annotation": {
+    "entry_id": "analytical-image-001",
+    "revision": 0,
+    "roi_ids": ["00000000-0000-0000-0000-00000000012a", "00000000-0000-0000-0000-00000000012b"],
+    "revision_policy": "caller-managed persisted revision; increment when annotations change"
+  },
+  "source": {
+    "descriptor": {
+      "schema_version": 1,
+      "signature": {
+        "size": 152,
+        "mtime": 1789069035.00958
+      },
+      "path": "/data/GitHub/CTTIR/public/annotatR-roadmap/tests/testthat/fixtures/analytical/cube.hdr",
+      "backend": "envi",
+      "options": [],
+      "options_identity": "580a0000000200040601000203000000001300000000",
+      "reader_contract": null
+    },
+    "inspection": {
+      "status": "available",
+      "path": "/data/GitHub/CTTIR/public/annotatR-roadmap/tests/testthat/fixtures/analytical/cube.hdr",
+      "backend": "envi",
+      "options": [],
+      "options_inferred": false
+    }
+  },
+  "inputs": {
+    "fixture_directory": "/data/GitHub/CTTIR/public/annotatR-roadmap/tests/testthat/fixtures/analytical",
+    "project_path": "/data/GitHub/CTTIR/public/annotatR-roadmap/planning/evidence/implementation-2026-09-10/t14/annotations.rds",
+    "md5": {
+      "cube.hdr": "b6ab16417bd58e956019a5c67dd3c7f7",
+      "cube.dat": "5f271525b4d4e2de08f0eb706dabf920",
+      "analysis-rois.geojson": "cbb0f9bd50abfb63dafe476895288ccf",
+      "categorical-reference.npy": "881643822bd074d5cdcdf96a5d553ebb",
+      "categorical-prediction.npy": "46da9714c6889dcd39f5ee0c5a1bf295",
+      "categorical-prediction-remapped.npy": "a213a7d536b198d58412f8af7b818e11",
+      "bitfield-reference.npy": "c0233969f464676ad916fc9c5320440c",
+      "bitfield-prediction.npy": "484c22e4cd9f9486655964a8f8e6901c",
+      "persisted_project": "c2d942f900fc06094b64f14d208c6803"
+    },
+    "checksum_scope": "Exact input bytes, including ENVI data payload; MD5 integrity, not authentication"
+  },
+  "calibration": {
+    "level": 0,
+    "pixel_size_xy": [1, 1],
+    "pixel_unit": "px",
+    "physical_status": "unknown",
+    "note": "This ENVI fixture declares pixel units only; no physical area or intensity unit is inferred"
+  },
+  "bands": [
+    {
+      "index": 1,
+      "name": "Band 1",
+      "wavelength": 450,
+      "unit": "nm"
+    },
+    {
+      "index": 2,
+      "name": "Band 2",
+      "wavelength": 550,
+      "unit": "nm"
+    },
+    {
+      "index": 3,
+      "name": "Band 3",
+      "wavelength": 650,
+      "unit": "nm"
+    }
+  ],
+  "extraction": {
+    "level": 0,
+    "bands": [1, 2, 3],
+    "layer": null,
+    "label": null,
+    "nonfinite": "omit",
+    "statistics": ["mean", "median", "sd", "min", "max", "sum", "n"],
+    "max_px": 1000000,
+    "pixel_coordinates": "one-based x column, y row",
+    "selected_support": "polygon pixel centres; touches=FALSE",
+    "n": "selected pixels per ROI and band",
+    "n_valid": "finite contributors",
+    "n_invalid": "selected NA, NaN, +Inf or -Inf samples",
+    "sd": "sample SD, denominator n_valid - 1; singleton is NA",
+    "empty_or_all_invalid": "All-invalid statistics are NA including sum; empty ROIs yield no summary rows and are counted as excluded; empty image-band rows retain zero counts and NA statistics",
+    "sample_contract": "raw-scalar-v1"
+  },
+  "mask": {
+    "type": "multiclass",
+    "level": 0,
+    "background": 0,
+    "values": {
+      "A": 1,
+      "B": 2
+    },
+    "overlap": "bitor",
+    "touches": false,
+    "engine": "stars"
+  },
+  "mask_metadata": {
+    "schema_version": 1,
+    "status": "declared",
+    "encoding": "bitfield",
+    "background": 0,
+    "overlap": "bitor",
+    "grid": {
+      "dims": [5, 4],
+      "level": 0,
+      "origin": [0, 0],
+      "stride": [1, 1]
+    },
+    "source": {
+      "entry_id": "analytical-image-001",
+      "descriptor": {
+        "schema_version": 1,
+        "signature": {
+          "size": 152,
+          "mtime": 1789069035.00958
+        },
+        "path": "/data/GitHub/CTTIR/public/annotatR-roadmap/tests/testthat/fixtures/analytical/cube.hdr",
+        "backend": "envi",
+        "options": [],
+        "options_identity": "580a0000000200040601000203000000001300000000",
+        "reader_contract": null
+      }
+    },
+    "codebook": [
+      {
+        "value": 1,
+        "label": "A"
+      },
+      {
+        "value": 2,
+        "label": "B"
+      }
+    ]
+  },
+  "mask_codebook": [
+    {
+      "value": 1,
+      "label": "A",
+      "layer": "analytical",
+      "roi_id": null,
+      "n_px": 9,
+      "colour": "#999999"
+    },
+    {
+      "value": 2,
+      "label": "B",
+      "layer": "analytical",
+      "roi_id": null,
+      "n_px": 9,
+      "colour": "#E69F00"
+    }
+  ],
+  "backend": {
+    "name": "envi",
+    "implementation_package": "annotatR",
+    "implementation_version": "0.1.0",
+    "plugin_version": "unknown"
+  },
+  "versions": {
+    "R": "4.6.1",
+    "platform": "x86_64-pc-linux-gnu",
+    "packages": {
+      "annotatR": "0.1.0",
+      "sf": "1.1.2",
+      "stars": "0.7.3",
+      "tibble": "3.3.1",
+      "dplyr": "1.2.1",
+      "jsonlite": "2.0.0",
+      "rlang": "1.3.0",
+      "cli": "3.6.6"
+    },
+    "sf_external": {
+      "GEOS": "3.14.1",
+      "GDAL": "3.12.2",
+      "proj.4": "9.7.1",
+      "GDAL_with_GEOS": "true",
+      "USE_PROJ_H": "true",
+      "PROJ": "9.7.1"
+    }
+  },
+  "sampling_units": {
+    "unique_selected_pixels": 16,
+    "selected_roi_memberships": 18,
+    "roi_count": 2,
+    "image_count": 1
+  },
+  "estimands": {
+    "pixel_memberships": "one raw ROI-pixel-band record; overlaps repeat",
+    "unique_pixels": "one raw image-pixel-band record; overlaps deduplicated",
+    "roi_statistics": "finite-only statistics within each ROI and band; n counts selected support",
+    "spectra": "per-ROI finite mean at each declared spectral coordinate",
+    "image_statistics": "finite-only statistics of unique selected pixels per image and band",
+    "counts": "spatial cells and ROI memberships, counted once across bands; excluded ROIs have no selected cells",
+    "agreement": "per-class memberships on separate 3x4 reference/prediction grids",
+    "agreement_overall": "all 12 cells including background; bitfield accuracy is exact-set agreement"
+  },
+  "agreement": {
+    "alignment": "assert",
+    "assertion_basis": "Independent fixture generator declares common yx grids",
+    "transpose": false,
+    "nonfinite": "error",
+    "absent_classes": "NA Dice/IoU; excluded from macro means",
+    "comparisons": {
+      "categorical": {
+        "reference": {
+          "metadata": {
+            "schema_version": 1,
+            "status": "declared",
+            "encoding": "categorical",
+            "background": 0,
+            "overlap": "last",
+            "grid": {
+              "dims": [4, 3],
+              "level": 0,
+              "origin": [0, 0],
+              "stride": [1, 1]
+            },
+            "source": null,
+            "codebook": [
+              {
+                "value": 1,
+                "label": "A"
+              },
+              {
+                "value": 2,
+                "label": "B"
+              },
+              {
+                "value": 3,
+                "label": "absent"
+              }
+            ]
+          },
+          "legend": [
+            {
+              "value": 1,
+              "label": "A",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 4,
+              "colour": "#5E2C8E"
+            },
+            {
+              "value": 2,
+              "label": "B",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 4,
+              "colour": "#5E2C8E"
+            },
+            {
+              "value": 3,
+              "label": "absent",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 0,
+              "colour": "#5E2C8E"
+            }
+          ]
+        },
+        "prediction": {
+          "metadata": {
+            "schema_version": 1,
+            "status": "declared",
+            "encoding": "categorical",
+            "background": 0,
+            "overlap": "last",
+            "grid": {
+              "dims": [4, 3],
+              "level": 0,
+              "origin": [0, 0],
+              "stride": [1, 1]
+            },
+            "source": null,
+            "codebook": [
+              {
+                "value": 1,
+                "label": "A"
+              },
+              {
+                "value": 2,
+                "label": "B"
+              },
+              {
+                "value": 3,
+                "label": "absent"
+              }
+            ]
+          },
+          "legend": [
+            {
+              "value": 1,
+              "label": "A",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 4,
+              "colour": "#5E2C8E"
+            },
+            {
+              "value": 2,
+              "label": "B",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 4,
+              "colour": "#5E2C8E"
+            },
+            {
+              "value": 3,
+              "label": "absent",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 0,
+              "colour": "#5E2C8E"
+            }
+          ]
+        }
+      },
+      "categorical_remapped": {
+        "reference": {
+          "metadata": {
+            "schema_version": 1,
+            "status": "declared",
+            "encoding": "categorical",
+            "background": 0,
+            "overlap": "last",
+            "grid": {
+              "dims": [4, 3],
+              "level": 0,
+              "origin": [0, 0],
+              "stride": [1, 1]
+            },
+            "source": null,
+            "codebook": [
+              {
+                "value": 1,
+                "label": "A"
+              },
+              {
+                "value": 2,
+                "label": "B"
+              },
+              {
+                "value": 3,
+                "label": "absent"
+              }
+            ]
+          },
+          "legend": [
+            {
+              "value": 1,
+              "label": "A",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 4,
+              "colour": "#5E2C8E"
+            },
+            {
+              "value": 2,
+              "label": "B",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 4,
+              "colour": "#5E2C8E"
+            },
+            {
+              "value": 3,
+              "label": "absent",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 0,
+              "colour": "#5E2C8E"
+            }
+          ]
+        },
+        "prediction": {
+          "metadata": {
+            "schema_version": 1,
+            "status": "declared",
+            "encoding": "categorical",
+            "background": 0,
+            "overlap": "last",
+            "grid": {
+              "dims": [4, 3],
+              "level": 0,
+              "origin": [0, 0],
+              "stride": [1, 1]
+            },
+            "source": null,
+            "codebook": [
+              {
+                "value": 2,
+                "label": "A"
+              },
+              {
+                "value": 1,
+                "label": "B"
+              },
+              {
+                "value": 3,
+                "label": "absent"
+              }
+            ]
+          },
+          "legend": [
+            {
+              "value": 2,
+              "label": "A",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 4,
+              "colour": "#5E2C8E"
+            },
+            {
+              "value": 1,
+              "label": "B",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 4,
+              "colour": "#5E2C8E"
+            },
+            {
+              "value": 3,
+              "label": "absent",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 0,
+              "colour": "#5E2C8E"
+            }
+          ]
+        }
+      },
+      "bitfield": {
+        "reference": {
+          "metadata": {
+            "schema_version": 1,
+            "status": "declared",
+            "encoding": "bitfield",
+            "background": 0,
+            "overlap": "last",
+            "grid": {
+              "dims": [4, 3],
+              "level": 0,
+              "origin": [0, 0],
+              "stride": [1, 1]
+            },
+            "source": null,
+            "codebook": [
+              {
+                "value": 1,
+                "label": "A"
+              },
+              {
+                "value": 2,
+                "label": "B"
+              },
+              {
+                "value": 4,
+                "label": "absent"
+              }
+            ]
+          },
+          "legend": [
+            {
+              "value": 1,
+              "label": "A",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 5,
+              "colour": "#5E2C8E"
+            },
+            {
+              "value": 2,
+              "label": "B",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 5,
+              "colour": "#5E2C8E"
+            },
+            {
+              "value": 4,
+              "label": "absent",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 0,
+              "colour": "#5E2C8E"
+            }
+          ]
+        },
+        "prediction": {
+          "metadata": {
+            "schema_version": 1,
+            "status": "declared",
+            "encoding": "bitfield",
+            "background": 0,
+            "overlap": "last",
+            "grid": {
+              "dims": [4, 3],
+              "level": 0,
+              "origin": [0, 0],
+              "stride": [1, 1]
+            },
+            "source": null,
+            "codebook": [
+              {
+                "value": 1,
+                "label": "A"
+              },
+              {
+                "value": 2,
+                "label": "B"
+              },
+              {
+                "value": 4,
+                "label": "absent"
+              }
+            ]
+          },
+          "legend": [
+            {
+              "value": 1,
+              "label": "A",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 5,
+              "colour": "#5E2C8E"
+            },
+            {
+              "value": 2,
+              "label": "B",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 5,
+              "colour": "#5E2C8E"
+            },
+            {
+              "value": 4,
+              "label": "absent",
+              "layer": null,
+              "roi_id": null,
+              "n_px": 0,
+              "colour": "#5E2C8E"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "inference": {
+    "resampling": "none",
+    "seed": null,
+    "independent_unit": "not specified; descriptive single-image example",
+    "note": "Pixels, overlapping ROIs and bands are not independent image replicates; inferential uncertainty requires the study sampling unit"
+  },
+  "limitations": ["Overlapping ROIs count shared pixels separately.", "One bounding-box tile per ROI; no within-ROI streaming.", "No image preview is generated; mixed nonfinite RGB normalization is not qualified here.", "Small synthetic example; no model fitting, clinical inference, native display or vendor-format qualification.", "Determinism is for the same persisted inputs and software environment; paths, file signatures and versions are traceable environment-specific provenance."]
+}

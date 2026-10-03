@@ -1,0 +1,18 @@
+
+CASE: mask plot overlay scale mismatch 
+image x-range: 1 1024 ROI x-range: 1800 1900 
+
+CASE: RDS mask labels disappear 
+original labels: tumour reimported: 1 
+
+CASE: mask stats drop bitfield overlaps 
+legend counts: 36 36 stats counts: 32 32 
+
+CASE: per-ROI mask export on anisotropic pyramid 
+project mask pixels: 72 per ROI exported pixels: 36 
+
+CASE: export path escapes destination 
+written outside output dir: TRUE 
+
+CASE: default session save ignores overwrite FALSE 
+default save replaced existing status: complete 

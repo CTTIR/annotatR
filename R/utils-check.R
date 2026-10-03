@@ -156,34 +156,22 @@
   invisible(x)
 }
 
-# `x` must be exactly one of `choices` (no partial matching). Returns the match.
-# When `x` is the full `choices` vector (the `c(...)` default idiom), the first
-# choice is returned, mirroring `match.arg()`.
-.check_choice <- function(x,
-                          choices,
+# Exact scalar choices. Callers explicitly identify omitted vector defaults;
+# supplying the same vector is still an invalid multi-value argument.
+.check_choice <- function(x, choices,
                           arg = rlang::caller_arg(x),
-                          call = rlang::caller_env()) {
-  if (identical(x, choices)) {
-    return(choices[[1]])
+                          call = rlang::caller_env(), default = FALSE) {
+  if (default && identical(x, choices)) return(choices[[1]])
+  valid <- if (is.numeric(choices)) {
+    is.numeric(x) && !is.complex(x) && length(x) == 1L &&
+      !is.na(x) && is.finite(x) && x == trunc(x) && x %in% choices
+  } else {
+    is.character(x) && length(x) == 1L && !is.na(x) && x %in% choices
   }
-  if (length(x) == 0L) {
+  if (!valid) {
     cli::cli_abort(
-      c(
-        "{.arg {arg}} must be one of {.or {.val {choices}}}.",
-        "x" = "You supplied a length-0 value."
-      ),
-      call = call
-    )
-  }
-  if (length(x) != 1L) {
-    x <- x[[1]]
-  }
-  if (!is.character(x) || is.na(x) || !x %in% choices) {
-    cli::cli_abort(
-      c(
-        "{.arg {arg}} must be one of {.or {.val {choices}}}.",
-        "x" = "You supplied {.val {x}}."
-      ),
+      c("{.arg {arg}} must be one of {.or {.val {choices}}}.",
+        "i" = "Supply a single non-missing {if (is.numeric(choices)) 'finite whole number' else 'string'}; explicit vectors are not defaults."),
       call = call
     )
   }

@@ -16,14 +16,18 @@ at_plot_image(
 \arguments{
 \item{img}{An \link{annot_image}.}
 
-\item{level}{Pyramid level to display; chosen automatically when \code{NULL}.}
+\item{level}{Pyramid level to sample; chosen automatically when \code{NULL}.
+Plot axes always use level-0 image coordinates, scaled independently by
+actual width and height ratios.}
 
 \item{bands}{Optional band index for single-band display.}
 
 \item{rgb}{Optional length-3 vector of band indices, or wavelengths in nm for
 a spectral cube, for a false-colour composite.}
 
-\item{max_dim}{Maximum display dimension (auto-downsampled). Default \code{1024}.}
+\item{max_dim}{Maximum display dimension (auto-downsampled). Default \code{1024}.
+Each displayed cell covers its full source block; final partial blocks
+end at the image boundary.}
 
 \item{call}{The calling environment, for error reporting.}
 }

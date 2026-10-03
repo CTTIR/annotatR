@@ -1,0 +1,28 @@
+ℹ Testing annotatR
+qupath-native: ............................................1
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Error ('test-qupath-native.R:68:3'): coordinate metadata consistency is ex
+Error in `qp_read(f)`: Ambiguous legacy coordinate level: nonzero level without a coordinate schema.
+i Set coordinate_level to the known coordinate level (0L for old normalized exports), or legacy_levels = 'recorded' to explicitly trust recorded levels.
+Backtrace:
+     ▆
+  1. ├─testthat::expect_error(qp_read(f), "Conflicting QuPath coordinate level") at test-qupath-native.R:68:3
+  2. │ └─testthat:::expect_condition_matching_(...)
+  3. │   └─testthat:::quasi_capture(...)
+  4. │     ├─testthat (local) .capture(...)
+  5. │     │ └─base::withCallingHandlers(...)
+  6. │     └─rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+  7. └─annotatR (local) qp_read(f)
+  8.   └─annotatR::at_read_qupath(p) at test-qupath-native.R:2:133
+  9.     ├─annotatR::at_roi_from_sf(...) at annotatR-roadmap/R/io-qupath.R:165:5
+ 10.     │ └─annotatR:::.build_roi(geometry, label, level, list(...), call = call) at annotatR-roadmap/R/class-roi.R:302:3
+ 11.     │   └─annotatR:::.check_count(level, call = call) at annotatR-roadmap/R/class-roi.R:76:3
+ 12.     └─annotatR:::.import_coordinate_level(...) at annotatR-roadmap/R/io-qupath.R:165:5
+ 13.       └─cli::cli_abort(...) at annotatR-roadmap/R/utils.R:162:5
+ 14.         └─rlang::abort(...)
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+Error:
+! Test failures.
+Execution halted

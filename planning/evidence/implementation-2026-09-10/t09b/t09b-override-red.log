@@ -1,0 +1,18 @@
+ℹ Testing annotatR
+provenance-keys: ........................................................................................................................123
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Failure ('test-provenance-keys.R:251:5'): metadata overrides reject duplic
+Expected `at_read_npy(p, metadata = override)` to throw a error.
+
+── 2. Failure ('test-provenance-keys.R:251:5'): metadata overrides reject duplic
+Expected `at_read_npy(p, metadata = override)` to throw a error.
+
+── 3. Failure ('test-provenance-keys.R:251:5'): metadata overrides reject duplic
+Expected `at_read_npy(p, metadata = override)` to throw a error.
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+No one is perfect!
+Error:
+! Test failures.
+Execution halted

@@ -1,0 +1,88 @@
+ℹ Testing annotatR
+export-contract: 123.456789abcde
+qupath-native: fghijklmnopqrstuWvw
+
+══ Warnings ════════════════════════════════════════════════════════════════════
+1. outbound QuPath UUID metadata preserves stable internal IDs and object kind ('test-qupath-native.R:45:3') - Unknown or uninitialised column: `id`.
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Error ('test-export-contract.R:6:3'): derived mask filenames are contained
+Error in `tiff::writeTIFF(m/(2^bits - 1), path, bits.per.sample = as.integer(bits))`: unable to create /tmp/RtmpBSuT2j/file31ef374dad4655/../escaped_a/b.tif
+Backtrace:
+    ▆
+ 1. └─annotatR::at_write_masks(p, d, per = "class") at test-export-contract.R:6:3
+ 2.   └─base::lapply(...) at annotatR-roadmap/R/mask-io.R:312:3
+ 3.     └─annotatR (local) FUN(X[[i]], ...)
+ 4.       └─annotatR::at_write_mask(j$mask, p, format = "tiff", overwrite = overwrite) at annotatR-roadmap/R/mask-io.R:314:5
+ 5.         └─annotatR:::.write_mask_raster(...) at annotatR-roadmap/R/mask-io.R:72:5
+ 6.           └─tiff::writeTIFF(m/(2^bits - 1), path, bits.per.sample = as.integer(bits)) at annotatR-roadmap/R/mask-io.R:88:5
+
+── 2. Error ('test-export-contract.R:18:54'): failed mask jobs and existing side
+Error in `.write_legend_json(mask, paste0(path, ".legend.json"))`: injected legend failure
+Backtrace:
+    ▆
+ 1. └─annotatR::at_write_masks(p, d, per = "layer") at test-export-contract.R:19:3
+ 2.   └─base::lapply(...) at annotatR-roadmap/R/mask-io.R:312:3
+ 3.     └─annotatR (local) FUN(X[[i]], ...)
+ 4.       └─annotatR::at_write_mask(j$mask, p, format = "tiff", overwrite = overwrite) at annotatR-roadmap/R/mask-io.R:314:5
+ 5.         └─annotatR:::.write_legend_json(mask, paste0(path, ".legend.json")) at annotatR-roadmap/R/mask-io.R:75:5
+
+── 3. Error ('test-export-contract.R:29:3'): bundle replacement stages all files
+Error in `.export_bundle(paths, function(p) {     writeLines("new", p[1])     stop("legend failed") }, TRUE)`: could not find function ".export_bundle"
+Backtrace:
+    ▆
+ 1. └─testthat::expect_error(...) at test-export-contract.R:29:3
+ 2.   └─testthat:::expect_condition_matching_(...)
+ 3.     └─testthat:::quasi_capture(...)
+ 4.       ├─testthat (local) .capture(...)
+ 5.       │ └─base::withCallingHandlers(...)
+ 6.       └─rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+
+── 4. Failure ('test-export-contract.R:42:3'): batch preflight rejects symlink d
+Expected `at_export_all(...)` to throw a error.
+
+── 5. Failure ('test-export-contract.R:43:3'): batch preflight rejects symlink d
+Expected `list.files(outside)` to have length 0.
+Actual length: 1.
+
+── 6. Failure ('test-export-contract.R:44:3'): batch preflight rejects symlink d
+Expected `dir.exists(file.path(d, "csv"))` to be FALSE.
+Differences:
+`actual`:   TRUE 
+`expected`: FALSE
+
+
+── 7. Failure ('test-export-contract.R:51:3'): receipts retain per-format materi
+Expected `nrow(rc)` to equal 4.
+Differences:
+  `actual`: 3.0
+`expected`: 4.0
+
+
+── 8. Failure ('test-export-contract.R:52:3'): receipts retain per-format materi
+Expected `sum(rc$status == "error")` to equal 2.
+Differences:
+  `actual`: 1.0
+`expected`: 2.0
+
+
+── 9. Failure ('test-export-contract.R:53:3'): receipts retain per-format materi
+Expected `rc$bytes` to have type "double".
+Actual type: "integer"
+
+── 10. Failure ('test-export-contract.R:55:3'): receipts retain per-format mater
+Expected `sum(rc2$status == "skipped")` to equal 2.
+Differences:
+  `actual`: 0.0
+`expected`: 2.0
+
+  ... and 22 more
+
+
+Maximum number of 10 failures reached, some test results may be missing.
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+Keep trying!
+Error:
+! Test failures.
+Execution halted

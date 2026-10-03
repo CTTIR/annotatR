@@ -85,7 +85,7 @@ test_that("at_write_masks emits a receipt and files per scope", {
   dir <- withr::local_tempdir()
   receipt <- at_write_masks(proj, dir, per = "layer")
   expect_s3_class(receipt, "tbl_df")
-  expect_identical(names(receipt), c("path", "type", "n_px", "bytes"))
+  expect_identical(names(receipt), c("path", "type", "n_px", "bytes", "name", "status", "message", "sidecar_path", "sidecar_bytes"))
   expect_true(all(file.exists(receipt$path)))
 })
 

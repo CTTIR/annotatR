@@ -1,0 +1,79 @@
+ℹ Testing annotatR
+io-qupath: ...........
+qupath-native: .............................................1.......23456789a.bcdefgh
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Error ('test-qupath-native.R:81:7'): QuPath classification fields use exac
+Error in `.qupath_colour(cls)`: Malformed QuPath classification color RGB array.
+Backtrace:
+    ▆
+ 1. └─annotatR (local) qp_read(f) at test-qupath-native.R:81:7
+ 2.   └─annotatR::at_read_qupath(p) at test-qupath-native.R:2:133
+ 3.     └─annotatR:::.qupath_colour(cls) at annotatR-roadmap/R/io-qupath.R:141:5
+
+── 2. Failure ('test-qupath-native.R:94:3'): unsupported metadata prefixes canno
+Expected `r$id` to be identical to "00000000-0000-0000-0000-000000000101".
+Differences:
+`actual`:   "unexpected-original"                 
+`expected`: "00000000-0000-0000-0000-000000000101"
+
+
+── 3. Failure ('test-qupath-native.R:95:3'): unsupported metadata prefixes canno
+Expected `r$level` to be identical to 0L.
+Differences:
+  `actual`: 2
+`expected`: 0
+
+
+── 4. Failure ('test-qupath-native.R:97:3'): unsupported metadata prefixes canno
+Expected `qp_read(f)` to throw a error.
+
+── 5. Failure ('test-qupath-native.R:106:3'): unsupported property and classific
+Expected `r$id` to be identical to "00000000-0000-0000-0000-000000000101".
+Differences:
+`actual`:   "wrong"                               
+`expected`: "00000000-0000-0000-0000-000000000101"
+
+
+── 6. Failure ('test-qupath-native.R:107:3'): unsupported property and classific
+Expected `r$level` to be identical to 0L.
+Differences:
+  `actual`: 2
+`expected`: 0
+
+
+── 7. Failure ('test-qupath-native.R:108:3'): unsupported property and classific
+Expected `r$label` to be identical to "unclassified".
+Differences:
+`actual`:   "wrong"       
+`expected`: "unclassified"
+
+
+── 8. Failure ('test-qupath-native.R:109:3'): unsupported property and classific
+Expected `isTRUE(r$attributes$locked)` to be FALSE.
+Differences:
+`actual`:   TRUE 
+`expected`: FALSE
+
+
+── 9. Failure ('test-qupath-native.R:110:3'): unsupported property and classific
+Expected `r$attributes$qupath_object_type` to be identical to "annotation".
+Differences:
+`actual`:   "detection" 
+`expected`: "annotation"
+
+
+── 10. Failure ('test-qupath-native.R:114:5'): unsupported property and classifi
+Expected `L$rois[[1]]$label` to be identical to "unclassified".
+Differences:
+`actual`:   "wrong"       
+`expected`: "unclassified"
+
+  ... and 7 more
+
+
+Maximum number of 10 failures reached, some test results may be missing.
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+ failed   error warning skipped  passed 
+     15       2       0       0      64 

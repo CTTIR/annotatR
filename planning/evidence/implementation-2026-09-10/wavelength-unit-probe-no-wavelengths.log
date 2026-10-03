@@ -1,0 +1,9 @@
+# A tibble: 3 × 4
+  index name   wavelength unit 
+  <int> <chr>       <dbl> <chr>
+1     1 Band 1         NA <NA> 
+2     2 Band 2         NA <NA> 
+3     3 Band 3         NA <NA> 
+character(0)
+Error: identical(unique(at_bands(img)$unit), "nm") is not TRUE
+Execution halted

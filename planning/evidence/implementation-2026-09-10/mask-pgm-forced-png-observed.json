@@ -1,0 +1,62 @@
+{
+  "zeros8": {
+    "bits": 8,
+    "colour_type": 0,
+    "values": [
+      [
+        0,
+        0
+      ]
+    ]
+  },
+  "binary8": {
+    "bits": 8,
+    "colour_type": 0,
+    "values": [
+      [
+        0,
+        1
+      ]
+    ]
+  },
+  "extremes8": {
+    "bits": 8,
+    "colour_type": 0,
+    "values": [
+      [
+        0,
+        255
+      ]
+    ]
+  },
+  "zeros16": {
+    "bits": 16,
+    "colour_type": 0,
+    "values": [
+      [
+        0,
+        0
+      ]
+    ]
+  },
+  "binary16": {
+    "bits": 16,
+    "colour_type": 0,
+    "values": [
+      [
+        0,
+        1
+      ]
+    ]
+  },
+  "extremes16": {
+    "bits": 16,
+    "colour_type": 0,
+    "values": [
+      [
+        0,
+        65535
+      ]
+    ]
+  }
+}

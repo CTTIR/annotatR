@@ -1,0 +1,602 @@
+{
+  "status": "PASS",
+  "files": 32,
+  "python": "3.12.13",
+  "numpy": "2.5.3",
+  "tifffile": "2026.9.9",
+  "imagecodecs": "2026.8.16",
+  "results": [
+    {
+      "file": "fallback-16-binary.png",
+      "bits": 16,
+      "dtype": "uint16",
+      "rows": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          1
+        ]
+      ],
+      "sha256": "6df2a6e6b0313df6203998a098e66c6d8acc2ed0a6c73ed9a2621feec1a9943e"
+    },
+    {
+      "file": "fallback-16-binary.tiff",
+      "bits": 16,
+      "dtype": "uint16",
+      "rows": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          1
+        ]
+      ],
+      "sha256": "22608263ba46bdb6105891160ed0b1b2a02b432df724641e28f173e857c00680"
+    },
+    {
+      "file": "fallback-16-codes.png",
+      "bits": 16,
+      "dtype": "uint16",
+      "rows": [
+        [
+          0,
+          1,
+          255,
+          256
+        ],
+        [
+          4096,
+          32767,
+          32768,
+          65535
+        ]
+      ],
+      "sha256": "732387588c46f8c2321b1ba6e82b1afd3cd72871e7bf8315b87c0461428de3c4"
+    },
+    {
+      "file": "fallback-16-codes.tiff",
+      "bits": 16,
+      "dtype": "uint16",
+      "rows": [
+        [
+          0,
+          1,
+          255,
+          256
+        ],
+        [
+          4096,
+          32767,
+          32768,
+          65535
+        ]
+      ],
+      "sha256": "2a43274895b2e892e79e0852b8f981b1cb4bb15666331a6b190ae4c27950b0cd"
+    },
+    {
+      "file": "fallback-16-extrema.png",
+      "bits": 16,
+      "dtype": "uint16",
+      "rows": [
+        [
+          0,
+          65535,
+          0
+        ],
+        [
+          65535,
+          0,
+          65535
+        ]
+      ],
+      "sha256": "9451b27df0e187cb8ac7875d779c93d3d47db89526ba155ea28ef33c0771b854"
+    },
+    {
+      "file": "fallback-16-extrema.tiff",
+      "bits": 16,
+      "dtype": "uint16",
+      "rows": [
+        [
+          0,
+          65535,
+          0
+        ],
+        [
+          65535,
+          0,
+          65535
+        ]
+      ],
+      "sha256": "d14110df408c49241d49c6aeb0dcaeaa433325525f52cb82a279908fe5f78538"
+    },
+    {
+      "file": "fallback-16-zero.png",
+      "bits": 16,
+      "dtype": "uint16",
+      "rows": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "sha256": "aeed73d5de7be3352988e95694ed550219b980980528d9f89e4a99552159016b"
+    },
+    {
+      "file": "fallback-16-zero.tiff",
+      "bits": 16,
+      "dtype": "uint16",
+      "rows": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "sha256": "d45dd07f36f99dd95c36f494d35e76fabf25dfb28343109b2973ce020311ffde"
+    },
+    {
+      "file": "fallback-8-binary.png",
+      "bits": 8,
+      "dtype": "uint8",
+      "rows": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          1
+        ]
+      ],
+      "sha256": "cb98874d4200f19d0e991b9b1c8256ada46097a13d0de7d45c529af3d10e8685"
+    },
+    {
+      "file": "fallback-8-binary.tiff",
+      "bits": 8,
+      "dtype": "uint8",
+      "rows": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          1
+        ]
+      ],
+      "sha256": "7a6fe4abe99be79d2f6514536145bd4197e02459d1182f12ab62cb5a331addb3"
+    },
+    {
+      "file": "fallback-8-codes.png",
+      "bits": 8,
+      "dtype": "uint8",
+      "rows": [
+        [
+          0,
+          1,
+          9,
+          10
+        ],
+        [
+          13,
+          32,
+          128,
+          255
+        ]
+      ],
+      "sha256": "db8db341b65c867377550900cfb6edb90dc95d6dc93d66c987a565d83ebada53"
+    },
+    {
+      "file": "fallback-8-codes.tiff",
+      "bits": 8,
+      "dtype": "uint8",
+      "rows": [
+        [
+          0,
+          1,
+          9,
+          10
+        ],
+        [
+          13,
+          32,
+          128,
+          255
+        ]
+      ],
+      "sha256": "fb2acf2b8a69d13ed801c85847142ec9263cd27078b3395e171081acfed745fe"
+    },
+    {
+      "file": "fallback-8-extrema.png",
+      "bits": 8,
+      "dtype": "uint8",
+      "rows": [
+        [
+          0,
+          255,
+          0
+        ],
+        [
+          255,
+          0,
+          255
+        ]
+      ],
+      "sha256": "91de74f0a04dd45c1c7d43cf216f6a6156b3eeb96ad53590dd100bb3be0d7975"
+    },
+    {
+      "file": "fallback-8-extrema.tiff",
+      "bits": 8,
+      "dtype": "uint8",
+      "rows": [
+        [
+          0,
+          255,
+          0
+        ],
+        [
+          255,
+          0,
+          255
+        ]
+      ],
+      "sha256": "caab8b234d5fc289b6dd14087ca416b6572beea3bedf7a1f2ca3baa7a2b2d12f"
+    },
+    {
+      "file": "fallback-8-zero.png",
+      "bits": 8,
+      "dtype": "uint8",
+      "rows": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "sha256": "407de8c829156248bca23aba5a7dd90c9083395d81b33e58959810bbaaece5b7"
+    },
+    {
+      "file": "fallback-8-zero.tiff",
+      "bits": 8,
+      "dtype": "uint8",
+      "rows": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "sha256": "8f00edaaa24d4e4dedc1319f13a0cb9d19c423d0e1826f64a729e9b4e6c979fa"
+    },
+    {
+      "file": "normal-16-binary.png",
+      "bits": 16,
+      "dtype": "uint16",
+      "rows": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          1
+        ]
+      ],
+      "sha256": "6df2a6e6b0313df6203998a098e66c6d8acc2ed0a6c73ed9a2621feec1a9943e"
+    },
+    {
+      "file": "normal-16-binary.tiff",
+      "bits": 16,
+      "dtype": "uint16",
+      "rows": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          1
+        ]
+      ],
+      "sha256": "0d4826f1ef90453174b7f9b88cbba0f8fa57cfcea7e0d62e29b3d57f55e196aa"
+    },
+    {
+      "file": "normal-16-codes.png",
+      "bits": 16,
+      "dtype": "uint16",
+      "rows": [
+        [
+          0,
+          1,
+          255,
+          256
+        ],
+        [
+          4096,
+          32767,
+          32768,
+          65535
+        ]
+      ],
+      "sha256": "732387588c46f8c2321b1ba6e82b1afd3cd72871e7bf8315b87c0461428de3c4"
+    },
+    {
+      "file": "normal-16-codes.tiff",
+      "bits": 16,
+      "dtype": "uint16",
+      "rows": [
+        [
+          0,
+          1,
+          255,
+          256
+        ],
+        [
+          4096,
+          32767,
+          32768,
+          65535
+        ]
+      ],
+      "sha256": "3216acab1d81766f50e1c67863274306a2c219333f4ff4840bb5d7f1651e845e"
+    },
+    {
+      "file": "normal-16-extrema.png",
+      "bits": 16,
+      "dtype": "uint16",
+      "rows": [
+        [
+          0,
+          65535,
+          0
+        ],
+        [
+          65535,
+          0,
+          65535
+        ]
+      ],
+      "sha256": "9451b27df0e187cb8ac7875d779c93d3d47db89526ba155ea28ef33c0771b854"
+    },
+    {
+      "file": "normal-16-extrema.tiff",
+      "bits": 16,
+      "dtype": "uint16",
+      "rows": [
+        [
+          0,
+          65535,
+          0
+        ],
+        [
+          65535,
+          0,
+          65535
+        ]
+      ],
+      "sha256": "6ca6a3b46bed9f2b3b8f3d63b6ca34b58a719aed01b818e1ae088fb44128f28d"
+    },
+    {
+      "file": "normal-16-zero.png",
+      "bits": 16,
+      "dtype": "uint16",
+      "rows": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "sha256": "aeed73d5de7be3352988e95694ed550219b980980528d9f89e4a99552159016b"
+    },
+    {
+      "file": "normal-16-zero.tiff",
+      "bits": 16,
+      "dtype": "uint16",
+      "rows": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "sha256": "01da1e0ec3644e050cb199d689c0159062111f0e9717e5d5ca917e6d7ab5f2a6"
+    },
+    {
+      "file": "normal-8-binary.png",
+      "bits": 8,
+      "dtype": "uint8",
+      "rows": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          1
+        ]
+      ],
+      "sha256": "cb98874d4200f19d0e991b9b1c8256ada46097a13d0de7d45c529af3d10e8685"
+    },
+    {
+      "file": "normal-8-binary.tiff",
+      "bits": 8,
+      "dtype": "uint8",
+      "rows": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          1
+        ]
+      ],
+      "sha256": "f592bd0251e3425a3e4f46ee56e15c434115ba6e6c4765edd4ad50c86d3c6794"
+    },
+    {
+      "file": "normal-8-codes.png",
+      "bits": 8,
+      "dtype": "uint8",
+      "rows": [
+        [
+          0,
+          1,
+          9,
+          10
+        ],
+        [
+          13,
+          32,
+          128,
+          255
+        ]
+      ],
+      "sha256": "db8db341b65c867377550900cfb6edb90dc95d6dc93d66c987a565d83ebada53"
+    },
+    {
+      "file": "normal-8-codes.tiff",
+      "bits": 8,
+      "dtype": "uint8",
+      "rows": [
+        [
+          0,
+          1,
+          9,
+          10
+        ],
+        [
+          13,
+          32,
+          128,
+          255
+        ]
+      ],
+      "sha256": "b8d2ccc4232fe08b51eacae30c66ab32fb6451d03789e2b35aceca47d0c2ef54"
+    },
+    {
+      "file": "normal-8-extrema.png",
+      "bits": 8,
+      "dtype": "uint8",
+      "rows": [
+        [
+          0,
+          255,
+          0
+        ],
+        [
+          255,
+          0,
+          255
+        ]
+      ],
+      "sha256": "91de74f0a04dd45c1c7d43cf216f6a6156b3eeb96ad53590dd100bb3be0d7975"
+    },
+    {
+      "file": "normal-8-extrema.tiff",
+      "bits": 8,
+      "dtype": "uint8",
+      "rows": [
+        [
+          0,
+          255,
+          0
+        ],
+        [
+          255,
+          0,
+          255
+        ]
+      ],
+      "sha256": "48b2c66ded4b77d9a78f2f34dcdf2d7a92c9df1965737f2f78bcc1e88e1fb045"
+    },
+    {
+      "file": "normal-8-zero.png",
+      "bits": 8,
+      "dtype": "uint8",
+      "rows": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "sha256": "407de8c829156248bca23aba5a7dd90c9083395d81b33e58959810bbaaece5b7"
+    },
+    {
+      "file": "normal-8-zero.tiff",
+      "bits": 8,
+      "dtype": "uint8",
+      "rows": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "sha256": "952a6a32b9e8cf0a2023357d3d0cca7c3f859140374b95f0c127eabcdc419e9b"
+    }
+  ]
+}

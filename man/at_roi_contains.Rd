@@ -9,7 +9,8 @@ at_roi_contains(roi, x, y, call = rlang::caller_env())
 \arguments{
 \item{roi}{An \link{annot_roi}.}
 
-\item{x, y}{Numeric coordinate vectors of equal length.}
+\item{x, y}{Numeric coordinate vectors of equal length in the ROI's stored
+coordinate level.}
 
 \item{call}{The calling environment, for error reporting.}
 }

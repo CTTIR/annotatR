@@ -22,7 +22,8 @@ at_write_mask(
 \item{format}{\code{"tiff"} (default), \code{"png"} (8-bit only), or \code{"rds"}
 (full-fidelity \code{annot_mask}).}
 
-\item{bits}{Integer bit depth for TIFF: \code{16} (default) or \code{8}.}
+\item{bits}{Single finite whole-number bit depth for TIFF: \code{16} (default)
+or \code{8}, including \code{16L}/\code{8L}. Explicit vectors are rejected.}
 
 \item{legend}{Logical; also write a \verb{<path>.legend.json} sidecar describing
 the mask. Default \code{TRUE}.}
@@ -36,6 +37,17 @@ The output path, invisibly.
 }
 \description{
 Write a mask to disk
+}
+\details{
+TIFF exports preserve unsigned 8/16-bit codes; PNG exports are
+unsigned 8-bit only, regardless of \code{bits}. Samples must be finite integers
+in the selected unsigned range; invalid samples reject before writing.
+TIFF writing requires \code{tiff} or a capable \code{magick} build. PNG writing
+requires \code{magick} with exact grayscale support. Missing exact conversion
+capability produces an error rather than a quantized output. The caller's
+explicit path is respected. Mask and legend are staged before either is
+replaced; a preexisting sidecar also requires \code{overwrite=TRUE}. Publication
+failure rolls back prior files. Concurrent writers must be serialized.
 }
 \examples{
 \dontshow{if (requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)) withAutoprint(\{ # examplesIf}

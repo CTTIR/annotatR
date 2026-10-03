@@ -8,7 +8,7 @@ at_session(
   paths,
   labels = character(),
   layers = NULL,
-  out_dir = tempdir(),
+  out_dir = .session_out_dir(),
   autosave = TRUE,
   ...,
   call = rlang::caller_env()

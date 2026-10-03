@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<VRTDataset rasterXSize="4" rasterYSize="3"><VRTRasterBand dataType="UInt16" band="1"><SimpleSource><SourceFilename relativeToVRT="0">/tmp/annotatr-roadmap-tiff-window-reference/scale-nodata.tif</SourceFilename><SourceBand>1</SourceBand><SrcRect xOff="0" yOff="0" xSize="4" ySize="3" /><DstRect xOff="0" yOff="0" xSize="4" ySize="3" /></SimpleSource></VRTRasterBand></VRTDataset>

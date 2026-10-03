@@ -32,6 +32,8 @@
   tile <- at_tile(img, level = level)
   nr <- dim(tile)[1]
   nc <- dim(tile)[2]
+  full_nr <- nr; full_nc <- nc
+  scale <- at_dims(img, 0L) / at_dims(img, level)
   fac <- max(1L, ceiling(max(nr, nc) / max_dim))
   ys <- seq(1L, nr, by = fac)
   xs <- seq(1L, nc, by = fac)
@@ -49,7 +51,13 @@
     }
     (m - rng[1]) / diff(rng)
   }
-  grid <- expand.grid(y = seq_len(nr), x = seq_len(nc))
+  grid <- expand.grid(iy = seq_along(ys), ix = seq_along(xs))
+  grid$xmin <- (xs[grid$ix] - 1) * scale[1]
+  grid$xmax <- pmin(xs[grid$ix] - 1 + fac, full_nc) * scale[1]
+  grid$ymin <- (ys[grid$iy] - 1) * scale[2]
+  grid$ymax <- pmin(ys[grid$iy] - 1 + fac, full_nr) * scale[2]
+  grid$x <- (grid$xmin + grid$xmax) / 2
+  grid$y <- (grid$ymin + grid$ymax) / 2
   if (!is.null(rgb_bands) && length(rgb_bands) == 3L) {
     r <- norm(tile[, , rgb_bands[1]])
     g <- norm(tile[, , rgb_bands[2]])
@@ -68,11 +76,15 @@
 #' Plot an image
 #'
 #' @param img An [annot_image].
-#' @param level Pyramid level to display; chosen automatically when `NULL`.
+#' @param level Pyramid level to sample; chosen automatically when `NULL`.
+#'   Plot axes always use level-0 image coordinates, scaled independently by
+#'   actual width and height ratios.
 #' @param bands Optional band index for single-band display.
 #' @param rgb Optional length-3 vector of band indices, or wavelengths in nm for
 #'   a spectral cube, for a false-colour composite.
 #' @param max_dim Maximum display dimension (auto-downsampled). Default `1024`.
+#'   Each displayed cell covers its full source block; final partial blocks
+#'   end at the image boundary.
 #' @param call The calling environment, for error reporting.
 #' @return A [ggplot2::ggplot] object.
 #' @family plots
@@ -82,6 +94,7 @@
 at_plot_image <- function(img, level = NULL, bands = NULL, rgb = NULL,
                           max_dim = 1024L, call = rlang::caller_env()) {
   .check_image(img, call = call)
+  max_dim <- .check_count(max_dim, min = 1L, call = call)
   if (is.null(level)) level <- .display_level(img, max_dim)
   df <- .image_display_df(img, level, bands, rgb, max_dim)
   p <- ggplot2::ggplot(df, ggplot2::aes(x = .data$x, y = .data$y)) +
@@ -90,10 +103,12 @@ at_plot_image <- function(img, level = NULL, bands = NULL, rgb = NULL,
     ggplot2::labs(title = basename(img$source), x = "x (px)", y = "y (px)") +
     ggplot2::theme_minimal()
   if (identical(df$mode[1], "rgb")) {
-    p + ggplot2::geom_raster(ggplot2::aes(fill = .data$fill)) +
+    p + ggplot2::geom_rect(ggplot2::aes(xmin = .data$xmin, xmax = .data$xmax,
+                                      ymin = .data$ymin, ymax = .data$ymax, fill = .data$fill)) +
       ggplot2::scale_fill_identity()
   } else {
-    p + ggplot2::geom_raster(ggplot2::aes(fill = .data$value)) +
+    p + ggplot2::geom_rect(ggplot2::aes(xmin = .data$xmin, xmax = .data$xmax,
+                                      ymin = .data$ymin, ymax = .data$ymax, fill = .data$value)) +
       ggplot2::scale_fill_viridis_c(name = "value")
   }
 }
@@ -168,6 +183,8 @@ at_plot_mask <- function(mask, legend = TRUE, call = rlang::caller_env()) {
 #' Plot spectra
 #'
 #' @param spectra The long tibble from [at_extract_spectrum()] or [at_extract()].
+#'   Its declared `unit` is used on the axis; absent units remain unknown.
+#'   Mixed units reject: explicitly convert coordinates before combining them.
 #' @param colour_by One of `"label"`, `"roi_id"`, or `"layer"`.
 #' @param ribbon Logical; draw a min-max ribbon per colour group.
 #' @param call The calling environment, for error reporting.
@@ -176,12 +193,16 @@ at_plot_mask <- function(mask, legend = TRUE, call = rlang::caller_env()) {
 #' @export
 at_plot_spectrum <- function(spectra, colour_by = c("label", "roi_id", "layer"),
                              ribbon = TRUE, call = rlang::caller_env()) {
-  colour_by <- .check_choice(colour_by, c("label", "roi_id", "layer"), call = call)
+  colour_by <- .check_choice(colour_by, c("label", "roi_id", "layer"), default = missing(colour_by), call = call)
   spectra <- spectra[!is.na(spectra$wavelength), , drop = FALSE]
+  units <- unique(spectra$unit %||% NA_character_)
+  if (!length(units)) units <- NA_character_
+  if (length(units) > 1L) cli::cli_abort("Spectrum wavelength units must agree; explicitly convert units before plotting.", call = call)
+  axis <- if (is.na(units) || !nzchar(units)) "spectral coordinate (unit unknown)" else paste0("spectral coordinate (", units, ")")
   p <- ggplot2::ggplot(spectra, ggplot2::aes(x = .data$wavelength, y = .data$value,
                                              colour = .data[[colour_by]],
                                              group = .data$roi_id)) +
-    ggplot2::labs(title = "Spectra", x = "wavelength (nm)", y = "value",
+    ggplot2::labs(title = "Spectra", x = axis, y = "value",
                   colour = colour_by) +
     ggplot2::theme_minimal()
   if (nrow(spectra) > 0L) {
@@ -253,8 +274,11 @@ at_plot_summary <- function(project, call = rlang::caller_env()) {
 
 #' Plot generic for annotatR objects
 #'
-#' @param x An [annot_image], [annot_project], or `annot_mask`.
-#' @param ... Passed to the specific plot function.
+#' @param x An [annot_image], [annot_project], [annot_layer], or `annot_mask`.
+#' @param ... Passed to the specific plot function. For layers, passed to
+#'   [at_layer_rois()]: supply `image = img` for any nonzero stored ROI level.
+#'   Layer plot geometry uses level-0 coordinates. The same image argument is
+#'   supported by `ggplot2::autoplot(layer, image = img)`.
 #' @return A [ggplot2::ggplot] object.
 #' @family plots
 #' @export
@@ -265,7 +289,7 @@ at_plot <- function(x, ...) {
   if (inherits(x, "annot_project")) return(at_plot_project(x, ...))
   if (inherits(x, "annot_mask")) return(at_plot_mask(x, ...))
   if (inherits(x, "annot_layer")) {
-    rt <- at_layer_rois(x)
+    rt <- at_layer_rois(x, ...)
     sfp <- if (nrow(rt) > 0L) {
       sf::st_sf(label = rt$label, geometry = rt$geometry)
     } else {

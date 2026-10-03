@@ -1,0 +1,268 @@
+{
+  "absent_class_policy": "A zero union has undefined Dice/IoU represented as null; macro policy must state whether this class is excluded.",
+  "background_only": {
+    "accuracy": 1,
+    "chance_agreement": 1,
+    "kappa": null,
+    "matrix": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "reason": "Kappa denominator 1-pe is zero; reporting 1 would claim an undefined statistic."
+  },
+  "bitfield": {
+    "categorical_kappa": "not defined here: bitfield codes are sets, not mutually exclusive classes",
+    "exact_membership_set_agreement": {
+      "fraction": "2/3",
+      "value": 0.6666666666666666
+    },
+    "n_px": 12,
+    "per_class": [
+      {
+        "dice": {
+          "fraction": "1",
+          "value": 1.0
+        },
+        "fn": 0,
+        "fp": 0,
+        "iou": {
+          "fraction": "1",
+          "value": 1.0
+        },
+        "label": "A",
+        "n_pred": 5,
+        "n_true": 5,
+        "tp": 5,
+        "value": 1
+      },
+      {
+        "dice": {
+          "fraction": "3/5",
+          "value": 0.6
+        },
+        "fn": 2,
+        "fp": 2,
+        "iou": {
+          "fraction": "3/7",
+          "value": 0.42857142857142855
+        },
+        "label": "B",
+        "n_pred": 5,
+        "n_true": 5,
+        "tp": 3,
+        "value": 2
+      },
+      {
+        "dice": null,
+        "fn": 0,
+        "fp": 0,
+        "iou": null,
+        "label": "absent",
+        "n_pred": 0,
+        "n_true": 0,
+        "tp": 0,
+        "value": 4
+      }
+    ],
+    "prediction": [
+      [
+        0,
+        1,
+        1,
+        2
+      ],
+      [
+        3,
+        3,
+        0,
+        0
+      ],
+      [
+        0,
+        2,
+        2,
+        1
+      ]
+    ],
+    "reference": [
+      [
+        0,
+        1,
+        3,
+        2
+      ],
+      [
+        1,
+        3,
+        0,
+        2
+      ],
+      [
+        0,
+        0,
+        2,
+        1
+      ]
+    ]
+  },
+  "categorical": {
+    "accuracy": {
+      "fraction": "3/4",
+      "value": 0.75
+    },
+    "chance_agreement": {
+      "fraction": "1/3",
+      "value": 0.3333333333333333
+    },
+    "confusion": [
+      [
+        3,
+        1,
+        0
+      ],
+      [
+        0,
+        3,
+        1
+      ],
+      [
+        1,
+        0,
+        3
+      ]
+    ],
+    "confusion_codes": [
+      0,
+      1,
+      2
+    ],
+    "kappa": {
+      "fraction": "5/8",
+      "value": 0.625
+    },
+    "n_px": 12,
+    "per_class": [
+      {
+        "dice": {
+          "fraction": "3/4",
+          "value": 0.75
+        },
+        "fn": 1,
+        "fp": 1,
+        "iou": {
+          "fraction": "3/5",
+          "value": 0.6
+        },
+        "label": "A",
+        "n_pred": 4,
+        "n_true": 4,
+        "tp": 3,
+        "value": 1
+      },
+      {
+        "dice": {
+          "fraction": "3/4",
+          "value": 0.75
+        },
+        "fn": 1,
+        "fp": 1,
+        "iou": {
+          "fraction": "3/5",
+          "value": 0.6
+        },
+        "label": "B",
+        "n_pred": 4,
+        "n_true": 4,
+        "tp": 3,
+        "value": 2
+      },
+      {
+        "dice": null,
+        "fn": 0,
+        "fp": 0,
+        "iou": null,
+        "label": "absent",
+        "n_pred": 0,
+        "n_true": 0,
+        "tp": 0,
+        "value": 3
+      }
+    ],
+    "prediction": [
+      [
+        0,
+        1,
+        2,
+        2
+      ],
+      [
+        0,
+        1,
+        2,
+        0
+      ],
+      [
+        1,
+        0,
+        2,
+        1
+      ]
+    ],
+    "reference": [
+      [
+        0,
+        1,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        2,
+        2
+      ],
+      [
+        0,
+        0,
+        2,
+        1
+      ]
+    ]
+  },
+  "convention": "Each input is an explicit row-major list. Cells are paired directly; no rasterizer or package reader is used.",
+  "remapped_prediction": {
+    "codebook": {
+      "0": "background",
+      "1": "B",
+      "2": "A",
+      "3": "absent"
+    },
+    "expected_after_explicit_by_label_alignment": "same as categorical case",
+    "matrix": [
+      [
+        0,
+        2,
+        1,
+        1
+      ],
+      [
+        0,
+        2,
+        1,
+        0
+      ],
+      [
+        2,
+        0,
+        1,
+        2
+      ]
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+ℹ Testing annotatR
+export-contract: ...................................1.23..
+qupath-native: ........................................45.6
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Failure ('test-export-contract.R:86:3'): one format failure does not suppr
+Expected `out <- .export_receipt_files(rc, file.path(d, "missing", "../no-parent"))` to throw a warning.
+
+── 2. Failure ('test-export-contract.R:87:33'): one format failure does not supp
+Expected `attr(out, "receipt_error")` to have type "character".
+Actual type: "NULL"
+
+── 3. Error ('test-export-contract.R:92:47'): summary generation failure does no
+Error in `at_manifest(session)`: injected summary failure
+Backtrace:
+     ▆
+  1. ├─testthat::expect_warning(...) at test-export-contract.R:93:3
+  2. │ └─testthat:::expect_condition_matching_(...)
+  3. │   └─testthat:::quasi_capture(...)
+  4. │     ├─testthat (local) .capture(...)
+  5. │     │ └─base::withCallingHandlers(...)
+  6. │     └─rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+  7. └─annotatR::at_export_all(...)
+  8.   ├─annotatR:::.export_receipt_files(receipt, dir, at_manifest(session)) at annotatR-roadmap/R/batch.R:109:3
+  9.   │ └─base::file.path(dir, c("_export_manifest.csv", if (!is.null(summary)) "_annotation_summary.csv")) at annotatR-roadmap/R/export-policy.R:129:3
+ 10.   └─annotatR::at_manifest(session) at annotatR-roadmap/R/batch.R:109:3
+
+── 4. Failure ('test-qupath-native.R:56:3'): ambiguous IDs and malformed contrac
+Expected `qp_read(list(f, f))` to throw a error.
+
+── 5. Failure ('test-qupath-native.R:58:3'): ambiguous IDs and malformed contrac
+Expected `qp_read(f)` to throw a error.
+
+── 6. Failure ('test-qupath-native.R:62:3'): ambiguous IDs and malformed contrac
+Expected `qp_read(f)` to throw a error.
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+I believe in you!
+Error:
+! Test failures.
+Execution halted

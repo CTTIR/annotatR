@@ -1,0 +1,8 @@
+17:39:01.287 [main] [INFO ] qupath.lib.gui.prefs.PathPrefs - Setting default Locale to en_US
+17:39:01.290 [main] [INFO ] qupath.lib.gui.prefs.PathPrefs - Setting Locale for FORMAT to en_US
+17:39:01.290 [main] [INFO ] qupath.lib.gui.prefs.PathPrefs - Setting Locale for DISPLAY to en_US
+17:39:01.308 [main] [INFO ] qupath.lib.common.ThreadTools - Setting parallelism to 1
+17:39:01.313 [main] [INFO ] qupath.ScriptCommand - Setting tile cache size to 128.00 MB (25.0% max memory)
+17:39:01.408 [main] [INFO ] qupath.lib.scripting.QP - Initializing type adapters
+17:39:02.530 [main] [WARN ] q.l.i.QuPathTypeAdapters$PathObjectTypeAdapter - PathObject using 'object_type' property - this should be updated to 'objectType'
+QUPath_CONSUMER_PASS

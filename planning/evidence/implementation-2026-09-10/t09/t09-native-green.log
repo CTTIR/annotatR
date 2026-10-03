@@ -1,0 +1,9 @@
+19:10:21.393 [main] [INFO ] qupath.lib.gui.prefs.PathPrefs - Setting default Locale to en_US
+19:10:21.397 [main] [INFO ] qupath.lib.gui.prefs.PathPrefs - Setting Locale for FORMAT to en_US
+19:10:21.397 [main] [INFO ] qupath.lib.gui.prefs.PathPrefs - Setting Locale for DISPLAY to en_US
+19:10:21.419 [main] [INFO ] qupath.lib.common.ThreadTools - Setting parallelism to 1
+19:10:21.426 [main] [INFO ] qupath.ScriptCommand - Setting tile cache size to 128.00 MB (25.0% max memory)
+19:10:21.531 [main] [INFO ] qupath.lib.scripting.QP - Initializing type adapters
+QUPATH_CONSUMER_PASS
+Error: unexpected ')' in "stopifnot(identical(vapply(back$rois,`[[`,character(1),'id'),vapply(L$rois,`[[`,character(1),'id'))))"
+Execution halted

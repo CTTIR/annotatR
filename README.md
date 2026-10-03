@@ -77,6 +77,13 @@ at_plot_overlay(proj)
 | ENVI cube                 | `envi`    | base R           | no      | yes       |
 | Diaspective Vision Tivita | `tivita`  | base R (ENVI)    | no      | yes       |
 
+The `raster` backend converts samples to a 0–255 display convention and does
+not preserve original high-bit-depth intensities. Quantitative TIFF/OME/ENVI
+readers have separate raw-sample contracts; format and optional-reader limits
+are documented in the images-and-backends vignette. Extraction does not apply
+plot contrast stretches. It reports selected, finite and nonfinite counts, with
+an explicit `nonfinite` policy and declared spectral units.
+
 ## The mask workflow
 
 A **mask** is the central output artifact: a binary, labelled, or
@@ -95,7 +102,11 @@ at_annotate(at_example_session(5))
 
 Iterate through an image queue, draw multi-layer ROIs, watch the mask
 render live, and export everything in one pass — with resumable sessions
-and keyboard-first throughput.
+and keyboard drawing. Focus the canvas with Tab; arrows move in image pixels,
+Enter/Space places point or rectangle anchors, and Escape cancels. The canvas
+shows a downsampled image overview with pan and zoom; it does not stream image
+pyramid tiles. Display encoding requires `magick`. Missing readers, missing
+encoding support, and failed browser decoding are reported before editing.
 
 ## Related work
 
@@ -106,8 +117,7 @@ reproducible artifact.
 
 ## Acknowledgements
 
-annotatR builds on [OpenSeadragon](https://openseadragon.github.io/),
-[Annotorious](https://annotorious.github.io/), and the
+annotatR uses a self-contained HTML5 canvas and the
 [`sf`](https://r-spatial.github.io/sf/) and
 [`stars`](https://r-spatial.github.io/stars/) packages.
 

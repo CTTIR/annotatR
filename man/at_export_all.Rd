@@ -37,13 +37,31 @@ at_export_all(
 \item{call}{The calling environment, for error reporting.}
 }
 \value{
-An invisible export-receipt \link[tibble:tibble]{tibble::tibble} with columns \code{image},
-\code{format}, \code{path}, \code{bytes}, \code{n_rois}, \code{status}, and \code{message}. Also written
-to \verb{_export_manifest.csv} alongside the exports.
+An invisible export-receipt \link[tibble:tibble]{tibble::tibble} with columns \code{entry_id},
+\code{image}, \code{format}, \code{path}, \code{bytes}, \code{n_rois}, \code{status}, and \code{message}. Also
+written to \verb{_export_manifest.csv} alongside the exports. Additive columns
+\code{sidecar_path} and \code{sidecar_bytes} describe mask legends. Byte counts are
+doubles. Status is \code{"ok"} for a complete published bundle, \code{"error"} for a
+failed item, or \code{"skipped"} when an existing bundle is protected. Every
+image-format request has a row, even if loading the image fails. Receipt
+publication or annotation-summary failures warn and are also retained in
+\code{receipt_error} / \code{summary_error} attributes; the item receipt is returned.
 }
 \description{
 Export every selected image's annotations in the requested formats, isolating
 per-image failures so one bad image never aborts the run.
+}
+\details{
+Derived filenames use safe portable components; display names stay
+in the receipt and annotation metadata. Case-folded collisions are given
+deterministic suffixes, including cross-format and sidecar collisions.
+The complete plan (including manifests) rejects descendant symlinks before
+writing outputs. Existing mask/legend bundles are skipped as a whole unless
+\code{overwrite=TRUE}. Files are staged and publication failures roll back prior
+files. Callers must serialize concurrent exports and avoid changing the
+destination filesystem during a run: preflight and multiple renames are
+not a race-free filesystem transaction. Receipt files are replaced each
+run, independently of the item overwrite policy.
 }
 \examples{
 sess <- at_example_session(2)

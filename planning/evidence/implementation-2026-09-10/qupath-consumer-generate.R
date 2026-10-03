@@ -1,0 +1,8 @@
+pkgload::load_all('/data/GitHub/CTTIR/public/annotatR-roadmap/.superpowers/sdd/ROADMAP/snapshots/T06', quiet=TRUE)
+img <- new_annot_image('qupath-consumer-fixture','raster',c(64L,48L),2L,list(c(64L,48L),c(16L,24L)),1L)
+L <- at_layer('L',labels=c('region','donut'),style=at_style(colour=c(region='#123456',donut='#ABCDEF')))
+L <- at_layer_add(L,at_roi_rect(2,3,5,7,'region',level=1L,id='level-roi',locked=TRUE))
+g <- sf::st_polygon(list(matrix(c(24,2,34,2,34,12,24,12,24,2),ncol=2,byrow=TRUE),matrix(c(27,5,27,9,31,9,31,5,27,5),ncol=2,byrow=TRUE)))
+L <- at_layer_add(L,at_roi_from_sf(g,'donut',id='donut-roi'))
+p <- at_project(img,L)
+at_write_qupath(p,'/tmp/annotatr-roadmap-qupath-probe/input.geojson',overwrite=TRUE)

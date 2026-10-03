@@ -1,0 +1,33 @@
+ℹ Testing annotatR
+quantitative-contract: ................................................................................................................................1..23..........
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Error ('test-quantitative-contract.R:155:3'): per-band wavelength units an
+<tibble_error_incompatible_size/tibble_error/rlang_error/error/condition>
+Error in `tibble::tibble(index = seq_len(n), name = nm, wavelength = wl, unit = unit)`: Tibble columns must have compatible sizes.
+* Size 3: Existing data.
+* Size 9: Column `unit`.
+i Only values of size one are recycled.
+Backtrace:
+     ▆
+  1. ├─testthat::expect_identical(...) at test-quantitative-contract.R:155:3
+  2. │ └─testthat::quasi_label(enquo(object), label)
+  3. │   └─rlang::eval_bare(expr, quo_get_env(quo))
+  4. └─annotatR::at_bands(p$image)
+  5.   └─tibble::tibble(index = seq_len(n), name = nm, wavelength = wl, unit = unit) at annotatR-roadmap/R/class-image.R:131:3
+  6.     └─tibble:::tibble_quos(xs, .rows, .name_repair)
+  7.       └─tibble:::vectbl_recycle_rows(...)
+  8.         └─tibble:::abort_incompatible_size(...)
+  9.           └─tibble:::tibble_abort(...)
+ 10.             └─rlang::abort(x, class, ..., call = call, parent = parent, use_cli_format = TRUE)
+
+── 2. Failure ('test-quantitative-contract.R:166:3'): calibration declaration ke
+Expected `at_roi_area(r, units = "physical")` to throw a error.
+
+── 3. Failure ('test-quantitative-contract.R:168:3'): calibration declaration ke
+Expected `at_roi_area(r, units = "physical")` to throw a error.
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+Keep trying!
+ failed   error warning  passed 
+      2       1       0     140 

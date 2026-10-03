@@ -12,7 +12,9 @@ at_plot_spectrum(
 )
 }
 \arguments{
-\item{spectra}{The long tibble from \code{\link[=at_extract_spectrum]{at_extract_spectrum()}} or \code{\link[=at_extract]{at_extract()}}.}
+\item{spectra}{The long tibble from \code{\link[=at_extract_spectrum]{at_extract_spectrum()}} or \code{\link[=at_extract]{at_extract()}}.
+Its declared \code{unit} is used on the axis; absent units remain unknown.
+Mixed units reject: explicitly convert coordinates before combining them.}
 
 \item{colour_by}{One of \code{"label"}, \code{"roi_id"}, or \code{"layer"}.}
 

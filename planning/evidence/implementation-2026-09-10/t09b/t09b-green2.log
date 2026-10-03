@@ -1,0 +1,28 @@
+ℹ Testing annotatR
+provenance-keys: .............................................................................1...........................
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Error ('test-provenance-keys.R:129:5'): sidecar recovery ignores prefix de
+Error in `value[[3L]](cond)`: Malformed mask legend sidecar: Invalid serializable reader options.
+Backtrace:
+     ▆
+  1. ├─testthat::expect_error(at_read_npy(p), "option encoding") at test-provenance-keys.R:129:5
+  2. │ └─testthat:::expect_condition_matching_(...)
+  3. │   └─testthat:::quasi_capture(...)
+  4. │     ├─testthat (local) .capture(...)
+  5. │     │ └─base::withCallingHandlers(...)
+  6. │     └─rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+  7. └─annotatR::at_read_npy(p)
+  8.   └─annotatR:::.mask_read_sidecar(path) at annotatR-roadmap/R/io-npy.R:196:3
+  9.     └─base::tryCatch(...) at annotatR-roadmap/R/mask-metadata.R:140:3
+ 10.       └─base (local) tryCatchList(expr, classes, parentenv, handlers)
+ 11.         └─base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+ 12.           └─value[[3L]](cond)
+ 13.             └─cli::cli_abort("Malformed mask legend sidecar: {conditionMessage(e)}") at annotatR-roadmap/R/mask-metadata.R:173:5
+ 14.               └─rlang::abort(...)
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+Don't worry, you'll get it.
+Error:
+! Test failures.
+Execution halted

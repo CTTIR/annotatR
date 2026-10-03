@@ -16,13 +16,14 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.width = 6, fig.height
 library(annotatR)
 ```
 
-## A handle, not a pixel array
+## Image handles and windowed readers
 
-Whole-slide microscopy and hyperspectral cubes are routinely gigabytes in size,
-so annotatR never loads them wholesale. Reading an image returns an
-`annot_image`: a lightweight, backend-agnostic *handle* that carries the
-metadata you need to annotate — dimensions, pyramid levels, bands, pixel size —
-together with a lazy accessor that fetches pixels only when asked.
+Reading an image returns an `annot_image` with dimensions, pyramid levels,
+bands, pixel size and a tile accessor. ENVI, Tivita SpecCube and OME readers open
+metadata and read requested windows. Plain TIFF and raster readers still read
+complete images eagerly. `at_image_capabilities(img)` reports the effective
+strategy, including retained legacy pixel snapshots. Allow additional memory
+for decoder buffers, returned tiles and the tile cache.
 
 ```{r handle}
 img <- at_example_image("tissue")
@@ -31,10 +32,7 @@ dim(img)
 ```
 
 The `dim()` of a handle is `c(width, height, bands)`. Printing it summarises the
-backend that opened it, the data type, and the extent, but nothing above has
-touched the pixels themselves. That is the point: you can inspect, transform and
-plan annotations against a huge image on a modest machine, because the handle is
-a few hundred bytes regardless of how large the underlying file is.
+backend, data type and extent. Metadata accessors use the fields already read.
 
 A handle also exposes accessors for everything an annotation workflow needs:
 `at_n_bands()` and `at_bands()` for the channels, `at_pixel_size()` for physical
@@ -61,7 +59,8 @@ data.frame(
 ```
 
 Levels matter for two reasons. First, an overview lets you display and navigate
-the whole image without reading full resolution. Second, an ROI drawn on a
+the whole image at reduced resolution; windowed readers can do this without
+reading full-resolution pixels. Second, an ROI drawn on a
 coarse level records the `level` it was created at, so its coordinates can be
 rescaled exactly to level 0 (see `at_roi_rescale()` and `at_transform()`). Every
 geometry in annotatR is anchored to a pyramid level; the coordinate convention
@@ -88,6 +87,88 @@ recognises the file; more specific readers are tried before general ones, so an
 OME-TIFF is not claimed by the plain raster reader. You can always bypass
 detection by passing `backend =` explicitly.
 
+| Backend | Open / tile strategy | Qualified sample contract and limits |
+|---|---|---|
+| `envi` | Metadata / bounded binary runs | BSQ/BIL/BIP, both byte orders, uint8/int16/int32/uint16/float32/float64; offsets and trailing metadata |
+| `tivita` | Metadata / bounded binary runs | ENVI exports and big-endian float32 SpecCube, including synthetic nonstandard dimensions |
+| `ometiff` | Metadata / native subset windows | RBioFormats + xml2; uint8/uint16/int16/int32/uint32/float32/float64 scalar fixtures plus uint16 CYX/anisotropic pyramids; Z/time reject, explicit multiple-series selection |
+| `tiff` | Eager / memory subset | Qualified raw TIFF sample types below; no window claim, ambiguous directories reject |
+| `raster` | Eager / memory subset | Display conversion to 0–255; original high-bit-depth intensities are not preserved |
+| `cuvis` | Eager / memory subset | SDK/vendor path unqualified; no bounded-read claim |
+| Third-party | Declared by registration / reader | Omitted capabilities remain unknown |
+
+Plain TIFF remains the explicit eager fallback. Its pyramid directories are not
+silently replaced by a first-directory GDAL view. The qualified OME path uses
+BioFormats subsets with normalization disabled, preserving image orientation
+and actual per-level dimensions. Availability is not qualification of every
+vendor/qptiff layout or deployment. No vendor whole-slide fixture is qualified.
+
+## Raw samples and input validation
+
+ENVI reads validate positive integer dimensions, interleave, byte order, sample
+type, header offset and payload length before allocation. Header offsets skip
+leading bytes; trailing metadata is permitted. Signed int32 image samples,
+including `-2147483648`, remain exact doubles. NPY masks accept 2-D scalar integer
+arrays in C or Fortran order, with version 1, 2 or 3 headers. Zero-sized masks,
+structured/object dtypes, malformed headers, truncated payloads and samples
+outside `[-2147483647, 2147483647]` are rejected. R reserves `-2147483648` for
+integer `NA`, so that value cannot be an integer mask code. Signed and unsigned
+64-bit inputs are accepted only when every complete value fits this mask range.
+A NPY reader consumes the declared array and permits subsequent bytes/arrays.
+
+The default `annotatR.max_read_bytes` budget is 1 GiB. For windowed readers it
+limits the requested decoded double array, before allocation; a valid large
+source is not rejected because its full cube exceeds that budget. Binary file
+sizes/offsets must fit exact double integer arithmetic (at most 2^53-1 bytes),
+and each declared dimension and each returned window's element count must fit
+R's integer indexing limit. NPY remains eager and checks both payload and decoded
+bytes. These are array limits, not RSS guarantees: temporary buffers and the
+cache need additional memory. ENVI headers have a fixed 1 MiB limit; NPY headers
+have a separate 1 MiB default configurable with `annotatR.max_npy_header_bytes`.
+For trusted larger arrays, set a positive finite `annotatR.max_read_bytes` value.
+
+The `tiff` backend preserves raw grayscale uint8/uint16, signed int16 and float32
+samples, and RGB uint16 samples. Sample type and photometric metadata determine
+decoding; integer display normalisation is reversed without scaling float
+samples. Unsupported encodings, including integer32/float64 TIFF in the
+qualified minimal `tiff` installation, fail explicitly. Independent equal-size
+TIFF directories are ambiguous and are rejected instead of discarding planes.
+A consistent decreasing pyramid retains its actual dimensions at every level.
+
+OME-TIFF and qptiff detection requires `RBioFormats` and `xml2`. The OME reader
+normalises `[x,y,channel]` to `[y,x,band]`, preserves actual resolution dimensions,
+and reads channel names, emission wavelengths and physical pixel sizes from
+OME-XML. Missing/incomplete calibration is labelled `missing` in image metadata;
+its pixel grid remains in `px`. Missing wavelengths remain `NULL`. Multiple
+series require `at_read_image(path, series = ...)`; non-singleton Z/time axes
+are rejected and must be selected/exported as a single plane beforehand.
+
+Automatic TIFF/OME detection errors when the required raw reader is absent.
+Explicit `backend = "raster"` selects the separate display-conversion semantics,
+which can lose sample depth and format metadata. TIFF mask imports likewise
+require the raw TIFF reader and a single finite integer plane.
+
+## Reopening saved reader contracts
+
+Saved TIFF/OME images record a stable semantic contract (`axes = "yxb"`,
+`samples = "raw-scalar-v1"`) in image metadata and durable source descriptors.
+This describes pixel meaning, independently of package release or eager/windowed
+execution. Mask sidecars retain it; masks with missing affected contracts or
+conflicting contracts need an explicit alignment assertion rather than being
+certified as source-aligned. Custom backends without this marker retain their
+existing descriptor comparison semantics.
+
+On reopen, dimensions, levels, band count, dtype, channel names, wavelengths,
+units, pixel calibration and the reader contract must agree. A stale or
+ambiguous lightweight project still loads its annotations and IDs, but pixel
+access reports the mismatch. Inspect it and explicitly revalidate with
+`at_relink_source(project, project$image$source)`. Relinking refreshes reader
+metadata and retains its existing geometry/wavelength compatibility guard; an
+old transposed OME geometry or changed wavelength declaration is not guessed
+or automatically registered. Caller-modified calibration also requires explicit
+review if it differs from the reopened reader. Full legacy snapshots whose
+in-memory pixel handles remain available retain those original pixels.
+
 ## The universal tile accessor
 
 Whatever the backend, pixels come out through one function, `at_tile()`, and
@@ -100,8 +181,11 @@ tile <- at_tile(mx, level = 0, xrange = c(1, 64), yrange = c(1, 64))
 dim(tile)
 ```
 
-Because the request is scoped, only that 64x64x4 block is read. To display a
-cheap thumbnail of the whole image, read the coarsest level in full:
+The returned array contains only that 64x64x4 block. Eager backends have already
+read the underlying image; the window-capable backends read only requested
+runs/subsets. Band selections are finite whole indices, retain order and may
+include duplicates. To request a thumbnail, select the coarsest
+level:
 
 ```{r overview}
 overview <- at_tile(mx, level = 2)
@@ -183,15 +267,50 @@ dim(at_tile(cimg, xrange = c(1, 8), yrange = c(1, 8)))
 
 ## Memory discipline
 
-The lazy handle is not a convenience but a contract. Everything downstream reads
-tile-wise: `at_extract()` walks each ROI's bounding box level by level, and
-`at_mask()` rasterises within the region's extent rather than the whole slide. By
-requesting only the window and bands you need — as `at_tile()` above does — you
-can annotate and extract from images far larger than memory. A well-behaved
-backend honours the same discipline: its `tile_fn` should fetch just the
-requested window, never the entire level, so that the cost of a call scales with
-the tile rather than the image. The `const` backend above is the extreme case —
-it holds no pixels at all and synthesises each tile from a single value.
+Windowed `at_tile()` calls bound the returned array and binary reader buffers by
+the requested window. ENVI BSQ/BIL use contiguous x runs; BIP and SpecCube use
+contiguous selected-band runs (complete band selections coalesce spatial runs).
+Sparse band selections can require many seeks. This is a bounded-memory claim,
+not a speed guarantee. OME delegates subset decoding to BioFormats; compressed
+blocks may exceed the requested window and its native buffers are not directly
+controlled by the R array budget.
+
+Full-image `at_tile()` still requests a full image. Extraction reads one ROI
+bounding-box tile, without within-ROI streaming. `at_mask()` returns a full output
+matrix. Preview, queue and export memory require their own limits; windowing
+alone does not make every annotation workflow bounded.
+
+`at_close_image(img)` returns a copy with its handle released; assign it back.
+The next tile reopens a verified durable descriptor. Closing does not purge the
+shared tile cache; its byte limit still governs retained cache entries. Built-in window handles
+contain only paths/layout metadata, open each binary connection per read and
+close it on exit, including errors. No native pointer is serialized. Registered
+backends can supply optional `capabilities` and `close_fn=function(img)` arguments;
+existing positional registration calls remain valid. Per-image
+`meta$capabilities` may refine registry declarations. A retained in-memory array
+always reports a memory snapshot through `at_image_capabilities()`.
+
+ENVI descriptors fingerprint both header and payload by normalized path, byte
+size and modification time, regardless of which input path the caller supplied.
+Every file-backed tile validates all fingerprints before consulting the cache
+and again before caching a new result. Changed/missing files require explicit
+`at_relink_source()`; cached pixels cannot hide replacement. These stat
+fingerprints detect ordinary replacements, not adversarial edits preserving
+size/mtime. Concurrent file writers are unsupported. Historical descriptors
+without the complete companion-file evidence stay unverified; today's header
+is never used to backfill historical provenance. Mask alignment compares these
+composite descriptors and accepts an explicit alignment assertion when needed.
+Actual retained legacy pixel arrays remain usable even when sources change;
+saving such historical snapshots preserves their pixels. Releasing a snapshot
+may make those old pixels unavailable if its source cannot be revalidated.
+
+For qualification, internal `.read_telemetry_reset()` / `.read_telemetry()`
+counters can bracket open and tile operations. `binary_bytes` counts bytes
+actually returned by instrumented binary/header reads and `binary_calls` counts
+those calls. Native metadata/window calls and returned decoded-double bytes are
+separate; native encoded file traffic is unknown (`NA`), never estimated from
+the decoded request. These counters are not OS cache misses, disk throughput or
+RSS. Measure process memory separately from before open, including native startup.
 
 Next, see the *The annotation model* vignette to learn how ROIs, layers and
 projects build on these image handles.
@@ -200,3 +319,45 @@ projects build on these image handles.
 ## Use of LLM tools
 
 Portions of this package were prepared with assistance from large language model tooling for narrowly defined, non-authorial tasks: copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of boilerplate files (CI configs, build scripts), code refactoring. The tools used were Chat AI, the LLM service of KISSKI (GWDG), and a self-hosted Mistral Small (24B, Apache-2.0) run locally via Ollama and the ollamar R package — local inference only, with no data sent to third parties for the self-hosted model.
+
+
+## Quantitative extraction contracts
+
+`at_extract(project, stat = "all", nonfinite = "omit")` computes each ROI and
+band separately using finite samples only. `n_px` (and statistic `n`) counts
+selected support; `n_valid` counts finite samples and `n_invalid` counts NA,
+NaN and infinities. The default `nonfinite = "propagate"` returns NA summary
+statistics for any affected ROI/band. `"error"` rejects selected nonfinite
+samples. Empty support emits no rows, a singleton has NA sample SD, and an
+all-invalid selection under omit has NA statistics including sum. Overlapping
+ROIs count shared pixels separately; ROI rows must not be pooled as independent
+pixels or images. The output `analysis` attribute records source, level, bands,
+policy and limitations.
+
+Wavelength values and their `unit` come from `at_bands()`. They are not silently
+converted or relabelled: missing ENVI units remain unknown. Spectrum output
+orders by ROI, unit, coordinate and band. `at_plot_spectrum()` labels the declared
+spectral coordinate unit and rejects mixed units until explicitly converted.
+Display contrast does not change extracted tiles. The raster fallback already
+converts source samples to a 0–255 display convention, so its extraction is not
+an assertion of original high-bit-depth intensity preservation.
+
+`at_roi_area(roi, units = "physical", image = image)` uses the image's level-zero
+pixel calibration and actual pyramid dimensions; physical area is invariant to
+reporting level. The result is expressed in the square of `image$pixel_unit`.
+Unknown or pixel-only calibration rejects. Level-zero legacy ROI `pixel_size`
+attributes remain supported in squared calibration units; nonzero stored ROI
+levels require explicit `pixel_size_level` and `pixel_unit` instead of an inferred
+calibration.
+Geometric area differs from the number of raster-selected pixels.
+
+`at_mask_agreement()` validates annotated masks' grids, source descriptors,
+encodings and codebooks. `alignment = "assert"` records an explicit registration
+assertion; `code_alignment = "by-label"` separately aligns categorical or bitfield
+codes by semantic labels. Instance alignment uses stable ROI IDs via `"by-id"`,
+never repeated class names. Display `labels` cannot authorize remapping. Binary
+and categorical metrics compare equality; bitfield metrics compare memberships,
+with exact-set accuracy and no categorical kappa. Declared absent classes have
+NA Dice/IoU and do not contribute to macro means. A background-only pair has
+accuracy 1 and undefined (NA) kappa. Plain matrices remain explicit-code legacy
+categorical inputs and reject fractional, nonfinite or unrepresentable values.

@@ -1,0 +1,39 @@
+✖ keyboard envelopes capture rendered canvas identity, preserve payload, and suppress missing identity (3.790091ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 69.78374
+
+✖ failing tests:
+
+test at tests/audit/keyboard.test.js:6:1
+✖ keyboard envelopes capture rendered canvas identity, preserve payload, and suppress missing identity (3.790091ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      name: 'key_tool',
+  +   value: 'point'
+  -   value: {
+  -     entry_id: 'entry-a',
+  -     payload: 'point',
+  -     revision: 3
+  -   }
+    }
+  
+      at TestContext.<anonymous> (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/audit/keyboard.test.js:13:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { name: 'key_tool', value: 'point' },
+    expected: { name: 'key_tool', value: { entry_id: 'entry-a', revision: 3, payload: 'point' } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

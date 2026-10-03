@@ -1,0 +1,73 @@
+ℹ Loading annotatR
+              entry_id n_image n_roi n_unique_selected n_roi_memberships
+1 analytical-image-001       1     2                16                18
+  n_overlap n_background n_excluded_rois
+1         2            4               0
+              entry_id band wavelength unit                            estimand
+1 analytical-image-001    1        450   nm unique selected pixels within image
+2 analytical-image-001    2        550   nm unique selected pixels within image
+3 analytical-image-001    3        650   nm unique selected pixels within image
+  n_selected n_valid n_invalid     mean median       sd min max  sum
+1         16      15         1 129.1333  131.0 10.35696 112 145 1937
+2         16      15         1 228.3333  231.0 11.28632 211 245 3425
+3         16      14         2 326.3571  324.5 10.55103 311 344 4569
+            comparison  accuracy kappa mean_dice  mean_iou n_px    encoding
+1          categorical 0.7500000 0.625      0.75 0.6000000   12 categorical
+2 categorical_remapped 0.7500000 0.625      0.75 0.6000000   12 categorical
+3             bitfield 0.6666667    NA      0.80 0.7142857   12    bitfield
+  alignment code_alignment background nonfinite
+1  asserted         strict          0     error
+2  asserted       by-label          0     error
+3  asserted         strict          0     error
+$R
+[1] "4.6.1"
+
+$platform
+[1] "x86_64-pc-linux-gnu"
+
+$packages
+$packages$annotatR
+[1] "0.1.0"
+
+$packages$sf
+[1] "1.1.2"
+
+$packages$stars
+[1] "0.7.3"
+
+$packages$tibble
+[1] "3.3.1"
+
+$packages$dplyr
+[1] "1.2.1"
+
+$packages$jsonlite
+[1] "2.0.0"
+
+$packages$rlang
+[1] "1.3.0"
+
+$packages$cli
+[1] "3.6.6"
+
+
+$sf_external
+$sf_external$GEOS
+[1] "3.14.1"
+
+$sf_external$GDAL
+[1] "3.12.2"
+
+$sf_external$proj.4
+[1] "9.7.1"
+
+$sf_external$GDAL_with_GEOS
+[1] "true"
+
+$sf_external$USE_PROJ_H
+[1] "true"
+
+$sf_external$PROJ
+[1] "9.7.1"
+
+

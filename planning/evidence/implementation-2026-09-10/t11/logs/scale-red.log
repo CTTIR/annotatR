@@ -1,0 +1,14 @@
+State: {"ping":1789066691405.23,"tool":"point","entry_id":"entry_at_37419f3069db02_000000002","revision":8,"cursor":2,"ready":true,"error":null,"saved":"saved","attempts":3,"active_layer":"annotations","active_label":"first","autosave":false,"status":["skipped","complete","skipped","pending","pending"],"recovery":false,"replacement":"/tmp/RtmpVBTsls/annotatr-journey-37419f667b86ce/replacement","out_dir":"/tmp/RtmpVBTsls/annotatr-journey-37419f667b86ce/saved","undo":6,"redo":0,"rois":{"annotations":[{"id":"roi_000000015","label":"first","geometry":{"type":"Point","coordinates":[3,3]},"locked":true},{"id":"roi_000000027","label":"first","geometry":{"type":"Point","coordinates":[15,15]},"locked":false},{"id":"roi_000000028","label":"first","geometry":{"type":"Polygon","coordinates":[[[15,15],[16,15],[16,16],[15,15]]]},"locked":false}],"locked":[{"id":"roi_000000016","label":"protected","geometry":{"type":"Polygon","coordinates":[[[20,20],[25,20],[25,25],[20,25],[20,20]]]},"locked":false}],"hidden":[{"id":"roi_000000017","label":"hidden","geometry":{"type":"Point","coordinates":[10,10]},"locked":false}],"original":[]},"labels":{"annotations":["first","second"],"locked":"protected","hidden":"hidden","original":["original","captured"]}}
+Active: <canvas tabindex="0" aria-label="Annotation canvas. Arrows move; Enter or Space draws; Escape cancels." class="atcanvas-canvas" width="667" height="607" aria-disabled="false" style="width: 100%; height: 100%; cursor: grab;"></canvas>
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+page.waitForFunction: Timeout 30000ms exceeded.
+    at wait (/data/GitHub/CTTIR/public/annotatR-roadmap/tests/browser/app-journey.cjs:12:29)
+    at /data/GitHub/CTTIR/public/annotatR-roadmap/tests/browser/app-journey.cjs:152:9 {
+  log: [],
+  name: 'TimeoutError'
+}
+
+Node.js v24.19.0

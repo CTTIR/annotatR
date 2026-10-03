@@ -44,7 +44,7 @@ at_rois(proj)[, c("roi_id", "layer", "label", "geom_type", "area_px")]
 `at_write_geojson()` serialises a project to a standard `FeatureCollection`.
 Each ROI becomes one `Feature` whose `geometry` is the pixel-coordinate polygon
 and whose `properties` carry the full annotatR schema: `roi_id`, `layer`,
-`label`, `level`, `author`, `created`, `modified`, `source`, the writing
+`label`, `level`, `source_level`, `author`, `created`, `modified`, `source`, the writing
 `annotatR_version`, and any free-form `attributes`. Keeping the schema explicit
 is what lets a file survive a return trip.
 
@@ -65,6 +65,32 @@ back <- at_read_geojson(gj)
 imported <- at_project(proj$image, back[["regions"]])
 identical(sort(at_rois(proj)$label), sort(at_rois(imported)$label))
 ```
+
+### Coordinate levels and legacy imports
+
+GeoJSON and QuPath exports write `level` matching their coordinates, with the
+stored ROI level in `source_level` as provenance. The
+`coordinate_schema = "annotatR-pixel-level-v1"` marker identifies this corrected
+contract. CSV exports always use level-0 coordinates and `level = 0`. Image
+dimensions determine separate x/y scale factors; no power-of-two pyramid is
+inferred. Vector geometry round trips use floating-point precision (relative
+tolerance `1e-12`); supported raster-mask round trips preserve integer pixels
+on the same pixel grid.
+
+Some older exports paired level-0 geometry with a nonzero stored ROI level.
+Those files cannot be distinguished reliably from valid nonzero-coordinate
+files. Readers reject unmarked nonzero recorded levels by default with an
+interpretation error. To explicitly trust legitimate recorded-level foreign or
+legacy files, pass `legacy_levels = "recorded"`. When the actual coordinate
+level is independently known, use `coordinate_level = 0L` (or the known level)
+with `at_read_geojson()`, `at_read_rois_csv()`, or `at_read_qupath()`. This explicit
+import mode overrides the level declaration without scaling coordinates. Use
+either mode only when the coordinate convention is known; do not guess a repair. Missing level metadata defaults to level 0, or
+the reader's explicit fallback `level` where supported.
+
+Mask imports (including NPY) recover the level from the RDS object or legend
+sidecar by default; an explicit `level` overrides it. Preserve the sidecar alongside raster files.
+For unannotated external masks, supply the known level when it is not 0.
 
 ### The `flip_y` option
 
@@ -90,28 +116,33 @@ when a downstream consumer explicitly wants a cartesian, bottom-left origin.
 ## QuPath
 
 QuPath reads and writes its own GeoJSON dialect. `at_write_qupath()` emits
-`annotation` objects (or `detection` for mask-derived ROIs), maps each ROI's
-label to a `classification.name`, records the lock state as `isLocked`, and
-packs the layer colour into a `colorRGB` field. On the way back,
-`at_read_qupath()` restores those classifications as labels; any feature whose
-classification is `null` is imported under the label `"unclassified"` rather
-than being dropped.
+current `objectType` and `classification.color` RGB arrays, preserving labels,
+colours and lock state. `at_read_qupath()` accepts native Feature arrays,
+FeatureCollections and single Features, with both current fields and legacy
+`object_type`/`colorRGB` fields. Null classifications become `"unclassified"`.
+Malformed fields and conflicting declarations are rejected explicitly.
 
 ```{r qupath-write}
 qp <- tempfile(fileext = ".geojson")
 at_write_qupath(proj, qp)
-grep("name|colorRGB", readLines(qp), value = TRUE)[1:2]
 ```
 
-### The colour gotcha
+QuPath requires UUID feature IDs. annotatR keeps existing UUIDs and derives a
+deterministic UUID for other IDs, while recording the original ID in
+`properties.metadata.annotatR_roi_id`. The same string metadata map retains
+`annotatR_coordinate_schema` and `annotatR_coordinate_level`. Native QuPath
+0.7.0 retains these entries through import/export; annotatR recovers the original
+ID on return. If another tool removes this metadata, a non-UUID original ID
+cannot be recovered from the native UUID. Ordinary external feature IDs are
+preserved. Identical repeated metadata emitted by QuPath 0.7.0 is accepted;
+contradictory repeated mappings and duplicate recovered IDs fail explicitly.
 
-QuPath stores a classification colour as a **signed** 32-bit integer packed as
-`0xFFRRGGBB`. The `0xFF` alpha byte pushes most colours past `2^31`, so they wrap
-around to negative values: the grey `#999999` above serialises as `-6710887`,
-not a friendly positive number. annotatR handles the modular arithmetic for you
-in both directions, so you never touch the raw integer, but it is worth knowing
-why the field looks odd. Reading the file back recovers the hex colours onto the
-layer style:
+Annotation and detection kinds are supported. Imported objects use the ROI
+source `"imported"`, and retain their kind in `attributes$qupath_object_type`
+so detections remain detections on re-export. Other QuPath kinds, including
+cells with separate nucleus geometry, are rejected rather than simplified.
+Mask/derived ROIs without an imported kind export as detections; other ROIs
+export as annotations. Image coordinate geometry is preserved, including holes.
 
 ```{r qupath-read}
 lyr <- at_read_qupath(qp)
@@ -180,3 +211,28 @@ the package website.
 ## Use of LLM tools
 
 Portions of this package were prepared with assistance from large language model tooling for narrowly defined, non-authorial tasks: copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of boilerplate files (CI configs, build scripts), code refactoring. The tools used were Chat AI, the LLM service of KISSKI (GWDG), and a self-hosted Mistral Small (24B, Apache-2.0) run locally via Ollama and the ollamar R package — local inference only, with no data sent to third parties for the self-hosted model.
+
+
+## Export destinations and receipts
+
+Batch and split-mask exports turn project, layer, ROI and class names into safe
+portable filename components and append deterministic suffixes for collisions.
+Display labels remain in receipts and annotation/legend metadata. Package and
+app exports preflight the complete bundle, including sidecars and receipt files,
+and reject symlinked descendants before writing. An explicitly selected
+single-file output path can point to any caller-chosen directory.
+
+A mask and its legend are staged before either is published. Existing bundles
+are skipped unless replacement was requested, and a failed item does not prevent
+later items from running. Receipts include every requested item with `ok`,
+`error` or `skipped`, a message, paths and double-precision byte counts for both
+output and sidecar. `ok` means the whole requested bundle was published. A
+failed publication restores prior files; if restoration fails, the error names
+the retained backup. Session exports replace `_export_manifest.csv` and
+`_annotation_summary.csv` each run. Receipt/summary failures warn, remain in
+receipt attributes, and do not discard the returned item outcomes. App downloads
+include the receipt and all complete bundles, and display failure/skip counts.
+
+Writers must be serialized and destination paths kept stable during an export.
+Preflight and several filesystem renames do not provide a race-free transaction
+against concurrent writers, crashes between renames, or hostile symlink changes.

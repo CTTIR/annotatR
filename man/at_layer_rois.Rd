@@ -9,7 +9,8 @@ at_layer_rois(layer, image = NULL, call = rlang::caller_env())
 \arguments{
 \item{layer}{An \link{annot_layer}.}
 
-\item{image}{Optional \link{annot_image} for accurate level-0 coordinate transforms.}
+\item{image}{\link{annot_image} defining actual pyramid dimensions. Required when
+any ROI is stored at a nonzero level; no scale is inferred without it.}
 
 \item{call}{The calling environment, for error reporting.}
 }

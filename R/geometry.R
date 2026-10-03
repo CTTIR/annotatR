@@ -15,7 +15,8 @@
 #' @param img The [annot_image] whose pyramid defines the level dimensions.
 #' @param call The calling environment, for error reporting.
 #'
-#' @return An [annot_roi] with coordinates at `to_level`. Exactly invertible.
+#' @return An [annot_roi] with coordinates at `to_level`. Invertible within
+#'   floating-point precision (relative tolerance `1e-12`).
 #' @family geometry
 #' @seealso [at_roi_rescale()]
 #' @export
@@ -28,21 +29,7 @@ at_transform <- function(roi, from_level, to_level, img, call = rlang::caller_en
   .check_image(img, call = call)
   from_level <- .check_count(from_level, call = call)
   to_level <- .check_count(to_level, call = call)
-  maxl <- img$n_levels - 1L
-  if (from_level > maxl || to_level > maxl) {
-    cli::cli_abort(
-      c("Levels must be within the image pyramid.",
-        "x" = "Levels {.val {c(from_level, to_level)}} requested; max is {maxl}."),
-      call = call
-    )
-  }
-  df <- img$level_dims[[from_level + 1L]]
-  dt <- img$level_dims[[to_level + 1L]]
-  fx <- dt[1] / df[1]
-  fy <- dt[2] / df[2]
-  out <- lapply(roi$geometry, .apply_coords,
-                fun = function(m) cbind(m[, 1] * fx, m[, 2] * fy))
-  g <- sf::st_sfc(out, crs = sf::NA_crs_)
+  g <- .transform_geom(roi$geometry, from_level, to_level, img, call = call)
   new_annot_roi(
     geometry = g, id = roi$id, label = roi$label, level = to_level,
     attributes = roi$attributes, created = roi$created, modified = .now(),
@@ -157,6 +144,22 @@ at_clamp <- function(roi, dims, call = rlang::caller_env()) {
   )
 }
 
+# Keep standalone same-level operations in that coordinate system. With image
+# metadata all operands and the derived result use level zero.
+.normalize_operation_rois <- function(rois, image = NULL, call = rlang::caller_env()) {
+  levels <- vapply(rois, function(r) as.integer(r$level), integer(1))
+  if (is.null(image) && length(unique(levels)) > 1L) {
+    cli::cli_abort("Mixed coordinate levels require image pyramid dimensions.", call = call)
+  }
+  if (is.null(image)) return(rois)
+  .check_image(image, call = call)
+  lapply(rois, function(r) {
+    r$geometry <- .transform_geom(r$geometry, r$level, 0L, image, call = call)
+    r$level <- 0L
+    r
+  })
+}
+
 #' Set operations on ROIs
 #'
 #' Combine ROIs geometrically. Each accepts several [annot_roi] via `...`, or a
@@ -164,6 +167,9 @@ at_clamp <- function(roi, dims, call = rlang::caller_env()) {
 #' `MULTIPOLYGON` geometry (the return type is always a single [annot_roi]).
 #'
 #' @param ... Two or more [annot_roi], or a single [annot_layer].
+#' @param image Optional [annot_image] defining actual pyramid dimensions.
+#'   Required for mixed levels. With it, results use level 0; without it, all
+#'   operands must share a level and the result retains that level.
 #' @param call The calling environment, for error reporting.
 #' @return A single [annot_roi] with `source = "derived"`.
 #' @name at_roi_setops
@@ -176,8 +182,8 @@ NULL
 
 #' @rdname at_roi_setops
 #' @export
-at_roi_union <- function(..., call = rlang::caller_env()) {
-  rois <- .collect_rois(list(...), call = call)
+at_roi_union <- function(..., call = rlang::caller_env(), image = NULL) {
+  rois <- .normalize_operation_rois(.collect_rois(list(...), call = call), image, call)
   if (length(rois) == 0L) {
     cli::cli_abort("{.fn at_roi_union} needs at least one ROI.", call = call)
   }
@@ -187,8 +193,8 @@ at_roi_union <- function(..., call = rlang::caller_env()) {
 
 #' @rdname at_roi_setops
 #' @export
-at_roi_intersect <- function(..., call = rlang::caller_env()) {
-  rois <- .collect_rois(list(...), call = call)
+at_roi_intersect <- function(..., call = rlang::caller_env(), image = NULL) {
+  rois <- .normalize_operation_rois(.collect_rois(list(...), call = call), image, call)
   if (length(rois) == 0L) {
     cli::cli_abort("{.fn at_roi_intersect} needs at least one ROI.", call = call)
   }
@@ -201,8 +207,8 @@ at_roi_intersect <- function(..., call = rlang::caller_env()) {
 
 #' @rdname at_roi_setops
 #' @export
-at_roi_difference <- function(..., call = rlang::caller_env()) {
-  rois <- .collect_rois(list(...), call = call)
+at_roi_difference <- function(..., call = rlang::caller_env(), image = NULL) {
+  rois <- .normalize_operation_rois(.collect_rois(list(...), call = call), image, call)
   if (length(rois) < 2L) {
     cli::cli_abort("{.fn at_roi_difference} needs at least two ROIs.", call = call)
   }
@@ -213,8 +219,8 @@ at_roi_difference <- function(..., call = rlang::caller_env()) {
 
 #' @rdname at_roi_setops
 #' @export
-at_roi_symdiff <- function(..., call = rlang::caller_env()) {
-  rois <- .collect_rois(list(...), call = call)
+at_roi_symdiff <- function(..., call = rlang::caller_env(), image = NULL) {
+  rois <- .normalize_operation_rois(.collect_rois(list(...), call = call), image, call)
   if (length(rois) < 2L) {
     cli::cli_abort("{.fn at_roi_symdiff} needs at least two ROIs.", call = call)
   }
@@ -263,7 +269,8 @@ at_roi_ring <- function(roi, outer, inner = 0, label = roi$label,
 #' Test whether points fall inside an ROI
 #'
 #' @param roi An [annot_roi].
-#' @param x,y Numeric coordinate vectors of equal length.
+#' @param x,y Numeric coordinate vectors of equal length in the ROI's stored
+#'   coordinate level.
 #' @param call The calling environment, for error reporting.
 #' @return A logical vector of length `length(x)`.
 #' @family geometry
@@ -286,43 +293,49 @@ at_roi_contains <- function(roi, x, y, call = rlang::caller_env()) {
 #' Test whether two ROIs intersect
 #'
 #' @param roi1,roi2 [annot_roi] objects.
+#' @param image Optional [annot_image]; required for mixed coordinate levels.
 #' @param call The calling environment, for error reporting.
 #' @return A logical scalar.
 #' @family geometry
 #' @export
-at_roi_overlaps <- function(roi1, roi2, call = rlang::caller_env()) {
+at_roi_overlaps <- function(roi1, roi2, call = rlang::caller_env(), image = NULL) {
   .check_roi(roi1, arg = "roi1", call = call)
   .check_roi(roi2, arg = "roi2", call = call)
-  g1 <- .to_level0(roi1$geometry, roi1$level)
-  g2 <- .to_level0(roi2$geometry, roi2$level)
+  rois <- .normalize_operation_rois(list(roi1, roi2), image, call)
+  g1 <- rois[[1]]$geometry
+  g2 <- rois[[2]]$geometry
   length(suppressMessages(sf::st_intersects(g1, g2)[[1]])) > 0L
 }
 
 #' Distance between two ROIs
 #'
 #' @param roi1,roi2 [annot_roi] objects.
+#' @param image [annot_image] defining actual pyramid dimensions; required for
+#'   any nonzero ROI level because measurements are reported at level 0.
 #' @param call The calling environment, for error reporting.
 #' @return A numeric scalar distance in level-0 pixels.
 #' @family geometry
 #' @export
-at_roi_distance <- function(roi1, roi2, call = rlang::caller_env()) {
+at_roi_distance <- function(roi1, roi2, call = rlang::caller_env(), image = NULL) {
   .check_roi(roi1, arg = "roi1", call = call)
   .check_roi(roi2, arg = "roi2", call = call)
-  g1 <- .to_level0(roi1$geometry, roi1$level)
-  g2 <- .to_level0(roi2$geometry, roi2$level)
+  g1 <- .to_level0(roi1$geometry, roi1$level, image)
+  g2 <- .to_level0(roi2$geometry, roi2$level, image)
   as.numeric(sf::st_distance(g1, g2)[1, 1])
 }
 
 #' Pairwise ROI overlaps within a layer
 #'
 #' @param layer An [annot_layer].
+#' @param image [annot_image] defining actual pyramid dimensions; required for
+#'   any nonzero ROI level because measurements are reported at level 0.
 #' @param call The calling environment, for error reporting.
 #' @return A [tibble::tibble] with columns `id_a`, `id_b` (character),
 #'   `overlap_px` (double, level-0 pixels), and `jaccard` (double). A 0-row
 #'   tibble with these columns when no ROIs overlap.
 #' @family geometry
 #' @export
-at_rois_overlap <- function(layer, call = rlang::caller_env()) {
+at_rois_overlap <- function(layer, call = rlang::caller_env(), image = NULL) {
   .check_layer(layer, call = call)
   empty <- tibble::tibble(
     id_a = character(0), id_b = character(0),
@@ -333,7 +346,7 @@ at_rois_overlap <- function(layer, call = rlang::caller_env()) {
   if (n < 2L) {
     return(empty)
   }
-  geoms <- lapply(rois, function(r) .to_level0(r$geometry, r$level))
+  geoms <- lapply(rois, function(r) .to_level0(r$geometry, r$level, image))
   rows <- list()
   for (i in seq_len(n - 1L)) {
     for (j in (i + 1L):n) {

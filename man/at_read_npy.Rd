@@ -6,16 +6,19 @@
 \usage{
 at_read_npy(
   path,
-  level = 0L,
+  level = NULL,
   transpose = FALSE,
   legend = NULL,
-  call = rlang::caller_env()
+  call = rlang::caller_env(),
+  metadata = NULL
 )
 }
 \arguments{
 \item{path}{Path to a \code{.npy} file.}
 
-\item{level}{Integer pyramid level to record. Default \code{0}.}
+\item{level}{Integer pyramid level to record. \code{NULL} (default) recovers the
+sidecar level, falling back to 0 without metadata. Explicit values override
+the sidecar declaration without resampling pixels.}
 
 \item{transpose}{Logical; transpose the array on read, for files stored in
 the native cube order \verb{(width, height)} = \verb{[x, y]} (e.g. TIVITA/HyperGui
@@ -26,9 +29,18 @@ masks) so the result lands in annotatR's \verb{[y, x]} convention. Default
 / pixel-value labelling.}
 
 \item{call}{The calling environment, for error reporting.}
+
+\item{metadata}{Optional named list overriding semantic \code{mask_metadata}
+fields, such as \code{encoding}, \code{background}, or \code{source}. Nested grid fields
+merge; explicit \code{level} and \code{legend} take precedence. No pixels are resampled.
+Versioned declarations must be structurally valid before overrides apply.}
 }
 \value{
-An \code{annot_mask}.
+An integer \code{annot_mask} preserving encoding, background, codebook,
+grid and source metadata. Without encoding metadata, imports use exclusive
+instance values and zero background with status \code{legacy-default}; signed
+representable codes are preserved. A declared storage orientation must
+match \code{transpose}, even for square arrays. Malformed sidecars are rejected.
 }
 \description{
 Read a NumPy integer array (e.g. a ground-truth annotation mask) into a

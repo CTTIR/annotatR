@@ -1,0 +1,307 @@
+app-capabilities: 123456Loading required package: shiny
+789.ab
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Failure ('test-app-capabilities.R:15:5'): ordinary ingress rejects unversi
+Expected `.state_event(rv, 1)` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+
+Backtrace:
+     ▆
+  1. ├─shiny::isolate(...) at test-app-capabilities.R:13:3
+  2. │ ├─shiny::..stacktraceoff..(...)
+  3. │ └─ctx$run(...)
+  4. │   ├─promises::with_promise_domain(...)
+  5. │   │ └─domain$wrapSync(expr)
+  6. │   ├─shiny::withReactiveDomain(...)
+  7. │   │ └─promises::with_promise_domain(...)
+  8. │   │   └─domain$wrapSync(expr)
+  9. │   │     └─base::force(expr)
+ 10. │   ├─shiny:::with_otel_span_context(...)
+ 11. │   │ └─base::force(expr)
+ 12. │   ├─shiny::captureStackTraces(...)
+ 13. │   │ └─promises::with_promise_domain(...)
+ 14. │   │   └─domain$wrapSync(expr)
+ 15. │   │     └─base::withCallingHandlers(expr, error = doCaptureStack)
+ 16. │   └─env$runWith(self, func)
+ 17. │     └─shiny (local) contextFunc()
+ 18. │       └─shiny::..stacktraceon..(expr)
+ 19. └─testthat::expect_null(.state_event(rv, 1)) at test-app-capabilities.R:15:5
+
+── 2. Failure ('test-app-capabilities.R:18:5'): ordinary ingress rejects unversi
+Expected `.state_mutate(rv, function(p) at_remove_roi(p, id))` to be FALSE.
+Differences:
+`actual`:   TRUE 
+`expected`: FALSE
+
+Backtrace:
+     ▆
+  1. ├─shiny::isolate(...) at test-app-capabilities.R:13:3
+  2. │ ├─shiny::..stacktraceoff..(...)
+  3. │ └─ctx$run(...)
+  4. │   ├─promises::with_promise_domain(...)
+  5. │   │ └─domain$wrapSync(expr)
+  6. │   ├─shiny::withReactiveDomain(...)
+  7. │   │ └─promises::with_promise_domain(...)
+  8. │   │   └─domain$wrapSync(expr)
+  9. │   │     └─base::force(expr)
+ 10. │   ├─shiny:::with_otel_span_context(...)
+ 11. │   │ └─base::force(expr)
+ 12. │   ├─shiny::captureStackTraces(...)
+ 13. │   │ └─promises::with_promise_domain(...)
+ 14. │   │   └─domain$wrapSync(expr)
+ 15. │   │     └─base::withCallingHandlers(expr, error = doCaptureStack)
+ 16. │   └─env$runWith(self, func)
+ 17. │     └─shiny (local) contextFunc()
+ 18. │       └─shiny::..stacktraceon..(expr)
+ 19. └─testthat::expect_false(...) at test-app-capabilities.R:18:5
+
+── 3. Failure ('test-app-capabilities.R:19:5'): ordinary ingress rejects unversi
+Expected `nrow(at_rois(rv$project))` to equal 1L.
+Differences:
+  `actual`: 0
+`expected`: 1
+
+Backtrace:
+     ▆
+  1. ├─shiny::isolate(...) at test-app-capabilities.R:13:3
+  2. │ ├─shiny::..stacktraceoff..(...)
+  3. │ └─ctx$run(...)
+  4. │   ├─promises::with_promise_domain(...)
+  5. │   │ └─domain$wrapSync(expr)
+  6. │   ├─shiny::withReactiveDomain(...)
+  7. │   │ └─promises::with_promise_domain(...)
+  8. │   │   └─domain$wrapSync(expr)
+  9. │   │     └─base::force(expr)
+ 10. │   ├─shiny:::with_otel_span_context(...)
+ 11. │   │ └─base::force(expr)
+ 12. │   ├─shiny::captureStackTraces(...)
+ 13. │   │ └─promises::with_promise_domain(...)
+ 14. │   │   └─domain$wrapSync(expr)
+ 15. │   │     └─base::withCallingHandlers(expr, error = doCaptureStack)
+ 16. │   └─env$runWith(self, func)
+ 17. │     └─shiny (local) contextFunc()
+ 18. │       └─shiny::..stacktraceon..(expr)
+ 19. └─testthat::expect_equal(nrow(at_rois(rv$project)), 1L) at test-app-capabilities.R:19:5
+
+── 4. Failure ('test-app-capabilities.R:20:5'): ordinary ingress rejects unversi
+Expected `.state_mutate(...)` to be FALSE.
+Differences:
+`actual`:   TRUE 
+`expected`: FALSE
+
+Backtrace:
+     ▆
+  1. ├─shiny::isolate(...) at test-app-capabilities.R:13:3
+  2. │ ├─shiny::..stacktraceoff..(...)
+  3. │ └─ctx$run(...)
+  4. │   ├─promises::with_promise_domain(...)
+  5. │   │ └─domain$wrapSync(expr)
+  6. │   ├─shiny::withReactiveDomain(...)
+  7. │   │ └─promises::with_promise_domain(...)
+  8. │   │   └─domain$wrapSync(expr)
+  9. │   │     └─base::force(expr)
+ 10. │   ├─shiny:::with_otel_span_context(...)
+ 11. │   │ └─base::force(expr)
+ 12. │   ├─shiny::captureStackTraces(...)
+ 13. │   │ └─promises::with_promise_domain(...)
+ 14. │   │   └─domain$wrapSync(expr)
+ 15. │   │     └─base::withCallingHandlers(expr, error = doCaptureStack)
+ 16. │   └─env$runWith(self, func)
+ 17. │     └─shiny (local) contextFunc()
+ 18. │       └─shiny::..stacktraceon..(expr)
+ 19. └─testthat::expect_false(...) at test-app-capabilities.R:20:5
+
+── 5. Error ('test-app-capabilities.R:22:5'): ordinary ingress rejects unversion
+<subscriptOutOfBoundsError/error/condition>
+Error in ``*tmp*`[[1]]`: subscript out of bounds
+Backtrace:
+     ▆
+  1. ├─shiny::isolate(...) at test-app-capabilities.R:13:3
+  2. │ ├─shiny::..stacktraceoff..(...)
+  3. │ └─ctx$run(...)
+  4. │   ├─promises::with_promise_domain(...)
+  5. │   │ └─domain$wrapSync(expr)
+  6. │   ├─shiny::withReactiveDomain(...)
+  7. │   │ └─promises::with_promise_domain(...)
+  8. │   │   └─domain$wrapSync(expr)
+  9. │   │     └─base::force(expr)
+ 10. │   ├─shiny:::with_otel_span_context(...)
+ 11. │   │ └─base::force(expr)
+ 12. │   ├─shiny::captureStackTraces(...)
+ 13. │   │ └─promises::with_promise_domain(...)
+ 14. │   │   └─domain$wrapSync(expr)
+ 15. │   │     └─base::withCallingHandlers(expr, error = doCaptureStack)
+ 16. │   └─env$runWith(self, func)
+ 17. │     └─shiny (local) contextFunc()
+ 18. │       └─shiny::..stacktraceon..(expr)
+ 19. └─shiny (local) `<fn>`(`<sbscOOBE>`) at test-app-capabilities.R:22:5
+
+── 6. Error ('test-app-capabilities.R:39:5'): dirty queue replacement has a reco
+Error in `session$sendNotification("show", list(html = res$html, action = actionRes$html, deps = c(res$deps, actionRes$deps), duration = if (!is.null(duration)) duration * 1000, closeButton = closeButton, id = id, type = match.arg(type)))`: attempt to apply non-function
+Backtrace:
+     ▆
+  1. ├─shiny::isolate(...) at test-app-capabilities.R:33:3
+  2. │ ├─shiny::..stacktraceoff..(...)
+  3. │ └─ctx$run(...)
+  4. │   ├─promises::with_promise_domain(...)
+  5. │   │ └─domain$wrapSync(expr)
+  6. │   ├─shiny::withReactiveDomain(...)
+  7. │   │ └─promises::with_promise_domain(...)
+  8. │   │   └─domain$wrapSync(expr)
+  9. │   │     └─base::force(expr)
+ 10. │   ├─shiny:::with_otel_span_context(...)
+ 11. │   │ └─base::force(expr)
+ 12. │   ├─shiny::captureStackTraces(...)
+ 13. │   │ └─promises::with_promise_domain(...)
+ 14. │   │   └─domain$wrapSync(expr)
+ 15. │   │     └─base::withCallingHandlers(expr, error = doCaptureStack)
+ 16. │   └─env$runWith(self, func)
+ 17. │     └─shiny (local) contextFunc()
+ 18. │       └─shiny::..stacktraceon..(expr)
+ 19. ├─testthat::expect_true(.state_replace(rv, replacement)) at test-app-capabilities.R:39:5
+ 20. │ └─testthat::quasi_label(enquo(object), label)
+ 21. │   └─rlang::eval_bare(expr, quo_get_env(quo))
+ 22. ├─annotatR (local) .state_replace(rv, replacement)
+ 23. │ └─annotatR (local) .state_load(rv)
+ 24. │   └─shiny::showNotification(...)
+ 25. └─base::.handleSimpleError(...)
+ 26.   └─shiny (local) h(simpleError(msg, call))
+
+── 7. Failure ('test-app-capabilities.R:57:5'): form mutations use click payload
+Expected `"original" %in% names(rv$project$layers)` to be TRUE.
+Differences:
+`actual`:   FALSE
+`expected`: TRUE 
+
+Backtrace:
+     ▆
+  1. ├─shiny::testServer(...) at test-app-capabilities.R:54:3
+  2. │ ├─shiny:::withMockContext(...)
+  3. │ │ ├─shiny::isolate(...)
+  4. │ │ │ ├─shiny::..stacktraceoff..(...)
+  5. │ │ │ └─ctx$run(...)
+  6. │ │ │   ├─promises::with_promise_domain(...)
+  7. │ │ │   │ └─domain$wrapSync(expr)
+  8. │ │ │   ├─shiny::withReactiveDomain(...)
+  9. │ │ │   │ └─promises::with_promise_domain(...)
+ 10. │ │ │   │   └─domain$wrapSync(expr)
+ 11. │ │ │   │     └─base::force(expr)
+ 12. │ │ │   ├─shiny:::with_otel_span_context(...)
+ 13. │ │ │   │ └─base::force(expr)
+ 14. │ │ │   ├─shiny::captureStackTraces(...)
+ 15. │ │ │   │ └─promises::with_promise_domain(...)
+ 16. │ │ │   │   └─domain$wrapSync(expr)
+ 17. │ │ │   │     └─base::withCallingHandlers(expr, error = doCaptureStack)
+ 18. │ │ │   └─env$runWith(self, func)
+ 19. │ │ │     └─shiny (local) contextFunc()
+ 20. │ │ │       └─shiny::..stacktraceon..(expr)
+ 21. │ │ ├─shiny::withReactiveDomain(...)
+ 22. │ │ │ └─promises::with_promise_domain(...)
+ 23. │ │ │   └─domain$wrapSync(expr)
+ 24. │ │ │     └─base::force(expr)
+ 25. │ │ └─withr::with_options(...)
+ 26. │ │   └─base::force(code)
+ 27. │ └─rlang::eval_tidy(quosure, mask, rlang::caller_env())
+ 28. └─testthat::expect_true("original" %in% names(rv$project$layers)) at test-app-capabilities.R:57:5
+
+── 8. Failure ('test-app-capabilities.R:58:5'): form mutations use click payload
+Expected `"later" %in% names(rv$project$layers)` to be FALSE.
+Differences:
+`actual`:   TRUE 
+`expected`: FALSE
+
+Backtrace:
+     ▆
+  1. ├─shiny::testServer(...) at test-app-capabilities.R:54:3
+  2. │ ├─shiny:::withMockContext(...)
+  3. │ │ ├─shiny::isolate(...)
+  4. │ │ │ ├─shiny::..stacktraceoff..(...)
+  5. │ │ │ └─ctx$run(...)
+  6. │ │ │   ├─promises::with_promise_domain(...)
+  7. │ │ │   │ └─domain$wrapSync(expr)
+  8. │ │ │   ├─shiny::withReactiveDomain(...)
+  9. │ │ │   │ └─promises::with_promise_domain(...)
+ 10. │ │ │   │   └─domain$wrapSync(expr)
+ 11. │ │ │   │     └─base::force(expr)
+ 12. │ │ │   ├─shiny:::with_otel_span_context(...)
+ 13. │ │ │   │ └─base::force(expr)
+ 14. │ │ │   ├─shiny::captureStackTraces(...)
+ 15. │ │ │   │ └─promises::with_promise_domain(...)
+ 16. │ │ │   │   └─domain$wrapSync(expr)
+ 17. │ │ │   │     └─base::withCallingHandlers(expr, error = doCaptureStack)
+ 18. │ │ │   └─env$runWith(self, func)
+ 19. │ │ │     └─shiny (local) contextFunc()
+ 20. │ │ │       └─shiny::..stacktraceon..(expr)
+ 21. │ │ ├─shiny::withReactiveDomain(...)
+ 22. │ │ │ └─promises::with_promise_domain(...)
+ 23. │ │ │   └─domain$wrapSync(expr)
+ 24. │ │ │     └─base::force(expr)
+ 25. │ │ └─withr::with_options(...)
+ 26. │ │   └─base::force(code)
+ 27. │ └─rlang::eval_tidy(quosure, mask, rlang::caller_env())
+ 28. └─testthat::expect_false("later" %in% names(rv$project$layers)) at test-app-capabilities.R:58:5
+
+── 9. Failure ('test-app-capabilities.R:60:5'): form mutations use click payload
+Expected `"original-label" %in% rv$project$layers$base$labels` to be TRUE.
+Differences:
+`actual`:   FALSE
+`expected`: TRUE 
+
+Backtrace:
+     ▆
+  1. ├─shiny::testServer(...) at test-app-capabilities.R:54:3
+  2. │ ├─shiny:::withMockContext(...)
+  3. │ │ ├─shiny::isolate(...)
+  4. │ │ │ ├─shiny::..stacktraceoff..(...)
+  5. │ │ │ └─ctx$run(...)
+  6. │ │ │   ├─promises::with_promise_domain(...)
+  7. │ │ │   │ └─domain$wrapSync(expr)
+  8. │ │ │   ├─shiny::withReactiveDomain(...)
+  9. │ │ │   │ └─promises::with_promise_domain(...)
+ 10. │ │ │   │   └─domain$wrapSync(expr)
+ 11. │ │ │   │     └─base::force(expr)
+ 12. │ │ │   ├─shiny:::with_otel_span_context(...)
+ 13. │ │ │   │ └─base::force(expr)
+ 14. │ │ │   ├─shiny::captureStackTraces(...)
+ 15. │ │ │   │ └─promises::with_promise_domain(...)
+ 16. │ │ │   │   └─domain$wrapSync(expr)
+ 17. │ │ │   │     └─base::withCallingHandlers(expr, error = doCaptureStack)
+ 18. │ │ │   └─env$runWith(self, func)
+ 19. │ │ │     └─shiny (local) contextFunc()
+ 20. │ │ │       └─shiny::..stacktraceon..(expr)
+ 21. │ │ ├─shiny::withReactiveDomain(...)
+ 22. │ │ │ └─promises::with_promise_domain(...)
+ 23. │ │ │   └─domain$wrapSync(expr)
+ 24. │ │ │     └─base::force(expr)
+ 25. │ │ └─withr::with_options(...)
+ 26. │ │   └─base::force(code)
+ 27. │ └─rlang::eval_tidy(quosure, mask, rlang::caller_env())
+ 28. └─testthat::expect_true("original-label" %in% rv$project$layers$base$labels) at test-app-capabilities.R:60:5
+
+── 10. Error ('test-app-capabilities.R:68:3'): canvas projection respects visibi
+Error in `eval(code, test_env)`: `z` must be at least 0.
+x You supplied -1.
+Backtrace:
+     ▆
+  1. ├─annotatR::at_add_layer(...) at test-app-capabilities.R:68:3
+  2. │ └─annotatR:::.check_layer(layer, call = call) at annotatR-roadmap/R/class-project.R:168:3
+  3. │   └─annotatR:::.check_class(x, "annot_layer", arg = arg, call = call) at annotatR-roadmap/R/utils-check.R:198:3
+  4. │     └─base::inherits(x, cls) at annotatR-roadmap/R/utils-check.R:147:3
+  5. ├─annotatR::at_layer(...)
+  6. │ └─annotatR:::.check_class(style, "annot_style", call = call) at annotatR-roadmap/R/class-layer.R:89:3
+  7. │   └─base::inherits(x, cls) at annotatR-roadmap/R/utils-check.R:147:3
+  8. └─annotatR::at_style(z = -1, locked = TRUE)
+  9.   └─annotatR:::.check_count(z, call = call) at annotatR-roadmap/R/class-layer.R:52:3
+ 10.     └─cli::cli_abort(...) at annotatR-roadmap/R/utils-check.R:92:5
+ 11.       └─rlang::abort(...)
+  ... and 1 more
+
+
+Maximum number of 10 failures reached, some test results may be missing.
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+ failed   error warning skipped  passed 
+      7       4       0       0       1 

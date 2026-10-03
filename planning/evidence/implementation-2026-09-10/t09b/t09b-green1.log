@@ -1,0 +1,34 @@
+ℹ Testing annotatR
+Error in `load_all()`:
+! Failed to load 'R/mask-metadata.R'
+Caused by error in `parse()`:
+! At 'R/mask-metadata.R:10:63': unexpected symbol
+9:   if (!(is.numeric(x) || is.logical(x)) || anyNA(x) || any(!is.finite(x)) ||
+10:       any(x != trunc(x)) || any(abs(x) > .Machine[["integer"]].max
+                                                                  ^
+Backtrace:
+     ▆
+  1. ├─devtools::test(...)
+  2. │ └─testthat::test_local(...)
+  3. │   └─testthat::test_dir(...)
+  4. │     └─testthat:::test_files(...)
+  5. │       └─testthat:::test_files_serial(...)
+  6. │         └─testthat:::test_files_setup_env(...)
+  7. │           └─pkgload::load_all(...)
+  8. │             └─pkgload::load_code(path, quiet = quiet)
+  9. │               └─(function() {...
+ 10. │                 └─pkgload:::source_many(paths, encoding, env)
+ 11. │                   ├─rlang::try_fetch(...)
+ 12. │                   │ ├─base::tryCatch(...)
+ 13. │                   │ │ └─base (local) tryCatchList(expr, classes, parentenv, handlers)
+ 14. │                   │ │   └─base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+ 15. │                   │ │     └─base (local) doTryCatch(return(expr), name, parentenv, handler)
+ 16. │                   │ └─base::withCallingHandlers(...)
+ 17. │                   └─pkgload:::source_one(file, encoding, envir = envir)
+ 18. │                     ├─base::withCallingHandlers(...)
+ 19. │                     └─base::parse(text = lines, n = -1, srcfile = srcfile)
+ 20. └─base::.handleSimpleError(...)
+ 21.   └─pkgload (local) h(simpleError(msg, call))
+ 22.     └─pkgload:::handle_parse_error(cnd, file)
+ 23.       └─rlang::abort(msg, call = conditionCall(cnd))
+Execution halted

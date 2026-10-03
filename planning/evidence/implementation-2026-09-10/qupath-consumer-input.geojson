@@ -1,0 +1,68 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "level-roi",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [8, 6],
+            [20, 6],
+            [20, 14],
+            [8, 14],
+            [8, 6]
+          ]
+        ]
+      },
+      "properties": {
+        "object_type": "annotation",
+        "classification": {
+          "name": "region",
+          "colorRGB": -15584170
+        },
+        "isLocked": true,
+        "layer": "L",
+        "level": 0,
+        "source_level": 1,
+        "coordinate_schema": "annotatR-pixel-level-v1"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "donut-roi",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [24, 2],
+            [34, 2],
+            [34, 12],
+            [24, 12],
+            [24, 2]
+          ],
+          [
+            [27, 5],
+            [27, 9],
+            [31, 9],
+            [31, 5],
+            [27, 5]
+          ]
+        ]
+      },
+      "properties": {
+        "object_type": "annotation",
+        "classification": {
+          "name": "donut",
+          "colorRGB": -5517841
+        },
+        "isLocked": false,
+        "layer": "L",
+        "level": 0,
+        "source_level": 0,
+        "coordinate_schema": "annotatR-pixel-level-v1"
+      }
+    }
+  ]
+}

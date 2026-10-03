@@ -8,18 +8,22 @@
 \alias{at_roi_symdiff}
 \title{Set operations on ROIs}
 \usage{
-at_roi_union(..., call = rlang::caller_env())
+at_roi_union(..., call = rlang::caller_env(), image = NULL)
 
-at_roi_intersect(..., call = rlang::caller_env())
+at_roi_intersect(..., call = rlang::caller_env(), image = NULL)
 
-at_roi_difference(..., call = rlang::caller_env())
+at_roi_difference(..., call = rlang::caller_env(), image = NULL)
 
-at_roi_symdiff(..., call = rlang::caller_env())
+at_roi_symdiff(..., call = rlang::caller_env(), image = NULL)
 }
 \arguments{
 \item{...}{Two or more \link{annot_roi}, or a single \link{annot_layer}.}
 
 \item{call}{The calling environment, for error reporting.}
+
+\item{image}{Optional \link{annot_image} defining actual pyramid dimensions.
+Required for mixed levels. With it, results use level 0; without it, all
+operands must share a level and the result retains that level.}
 }
 \value{
 A single \link{annot_roi} with \code{source = "derived"}.

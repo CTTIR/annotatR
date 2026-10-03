@@ -1,0 +1,7 @@
+{
+  "backend": "raster",
+  "dtype": "uint8",
+  "dims": [4, 5, 3],
+  "expected_first_row": [111, 112, 113, 114, 115],
+  "actual_first_row": [0, 1, 1, 0, 0]
+}

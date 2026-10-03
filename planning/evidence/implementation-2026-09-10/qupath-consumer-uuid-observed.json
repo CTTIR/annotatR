@@ -1,0 +1,28 @@
+[
+  {
+    "id": "00000000-0000-0000-0000-000000000101",
+    "label": "region",
+    "color": -15584170,
+    "locked": true,
+    "objectClass": "PathAnnotationObject",
+    "x": 8.0,
+    "y": 6.0,
+    "width": 12.0,
+    "height": 8.0,
+    "area": 96.0,
+    "wkt": "POLYGON ((8 6, 8 14, 20 14, 20 6, 8 6))"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000102",
+    "label": "donut",
+    "color": -5517841,
+    "locked": false,
+    "objectClass": "PathAnnotationObject",
+    "x": 24.0,
+    "y": 2.0,
+    "width": 10.0,
+    "height": 10.0,
+    "area": 84.0,
+    "wkt": "POLYGON ((24 12, 34 12, 34 2, 24 2, 24 12), (31 5, 31 9, 27 9, 27 5, 31 5))"
+  }
+]

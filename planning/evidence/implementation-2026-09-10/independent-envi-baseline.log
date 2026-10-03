@@ -1,0 +1,12 @@
+bsq-0 offset source equal: FALSE first sample: 17736 
+bsq-0 zero-offset control exact: TRUE
+bsq-1 offset source equal: FALSE first sample: 18501 
+bsq-1 zero-offset control exact: TRUE
+bil-0 offset source equal: FALSE first sample: 17736 
+bil-0 zero-offset control exact: TRUE
+bil-1 offset source equal: FALSE first sample: 18501 
+bil-1 zero-offset control exact: TRUE
+bip-0 offset source equal: FALSE first sample: 17736 
+bip-0 zero-offset control exact: TRUE
+bip-1 offset source equal: FALSE first sample: 18501 
+bip-1 zero-offset control exact: TRUE

@@ -12,18 +12,7 @@ for (f in list.files("modules", pattern = "\\.R$", full.names = TRUE)) {
 
 # Materialise the project for image `i`, reusing a stored one when present.
 .materialise <- function(session, i) {
-  p <- session$projects[[i]]
-  if (!is.null(p)) {
-    return(p)
-  }
-  img <- annotatR::at_read_image(session$manifest$path[i])
-  proj <- annotatR::at_project(img, name = session$manifest$name[i])
-  for (L in session$layer_spec) proj <- annotatR::at_add_layer(proj, L)
-  if (length(proj$layers) == 0L) {
-    proj <- annotatR::at_add_layer(proj, annotatR::at_layer("annotations",
-                                                            labels = session$labels))
-  }
-  proj
+  annotatR::at_current(annotatR::at_goto(session, i))
 }
 
 # ---- The annotation page: a clean three-column workspace ------------------
@@ -93,85 +82,77 @@ server <- function(input, output, session) {
     paste_forward = NULL, trigger_save = NULL, trigger_help = NULL
   )
 
-  # Route global keyboard shortcuts (from www/keys.js) to state and actions.
+  .state_init(rv, load_project = .materialise)
+
+  shiny::observe({
+    session$sendCustomMessage("annotatr-state", c(.state_stamp(rv), list(
+      ready = isTRUE(rv$display_ready), error = rv$display_error)))
+  })
+
+  # Observe queue identity changes only; annotation/session writes must not
+  # reload the canvas or restart a failed read/save.
+  shiny::observeEvent(list(rv$cursor, rv$session_generation), {
+    .state_load(rv)
+  }, ignoreNULL = FALSE)
+
   shiny::observeEvent(input$key_next, {
-    rv$session <- annotatR::at_next(rv$session); rv$cursor <- rv$session$cursor
+    .state_navigate(rv, rv$cursor + 1L, .state_event(rv, input$key_next, keyboard = TRUE))
   })
   shiny::observeEvent(input$key_prev, {
-    rv$session <- annotatR::at_prev(rv$session); rv$cursor <- rv$session$cursor
+    .state_navigate(rv, rv$cursor - 1L, .state_event(rv, input$key_prev, keyboard = TRUE))
   })
-  shiny::observeEvent(input$key_tool, rv$tool <- input$key_tool)
+  shiny::observeEvent(input$key_tool, {
+    event <- .state_event(rv, input$key_tool, keyboard = TRUE)
+    if (!is.null(event)) rv$tool <- event$payload
+  })
   shiny::observeEvent(input$key_label, {
-    shiny::req(rv$project, rv$active_layer)
+    event <- .state_event(rv, input$key_label, keyboard = TRUE)
+    shiny::req(event, rv$active_layer)
     labs <- rv$project$layers[[rv$active_layer]]$labels
-    if (input$key_label <= length(labs)) rv$active_label <- labs[input$key_label]
+    if (event$payload <= length(labs)) rv$active_label <- labs[event$payload]
   })
   shiny::observeEvent(input$key_flag, {
-    rv$session <- annotatR::at_set_status(rv$session, rv$cursor, "flagged")
+    .state_status(rv, "flagged", .state_event(rv, input$key_flag, keyboard = TRUE))
   })
   shiny::observeEvent(input$key_undo, {
-    if (length(rv$undo) > 0L) {
-      rv$redo <- c(rv$redo, list(rv$project))
-      rv$project <- rv$undo[[length(rv$undo)]]
-      rv$undo <- rv$undo[-length(rv$undo)]
-    }
+    .state_undo(rv, event = .state_event(rv, input$key_undo, keyboard = TRUE))
   })
   shiny::observeEvent(input$key_redo, {
-    if (length(rv$redo) > 0L) {
-      rv$undo <- c(rv$undo, list(rv$project))
-      rv$project <- rv$redo[[length(rv$redo)]]
-      rv$redo <- rv$redo[-length(rv$redo)]
-    }
+    .state_undo(rv, redo = TRUE, event = .state_event(rv, input$key_redo, keyboard = TRUE))
   })
-  shiny::observeEvent(input$key_paste_forward, rv$paste_forward <- input$key_paste_forward)
-  # N: jump to the next pending image (mirrors the queue's Next-pending button).
+  shiny::observeEvent(input$key_paste_forward, {
+    event <- .state_event(rv, input$key_paste_forward, keyboard = TRUE)
+    shiny::req(event, rv$cursor > 1L)
+    previous <- rv$session$projects[[rv$cursor - 1L]]
+    shiny::req(previous)
+    .state_mutate(rv, function(p) .copy_forward(previous, p), event)
+  })
   shiny::observeEvent(input$key_next_pending, {
-    m <- annotatR::at_session_status(rv$session)
-    pending <- which(m$status == "pending")
-    nxt <- pending[pending > rv$cursor]
-    target <- if (length(nxt)) nxt[1] else if (length(pending)) pending[1] else rv$cursor
-    rv$session <- annotatR::at_goto(rv$session, target)
-    rv$cursor <- target
+    .state_navigate(rv, .state_pending(rv), .state_event(rv, input$key_next_pending, keyboard = TRUE))
   })
-  # Ctrl+E: jump to the Export page.
-  shiny::observeEvent(input$key_export,
-                      bslib::nav_select("nav", "Export", session = session))
-  # Shift+Enter: mark the current image complete, persist, and advance.
+  shiny::observeEvent(input$key_export, {
+    shiny::req(.state_event(rv, input$key_export, keyboard = TRUE))
+    bslib::nav_select("nav", "Export", session = session)
+  })
   shiny::observeEvent(input$key_commit_advance, {
-    rv$session <- annotatR::at_set_status(rv$session, rv$cursor, "complete")
-    rv$trigger_save <- input$key_commit_advance
-    rv$session <- annotatR::at_next(rv$session)
-    rv$cursor <- rv$session$cursor
+    .state_save(rv, complete = TRUE, advance = TRUE,
+                event = .state_event(rv, input$key_commit_advance, keyboard = TRUE))
   })
-  # d: delete the most recently added ROI on the current image (undoable).
   shiny::observeEvent(input$key_delete, {
-    shiny::req(rv$project)
+    event <- .state_event(rv, input$key_delete, keyboard = TRUE)
+    shiny::req(event, rv$project)
     rt <- annotatR::at_rois(rv$project)
-    if (nrow(rt) > 0L) {
-      rv$undo <- c(rv$undo, list(rv$project))
-      rv$redo <- list()
-      rv$project <- annotatR::at_remove_roi(rv$project, rt$roi_id[nrow(rt)])
-      rv$saved <- "unsaved"
-    }
+    if (nrow(rt)) .state_mutate(rv, function(p) {
+      annotatR::at_remove_roi(p, rt$roi_id[nrow(rt)])
+    }, event)
   })
-  # s / ? : hand off to the modules that own saving and the help modal.
-  shiny::observeEvent(input$key_save, rv$trigger_save <- input$key_save)
-  shiny::observeEvent(input$key_help, rv$trigger_help <- input$key_help)
-
-  shiny::observeEvent(rv$cursor, {
-    proj <- tryCatch(.materialise(rv$session, rv$cursor), error = function(e) e)
-    if (inherits(proj, "error")) {
-      rv$session <- annotatR::at_set_status(rv$session, rv$cursor, "skipped")
-      rv$project <- NULL
-      shiny::showNotification(paste("Skipped image:", conditionMessage(proj)),
-                              type = "error")
-      return()
-    }
-    rv$project <- proj
-    rv$active_layer <- names(proj$layers)[1]
-    rv$active_label <- proj$layers[[1]]$labels[1]
-    rv$saved <- "saved"
-  }, ignoreNULL = FALSE)
+  shiny::observeEvent(input$key_save, {
+    .state_save(rv, event = .state_event(rv, input$key_save, keyboard = TRUE))
+  })
+  shiny::observeEvent(input$key_help, {
+    event <- .state_event(rv, input$key_help, keyboard = TRUE)
+    if (!is.null(event)) rv$trigger_help <- event$payload
+  })
 
   mod_data_server("data", rv)
   mod_dashboard_server("dashboard", rv)

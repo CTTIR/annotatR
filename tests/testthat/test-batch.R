@@ -6,7 +6,7 @@ test_that("at_export_all writes every format in the right layout", {
   receipt <- suppressMessages(at_export_all(sess, dir, scope = "all", progress = FALSE))
   expect_s3_class(receipt, "tbl_df")
   expect_identical(names(receipt),
-                   c("image", "format", "path", "bytes", "n_rois", "status", "message"))
+                   c("entry_id", "image", "format", "path", "bytes", "n_rois", "status", "message", "sidecar_path", "sidecar_bytes"))
   expect_setequal(list.dirs(dir, recursive = FALSE, full.names = FALSE),
                   c("masks", "geojson", "qupath", "projects", "csv"))
   expect_true(file.exists(file.path(dir, "_export_manifest.csv")))
@@ -39,7 +39,8 @@ test_that("at_manifest label counts match at_rois aggregation", {
   sess <- at_example_session(2)
   sess$projects[[1]] <- at_example_project()
   man <- at_manifest(sess)
-  expect_true(all(c("idx", "name", "path", "status", "n_layers", "n_rois") %in% names(man)))
+  expect_true(all(c("idx", "entry_id", "export_stem", "name", "path", "status",
+                    "n_layers", "n_rois") %in% names(man)))
   rt <- at_rois(sess$projects[[1]])
   for (lb in c("tumour", "necrosis", "stroma")) {
     expect_identical(man[[lb]][1], sum(rt$label == lb))

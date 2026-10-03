@@ -1,0 +1,50 @@
+ℹ Loading annotatR
+FILE tests/testthat/fixtures/windows/float32.ome.tif 
+, , 1
+
+     [,1] [,2] [,3] [,4]
+[1,]   -2  0.5  NaN  Inf
+[2,] -Inf  4.0    5    6
+
+FILE tests/testthat/fixtures/windows/float64.ome.tif 
+, , 1
+
+     [,1] [,2] [,3] [,4]
+[1,]   -2  0.5  NaN  Inf
+[2,] -Inf  4.0    5    6
+
+FILE tests/testthat/fixtures/windows/int16.ome.tif 
+, , 1
+
+       [,1] [,2] [,3]  [,4]
+[1,] -32768   -1    0 32767
+[2,]      1    2    3     4
+
+FILE tests/testthat/fixtures/windows/int32.ome.tif 
+, , 1
+
+            [,1] [,2] [,3]       [,4]
+[1,] -2147483648   -1    0 2147483647
+[2,]           1    2    3          4
+
+FILE tests/testthat/fixtures/windows/uint16.ome.tif 
+, , 1
+
+      [,1] [,2]  [,3]  [,4]
+[1,]     0    1 32767 65535
+[2,] 65535  100     2     0
+
+FILE tests/testthat/fixtures/windows/uint32.ome.tif 
+, , 1
+
+     [,1] [,2]       [,3]       [,4]
+[1,]    0    1 2147483648 4294967295
+[2,]    1    2          3          4
+
+FILE tests/testthat/fixtures/windows/uint8.ome.tif 
+, , 1
+
+     [,1] [,2] [,3] [,4]
+[1,]    0    1  127  255
+[2,]  255  100    2    0
+

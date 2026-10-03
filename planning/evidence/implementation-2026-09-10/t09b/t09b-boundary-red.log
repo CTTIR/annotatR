@@ -1,0 +1,27 @@
+ℹ Testing annotatR
+provenance-keys: ...........................................................................................................................1
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Error ('test-provenance-keys.R:258:3'): relink defaults and mask source ca
+Error in `at_relink_source(img, "/replacement")`: `path` must be an existing file.
+x '/replacement' does not exist.
+i Use `at_example_path()` to locate the bundled sample data.
+Backtrace:
+     ▆
+  1. ├─testthat::expect_error(...) at test-provenance-keys.R:258:3
+  2. │ └─testthat:::expect_condition_matching_(...)
+  3. │   └─testthat:::quasi_capture(...)
+  4. │     ├─testthat (local) .capture(...)
+  5. │     │ └─base::withCallingHandlers(...)
+  6. │     └─rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+  7. └─annotatR::at_relink_source(img, "/replacement")
+  8.   ├─base::do.call(...) at annotatR-roadmap/R/persistence.R:170:3
+  9.   └─annotatR (local) `<fn>`(path = "/replacement", backend = "custom")
+ 10.     └─annotatR:::.check_file(path, call = call) at annotatR-roadmap/R/backend.R:175:3
+ 11.       └─cli::cli_abort(...) at annotatR-roadmap/R/utils-check.R:109:5
+ 12.         └─rlang::abort(...)
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+Error:
+! Test failures.
+Execution halted

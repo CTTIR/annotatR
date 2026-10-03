@@ -41,6 +41,54 @@ Every mask is an `annot_mask`: a matrix with an attached `legend` tibble
 (`value`, `label`, `layer`, `roi_id`, `n_px`, `colour`) plus `level`, `dims`,
 and `mask_type` attributes. Read the legend back with `at_mask_legend()`.
 
+## Encoding metadata and alignment
+
+`attr(mask, "mask_metadata")` is a versioned semantic description. Schema 1
+records `encoding`, `background`, `overlap`, a `grid` (`dims` in width/height
+order, `level`, `origin`, and sampling `stride`), the full `codebook`, and
+`source` provenance. Rasterisation uses origin `(0,0)` and stride `(1,1)`.
+A nearest-neighbour preview records its sampled dimensions and stride plus
+`preview$parent_grid`; its counts describe only sampled pixels.
+
+Public type names remain unchanged. Ordinary multiclass masks use categorical
+encoding: category `3` belongs only to class `3`. With `overlap = "bitor"`, codes
+must be distinct positive powers of two and background must be zero. A sample
+`3` then belongs to both class `1` and class `2`. Legends, statistics, previews,
+polygonisation, and display use this same membership rule. Composite display
+labels join their class names with ` + ` and use the mean class colour.
+A supplied global `values` map survives even if some classes have no pixels;
+those classes retain zero counts. Empty legends recover with typed columns.
+
+Foreground codes cannot equal background. Binary rasterisation rejects a
+requested background of `1`, including for empty masks. Other accepted binary
+backgrounds become effective `FALSE`/`0`, matching the logical stored samples.
+NPY imports remain integer arrays, including arrays declared binary.
+
+Derivation uses each input's own background and anatomy membership, preserving
+the full state codebook. Declared grids and durable source descriptors must
+agree. Queue entry IDs are retained as provenance but need not match for two
+annotations of the same source; reopened-image cache generations never establish
+source equality. Display names alone are insufficient. Reader options are compared
+exactly, including atomic types, names, dimensions, nesting, attributes and
+formal S4 identity. Sidecars store options with `options_encoding = "typed-json-v2"`:
+a versioned, data-only representation that also records each value's formal-object
+flag. Supported atomic/list S4 values recover without class constructors or an
+installed class definition. Numeric options retain 17-digit precision. Malformed
+or future option encodings fail. Older untyped JSON and typed schema 1 cannot
+prove that all option structure survived (schema 1 omitted formal-object flags):
+these sources are marked `options_status = "legacy-json"` and derivation requires
+an explicit alignment assertion, including after re-export. Likewise,
+`options_inferred = TRUE` records guessed legacy reader options and cannot
+establish verified alignment. Any supplied inference flag must be a single,
+non-missing logical value; omitting it leaves explicitly recorded options
+unchanged. For standalone masks
+whose registration you know, pass `alignment = "assert"` to `at_mask_derive()`.
+This records an explicit registration assertion without resampling. Different
+matrix dimensions always fail. The default `alignment = "legacy"` only permits
+unknown-source fallback when both masks have legacy metadata and records
+`legacy-assumed`. Self-combination records `self-grid`, without claiming an
+external source registration.
+
 ## The pixel-coverage contract
 
 Rasterisation is only reproducible if the pixel/geometry relationship is exact,
@@ -48,8 +96,26 @@ so annotatR pins it down. Pixel `(i, j)` covers the half-open square
 `[j-1, j) x [i-1, i)`, with `(0, 0)` at the top-left corner of the top-left
 pixel; its centre is therefore `(j - 0.5, i - 0.5)`. With the default
 `touches = FALSE`, a pixel is in the mask when *its centre* lies inside the
-polygon, using a half-open `[lower, upper)` tie rule: a centre on the lower edge
-counts as inside, one on the upper edge as outside.
+polygon. Boundary ties use the symbolic sample `(x + epsilon, y + epsilon^2)`
+as `epsilon` tends to zero from above; there is no finite coordinate shift.
+At each centre y, edges are active on `[minY, maxY)` and sorted crossing pairs
+fill `[left, right)`. For rectangles, lower edges count as inside and upper
+edges as outside. For the triangle `(0,0), (5,0), (5,5)`, the diagonal `y = x`
+counts as inside: its five rows contain 5, 4, 3, 2, and 1 pixels, respectively.
+Hole rings remove pixels by parity regardless of ring orientation, and
+MultiPolygon components combine by union. Thin polygons without selected
+centres produce an empty mask. Single and batched masks and both engine choices
+share this centre-membership rule.
+
+Points use their half-open containing cell: point `(5,5)` selects matrix row 6,
+column 6, because its cell is `[5,6) x [5,6)`. Multipoints select the union of
+these cells. Extraction uses the same support and reads the corresponding
+bounded image tile. These boundary rules correct the earlier finite-shift
+behavior, which selected row 5, column 5 for an integer-coordinate point and
+could produce inconsistent diagonal polygon coverage.
+
+All-touched masks and line rasterisation retain the selected engine's behavior;
+engine equality is guaranteed for centre-based polygons and points.
 
 The cleanest way to trust this is to compute a small case by eye. Take a
 rectangle from `(2, 2)` to `(5, 5)` on a 10x10 grid:
@@ -142,7 +208,23 @@ cat(readLines(paste0(path, ".legend.json")), sep = "\n")
 The schema is self-describing: `annotatR_version`, the `created` timestamp, the
 `mask_type`, the pyramid `level`, the raster `dims`, the `source_project`, and
 the full `legend` array (one object per value, mirroring the legend tibble).
+The sidecar also contains `mask_metadata` schema 1. NPY sidecars separately
+record `storage$axes` (`yx` or `xy`) and `storage$shape`; these describe the array
+on disk, while the metadata grid describes logical image samples. For a
+transposed NPY export, read with `at_read_npy(..., transpose = TRUE)`. A mismatched
+explicit orientation fails even when a square shape would conceal the error.
+`at_read_mask()` recovers the declared NPY orientation automatically.
 Any consumer can map pixel values back to labels without touching R.
+
+TIFF export accepts `bits = 8L` or `bits = 16L` (the default) and preserves
+unsigned integer class codes in `[0, 255]` or `[0, 65535]`. PNG export remains
+8-bit only: values above 255 and all negative values reject before writing.
+`bits` controls TIFF only. Both formats reject fractional/nonfinite samples
+and out-of-range values before creating or overwriting the destination.
+TIFF writing needs `tiff` or a `magick` build with exact grayscale support;
+PNG needs the latter. An unavailable lossless writer produces a capability
+error. Single-choice arguments require a scalar: omitted defaults choose the
+first documented value, while explicitly supplied vectors are invalid.
 
 ## Downstream consumption
 
@@ -171,6 +253,36 @@ editable `annot_layer`, recovering labels from the sidecar when it is present:
 back <- at_read_mask(path)
 vapply(back$rois, function(r) r$label, character(1))
 ```
+
+Recovery precedence is explicit arguments, embedded RDS metadata, then sidecar.
+`legend` and `level` override the corresponding fields of an optional
+`metadata` list. For example, a known legacy bitfield can be imported with
+`metadata = list(encoding = "bitfield", overlap = "bitor")` and a supplied
+legend of its base bits. Overrides do not resample the array. Legacy masks
+without sufficient encoding metadata default to exclusive instance/categorical
+values and background zero, with `status = "legacy-default"`; composite values
+missing from a legacy legend fail instead of being guessed as bits. Signed
+representable integer categories are valid. Corrupt dimensions, noninteger
+samples, malformed legends, and unknown schema versions fail explicitly.
+Sampled previews and translated grids cannot be polygonised into editable ROIs;
+import the original-resolution mask with unit stride and zero origin instead.
+Their sampled arrays remain available through `at_read_npy()`, preview, and
+statistics APIs.
+TIFF masks must be a single two-dimensional integer plane; fractional samples
+and multiple planes are rejected before conversion. Raw TIFF import requires
+`tiff`; it does not fall back to display grayscale conversion. PNG import
+preserves unsigned 8/16-bit grayscale class codes, including 65535, using a
+`magick` build that passes an exact grayscale capability check. Palette, RGB,
+alpha-bearing, grayscale `tRNS` transparency and other-depth PNGs reject before
+polygonisation. A transparency key is rejected even if none of the stored
+samples use that key.
+
+`connectivity = 8L` (default) joins pixels that share a corner or edge into
+one ROI. `connectivity = 4L` joins only edge neighbours. Point-touching parts
+of an eight-connected region are retained together as valid multipart
+geometry with the same pixel membership. Connectivity must be a single
+finite whole number; missing, fractional, other-valued or explicit vector
+arguments are invalid.
 
 Finally, `at_plot_mask()` renders a mask with its legend for a quick visual
 check:

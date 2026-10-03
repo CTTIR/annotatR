@@ -5,13 +5,14 @@ mod_roitable_ui <- function(id) {
   shiny::tagList(
     shiny::h5("ROIs"),
     shiny::tableOutput(ns("table")),
-    shiny::textInput(ns("del_id"), NULL, placeholder = "roi_id to delete"),
-    shiny::actionButton(ns("delete"), "Delete ROI")
+    shiny::textInput(ns("del_id"), "ROI ID to delete", placeholder = "roi_id to delete"),
+    .at_action(ns("delete"), "Delete ROI", fields = list(del_id = ns("del_id")))
   )
 }
 
 mod_roitable_server <- function(id, rv) {
   shiny::moduleServer(id, function(input, output, session) {
+    .state_init(rv)
     output$table <- shiny::renderTable({
       shiny::req(rv$project)
       rt <- annotatR::at_rois(rv$project)
@@ -23,10 +24,11 @@ mod_roitable_server <- function(id, rv) {
                  area_px = round(rt$area_px, 1))
     })
     shiny::observeEvent(input$delete, {
-      shiny::req(rv$project, nzchar(input$del_id))
-      rv$undo <- c(rv$undo, list(rv$project))
-      rv$project <- annotatR::at_remove_roi(rv$project, input$del_id)
-      rv$saved <- "unsaved"
+      event <- .state_event(rv, input$delete, fields = c("del_id"))
+      shiny::req(event, rv$project, is.character(event$payload$del_id),
+                 length(event$payload$del_id) == 1L, nzchar(event$payload$del_id))
+      .state_mutate(rv, function(p) annotatR::at_remove_roi(p, event$payload$del_id),
+                    event)
     })
   })
 }

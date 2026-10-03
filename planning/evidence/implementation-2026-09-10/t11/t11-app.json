@@ -1,0 +1,727 @@
+{
+  "viewport": {
+    "width": 1450,
+    "height": 980
+  },
+  "deviceScaleFactor": 1.5,
+  "initialRecovery": {
+    "ping": null,
+    "tool": "pan",
+    "entry_id": "entry_at_37419f3069db02_000000002",
+    "revision": 0,
+    "cursor": 2,
+    "ready": true,
+    "error": null,
+    "saved": "saved",
+    "attempts": 0,
+    "active_layer": "annotations",
+    "active_label": "first",
+    "autosave": false,
+    "status": [
+      "skipped",
+      "pending",
+      "pending",
+      "pending",
+      "pending"
+    ],
+    "recovery": false,
+    "replacement": "/tmp/RtmpVBTsls/annotatr-journey-37419f667b86ce/replacement",
+    "out_dir": "/tmp/RtmpVBTsls/annotatr-journey-37419f667b86ce/saved",
+    "undo": 0,
+    "redo": 0,
+    "rois": {
+      "annotations": [
+        {
+          "id": "roi_000000029",
+          "label": "first",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              3,
+              3
+            ]
+          },
+          "locked": true
+        }
+      ],
+      "locked": [
+        {
+          "id": "roi_000000030",
+          "label": "protected",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  20,
+                  20
+                ],
+                [
+                  25,
+                  20
+                ],
+                [
+                  25,
+                  25
+                ],
+                [
+                  20,
+                  25
+                ],
+                [
+                  20,
+                  20
+                ]
+              ]
+            ]
+          },
+          "locked": false
+        }
+      ],
+      "hidden": [
+        {
+          "id": "roi_000000031",
+          "label": "hidden",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              10,
+              10
+            ]
+          },
+          "locked": false
+        }
+      ]
+    },
+    "labels": {
+      "annotations": [
+        "first",
+        "second"
+      ],
+      "locked": "protected",
+      "hidden": "hidden"
+    }
+  },
+  "stylePixels": {
+    "hidden": [
+      255,
+      255,
+      255,
+      255
+    ],
+    "locked": [
+      178,
+      219,
+      178,
+      255
+    ]
+  },
+  "keyboardRectangle": {
+    "id": "roi_000000032",
+    "label": "second",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            15,
+            15
+          ],
+          [
+            25,
+            15
+          ],
+          [
+            25,
+            25
+          ],
+          [
+            15,
+            25
+          ],
+          [
+            15,
+            15
+          ]
+        ]
+      ]
+    },
+    "locked": false
+  },
+  "canvas": {
+    "x": 392.5,
+    "y": 410.453125,
+    "width": 665,
+    "height": 581.59375
+  },
+  "commit": {
+    "ping": 1789066834705.4353,
+    "tool": "rect",
+    "entry_id": "entry_at_37419f3069db02_000000003",
+    "revision": 0,
+    "cursor": 3,
+    "ready": false,
+    "error": "Could not load image: Unsupported or invalid raw TIFF encoding: pkg:tiff: Not a TIFF or MDI\nfile, bad magic number 28515 (0x6f63)",
+    "saved": "unavailable",
+    "attempts": 1,
+    "active_layer": "annotations",
+    "active_label": "second",
+    "autosave": false,
+    "status": [
+      "skipped",
+      "complete",
+      "skipped",
+      "pending",
+      "pending"
+    ],
+    "recovery": false,
+    "replacement": "/tmp/RtmpVBTsls/annotatr-journey-37419f667b86ce/replacement",
+    "out_dir": "/tmp/RtmpVBTsls/annotatr-journey-37419f667b86ce/saved",
+    "undo": 0,
+    "redo": 0,
+    "rois": [],
+    "labels": []
+  },
+  "decodeFailure": {
+    "ping": 1789066835037.8706,
+    "tool": "point",
+    "entry_id": "entry_at_37419f3069db02_000000004",
+    "revision": 0,
+    "cursor": 4,
+    "ready": false,
+    "error": "Image could not be decoded. Choose another image or restore the previous queue.",
+    "saved": "saved",
+    "attempts": 1,
+    "active_layer": "annotations",
+    "active_label": "first",
+    "autosave": false,
+    "status": [
+      "skipped",
+      "complete",
+      "skipped",
+      "pending",
+      "pending"
+    ],
+    "recovery": false,
+    "replacement": "/tmp/RtmpVBTsls/annotatr-journey-37419f667b86ce/replacement",
+    "out_dir": "/tmp/RtmpVBTsls/annotatr-journey-37419f667b86ce/saved",
+    "undo": 0,
+    "redo": 0,
+    "rois": {
+      "annotations": [
+        {
+          "id": "roi_000000033",
+          "label": "first",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              3,
+              3
+            ]
+          },
+          "locked": true
+        }
+      ],
+      "locked": [
+        {
+          "id": "roi_000000034",
+          "label": "protected",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  20,
+                  20
+                ],
+                [
+                  25,
+                  20
+                ],
+                [
+                  25,
+                  25
+                ],
+                [
+                  20,
+                  25
+                ],
+                [
+                  20,
+                  20
+                ]
+              ]
+            ]
+          },
+          "locked": false
+        }
+      ],
+      "hidden": [
+        {
+          "id": "roi_000000035",
+          "label": "hidden",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              10,
+              10
+            ]
+          },
+          "locked": false
+        }
+      ]
+    },
+    "labels": {
+      "annotations": [
+        "first",
+        "second"
+      ],
+      "locked": "protected",
+      "hidden": "hidden"
+    }
+  },
+  "failedReplacement": {
+    "ping": 1789066843159.963,
+    "tool": "point",
+    "entry_id": "entry_at_37419f3069db02_000000008",
+    "revision": 0,
+    "cursor": 1,
+    "ready": false,
+    "error": "Could not load image: Unsupported or invalid raw TIFF encoding: pkg:tiff: Not a TIFF or MDI\nfile, bad magic number 28515 (0x6f63)",
+    "saved": "unavailable",
+    "attempts": 1,
+    "active_layer": "annotations",
+    "active_label": "first",
+    "autosave": false,
+    "status": "skipped",
+    "recovery": true,
+    "replacement": "/tmp/RtmpVBTsls/annotatr-journey-37419f667b86ce/replacement",
+    "out_dir": "/tmp/RtmpVBTsls/annotatr-journey-37419f667b86ce/saved/session_at_37419f3069db02_000000003",
+    "undo": 0,
+    "redo": 0,
+    "rois": [],
+    "labels": []
+  },
+  "restored": {
+    "ping": 1789066843159.963,
+    "tool": "point",
+    "entry_id": "entry_at_37419f3069db02_000000002",
+    "revision": 6,
+    "cursor": 2,
+    "ready": true,
+    "error": null,
+    "saved": "unsaved",
+    "attempts": 1,
+    "active_layer": "annotations",
+    "active_label": "first",
+    "autosave": false,
+    "status": [
+      "skipped",
+      "complete",
+      "skipped",
+      "pending",
+      "pending"
+    ],
+    "recovery": false,
+    "replacement": "/tmp/RtmpVBTsls/annotatr-journey-37419f667b86ce/replacement",
+    "out_dir": "/tmp/RtmpVBTsls/annotatr-journey-37419f667b86ce/saved",
+    "undo": 4,
+    "redo": 0,
+    "rois": {
+      "annotations": [
+        {
+          "id": "roi_000000029",
+          "label": "first",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              3,
+              3
+            ]
+          },
+          "locked": true
+        }
+      ],
+      "locked": [
+        {
+          "id": "roi_000000030",
+          "label": "protected",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  20,
+                  20
+                ],
+                [
+                  25,
+                  20
+                ],
+                [
+                  25,
+                  25
+                ],
+                [
+                  20,
+                  25
+                ],
+                [
+                  20,
+                  20
+                ]
+              ]
+            ]
+          },
+          "locked": false
+        }
+      ],
+      "hidden": [
+        {
+          "id": "roi_000000031",
+          "label": "hidden",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              10,
+              10
+            ]
+          },
+          "locked": false
+        }
+      ],
+      "original": []
+    },
+    "labels": {
+      "annotations": [
+        "first",
+        "second"
+      ],
+      "locked": "protected",
+      "hidden": "hidden",
+      "original": [
+        "original",
+        "captured"
+      ]
+    }
+  },
+  "keyboardPolygon": {
+    "id": "roi_000000042",
+    "label": "first",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            15,
+            15
+          ],
+          [
+            16,
+            15
+          ],
+          [
+            16,
+            16
+          ],
+          [
+            15,
+            15
+          ]
+        ]
+      ]
+    },
+    "locked": false
+  },
+  "final": {
+    "ping": 1789066843159.963,
+    "tool": "polygon",
+    "entry_id": "entry_at_37419f3069db02_000000002",
+    "revision": 8,
+    "cursor": 2,
+    "ready": true,
+    "error": null,
+    "saved": "saved",
+    "attempts": 3,
+    "active_layer": "annotations",
+    "active_label": "first",
+    "autosave": false,
+    "status": [
+      "skipped",
+      "complete",
+      "skipped",
+      "pending",
+      "pending"
+    ],
+    "recovery": false,
+    "replacement": "/tmp/RtmpVBTsls/annotatr-journey-37419f667b86ce/replacement",
+    "out_dir": "/tmp/RtmpVBTsls/annotatr-journey-37419f667b86ce/saved",
+    "undo": 6,
+    "redo": 0,
+    "rois": {
+      "annotations": [
+        {
+          "id": "roi_000000029",
+          "label": "first",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              3,
+              3
+            ]
+          },
+          "locked": true
+        },
+        {
+          "id": "roi_000000041",
+          "label": "first",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              15,
+              15
+            ]
+          },
+          "locked": false
+        },
+        {
+          "id": "roi_000000042",
+          "label": "first",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  15,
+                  15
+                ],
+                [
+                  16,
+                  15
+                ],
+                [
+                  16,
+                  16
+                ],
+                [
+                  15,
+                  15
+                ]
+              ]
+            ]
+          },
+          "locked": false
+        }
+      ],
+      "locked": [
+        {
+          "id": "roi_000000030",
+          "label": "protected",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  20,
+                  20
+                ],
+                [
+                  25,
+                  20
+                ],
+                [
+                  25,
+                  25
+                ],
+                [
+                  20,
+                  25
+                ],
+                [
+                  20,
+                  20
+                ]
+              ]
+            ]
+          },
+          "locked": false
+        }
+      ],
+      "hidden": [
+        {
+          "id": "roi_000000031",
+          "label": "hidden",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              10,
+              10
+            ]
+          },
+          "locked": false
+        }
+      ],
+      "original": []
+    },
+    "labels": {
+      "annotations": [
+        "first",
+        "second"
+      ],
+      "locked": "protected",
+      "hidden": "hidden",
+      "original": [
+        "original",
+        "captured"
+      ]
+    }
+  },
+  "errors": [],
+  "scaledPointer": [
+    4.993,
+    6.9918
+  ],
+  "resumed": {
+    "ping": null,
+    "tool": "pan",
+    "entry_id": "entry_at_37419f3069db02_000000002",
+    "revision": 8,
+    "cursor": 2,
+    "ready": true,
+    "error": null,
+    "saved": "saved",
+    "attempts": 0,
+    "active_layer": "annotations",
+    "active_label": "first",
+    "autosave": false,
+    "status": [
+      "skipped",
+      "complete",
+      "skipped",
+      "pending",
+      "pending"
+    ],
+    "recovery": false,
+    "replacement": "/tmp/RtmpVBTsls/annotatr-journey-37419f667b86ce/replacement",
+    "out_dir": "/tmp/RtmpVBTsls/annotatr-journey-37419f667b86ce/saved",
+    "undo": 0,
+    "redo": 0,
+    "rois": {
+      "annotations": [
+        {
+          "id": "roi_000000029",
+          "label": "first",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              3,
+              3
+            ]
+          },
+          "locked": true
+        },
+        {
+          "id": "roi_000000041",
+          "label": "first",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              15,
+              15
+            ]
+          },
+          "locked": false
+        },
+        {
+          "id": "roi_000000042",
+          "label": "first",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  15,
+                  15
+                ],
+                [
+                  16,
+                  15
+                ],
+                [
+                  16,
+                  16
+                ],
+                [
+                  15,
+                  15
+                ]
+              ]
+            ]
+          },
+          "locked": false
+        }
+      ],
+      "locked": [
+        {
+          "id": "roi_000000030",
+          "label": "protected",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  20,
+                  20
+                ],
+                [
+                  25,
+                  20
+                ],
+                [
+                  25,
+                  25
+                ],
+                [
+                  20,
+                  25
+                ],
+                [
+                  20,
+                  20
+                ]
+              ]
+            ]
+          },
+          "locked": false
+        }
+      ],
+      "hidden": [
+        {
+          "id": "roi_000000031",
+          "label": "hidden",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              10,
+              10
+            ]
+          },
+          "locked": false
+        }
+      ],
+      "original": []
+    },
+    "labels": {
+      "annotations": [
+        "first",
+        "second"
+      ],
+      "locked": "protected",
+      "hidden": "hidden",
+      "original": [
+        "original",
+        "captured"
+      ]
+    }
+  }
+}

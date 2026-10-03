@@ -363,7 +363,15 @@ at_roi_rescale <- function(roi, from_level, to_level, call = rlang::caller_env()
 #' @param roi An [annot_roi].
 #' @param level Integer pyramid level at which to express the area. Default `0`.
 #' @param units Either `"px"` (pixels squared, the default) or `"physical"`.
-#'   Physical units require a `pixel_size` attribute on the ROI.
+#'   Physical area uses `image` calibration at level zero, in squared
+#'   `image$pixel_unit`, and is invariant to reporting level. Unknown or pixel-only
+#'   image calibration rejects. Without an image, legacy ROI `pixel_size=c(x,y)`
+#'   is supported at stored level zero, in squared calibration units. Nonzero
+#'   ROI levels require explicit `pixel_size_level` and `pixel_unit`; differing calibration and
+#'   stored levels require an image for the geometric transform. Pixel sizes
+#'   must be finite and positive. Geometric area is not raster support count.
+#' @param image Optional [annot_image] defining actual pyramid dimensions.
+#'   Required when `level` differs from the ROI's stored level.
 #' @param call The calling environment, for error reporting.
 #'
 #' @return A numeric scalar area, or `NA_real_` for non-areal geometry (points,
@@ -373,27 +381,46 @@ at_roi_rescale <- function(roi, from_level, to_level, call = rlang::caller_env()
 #' @examples
 #' at_roi_area(at_roi_rect(0, 0, 10, 5, label = "a"))
 at_roi_area <- function(roi, level = 0L, units = c("px", "physical"),
-                        call = rlang::caller_env()) {
+                        call = rlang::caller_env(), image = NULL) {
   .check_roi(roi, call = call)
   level <- .check_count(level, call = call)
-  units <- .check_choice(units, c("px", "physical"), call = call)
+  units <- .check_choice(units, c("px", "physical"), default = missing(units), call = call)
   if (!.is_areal(roi$geometry)) {
     return(NA_real_)
   }
-  g <- .rescale_geom(roi$geometry, roi$level, level)
+  # Validate the requested reporting grid even though physical area is measured
+  # at the calibration grid and is independent of reporting level.
+  g <- .transform_geom(roi$geometry, roi$level, level, image, call = call)
   a <- as.numeric(sf::st_area(g))
   if (units == "physical") {
-    ps <- roi$attributes$pixel_size
-    if (is.null(ps)) {
-      cli::cli_abort(
-        c(
-          "Physical area requires a {.field pixel_size} attribute on the ROI.",
-          "i" = "Attach it via the {.arg ...} of a constructor, or use pixel units."
-        ),
-        call = call
-      )
+    if (!is.null(image)) {
+      ps <- at_pixel_size(image, call = call)
+      unit <- image[["pixel_unit"]]
+      calibration_level <- 0L
+      if (!is.character(unit) || length(unit) != 1L || is.na(unit) || !nzchar(unit) ||
+          tolower(unit) %in% c("px", "pixel", "pixels", "unknown"))
+        cli::cli_abort("Physical area requires a known physical pixel_size calibration and unit.", call = call)
+    } else {
+      .check_provenance_keys(roi$attributes, c("pixel_size", "pixel_size_level", "pixel_unit"), "ROI calibration")
+      unit <- roi$attributes[["pixel_unit"]]
+      if (!is.null(unit) && (length(unit) != 1L || !is.character(unit) || is.na(unit) ||
+          !nzchar(unit) || tolower(unit) %in% c("px", "pixel", "pixels", "unknown")))
+        cli::cli_abort("Physical area requires a physical calibration unit.", call = call)
+      ps <- roi$attributes[["pixel_size"]]
+      calibration_level <- roi$attributes[["pixel_size_level"]]
+      if (is.null(calibration_level)) {
+        if (roi$level != 0L)
+          cli::cli_abort("Legacy pixel_size calibration level is ambiguous for a nonzero-level ROI; provide image calibration or pixel_size_level.", call = call)
+        calibration_level <- 0L
+      }
+      if (roi$level != 0L && is.null(unit))
+        cli::cli_abort("Nonzero-level ROI calibration requires an explicit physical pixel_unit.", call = call)
+      calibration_level <- .check_count(calibration_level, call = call)
     }
-    a <- a * prod(ps)
+    if (!is.numeric(ps) || length(ps) != 2L || any(!is.finite(ps)) || any(ps <= 0))
+      cli::cli_abort("Physical area requires two finite positive pixel_size calibration values.", call = call)
+    calibrated <- .transform_geom(roi$geometry, roi$level, calibration_level, image, call = call)
+    a <- as.numeric(sf::st_area(calibrated)) * prod(ps)
   }
   a
 }

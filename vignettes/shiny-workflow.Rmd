@@ -16,7 +16,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.width = 6, fig.height
 library(annotatR)
 ```
 
-Annotating one image is a job for `at_project()` and the ROI constructors. Annotating a *queue* of images — a plate of serial sections, a batch of slides, a folder of cubes — is what `at_annotate()` is for. It wraps a Shiny and OpenSeadragon canvas around a resumable **session**, so you can work through many images without losing your place, your labels, or your unsaved edits.
+Annotating one image is a job for `at_project()` and the ROI constructors. Annotating a *queue* of images — a plate of serial sections, a batch of slides, a folder of cubes — is what `at_annotate()` is for. It wraps a Shiny app and self-contained HTML5 canvas around a resumable **session**, so you can work through many images without losing your place, your labels, or your unsaved edits.
 
 ## Building a session
 
@@ -60,37 +60,55 @@ at_annotate(templated)
 
 ## Keyboard shortcuts
 
-The canvas is built for speed, so almost everything has a key. Draw with the tool keys, assign a label with a digit, then commit.
+Tab to a layer or label radio group and use the arrow keys to select it. Tab to
+the canvas to draw. Global shortcuts leave text fields, radios, buttons and links
+their native behavior; focus the canvas again to use drawing or navigation keys.
 
 | Key | Action |
 |-----|--------|
-| `n` / `p` | Next / previous image |
-| `N` | Jump to next pending image |
-| `1`–`9` | Assign label from the vocabulary |
-| `q` | Rectangle tool |
-| `w` | Polygon tool |
-| `e` | Ellipse / circle tool |
-| `r` | Freehand tool |
-| `t` | Point tool |
-| `y` | Pan / move tool |
-| `d` | Delete selected ROI |
-| `Ctrl`+`Z` / `Ctrl`+`Shift`+`Z` | Undo / redo |
-| `Space` | Toggle mask overlay |
-| `Enter` | Commit the current ROI |
-| `Shift`+`Enter` | Commit and advance to next image |
-| `Shift`+`V` | Copy annotations forward from previous image |
-| `f` | Flag image for review |
-| `s` | Save session |
-| `Ctrl`+`E` | Export |
-| `?` | Show help |
+| `n` / `p`, `N` | Next / previous image; next pending image |
+| `1`–`9` | Select a label from the active vocabulary |
+| `q w e r t y` | Pan, rectangle, polygon, freehand, circle, point |
+| Arrows / Shift+arrows | Move the keyboard cursor 1 / 10 level-0 image pixels |
+| Enter or Space | Place a point; start/finish a rectangle |
+| Space, then Enter | Place polygon vertices, then finish after at least three |
+| Escape | Cancel unfinished drawing or editing |
+| `d` | Delete the last ROI, if it is unlocked |
+| Ctrl+Z / Ctrl+Shift+Z | Undo / redo, respecting locks |
+| Shift+Enter | Save synchronously, mark complete and advance after success |
+| Shift+V | Copy the previous image's annotations into unlocked target layers |
+| `f`, `s`, Ctrl+E, `?` | Flag, save, open Export, shortcut help |
+
+The canvas uses a downsampled image overview (up to 2048 pixels on its longest
+side), with pan and zoom. It does not stream pyramid tiles. Drawing coordinates
+remain level-0 image pixels. Canvas encoding requires `magick`; TIFF reading can
+use `tiff`, but PNG (including the tissue example) needs `magick`. Missing
+capabilities and image decoding failures are shown before drawing is enabled.
+Navigation remains available when the current image fails.
+
+Layer visibility, color, opacity, stroke width and z-order control display.
+Hidden layers do not participate in canvas hit testing. They still participate
+in masks and exports: display visibility is not an analytical filter. Locked
+layers and imported protected ROIs cannot be edited or removed through the
+canvas, keyboard, table or history controls. Adding labels to a locked layer is
+also blocked. These protections apply to the app; the R authoring API remains
+editable.
 
 ## Copy-forward for serial sections
 
-Adjacent serial sections often share most of their anatomy. Rather than redraw it, press `Shift`+`V` to copy every ROI from the previous image onto the current one, then nudge the vertices to fit. Combined with `Shift`+`Enter` (commit and advance), a run of near-identical sections can be annotated in a few keystrokes each.
+Adjacent serial sections often share most of their anatomy. Rather than redraw it, press `Shift`+`V` to copy ROIs from the previous image into unlocked target layers, then use the edit tool to translate whole regions. Combined with `Shift`+`Enter` (commit and advance), a run of near-identical sections can be annotated in a few keystrokes each.
 
 ## Autosave and recovery
 
-By default a session autosaves to `_session.rds` in its `out_dir` on every commit, so a crashed browser or a closed laptop costs you nothing. Save on demand with `at_save_session()` (bound to `s`), and pick up exactly where you left off with `at_resume()`.
+By default the app autosaves to `_session.rds` in its `out_dir` after each annotation change. The saved indicator appears only after the checkpoint succeeds. A failed save leaves the current edits marked unsaved and retains the previous valid checkpoint. Press `s` to retry, and resume the last successful checkpoint with `at_resume()`.
+
+New sessions receive distinct temporary output directories. Set an explicit `out_dir` for checkpoints that should survive temporary-directory cleanup. In scripts, `at_save_session()` refuses to replace an existing checkpoint unless you pass `overwrite = TRUE`, including when you omit `path`. App autosave explicitly enables replacement. Loading another folder in the app gives the new queue its own output subdirectory
+and retains the previous queue, including unsaved annotations and history.
+Use **Data → Restore previous queue** to return after a failed replacement.
+This recovery copy lives in the running session: restore and save it before
+closing the app. If the replacement queue has unsaved edits, save those entries
+before restoring or replacing it again. With `autosave = FALSE`, navigation
+retains edits in memory and the indicator stays unsaved until Save succeeds.
 
 ```{r resume}
 sess <- at_set_status(sess, 1, "complete")
@@ -102,6 +120,40 @@ recovered
 ```
 
 The cursor, statuses, materialised projects, and templates all come back intact.
+
+File-backed images persist a versioned descriptor with the canonical source path,
+backend and reader options. Pixels are reopened when needed; keep the original
+source files available. In-memory images retain their only pixel copy. Session
+loading preserves annotation-only projects even when their source is unavailable.
+
+```{r inspect-relink, eval=FALSE}
+at_inspect_saved("annotations/_session.rds")
+project <- at_current(recovered)
+at_inspect_source(project)
+project <- at_relink_source(project, "/new/location/original.tif")
+recovered$projects[[recovered$cursor]] <- project
+at_save_session(recovered, overwrite = TRUE)
+```
+
+Relinking explicitly accepts the replacement source after checking image
+size, pyramid levels, bands and wavelengths. For readers with non-default options,
+pass `options = list(...)` when those options are not present in an old file.
+The saved source signature compares file size and modification time. It detects
+many replacements but cannot prove content identity, and does not cover sidecar
+headers. Changed source metadata requires explicit relinking/revalidation.
+
+Old queue entries without identifiers are migrated by their recorded row position;
+existing valid identifiers and geometry are preserved. Legacy lightweight images
+can reopen through known default readers, and inspection reports that their reader
+options were inferred. Ambiguous identities or unsupported schemas are rejected;
+`at_inspect_saved()` reports those issues without modifying the original file.
+
+App checkpoints publish unique complete project files before replacing the session
+manifest. Old referenced project files are retained. Unix replacement uses a checked
+same-directory rename; Windows replacement uses a previous-file backup and rollback
+on an ordinary write failure. These checks do not provide a power-loss durability
+guarantee. Do not delete retained files while another checkpoint still refers to them.
+
 
 ## The session API without the app
 
@@ -117,7 +169,13 @@ Use these to seed a session programmatically, pre-fill statuses, or audit progre
 
 ## Export scoping
 
-Exports (`Ctrl`+`E`) are scoped deliberately. You choose the **layers** to include, the **format** (GeoJSON, QuPath, or a rasterised TIFF mask), and the **breadth** — the current image only, every completed image, or the whole queue. Flagged and skipped images are excluded from batch exports unless you opt them back in, so a "export all complete" pass yields exactly the reviewed annotations and nothing half-finished.
+Ctrl+E opens Export. Choose formats (GeoJSON, QuPath, ROI CSV or mask TIFF)
+and scope (current, complete, all or flagged), then activate Export & download.
+The app exports all layers of selected annotated projects; it has no layer
+selector. Current uses the live project, and other entries use the session's
+stored projects. The receipt reports complete files, skips and errors; the ZIP
+includes successful artifacts and the receipt. Inspect that receipt before
+assuming every requested image and format succeeded.
 
 Those export formats — and how annotatR round-trips with QuPath, GeoJSON, and mask TIFFs — are the subject of the next vignette, "Interoperability".
 

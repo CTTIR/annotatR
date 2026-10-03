@@ -1,0 +1,67 @@
+{
+  "supplied_descriptor_keys": ["schema_version", "path", "backend", "options", "signature", "reader_contract_extra"],
+  "expected": "unverified reader-contract error: exact reader_contract is absent",
+  "imported": true,
+  "result": {
+    "schema_version": 1,
+    "status": "legacy-default",
+    "encoding": "instance",
+    "background": 0,
+    "overlap": "last",
+    "grid": {
+      "dims": [2, 2],
+      "level": 0,
+      "origin": [0, 0],
+      "stride": [1, 1]
+    },
+    "source": {
+      "descriptor": {
+        "schema_version": 1,
+        "path": "/synthetic/square.ome.tif",
+        "backend": "ometiff",
+        "options": [],
+        "signature": {
+          "size": 100,
+          "mtime": 10
+        },
+        "reader_contract": {
+          "axes": "yxb",
+          "samples": "raw-scalar-v1"
+        }
+      }
+    },
+    "codebook": [
+      {
+        "value": 1,
+        "label": "1"
+      }
+    ],
+    "derivation": {
+      "anatomy_alignment": "verified",
+      "artefact_alignment": null,
+      "anatomy_source": {
+        "descriptor": {
+          "schema_version": 1,
+          "path": "/synthetic/square.ome.tif",
+          "backend": "ometiff",
+          "options": [],
+          "signature": {
+            "size": 100,
+            "mtime": 10
+          },
+          "reader_contract_extra": {
+            "axes": "yxb",
+            "samples": "raw-scalar-v1"
+          }
+        },
+        "entry_id": "different-entry"
+      },
+      "artefact_source": null
+    }
+  },
+  "npy_roundtrip": {
+    "descriptor_keys": ["schema_version", "path", "backend", "options", "signature", "reader_contract_extra"],
+    "accepted": true,
+    "alignment": "verified"
+  }
+}

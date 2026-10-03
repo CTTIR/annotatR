@@ -1,0 +1,3 @@
+{"png_error":"unable to open example.png","displayError":null} 
+Error: grepl("PNG.*magick", reader) is not TRUE
+Execution halted

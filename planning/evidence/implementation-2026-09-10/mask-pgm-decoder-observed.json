@@ -1,0 +1,58 @@
+{
+  "reference": {
+    "exact_pgm_bytes": true,
+    "header": [
+      "P5",
+      "4 2",
+      "65535"
+    ]
+  },
+  "zeros8": {
+    "exact_pgm_bytes": true,
+    "header": [
+      "P5",
+      "2 1",
+      "255"
+    ]
+  },
+  "binary8": {
+    "exact_pgm_bytes": true,
+    "header": [
+      "P5",
+      "2 1",
+      "255"
+    ]
+  },
+  "extremes8": {
+    "exact_pgm_bytes": true,
+    "header": [
+      "P5",
+      "2 1",
+      "255"
+    ]
+  },
+  "zeros16": {
+    "exact_pgm_bytes": true,
+    "header": [
+      "P5",
+      "2 1",
+      "65535"
+    ]
+  },
+  "binary16": {
+    "exact_pgm_bytes": true,
+    "header": [
+      "P5",
+      "2 1",
+      "65535"
+    ]
+  },
+  "extremes16": {
+    "exact_pgm_bytes": true,
+    "header": [
+      "P5",
+      "2 1",
+      "65535"
+    ]
+  }
+}

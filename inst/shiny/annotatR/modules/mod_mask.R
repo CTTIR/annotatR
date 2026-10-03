@@ -54,9 +54,9 @@ mod_mask_server <- function(id, rv) {
       shiny::req(rv$project)
       dir <- file.path(rv$session$out_dir, "masks")
       if (!dir.exists(dir)) dir.create(dir, recursive = TRUE)
-      name <- annotatR::at_session_status(rv$session)$name[rv$cursor]
+      stem <- annotatR::at_session_status(rv$session)$export_stem[rv$cursor]
       annotatR::at_write_mask(.current_mask(rv),
-                              file.path(dir, paste0(name, ".tif")), overwrite = TRUE)
+                              file.path(dir, paste0(stem, ".tif")), overwrite = TRUE)
     })
   })
 }

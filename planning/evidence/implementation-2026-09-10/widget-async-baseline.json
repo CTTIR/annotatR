@@ -1,0 +1,5 @@
+{
+  "afterNew": "new-entry",
+  "afterDelayedOld": "old-entry",
+  "afterMissingCurrent": "old-entry"
+}

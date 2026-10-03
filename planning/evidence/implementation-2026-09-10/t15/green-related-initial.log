@@ -1,0 +1,217 @@
+ℹ Loading annotatR
+✔ | F W  S  OK | Context
+
+⠏ |          0 | agree                                                          
+⠼ |          5 | agree                                                          
+⠋ |         11 | agree                                                          
+✔ |         13 | agree
+
+⠏ |          0 | analytical-reference                                           
+⠼ |         15 | analytical-reference                                           
+✔ |         43 | analytical-reference
+
+⠏ |          0 | backend-envi                                                   
+⠙ |          2 | backend-envi                                                   
+✔ |         11 | backend-envi
+
+⠏ |          0 | backend-tivita                                                 
+⠋ |         11 | backend-tivita                                                 
+✔ |      1  12 | backend-tivita
+
+⠏ |          0 | extract                                                        
+⠹ |          3 | extract                                                        
+⠏ |         10 | extract                                                        
+⠴ |         16 | extract                                                        
+✔ |         16 | extract
+
+⠏ |          0 | io-npy                                                         
+⠹ |          3 | io-npy                                                         
+⠼ |          5 | io-npy                                                         
+⠏ |         10 | io-npy                                                         
+✔ |      2  15 | io-npy
+
+⠏ |          0 | mask-metadata                                                  
+⠇ |          9 | mask-metadata                                                  
+⠹ |         13 | mask-metadata                                                  
+⠏ |         20 | mask-metadata                                                  
+⠼ |         25 | mask-metadata                                                  
+⠇ |         29 | mask-metadata                                                  
+⠙ |         32 | mask-metadata                                                  
+⠴ |         36 | mask-metadata                                                  
+⠦ |         37 | mask-metadata                                                  
+⠏ |         40 | mask-metadata                                                  
+⠧ |         48 | mask-metadata                                                  
+⠋ |         51 | mask-metadata                                                  
+⠴ |         56 | mask-metadata                                                  
+⠧ |         58 | mask-metadata                                                  
+⠙ |         62 | mask-metadata                                                  
+⠴ |         66 | mask-metadata                                                  
+⠧ |         68 | mask-metadata                                                  
+⠋ |         71 | mask-metadata                                                  
+⠸ |         74 | mask-metadata                                                  
+⠏ |         80 | mask-metadata                                                  
+⠙ |         82 | mask-metadata                                                  
+⠴ |         86 | mask-metadata                                                  
+⠧ |         88 | mask-metadata                                                  
+⠙ |         92 | mask-metadata                                                  
+⠴ |         96 | mask-metadata                                                  
+⠋ |        101 | mask-metadata                                                  
+⠼ |        105 | mask-metadata                                                  
+⠦ |        107 | mask-metadata                                                  
+⠏ |        110 | mask-metadata                                                  
+⠹ |        113 | mask-metadata                                                  
+⠴ |        116 | mask-metadata                                                  
+⠧ |        118 | mask-metadata                                                  
+⠸ |        124 | mask-metadata                                                  
+⠴ |        126 | mask-metadata                                                  
+⠧ |        128 | mask-metadata                                                  
+⠏ |        130 | mask-metadata                                                  
+⠙ |        132 | mask-metadata                                                  
+✔ |        133 | mask-metadata [4.6s]
+
+⠏ |          0 | persistence-contract                                           
+⠸ |          4 | persistence-contract                                           
+⠙ |         12 | persistence-contract                                           
+⠸ |         14 | persistence-contract                                           
+⠴ |         26 | persistence-contract                                           
+⠸ |         34 | persistence-contract                                           
+⠏ |         40 | persistence-contract                                           
+✔ |         41 | persistence-contract [2.9s]
+
+⠏ |          0 | persistence-legacy                                             
+⠸ |          4 | persistence-legacy                                             
+⠏ |         10 | persistence-legacy                                             
+⠸ |         14 | persistence-legacy                                             
+⠼ |         25 | persistence-legacy                                             
+⠏ |         30 | persistence-legacy                                             
+✔ |         34 | persistence-legacy [2.9s]
+
+⠏ |          0 | persistence-source                                             
+⠹ |         13 | persistence-source                                             
+⠸ |         44 | persistence-source                                             
+✔ |         56 | persistence-source
+
+⠏ |          0 | provenance-keys                                                
+⠸ |          4 | provenance-keys                                                
+⠙ |         12 | provenance-keys                                                
+⠏ |         20 | provenance-keys                                                
+⠼ |         25 | provenance-keys                                                
+⠹ |         33 | provenance-keys                                                
+⠋ |         41 | provenance-keys                                                
+⠧ |         48 | provenance-keys                                                
+⠼ |         55 | provenance-keys                                                
+⠏ |         70 | provenance-keys                                                
+⠦ |         77 | provenance-keys                                                
+⠏ |         80 | provenance-keys                                                
+⠋ |         91 | provenance-keys                                                
+⠸ |        104 | provenance-keys                                                
+⠙ |        112 | provenance-keys                                                
+⠏ |        120 | provenance-keys                                                
+⠼ |        125 | provenance-keys                                                
+⠴ | 2      144 | provenance-keys                                                
+⠹ | 4      159 | provenance-keys                                                
+✖ | 4      162 | provenance-keys [2.0s]
+────────────────────────────────────────────────────────────────────────────────
+Failure ('test-provenance-keys.R:298:3'): a prefix image metadata container cannot authorize saved TIFF pixels
+Expected `back$image[["handle"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+
+
+Failure ('test-provenance-keys.R:304:3'): a prefix image metadata container cannot authorize saved TIFF pixels
+Expected `at_tile(back$image)` to throw a error.
+
+Failure ('test-provenance-keys.R:324:3'): custom reader prefix metadata containers stay extension data
+Expected `img[["meta"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+
+
+Failure ('test-provenance-keys.R:328:3'): custom reader prefix metadata containers stay extension data
+Expected `back$image[["meta"]][["reader_contract"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+
+────────────────────────────────────────────────────────────────────────────────
+
+⠏ |          0 | reader-correctness                                             
+⠋ |         11 | reader-correctness                                             
+⠦ |         17 | reader-correctness                                             
+⠼ |         25 | reader-correctness                                             
+⠹ |         33 | reader-correctness                                             
+⠇ |         39 | reader-correctness                                             
+⠴ |         46 | reader-correctness                                             
+⠸ |         54 | reader-correctness                                             
+⠋ |         61 | reader-correctness                                             
+⠧ |         68 | reader-correctness                                             
+⠧ |         78 | reader-correctness                                             
+⠸ |         94 | reader-correctness                                             
+⠦ |         97 | reader-correctness                                             
+⠼ |        105 | reader-correctness                                             
+⠦ |        107 | reader-correctness                                             
+⠸ |        114 | reader-correctness                                             
+⠸ |        124 | reader-correctness                                             
+⠇ |        129 | reader-correctness                                             
+⠴ |        136 | reader-correctness                                             
+✔ |        142 | reader-correctness [4.2s]
+
+⠏ |          0 | reader-provenance                                              
+⠹ |          3 | reader-provenance                                              
+⠧ |          8 | reader-provenance                                              
+✔ |         13 | reader-provenance
+
+⠏ |          0 | windowed-readers                                               
+⠙ |         32 | windowed-readers                                               
+⠴ |         56 | windowed-readers                                               
+⠙ |         62 | windowed-readers                                               
+⠴ |         66 | windowed-readers                                               
+⠋ |         71 | windowed-readers                                               
+⠴ |         76 | windowed-readers                                               
+⠏ |         80 | windowed-readers                                               
+⠼ |         85 | windowed-readers                                               
+⠏ |         90 | windowed-readers                                               
+⠏ |        100 | windowed-readers                                               
+⠹ |        113 | windowed-readers                                               
+⠦ |        117 | windowed-readers                                               
+✔ |        126 | windowed-readers [1.4s]
+
+══ Results ═════════════════════════════════════════════════════════════════════
+Duration: 21.1 s
+
+── Skipped tests (3) ───────────────────────────────────────────────────────────
+• no workbench reference annotation present (2): 'test-io-npy.R:100:3',
+  'test-io-npy.R:108:3'
+• no workbench TIVITA cube present (1): 'test-backend-tivita.R:66:3'
+
+── Failed tests ────────────────────────────────────────────────────────────────
+Failure ('test-provenance-keys.R:298:3'): a prefix image metadata container cannot authorize saved TIFF pixels
+Expected `back$image[["handle"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+
+
+Failure ('test-provenance-keys.R:304:3'): a prefix image metadata container cannot authorize saved TIFF pixels
+Expected `at_tile(back$image)` to throw a error.
+
+Failure ('test-provenance-keys.R:324:3'): custom reader prefix metadata containers stay extension data
+Expected `img[["meta"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+
+
+Failure ('test-provenance-keys.R:328:3'): custom reader prefix metadata containers stay extension data
+Expected `back$image[["meta"]][["reader_contract"]]` to be NULL.
+Differences:
+`actual` is a list
+`expected` is NULL
+
+
+[ FAIL 4 | WARN 0 | SKIP 3 | PASS 817 ]
+Error:
+! Test failures.
+Execution halted

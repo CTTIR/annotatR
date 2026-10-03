@@ -12,7 +12,7 @@
 .backend_priority <- c("envi", "cuvis", "tivita", "ometiff", "tiff", "raster")
 
 new_annot_backend <- function(name, read_fn, tile_fn, detect_fn, available_fn,
-                              description, extensions) {
+                              description, extensions, capabilities = list(), close_fn = NULL) {
   structure(
     list(
       name         = name,
@@ -21,7 +21,9 @@ new_annot_backend <- function(name, read_fn, tile_fn, detect_fn, available_fn,
       detect_fn    = detect_fn,
       available_fn = available_fn,
       description  = description,
-      extensions   = extensions
+      extensions   = extensions,
+      capabilities = capabilities,
+      close_fn     = close_fn
     ),
     class = "annot_backend"
   )
@@ -43,6 +45,10 @@ new_annot_backend <- function(name, read_fn, tile_fn, detect_fn, available_fn,
 #'   dependencies are installed.
 #' @param description Single string human-readable description.
 #' @param extensions Character vector of file extensions the backend handles.
+#' @param capabilities Additive list declaring metadata_only, window_read,
+#'   samples and io. Omitted capabilities are unknown. Readers can override
+#'   these per image in meta$capabilities.
+#' @param close_fn Optional function(img) releasing runtime resources.
 #' @param call The calling environment, for error reporting.
 #'
 #' @return The registered `annot_backend`, invisibly.
@@ -51,12 +57,15 @@ new_annot_backend <- function(name, read_fn, tile_fn, detect_fn, available_fn,
 #' @export
 at_backend_register <- function(name, read_fn, tile_fn, detect_fn, available_fn,
                                 description = "", extensions = character(),
-                                call = rlang::caller_env()) {
+                                call = rlang::caller_env(),
+                                capabilities = list(metadata_only=NA,window_read=NA,samples="unqualified",io="unknown"),
+                                close_fn = NULL) {
   .check_string(name, call = call)
   stopifnot(is.function(read_fn), is.function(tile_fn), is.function(detect_fn),
             is.function(available_fn))
+  stopifnot(is.list(capabilities), is.null(close_fn) || is.function(close_fn))
   b <- new_annot_backend(name, read_fn, tile_fn, detect_fn, available_fn,
-                         description, as.character(extensions))
+                         description, as.character(extensions), capabilities, close_fn)
   assign(name, b, envir = .backend_registry)
   invisible(b)
 }
@@ -66,7 +75,8 @@ at_backend_register <- function(name, read_fn, tile_fn, detect_fn, available_fn,
 #' @param call The calling environment, for error reporting.
 #' @return A [tibble::tibble] with columns `name` (character), `description`
 #'   (character), `extensions` (character, comma-separated), and `available`
-#'   (logical). A 0-row tibble with these columns when nothing is registered.
+#'   (logical), plus metadata_only and window_read (logical; NA when unknown).
+#'   A 0-row tibble with these columns when nothing is registered.
 #' @family backends
 #' @export
 #' @examples
@@ -76,14 +86,16 @@ at_backend_list <- function(call = rlang::caller_env()) {
   if (length(nms) == 0L) {
     return(tibble::tibble(
       name = character(0), description = character(0),
-      extensions = character(0), available = logical(0)
+      extensions = character(0), available = logical(0), metadata_only=logical(0), window_read=logical(0)
     ))
   }
   tibble::tibble(
     name        = nms,
     description = vapply(nms, function(n) .backend_registry[[n]]$description, character(1)),
     extensions  = vapply(nms, function(n) paste(.backend_registry[[n]]$extensions, collapse = ", "), character(1)),
-    available   = vapply(nms, function(n) isTRUE(tryCatch(.backend_registry[[n]]$available_fn(), error = function(e) FALSE)), logical(1))
+    available   = vapply(nms, function(n) isTRUE(tryCatch(.backend_registry[[n]]$available_fn(), error = function(e) FALSE)), logical(1)),
+    metadata_only = vapply(nms,function(n) .backend_registry[[n]]$capabilities[["metadata_only"]] %||% NA,logical(1)),
+    window_read = vapply(nms,function(n) .backend_registry[[n]]$capabilities[["window_read"]] %||% NA,logical(1))
   )
 }
 
@@ -129,6 +141,9 @@ at_backend_detect <- function(path, call = rlang::caller_env()) {
       if (isTRUE(tryCatch(b$available_fn(), error = function(e) FALSE))) {
         return(n)
       }
+      if (n %in% c("tiff","ometiff")) {
+        cli::cli_abort("Raw {n} capability requires its optional reader package(s), which are not installed. See at_backend_list(); explicit backend = 'raster' selects display conversion.",call=call)
+      }
     }
   }
   if (length(matched) > 0L) {
@@ -170,6 +185,21 @@ at_backend_detect <- function(path, call = rlang::caller_env()) {
 #' at_dims(img)
 at_read_image <- function(path, backend = NULL, ..., call = rlang::caller_env()) {
   .check_file(path, call = call)
+  path <- normalizePath(path, mustWork = TRUE)
+  reader_options <- list(...)
+  if (!.serializable_options(reader_options)) stop("Reader options must be serializable values, not runtime handles or functions.")
+  options_identity <- tryCatch(
+    .identity_fingerprint(reader_options),
+    error = function(e) {
+      cli::cli_abort(
+        c(
+          "Reader options must be serializable.",
+          "x" = "Could not record the options for {.path {path}}: {conditionMessage(e)}"
+        ),
+        call = call
+      )
+    }
+  )
   if (is.null(backend)) {
     backend <- at_backend_detect(path, call = call)
   }
@@ -183,7 +213,28 @@ at_read_image <- function(path, backend = NULL, ..., call = rlang::caller_env())
       call = call
     )
   }
-  b$read_fn(path, ...)
+  img <- b$read_fn(path, ...)
+  .check_image(img, arg = "backend result", call = call)
+  .check_provenance_keys(img, "meta", "image source")
+  .check_provenance_keys(img[["meta"]], "reader_contract", "image reader contract")
+  generation <- .new_identity_id("read")
+  img$source <- path
+  img$source_descriptor <- list(
+    schema_version = .source_schema,
+    signature = .source_signature(path),
+    files = if (is.list(img[["handle"]])) img[["handle"]][["files"]] else NULL,
+    path = path,
+    backend = backend,
+    options = reader_options,
+    options_identity = options_identity,
+    reader_contract = img[["meta"]][["reader_contract"]]
+  )
+  if (is.list(img[["meta"]]) && is.null(img[["meta"]][["capabilities"]])) {
+    img[["meta"]][["capabilities"]] <- b[["capabilities"]]
+  }
+  img$read_generation <- generation
+  img$cache_identity <- generation
+  img
 }
 
 #' Read a tile from an image
@@ -220,6 +271,10 @@ at_tile <- function(img, level = 0L, xrange = NULL, yrange = NULL, bands = NULL,
   xrange <- .validate_range(xrange, d[1], "xrange", call)
   yrange <- .validate_range(yrange, d[2], "yrange", call)
   if (!is.null(bands)) {
+    if (!is.numeric(bands) || !length(bands) || any(!is.finite(bands)) ||
+        any(bands != trunc(bands)) || any(bands < 1 | bands > img$n_bands)) {
+      cli::cli_abort("bands are out of range or invalid; use finite whole band indices.",call=call)
+    }
     bands <- as.integer(bands)
     if (any(bands < 1L) || any(bands > img$n_bands)) {
       cli::cli_abort(
@@ -229,13 +284,17 @@ at_tile <- function(img, level = 0L, xrange = NULL, yrange = NULL, bands = NULL,
       )
     }
   }
-  b <- at_backend_get(img$backend, call = call)
+  img <- .reopen_image(img, require_pixels = TRUE)
+  b <- at_backend_get(img[["backend"]], call = call)
   key <- .tile_key(img, level, xrange, yrange, bands)
   cached <- .tile_cache_get(key)
   if (!is.null(cached)) {
     return(cached)
   }
   arr <- b$tile_fn(img, level, xrange, yrange, bands)
+  if (isTRUE(img$handle[["windowed"]]) && .source_status(img)!="available") {
+    cli::cli_abort("Image source changed during window read; revalidate with at_relink_source().")
+  }
   # Guarantee a 3D [y, x, band] array.
   if (length(dim(arr)) == 2L) {
     arr <- array(arr, dim = c(dim(arr), 1L))

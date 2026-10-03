@@ -14,7 +14,10 @@ at_mask_preview(mask, max_dim = 1024L, call = rlang::caller_env())
 \item{call}{The calling environment, for error reporting.}
 }
 \value{
-A downsampled \code{annot_mask} with the legend pixel counts recomputed.
+A downsampled \code{annot_mask} with membership-aware counts recomputed.
+Metadata records the preview dimensions and sampling stride, its parent
+grid, and the original source provenance. No full-resolution counts are
+copied onto the sampled matrix.
 }
 \description{
 Nearest-neighbour downsample only (interpolating a label mask would invent

@@ -17,7 +17,10 @@ at_extract_pixels(
 \arguments{
 \item{project}{An \link{annot_project}.}
 
-\item{img}{An \link{annot_image}; defaults to the project's image.}
+\item{img}{An \link{annot_image}; defaults to the project's image. Supplying an
+alternate image asserts spatial registration on the same level-0 pixel
+grid. Its level-0 extent must match; differing pyramid dimensions are
+handled using the alternate image's actual level dimensions.}
 
 \item{layer}{Optional layer filter.}
 

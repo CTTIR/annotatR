@@ -1,0 +1,12 @@
+mode array R 4.6.1 tiff 0.1.12 magick 2.9.1 
+[1] 1
+PNG encoded bytes 133 
+non-TIFF magick operation completed
+Warning messages:
+1: In tiff::readTIFF("inst/extdata/example_multiplex.tif", all = TRUE,  :
+  TIFFReadDirectory: Sum of Photometric type-related color channels and ExtraSamples doesn't match SamplesPerPixel. Defining non-color channels as ExtraSamples.
+2: In tiff::readTIFF("inst/extdata/example_multiplex.tif", all = TRUE,  :
+  TIFFReadDirectory: Sum of Photometric type-related color channels and ExtraSamples doesn't match SamplesPerPixel. Defining non-color channels as ExtraSamples.
+3: In tiff::readTIFF("inst/extdata/example_multiplex.tif", all = TRUE,  :
+  TIFFReadDirectory: Sum of Photometric type-related color channels and ExtraSamples doesn't match SamplesPerPixel. Defining non-color channels as ExtraSamples.
+completed TIFF read; result class list 

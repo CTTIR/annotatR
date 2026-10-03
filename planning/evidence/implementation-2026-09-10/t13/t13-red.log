@@ -1,0 +1,76 @@
+ℹ Testing annotatR
+quantitative-contract: 12.3..456789abWcWdWefgWhij.
+
+══ Warnings ════════════════════════════════════════════════════════════════════
+1. agreement validates plain values and backgrounds before integer coercion ('test-quantitative-contract.R:144:5') - NAs introduced by coercion to integer range
+
+2. agreement validates plain values and backgrounds before integer coercion ('test-quantitative-contract.R:144:5') - NAs introduced by coercion to integer range
+
+3. agreement validates plain values and backgrounds before integer coercion ('test-quantitative-contract.R:144:5') - NAs introduced by coercion to integer range
+
+4. agreement validates plain values and backgrounds before integer coercion ('test-quantitative-contract.R:146:3') - NAs introduced by coercion to integer range
+
+══ Failed ══════════════════════════════════════════════════════════════════════
+── 1. Error ('test-quantitative-contract.R:14:3'): finite-only summaries match e
+Error in `at_extract(p, stat = "all", nonfinite = "omit")`: unused argument (nonfinite = "omit")
+
+── 2. Error ('test-quantitative-contract.R:43:5'): empty, singleton, and wholly 
+Error in `at_extract(p, bands = 1L, stat = "all", nonfinite = "omit")`: unused argument (nonfinite = "omit")
+Backtrace:
+    ▆
+ 1. └─testthat::expect_warning(...) at test-quantitative-contract.R:43:5
+ 2.   └─testthat:::expect_condition_matching_(...)
+ 3.     └─testthat:::quasi_capture(...)
+ 4.       ├─testthat (local) .capture(...)
+ 5.       │ └─base::withCallingHandlers(...)
+ 6.       └─rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+
+── 3. Error ('test-quantitative-contract.R:67:5'): wavelength values retain decl
+Error in `at_extract_spectrum(p, nonfinite = "omit")`: unused argument (nonfinite = "omit")
+
+── 4. Error ('test-quantitative-contract.R:84:3'): physical area uses declared c
+Error in `eval(code, test_env)`: Physical area requires a pixel_size attribute on the ROI.
+i Attach it via the `...` of a constructor, or use pixel units.
+Backtrace:
+    ▆
+ 1. ├─testthat::expect_equal(...) at test-quantitative-contract.R:84:3
+ 2. │ └─testthat::quasi_label(enquo(object), label)
+ 3. │   └─rlang::eval_bare(expr, quo_get_env(quo))
+ 4. └─annotatR::at_roi_area(r, level = lev, units = "physical", image = img)
+ 5.   └─cli::cli_abort(...) at annotatR-roadmap/R/class-roi.R:390:7
+ 6.     └─rlang::abort(...)
+
+── 5. Failure ('test-quantitative-contract.R:99:3'): categorical comparison requ
+Expected `at_mask_agreement(a, b)` to throw a error.
+
+── 6. Error ('test-quantitative-contract.R:100:3'): categorical comparison requi
+Error in `at_mask_agreement(a, b, alignment = "assert")`: unused argument (alignment = "assert")
+
+── 7. Error ('test-quantitative-contract.R:118:3'): bitfield agreement compares 
+Error in `at_mask_agreement(a, b, alignment = "assert")`: unused argument (alignment = "assert")
+
+── 8. Error ('test-quantitative-contract.R:131:3'): instance comparisons use sta
+Error in `at_mask_agreement(a, b, alignment = "assert")`: unused argument (alignment = "assert")
+Backtrace:
+    ▆
+ 1. └─testthat::expect_error(...) at test-quantitative-contract.R:131:3
+ 2.   └─testthat:::expect_condition_matching_(...)
+ 3.     └─testthat:::quasi_capture(...)
+ 4.       ├─testthat (local) .capture(...)
+ 5.       │ └─base::withCallingHandlers(...)
+ 6.       └─rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+
+── 9. Failure ('test-quantitative-contract.R:144:5'): agreement validates plain 
+Expected `at_mask_agreement(good, bad)` to throw a error.
+
+── 10. Failure ('test-quantitative-contract.R:144:5'): agreement validates plain
+Expected `at_mask_agreement(good, bad)` to throw a error.
+  ... and 9 more
+
+
+Maximum number of 10 failures reached, some test results may be missing.
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+No one is perfect!
+ failed   error warning  passed 
+     12       7       4       4 

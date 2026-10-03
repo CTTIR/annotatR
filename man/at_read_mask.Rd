@@ -6,37 +6,61 @@
 \usage{
 at_read_mask(
   path,
-  level = 0L,
+  level = NULL,
   connectivity = c(8L, 4L),
   simplify = 0,
   min_area = 0,
   legend = NULL,
-  call = rlang::caller_env()
+  call = rlang::caller_env(),
+  metadata = NULL
 )
 }
 \arguments{
-\item{path}{Path to a mask file (TIFF, PNG, or RDS).}
+\item{path}{Path to a mask file (TIFF, PNG, RDS, or NPY). NPY sidecar storage
+orientation is recovered automatically for polygonisation. PNG input must
+be unsigned 8/16-bit grayscale without palette, colour, alpha channels or
+\code{tRNS} transparency;
+original class codes are preserved. TIFF requires the raw \code{tiff} reader;
+PNG requires a \code{magick} build with exact grayscale capability.}
 
-\item{level}{Integer pyramid level to record on the ROIs. Default \code{0}.}
+\item{level}{Integer pyramid level to record on the ROIs. \code{NULL} (default)
+uses the RDS mask or legend sidecar level, falling back to 0 for an
+external mask without level metadata. An explicit level overrides metadata.}
 
-\item{connectivity}{\code{8} (default) or \code{4} pixel connectivity.}
+\item{connectivity}{Single finite whole number \code{8} (default) or \code{4},
+including \code{8L}/\code{4L}. Eight-connectivity joins corner-touching pixels into
+one ROI; four-connectivity requires shared edges. Explicit vectors reject.}
 
 \item{simplify}{Non-negative simplification tolerance for the polygons.}
 
 \item{min_area}{Minimum polygon area in pixels to keep. Default \code{0}.}
 
 \item{legend}{Optional legend tibble (\code{value}, \code{label}) overriding the
-sidecar / pixel-value labelling.}
+embedded / sidecar / pixel-value labelling.}
 
 \item{call}{The calling environment, for error reporting.}
+
+\item{metadata}{Optional named list overriding semantic \code{mask_metadata}
+fields, such as \code{encoding}, \code{background}, or \code{source}. Nested grid fields
+merge with recovered metadata. Explicit \code{level} and \code{legend} take precedence
+over this list. Overrides do not resample pixels. Stored versioned metadata
+must be structurally valid before overrides are applied.}
 }
 \value{
-An \link{annot_layer} with one ROI per connected region.
+An \link{annot_layer} with one ROI per connected region. Recovered semantic
+metadata is retained in \code{layer$meta$mask_metadata}, including empty layers.
 }
 \description{
 Polygonise an existing mask file (e.g. Cellpose, StarDist, or QuPath output,
-or a prior annotatR export) into an editable \link{annot_layer}. A sidecar
-\verb{<path>.legend.json} is used to recover labels when present.
+or a prior annotatR export) into an editable \link{annot_layer}. Explicit metadata
+and legend/level arguments take precedence over embedded RDS metadata, then
+the \verb{<path>.legend.json} sidecar. Bitfields polygonise each class membership.
+Legacy masks default to exclusive values and zero background, recorded as
+\code{legacy-default}; incomplete legacy bitfield legends require an explicit
+encoding override. Malformed/future metadata and inconsistent dimensions
+fail rather than silently discarding labels. Sampled previews or translated
+grids cannot be polygonised as editable ROIs; import the original-resolution
+mask with unit stride and zero origin.
 }
 \examples{
 \dontshow{if (requireNamespace("magick", quietly = TRUE) || requireNamespace("tiff", quietly = TRUE)) withAutoprint(\{ # examplesIf}

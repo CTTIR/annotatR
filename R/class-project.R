@@ -86,6 +86,38 @@ new_annot_project <- function(image,
   )
 }
 
+.valid_roi_id <- function(id) .is_string(id) && nzchar(id)
+
+# Preserve each first valid incoming identifier. Collisions and invalid IDs are
+# re-minted against the complete occupied and incoming ID sets, so a generated
+# ID cannot accidentally take a valid identifier that appears later.
+.unique_layer_roi_ids <- function(layers, occupied = character()) {
+  incoming <- unlist(lapply(layers, function(layer) {
+    vapply(layer$rois, function(roi) {
+      if (.valid_roi_id(roi$id)) roi$id else NA_character_
+    }, character(1))
+  }), use.names = FALSE)
+  reserved <- unique(c(occupied, incoming[!is.na(incoming)]))
+  used <- unique(occupied)
+  for (layer_i in seq_along(layers)) {
+    for (roi_i in seq_along(layers[[layer_i]]$rois)) {
+      roi <- layers[[layer_i]]$rois[[roi_i]]
+      if (.valid_roi_id(roi$id) && !roi$id %in% used) {
+        used <- c(used, roi$id)
+        next
+      }
+      repeat {
+        candidate <- .new_id("roi")
+        if (!candidate %in% c(reserved, used)) break
+      }
+      roi$id <- candidate
+      layers[[layer_i]]$rois[[roi_i]] <- roi
+      used <- c(used, candidate)
+    }
+  }
+  layers
+}
+
 # ---- Constructor -----------------------------------------------------------
 
 #' Create an annotation project
@@ -108,6 +140,7 @@ new_annot_project <- function(image,
 at_project <- function(image, layers = list(), ..., call = rlang::caller_env()) {
   .check_image(image, call = call)
   layers <- .normalize_layers(layers, call = call)
+  layers <- .unique_layer_roi_ids(layers)
   provenance <- list(
     created          = .now(),
     modified         = .now(),
@@ -142,6 +175,10 @@ at_add_layer <- function(project, layer, call = rlang::caller_env()) {
       call = call
     )
   }
+  layer <- .unique_layer_roi_ids(
+    setNames(list(layer), layer$name),
+    occupied = .all_roi_ids(project)
+  )[[1L]]
   project$layers[[layer$name]] <- layer
   .log_edit(project, "add_layer", layer$name)
 }
@@ -194,8 +231,13 @@ at_add_roi <- function(project, layer, roi, call = rlang::caller_env()) {
       call = call
     )
   }
-  if (roi$id %in% .all_roi_ids(project)) {
-    roi$id <- .new_id("roi")
+  occupied <- .all_roi_ids(project)
+  if (!.valid_roi_id(roi$id) || roi$id %in% occupied) {
+    repeat {
+      candidate <- .new_id("roi")
+      if (!candidate %in% occupied) break
+    }
+    roi$id <- candidate
   }
   project$layers[[layer]] <- at_layer_add(project$layers[[layer]], roi)
   .log_edit(project, "add_roi", paste0(layer, "/", roi$id))
@@ -261,8 +303,8 @@ at_layers <- function(project, call = rlang::caller_env()) {
 #' Return a tidy table of ROIs, optionally filtered by layer and/or label.
 #'
 #' Coordinates in the `geometry` column, together with `area_px` and the
-#' centroid, are expressed at pyramid level 0; the `level` column records the
-#' level at which each ROI was originally defined.
+#' centroid, are expressed at pyramid level 0. The `level` column is 0;
+#' `source_level` records the stored level at which each ROI was defined.
 #'
 #' @param project An [annot_project].
 #' @param layer Optional single layer name to filter to.
@@ -276,7 +318,8 @@ at_layers <- function(project, call = rlang::caller_env()) {
 #'     \item{`layer`}{Layer name (character).}
 #'     \item{`label`}{Class label (character).}
 #'     \item{`geom_type`}{Geometry type, e.g. `"POLYGON"` (character).}
-#'     \item{`level`}{Reference pyramid level (integer).}
+#'     \item{`level`}{Coordinate pyramid level, always 0 (integer).}
+#'     \item{`source_level`}{Stored ROI reference level (integer provenance).}
 #'     \item{`area_px`}{Area in level-0 pixels (double); `NA` for points/lines.}
 #'     \item{`centroid_x`,`centroid_y`}{Centroid at level 0 (double).}
 #'     \item{`n_vertices`}{Vertex count (integer).}
@@ -286,6 +329,9 @@ at_layers <- function(project, call = rlang::caller_env()) {
 #'     \item{`geometry`}{The `sf` geometry column (`sfc`), at level 0.}
 #'   }
 #'   Returns a 0-row tibble with these columns if no ROIs match.
+#' @details Older tables used `level` for the stored reference level despite
+#'   returning level-0 geometry. Consumers needing that provenance must now use
+#'   `source_level`. The stored ROI geometry, level, and identifier are unchanged.
 #' @family projects
 #' @seealso [at_layers()], `at_mask()`
 #' @export

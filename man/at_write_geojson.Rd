@@ -21,7 +21,8 @@ at_write_geojson(
 
 \item{layer}{Optional layer filter.}
 
-\item{level}{Integer pyramid level for the coordinates. Default \code{0}.}
+\item{level}{Integer pyramid level for the coordinates and exported \code{level}
+property. Default \code{0}; \code{source_level} separately records the stored ROI level.}
 
 \item{flip_y}{Logical; invert the y-axis (for GIS-oriented consumers). Default
 \code{FALSE} (image orientation preserved). The consequence is documented in the

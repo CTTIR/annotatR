@@ -54,10 +54,13 @@
 
 # Parse the ENVI header into a list.
 .parse_envi_hdr <- function(hdr) {
-  txt <- paste(readLines(hdr, warn = FALSE), collapse = "\n")
+  size <- file.info(hdr)$size
+  if (!is.finite(size) || size > 1024^2) cli::cli_abort("ENVI header exceeds the 1 MiB metadata limit.")
+  con <- file(hdr,"rb"); on.exit(close(con))
+  txt <- rawToChar(.window_read_raw(con,size))
   num <- function(key) {
     v <- .envi_field(txt, key)
-    if (is.null(v)) NULL else as.numeric(v)
+    if (is.null(v)) NULL else suppressWarnings(as.numeric(v))
   }
   split_list <- function(key) {
     v <- .envi_field(txt, key)
@@ -75,6 +78,13 @@
   interleave <- tolower(.envi_field(txt, "interleave") %||% "bsq")
   byte_order <- num("byte order") %||% 0
   data_type <- num("data type") %||% 4
+  offset <- num("header offset") %||% 0
+  if (length(byte_order) != 1L || is.na(byte_order) || !byte_order %in% c(0,1)) cli::cli_abort("Invalid ENVI byte order; expected 0 or 1.")
+  if (!interleave %in% c("bsq","bil","bip")) cli::cli_abort("Unsupported ENVI interleave.")
+  .envi_dtype(data_type)
+  dims <- c(samples,lines,bands)
+  if (any(!is.finite(dims)) || any(dims < 1 | dims != trunc(dims) | dims > .Machine$integer.max)) cli::cli_abort("Invalid ENVI dimensions; expected positive integers.")
+  if (!is.finite(offset) || offset < 0 || offset != trunc(offset)) cli::cli_abort("Invalid ENVI header offset.")
   wl <- split_list("wavelength")
   wl <- if (is.null(wl)) NULL else as.numeric(wl)
   wl_units <- .envi_field(txt, "wavelength units")
@@ -83,7 +93,7 @@
     samples = as.integer(samples), lines = as.integer(lines),
     bands = as.integer(bands), interleave = interleave,
     endian = if (byte_order >= 1) "big" else "little",
-    data_type = data_type, wavelengths = wl,
+    data_type = data_type, offset = offset, wavelengths = wl,
     wavelength_units = wl_units, band_names = bn
   )
 }
@@ -91,13 +101,15 @@
 # Read the binary payload and reshape to a [y, x, band] array.
 .read_envi_data <- function(dat, h) {
   spec <- .envi_dtype(h$data_type)
-  n <- h$samples * h$lines * h$bands
+  layout <- .binary_layout(dat, c(h$samples,h$lines,h$bands), spec$size, h$offset %||% 0)
   con <- file(dat, "rb")
   on.exit(close(con))
-  vec <- readBin(con, what = spec$what, n = n, size = spec$size,
-                 signed = spec$signed, endian = h$endian)
-  if (spec$what == "integer" && !spec$signed && spec$size == 2L) {
-    vec[vec < 0] <- vec[vec < 0] + 65536L
+  seek(con, where=layout$offset, origin="start")
+  if (spec$what == "integer") {
+    vec <- .decode_integer_bytes(.read_exact_raw(con,layout$bytes),spec$size,spec$signed,h$endian)
+  } else {
+    vec <- readBin(con, what=spec$what, n=layout$count, size=spec$size, endian=h$endian)
+    if (length(vec) != layout$count) cli::cli_abort("Short/truncated ENVI payload.")
   }
   arr <- switch(
     h$interleave,
@@ -118,9 +130,10 @@
       "i" = "Expected a data file alongside the {.file .hdr} header."
     ))
   }
+  files <- .source_files(c(header=p$hdr,payload=p$dat))
   h <- .parse_envi_hdr(p$hdr)
-  arr <- .read_envi_data(p$dat, h)
   spec <- .envi_dtype(h$data_type)
+  if (!identical(files,.source_files(c(header=p$hdr,payload=p$dat)))) cli::cli_abort("Image source changed during metadata open.")
   bn <- h$band_names
   if (is.null(bn) || length(bn) != h$bands) {
     bn <- NA_character_
@@ -131,13 +144,18 @@
     level_dims = list(c(h$samples, h$lines)),
     n_bands = h$bands, band_names = bn,
     wavelengths = h$wavelengths,
-    wavelength_unit = if (is.null(h$wavelengths)) NULL else (h$wavelength_units %||% "nm"),
+    wavelength_unit = if (is.null(h$wavelengths)) NULL else h$wavelength_units,
     pixel_size = c(1, 1), pixel_unit = "px", dtype = spec$dtype,
-    handle = list(data = arr), meta = list(interleave = h$interleave)
+    handle = list(windowed = TRUE, path = normalizePath(p$dat), spec = spec,
+      layout = utils::modifyList(h, .binary_layout(p$dat, c(h$samples,h$lines,h$bands),spec$size,h$offset,eager=FALSE)),
+      files = files),
+    meta = list(interleave = h$interleave, reader_contract = list(axes="yxb",samples="raw-scalar-v1"),
+      capabilities = .window_capabilities("binary"))
   )
 }
 
 .envi_tile <- function(img, level, xrange, yrange, bands) {
+  if (isTRUE(img$handle[["windowed"]])) return(.binary_window(img, xrange, yrange, bands))
   arr <- img$handle$data
   ys <- yrange[1]:yrange[2]
   xs <- xrange[1]:xrange[2]

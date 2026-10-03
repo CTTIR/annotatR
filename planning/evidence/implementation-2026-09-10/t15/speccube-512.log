@@ -1,0 +1,82 @@
+$backend
+[1] "tivita"
+
+$dimensions
+[1] 512 512
+
+$source_bytes
+[1] 3145740
+
+$hypothetical_double_cube_bytes
+[1] 6291456
+
+$rss_and_hwm_before
+[1] 260034560 260034560
+
+$rss_and_hwm_after_open
+[1] 260042752 260042752
+
+$rss_and_hwm_after_tile
+[1] 260042752 260042752
+
+$max_R_allocation
+[1] 98352
+
+$total_R_allocations
+[1] 861832
+
+$image_object_bytes
+[1] 13792
+
+$tile_bytes
+[1] 98528
+
+$open_counts
+$open_counts$binary_bytes
+[1] 0
+
+$open_counts$binary_calls
+[1] 0
+
+$open_counts$native_metadata_calls
+[1] 0
+
+$open_counts$native_window_calls
+[1] 0
+
+$open_counts$native_file_bytes
+[1] 0
+
+$open_counts$decoded_bytes
+[1] 0
+
+
+$final_counts
+$final_counts$binary_bytes
+[1] 32768
+
+$final_counts$binary_calls
+[1] 8192
+
+$final_counts$native_metadata_calls
+[1] 0
+
+$final_counts$native_window_calls
+[1] 0
+
+$final_counts$native_file_bytes
+[1] 0
+
+$final_counts$decoded_bytes
+[1] 98304
+
+
+$elapsed
+[1] 0.245
+
+$R
+[1] "R version 4.6.1 (2026-06-24)"
+
+$platform
+[1] "x86_64-pc-linux-gnu"
+
