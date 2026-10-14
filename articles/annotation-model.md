@@ -223,14 +223,3 @@ through any level without drift.
 The companion **Masks** vignette shows how these annotations are
 rasterised – applying the pixel-centre rule above – into binary,
 labelled, and multi-class integer masks.
-
-## Use of LLM tools
-
-Portions of this package were prepared with assistance from large
-language model tooling for narrowly defined, non-authorial tasks:
-copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of
-boilerplate files (CI configs, build scripts), code refactoring. The
-tools used were Chat AI, the LLM service of KISSKI (GWDG), and a
-self-hosted Mistral Small (24B, Apache-2.0) run locally via Ollama and
-the ollamar R package — local inference only, with no data sent to third
-parties for the self-hosted model.

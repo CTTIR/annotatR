@@ -225,7 +225,7 @@ saveRDS(list(width = 64L, height = 48L, bands = 2L, value = 0.5), path)
 
 cimg <- at_read_image(path)
 cimg
-#> <annot_image> file374846f98c61.const
+#> <annot_image> file39c24c955911.const
 #> backend: "const"  |  dtype: "double"
 #> size: 64 x 48 px  |  levels: 1  |  bands: 2
 #> pixel size: 1 x 1 px
@@ -252,14 +252,3 @@ pixels at all and synthesises each tile from a single value.
 
 Next, see the *The annotation model* vignette to learn how ROIs, layers
 and projects build on these image handles.
-
-## Use of LLM tools
-
-Portions of this package were prepared with assistance from large
-language model tooling for narrowly defined, non-authorial tasks:
-copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of
-boilerplate files (CI configs, build scripts), code refactoring. The
-tools used were Chat AI, the LLM service of KISSKI (GWDG), and a
-self-hosted Mistral Small (24B, Apache-2.0) run locally via Ollama and
-the ollamar R package — local inference only, with no data sent to third
-parties for the self-hosted model.

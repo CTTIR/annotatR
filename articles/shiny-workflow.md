@@ -31,7 +31,7 @@ sess <- at_example_session(3)
 sess
 #> <annot_session>
 #> images: 3  |  complete: 0  |  cursor: 1
-#> out_dir: /tmp/RtmpY5Pp42/annotatR-example-session-3bb21299b023  |  autosave: TRUE
+#> out_dir: /tmp/RtmplWpyXI/annotatR-example-session-3e2a5a136aa3  |  autosave: TRUE
 ```
 
 Every image starts with status `"pending"`, the cursor sits on the first
@@ -175,7 +175,7 @@ recovered <- at_resume(file.path(sess$out_dir, "_session.rds"))
 recovered
 #> <annot_session>
 #> images: 3  |  complete: 1  |  cursor: 2
-#> out_dir: /tmp/RtmpY5Pp42/annotatR-example-session-3bb21299b023  |  autosave: TRUE
+#> out_dir: /tmp/RtmplWpyXI/annotatR-example-session-3e2a5a136aa3  |  autosave: TRUE
 ```
 
 The cursor, statuses, materialised projects, and templates all come back
@@ -200,17 +200,17 @@ at_session_status(sess)
 #> # A tibble: 3 × 7
 #>     idx path                name  status project_path n_rois modified
 #>   <int> <chr>               <chr> <chr>  <chr>         <int> <dttm>  
-#> 1     1 /tmp/RtmpY5Pp42/an… imag… compl… NA                0 NA      
-#> 2     2 /tmp/RtmpY5Pp42/an… imag… pendi… NA                0 NA      
-#> 3     3 /tmp/RtmpY5Pp42/an… imag… pendi… NA                0 NA
+#> 1     1 /tmp/RtmplWpyXI/an… imag… compl… NA                0 NA      
+#> 2     2 /tmp/RtmplWpyXI/an… imag… pendi… NA                0 NA      
+#> 3     3 /tmp/RtmplWpyXI/an… imag… pendi… NA                0 NA
 
 at_manifest(sess)
 #> # A tibble: 3 × 9
 #>     idx name     path              status n_layers n_rois tumour necrosis stroma
 #>   <int> <chr>    <chr>             <chr>     <int>  <int>  <int>    <int>  <int>
-#> 1     1 image_01 /tmp/RtmpY5Pp42/… compl…        0      0      0        0      0
-#> 2     2 image_02 /tmp/RtmpY5Pp42/… pendi…        0      0      0        0      0
-#> 3     3 image_03 /tmp/RtmpY5Pp42/… pendi…        0      0      0        0      0
+#> 1     1 image_01 /tmp/RtmplWpyXI/… compl…        0      0      0        0      0
+#> 2     2 image_02 /tmp/RtmplWpyXI/… pendi…        0      0      0        0      0
+#> 3     3 image_03 /tmp/RtmplWpyXI/… pendi…        0      0      0        0      0
 ```
 
 Use these to seed a session programmatically, pre-fill statuses, or
@@ -228,14 +228,3 @@ yields exactly the reviewed annotations and nothing half-finished.
 Those export formats — and how annotatR round-trips with QuPath,
 GeoJSON, and mask TIFFs — are the subject of the next vignette,
 “Interoperability”.
-
-## Use of LLM tools
-
-Portions of this package were prepared with assistance from large
-language model tooling for narrowly defined, non-authorial tasks:
-copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of
-boilerplate files (CI configs, build scripts), code refactoring. The
-tools used were Chat AI, the LLM service of KISSKI (GWDG), and a
-self-hosted Mistral Small (24B, Apache-2.0) run locally via Ollama and
-the ollamar R package — local inference only, with no data sent to third
-parties for the self-hosted model.

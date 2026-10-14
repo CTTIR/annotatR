@@ -74,7 +74,7 @@ receipt$files[, c("path", "size_bytes", "format")]
 #> 4 masks/regions_labelled.tif                   2936 mask_tiff     
 #> 5 masks/regions_labelled.tif.legend.json        675 legend_json
 receipt$handoff_digest
-#> [1] "b3e81f94c263ffc851944efa2cce3695d0fa721a98ba17b72534a1ca08a3935e"
+#> [1] "68e0d86c1b900e9e4fa4f6900fde120c3fbe3a74a28a2a5b02650b602288bb03"
 ```
 
 - `annotations_qupath.geojson` uses the QuPath 0.4+ dialect with a
