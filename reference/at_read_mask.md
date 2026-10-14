@@ -82,7 +82,7 @@ m <- at_mask(at_example_project(), "labelled")
 f <- tempfile(fileext = ".tif")
 at_write_mask(m, f)
 at_read_mask(f)
-#> <annot_layer> file2c8f2224ec54
+#> <annot_layer> file292979dd5283
 #> ROIs: 3  |  labels: "necrosis", "tumour", and "stroma"
 #> visible: TRUE  |  locked: FALSE  |  z: 1
 ```
